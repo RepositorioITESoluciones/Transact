@@ -1291,7 +1291,7 @@ function GuardarRegitrosBND() {
         console.log("primermetodo");
         $.ajax({
             type: 'POST',
-            url: 'MyWebService.asmx/InsertarTransaccion',
+            url: 'MyWebService.asmx/InsertarTransaccionxEtapa',
             data: JSON.stringify({
                 json: Datos,
                 idTransaccion: parametroE,
@@ -1356,7 +1356,7 @@ function GuardarRegitrosBND() {
         console.log("segundometodo");
         $.ajax({
             type: 'POST',
-            url: 'MyWebService.asmx/InsertarTransaccion',
+            url: 'MyWebService.asmx/InsertarTransaccionxEtapa',
             data: JSON.stringify({
                 json: Datos,
                 idTransaccion: parametroE,

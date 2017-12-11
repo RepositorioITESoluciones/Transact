@@ -56,11 +56,19 @@ public class MyServiceClass : System.Web.Services.WebService
     public bool InsertarTransaccion(string json, string idTransaccion, string Categoria, int idEtapa, int idAccion)
     {
 
-        if (idTransaccion.Length < 13) {
+       
             return arma.insert(json, idTransaccion, Categoria, idEtapa, idAccion);
-        } else { return arma.insertXetapa(json, idTransaccion, Categoria, idEtapa, idAccion); }
+
         
     }
+
+    public bool InsertarTransaccionxEtapa(string json, string idTransaccion, string Categoria, int idEtapa, int idAccion) {
+
+       return arma.insertXetapa(json, idTransaccion, Categoria, idEtapa, idAccion); 
+
+    }
+
+
     [WebMethod]
     public EntidadCategoriaTransa TiposTrans()
     {
