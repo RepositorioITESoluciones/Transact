@@ -1,0 +1,69 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transact.Datos", "Transact.Datos\Transact.Datos.csproj", "{88376554-5918-49D8-8D53-F1423F0E5D3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transact.Entidades", "Transact.Entidades\Transact.Entidades.csproj", "{9AF0C326-CCCB-47D2-AC87-457E9A0629A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transact.Framework", "Transact.Framework\Transact.Framework.csproj", "{9F326943-5354-4F2A-84C8-349EF2D02E05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transact.Negocio", "Transact.Negocio\Transact.Negocio.csproj", "{8FC24CC0-016E-4948-8902-F4D8A3BDA341}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WBTransact", "WBTransact\", "{DB49DA61-7667-4778-923F-82D47B1A0816}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5.2"
+		ProjectReferences = "{8fc24cc0-016e-4948-8902-f4d8a3bda341}|Transact.Negocio.dll;{88376554-5918-49D8-8D53-F1423F0E5D3F}|Transact.Datos.dll;{9AF0C326-CCCB-47D2-AC87-457E9A0629A1}|Transact.Entidades.dll;{9F326943-5354-4F2A-84C8-349EF2D02E05}|Transact.Framework.dll;"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_63935"
+		Debug.AspNetCompiler.PhysicalPath = "WBTransact\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_63935\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_63935"
+		Release.AspNetCompiler.PhysicalPath = "WBTransact\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_63935\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "63935"
+		SlnRelativePath = "WBTransact\"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{88376554-5918-49D8-8D53-F1423F0E5D3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88376554-5918-49D8-8D53-F1423F0E5D3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88376554-5918-49D8-8D53-F1423F0E5D3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88376554-5918-49D8-8D53-F1423F0E5D3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AF0C326-CCCB-47D2-AC87-457E9A0629A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AF0C326-CCCB-47D2-AC87-457E9A0629A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AF0C326-CCCB-47D2-AC87-457E9A0629A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AF0C326-CCCB-47D2-AC87-457E9A0629A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F326943-5354-4F2A-84C8-349EF2D02E05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F326943-5354-4F2A-84C8-349EF2D02E05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F326943-5354-4F2A-84C8-349EF2D02E05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F326943-5354-4F2A-84C8-349EF2D02E05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FC24CC0-016E-4948-8902-F4D8A3BDA341}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FC24CC0-016E-4948-8902-F4D8A3BDA341}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FC24CC0-016E-4948-8902-F4D8A3BDA341}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FC24CC0-016E-4948-8902-F4D8A3BDA341}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB49DA61-7667-4778-923F-82D47B1A0816}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB49DA61-7667-4778-923F-82D47B1A0816}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB49DA61-7667-4778-923F-82D47B1A0816}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB49DA61-7667-4778-923F-82D47B1A0816}.Release|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		VisualSVNWorkingCopyRoot = .
+	EndGlobalSection
+EndGlobal

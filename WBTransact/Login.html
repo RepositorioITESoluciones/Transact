@@ -1,0 +1,239 @@
+﻿<style>
+    .hidden-menu .page-footer {
+        padding-left: 20px !important;
+    }
+
+    .page-footer {
+        border-top: none !important;
+        position: none !important;
+    }
+
+    smartadmin-prod…ion.min.css:23 .page-footer {
+        height: 52px !important;
+        padding: 15px 13px 0 !important;
+        padding-left: 233px !important;
+        border-top: 1px solid #CECECE !important;
+        background: #2a2725 !important;
+        width: 100% !important;
+        position: absolute !important;
+        display: block !important;
+        bottom: 0 !important;
+    }
+</style>
+<!DOCTYPE html>
+<html lang="en-us" id="extr-page" ondragstart="return false;" ondrop="return false;">
+<head>
+    <meta charset="utf-8">
+    <title>Login Transact</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- #CSS Links -->
+    <!-- Estilos propios -->
+    <link rel="stylesheet" type="text/css" href="css/login.css">
+    <!-- Basic Styles -->
+    <link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/font-awesome.min.css">
+
+    <!-- SmartAdmin Styles : Caution! DO NOT change the order -->
+    <link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-production-plugins.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-production.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-skins.min.css">
+
+    <!-- SmartAdmin RTL Support -->
+
+    <link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-rtl.min.css">
+
+    <!-- We recommend you use "your_style.css" to override SmartAdmin
+         specific styles this will also ensure you retrain your customization with each SmartAdmin update.
+    <link rel="stylesheet" type="text/css" media="screen" href="css/your_style.css"> -->
+    <!-- Demo purpose only: goes with demo.js, you can delete this css when designing your own WebApp -->
+    <link rel="stylesheet" type="text/css" media="screen" href="css/demo.min.css">
+
+
+
+
+    <!-- #FAVICONS -->
+    <link rel="shortcut icon" href="img/favicon/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="img/favicon/favicon.ico" type="image/x-icon">
+
+    <!-- #GOOGLE FONT -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
+
+    <!-- #APP SCREEN / ICONS -->
+    <!-- Specifying a Webpage Icon for Web Clip
+         Ref: https://developer.apple.com/library/ios/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html -->
+    <link rel="apple-touch-icon" href="img/splash/sptouch-icon-iphone.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="img/splash/touch-icon-ipad.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="img/splash/touch-icon-iphone-retina.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="img/splash/touch-icon-ipad-retina.png">
+
+    <!-- iOS web-app metas : hides Safari UI Components and Changes Status Bar Appearance -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <!-- Startup image for web apps -->
+    <link rel="apple-touch-startup-image" href="img/splash/ipad-landscape.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)">
+    <link rel="apple-touch-startup-image" href="img/splash/ipad-portrait.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)">
+    <link rel="apple-touch-startup-image" href="img/splash/iphone.png" media="screen and (max-device-width: 320px)">
+    <style>
+        .page-footer {
+            height: 52px;
+            padding: 15px 13px 0;
+            padding-left: 233px;
+            border-top: 1px solid #CECECE;
+            background: #2a2725;
+            width: 100%;
+            position: none !important;
+            display: block;
+            bottom: 0;
+        }
+    </style>
+</head>
+
+<body class="animated fadeInDown" ondragstart="return false;" ondrop="return false;">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">
+                    <!--<img class="img-responsive centro" src="img/LogoITE2.png" alt="Logo ITE" width="100" />-->
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="main" role="main">
+        <!-- MAIN CONTENT -->
+        <div class="espacio-main"></div>
+        <div id="content" class="container">
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
+
+                <!-- FORM LOGGIN -->
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                    <div class="well no-padding">
+                        <form class="smart-form client-form" id="form_login" method="post">
+                            <header>
+                                <i class="fa fa-sign-in"></i> Inicio de Sesión
+                            </header>
+                            <fieldset class="grande">
+                                <img class="img-responsive" src="img/LogoITE2.png" alt="Logo ITE" width="160" />
+                                <section class="form-group">
+                                    <label class="label">Usuario</label>
+                                    <label class="input">
+                                        <i class="icon-prepend fa fa-user"></i>
+                                        <input ondrop="return false;" class="form-control" type="text" name="user" id="user">
+                                        <b class="tooltip tooltip-top-left"><i class="fa fa-user txt-color-grey"></i> Ingresa tu usuario</b>
+                                    </label>
+                                </section>
+
+                                <section class="form-group">
+                                    <label class="label">Contraseña</label>
+                                    <label class="input">
+                                        <i class="icon-prepend fa fa-lock"></i>
+                                        <input ondrop="return false;" type="password" class="form-control" name="password" id="password">
+                                        <b class="tooltip tooltip-top-left"><i class="fa fa-lock txt-color-grey"></i> Ingresa tu contraseña</b>
+                                    </label>
+
+
+                                </section>
+
+                                <!--<section>
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="remember" checked="">
+                                        <i></i>Seguir conectado
+                                    </label>
+                                </section>-->
+
+
+                                <ul class="list-inline text-center">
+                                    <li>
+                                        <a href="javascript:void(0);" class="btn btn-primary btn-circle"><i class="fa fa-facebook"></i></a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);" class="btn btn-info btn-circle"><i class="fa fa-twitter"></i></a>
+                                    </li>
+
+                                </ul>
+                                <br />
+                                <br />
+                                <br />
+                                <p class="text-center">Copyright © 2017 - ITE Soluciones SA. de CV.</p><br />
+                            </fieldset>
+
+                            <footer>
+                                <button type="button" class="btn btn-primary" id="btnLogin">
+                                    Aceptar
+                                </button>
+                            </footer>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="page-footer">
+        <div style="color: white; position:left; position: bottom; left: 0px; right: 0px; bottom: 0px; height: 0px; text-align: center;">
+            <span class="txt-color-white">©2017 ITE Soluciones SA. de CV. Todos los derechos reservados. V.1.2qa </span>
+        </div>
+        <!-- end col -->
+        <!-- end row -->
+    </div>
+
+    <!--================================================== -->
+    <!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)-->
+    <script src="js/plugin/pace/pace.min.js"></script>
+
+    <!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script> if (!window.jQuery) { document.write('<script src="js/libs/jquery-2.1.1.min.js"><\/script>'); } </script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script> if (!window.jQuery.ui) { document.write('<script src="js/libs/jquery-ui-1.10.3.min.js"><\/script>'); } </script>
+
+    <!-- IMPORTANT: APP CONFIG -->
+    <script src="js/app.config.js"></script>
+
+    <!-- JS TOUCH : include this plugin for mobile drag / drop touch events
+    <script src="js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script> -->
+    <!-- BOOTSTRAP JS -->
+    <script src="js/bootstrap/bootstrap.min.js"></script>
+
+    <!-- JQUERY VALIDATE -->
+    <script src="js/plugin/jquery-validate/jquery.validate.min.js"></script>
+
+    <!-- JQUERY MASKED INPUT -->
+    <script src="js/plugin/masked-input/jquery.maskedinput.min.js"></script>
+    <script src="js/plugin/bootstrapvalidator/bootstrapValidator.min.js"></script>
+    <script src="js/notification/SmartNotification.min.js"></script>
+    <script src="js/jqListbox/jqListbox.plugin-1.1.js"></script>
+    <script src="js/plugin/superbox/superbox.min.js"></script>
+    <script src="js/plugin/bootstrap-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+    <!--[if IE 8]>
+
+        <h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
+
+    <![endif]-->
+    <!-- MAIN APP JS FILE -->
+    <script src="js/app.min.js"></script>
+
+    <script src="js/Login.js"></script>
+
+    <div id="loadingMod" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm" style="width:170px">
+            <div class="modal-content">
+                <div class="modal-body" style="font-size: 20px">
+                    <img src="img/Ellipsis.gif" width="120"> <center>Cargando...</center>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+C:\Users\DESARROLLO\Desktop\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Transact.Negocio.dll
+C:\Users\DESARROLLO\Desktop\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Transact.Negocio.pdb
+C:\Users\DESARROLLO\Desktop\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Transact.Datos.dll
+C:\Users\DESARROLLO\Desktop\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Transact.Entidades.dll
+C:\Users\DESARROLLO\Desktop\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Newtonsoft.Json.dll
+C:\Users\DESARROLLO\Desktop\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Transact.Framework.dll
+C:\Users\DESARROLLO\Desktop\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Transact.Datos.pdb
+C:\Users\DESARROLLO\Desktop\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Transact.Entidades.pdb
+C:\Users\DESARROLLO\Desktop\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Newtonsoft.Json.xml
+C:\Users\DESARROLLO\Desktop\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Transact.Framework.pdb
+C:\Users\DESARROLLO\Desktop\PROYECTO TRANSACT\Transact.Negocio\obj\Debug\Transact.Negocio.csprojResolveAssemblyReference.cache
+C:\Users\DESARROLLO\Desktop\PROYECTO TRANSACT\Transact.Negocio\obj\Debug\Transact.Negocio.csproj.CoreCompileInputs.cache
+C:\Users\DESARROLLO\Desktop\PROYECTO TRANSACT\Transact.Negocio\obj\Debug\Transact.Negocio.dll
+C:\Users\DESARROLLO\Desktop\PROYECTO TRANSACT\Transact.Negocio\obj\Debug\Transact.Negocio.pdb
+C:\Users\cristoph.ramirez\Desktop\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Transact.Negocio.dll
+C:\Users\cristoph.ramirez\Desktop\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Transact.Negocio.pdb
+C:\Users\cristoph.ramirez\Desktop\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Transact.Datos.dll
+C:\Users\cristoph.ramirez\Desktop\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Transact.Entidades.dll
+C:\Users\cristoph.ramirez\Desktop\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Newtonsoft.Json.dll
+C:\Users\cristoph.ramirez\Desktop\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Transact.Framework.dll
+C:\Users\cristoph.ramirez\Desktop\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Transact.Datos.pdb
+C:\Users\cristoph.ramirez\Desktop\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Transact.Entidades.pdb
+C:\Users\cristoph.ramirez\Desktop\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Transact.Framework.pdb
+C:\Users\cristoph.ramirez\Desktop\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Negocio\obj\Debug\Transact.Negocio.csprojResolveAssemblyReference.cache
+C:\Users\cristoph.ramirez\Desktop\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Negocio\obj\Debug\Transact.Negocio.csproj.CoreCompileInputs.cache
+C:\Users\cristoph.ramirez\Desktop\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Negocio\obj\Debug\Transact.Negocio.dll
+C:\Users\cristoph.ramirez\Desktop\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Negocio\obj\Debug\Transact.Negocio.pdb
+D:\Respaldo transact\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Transact.Negocio.dll
+D:\Respaldo transact\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Transact.Negocio.pdb
+D:\Respaldo transact\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Transact.Datos.dll
+D:\Respaldo transact\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Transact.Entidades.dll
+D:\Respaldo transact\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Newtonsoft.Json.dll
+D:\Respaldo transact\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Transact.Framework.dll
+D:\Respaldo transact\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Transact.Datos.pdb
+D:\Respaldo transact\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Transact.Entidades.pdb
+D:\Respaldo transact\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Negocio\bin\Debug\Transact.Framework.pdb
+D:\Respaldo transact\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Negocio\obj\Debug\Transact.Negocio.csprojResolveAssemblyReference.cache
+D:\Respaldo transact\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Negocio\obj\Debug\Transact.Negocio.dll
+D:\Respaldo transact\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Negocio\obj\Debug\Transact.Negocio.pdb
+C:\Users\DESARROLLO\Documents\´´´´´´´´\transa\Transact.Negocio\bin\Debug\Transact.Negocio.dll
+C:\Users\DESARROLLO\Documents\´´´´´´´´\transa\Transact.Negocio\bin\Debug\Transact.Negocio.pdb
+C:\Users\DESARROLLO\Documents\´´´´´´´´\transa\Transact.Negocio\bin\Debug\Transact.Datos.dll
+C:\Users\DESARROLLO\Documents\´´´´´´´´\transa\Transact.Negocio\bin\Debug\Transact.Entidades.dll
+C:\Users\DESARROLLO\Documents\´´´´´´´´\transa\Transact.Negocio\bin\Debug\Newtonsoft.Json.dll
+C:\Users\DESARROLLO\Documents\´´´´´´´´\transa\Transact.Negocio\bin\Debug\Transact.Framework.dll
+C:\Users\DESARROLLO\Documents\´´´´´´´´\transa\Transact.Negocio\bin\Debug\Transact.Datos.pdb
+C:\Users\DESARROLLO\Documents\´´´´´´´´\transa\Transact.Negocio\bin\Debug\Transact.Entidades.pdb
+C:\Users\DESARROLLO\Documents\´´´´´´´´\transa\Transact.Negocio\bin\Debug\Transact.Framework.pdb
+C:\Users\DESARROLLO\Documents\´´´´´´´´\transa\Transact.Negocio\obj\Debug\Transact.Negocio.csprojResolveAssemblyReference.cache
+C:\Users\DESARROLLO\Documents\´´´´´´´´\transa\Transact.Negocio\obj\Debug\Transact.Negocio.csproj.CoreCompileInputs.cache
+C:\Users\DESARROLLO\Documents\´´´´´´´´\transa\Transact.Negocio\obj\Debug\Transact.Negocio.dll
+C:\Users\DESARROLLO\Documents\´´´´´´´´\transa\Transact.Negocio\obj\Debug\Transact.Negocio.pdb
+C:\Users\Mario\Documents\Visual Studio 2017\Projects\TransactV1\Transact.Negocio\bin\Debug\Transact.Negocio.dll
+C:\Users\Mario\Documents\Visual Studio 2017\Projects\TransactV1\Transact.Negocio\bin\Debug\Transact.Negocio.pdb
+C:\Users\Mario\Documents\Visual Studio 2017\Projects\TransactV1\Transact.Negocio\bin\Debug\Transact.Datos.dll
+C:\Users\Mario\Documents\Visual Studio 2017\Projects\TransactV1\Transact.Negocio\bin\Debug\Transact.Entidades.dll
+C:\Users\Mario\Documents\Visual Studio 2017\Projects\TransactV1\Transact.Negocio\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Mario\Documents\Visual Studio 2017\Projects\TransactV1\Transact.Negocio\bin\Debug\Transact.Framework.dll
+C:\Users\Mario\Documents\Visual Studio 2017\Projects\TransactV1\Transact.Negocio\bin\Debug\Transact.Datos.pdb
+C:\Users\Mario\Documents\Visual Studio 2017\Projects\TransactV1\Transact.Negocio\bin\Debug\Transact.Entidades.pdb
+C:\Users\Mario\Documents\Visual Studio 2017\Projects\TransactV1\Transact.Negocio\bin\Debug\Transact.Framework.pdb
+C:\Users\Mario\Documents\Visual Studio 2017\Projects\TransactV1\Transact.Negocio\obj\Debug\Transact.Negocio.csprojResolveAssemblyReference.cache
+C:\Users\Mario\Documents\Visual Studio 2017\Projects\TransactV1\Transact.Negocio\obj\Debug\Transact.Negocio.dll
+C:\Users\Mario\Documents\Visual Studio 2017\Projects\TransactV1\Transact.Negocio\obj\Debug\Transact.Negocio.pdb

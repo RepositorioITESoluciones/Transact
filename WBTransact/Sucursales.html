@@ -1,0 +1,225 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Sucursales</title>
+    <script src="js/Sucursales.js"></script>
+</head>
+<body>
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+        <h1 class="page-title txt-color-blueDark">
+            <i class="fa fa-inbox fa-fw"></i> Sucursales
+        </h1>
+    </div>
+
+    <section id="widget-grid">
+        <div id="divTiposTransaccion" class="row">
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget" id="AdminTransaccion" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-sortable="false">
+                    <header>
+                        <h2><i class="icon-prepend  icon-edit"></i><strong>Sucursales<label id="Title"></label></strong></h2>
+                    </header>
+                    <div>
+                        <div class="widget-body-toolbar">
+                            <button id="btnPlus" type="button" class="btn btn-primary btn-sm">
+                                <i class="fa fa-user-plus"></i> Agregar
+                            </button>
+                            <button id="btnEdit" type="button" class="btn btn-warning btn-sm">
+                                <i class="fa fa-pencil"></i> Editar
+                            </button>
+                            <button id="btnDelete" type="button" class="btn btn-danger btn-sm">
+                                <i class="fa fa-trash"></i> Eliminar
+                            </button>
+                        </div>
+
+                        <div class="widget-body"> 
+                            <table id="detalleSucursal" class="table table-striped table-bordered table-hover DTTT_selectable" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th class="hasinput" style="width:5%">
+                                            <input type="text" class="form-control" placeholder="IdSucursal" />
+                                        </th>
+                                        <th class="hasinput" style="width:5%">
+                                            <input type="text" class="form-control" placeholder="Nombre" />
+                                        </th>
+                                        <th class="hasinput" style="width:5%">
+                                            <input type="text" class="form-control" placeholder="Empresa" />
+                                        </th>
+                                        <th class="hasinput" style="width:5%">
+                                            <input type="text" class="form-control" placeholder="IdEmpresa" />
+                                        </th>
+                                        <th class="hasinput" style="width:5%">
+                                            <input type="text" class="form-control" placeholder="IdDatosFiscales" />
+                                        </th>
+                                        <th class="hasinput" style="width:5%">
+                                            <input type="text" class="form-control" placeholder="RFC" />
+                                        </th>
+                                        <th class="hasinput" style="width:5%">
+                                            <input type="text" class="form-control" placeholder="RS" />
+                                        </th>
+                                        <th class="hasinput" style="width:5%">
+                                            <input type="text" class="form-control" placeholder="Calle" />
+                                        </th>
+                                        <th class="hasinput" style="width:5%">
+                                            <input type="text" class="form-control" placeholder="NumExt" />
+                                        </th>
+                                        <th class="hasinput" style="width:5%">
+                                            <input type="text" class="form-control" placeholder="NumInt" />
+                                        </th>
+                                        <th class="hasinput" style="width:5%">
+                                            <input type="text" class="form-control" placeholder="IdEstado" />
+                                        </th>
+                                        <th class="hasinput" style="width:5%">
+                                            <input type="text" class="form-control" placeholder="CP" />
+                                        </th>
+                                        <th class="hasinput" style="width:5%">
+                                            <input type="text" class="form-control" placeholder="Tipo Persona" />
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th data-class="expand">IdSucursal</th>
+                                        <th data-class="expand">Nombre</th>
+                                        <th data-class="expand">Empresa</th>
+                                        <th data-class="expand">IdEmpresa</th>
+                                        <th data-class="expand">IdDatosFiscales</th>
+                                        <th data-class="expand">RFC</th>
+                                        <th data-class="expand">Razon Social</th>
+                                        <th data-class="expand">Calle</th>
+                                        <th data-class="expand">NumExt</th>
+                                        <th data-class="expand">NumInt</th>
+                                        <th data-class="expand">IdEstado</th>
+                                        <th data-class="expand">CP</th>
+                                        <th data-class="expand">Tipo Persona</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <div id="FormularioAlta" class="row" style="display: none">
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget" id="wid-id-2" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-sortable="false">
+                    <header>
+                        <h2><i class="icon-prepend  icon-edit"></i><strong>Alta Sucursal<label id="Title"></label></strong></h2>
+                    </header>
+
+                    <div class="widget-body" style="padding-bottom: 0px">
+                    
+                        <form id="FormSucursal" class="smart-form">
+                            <div class="widget-body-toolbar">
+                                <button id="btnAtras" type="button" class="btn btn-danger btn-sm">
+                                    <i class="fa fa-arrow-left"></i> Atrás
+                                </button>
+                            </div>
+                            <div class="row" style="margin-top: 2%; margin-bottom: 2%;">
+                            
+                                <section class="col col-6">
+                                    <div class="col col-4 required">
+                                        <label class="control-label">Nombre</label>
+                                    </div>
+                                    <div class="col col-6 form-group">
+                                        <input type="text" id="Nombre" onkeypress="" class="form-control" name="nombre" />
+                                    </div>
+                                </section>
+
+                                <section class="col col-6">
+                                    <div class="col col-4 required">
+                                        <label class="control-label">Empresa</label>
+                                    </div>
+                                    <div class="col col-6 form-group">
+                                        <select type="text" id="ComboEmpresa" onkeypress="" class="form-control" name="idEmpresa"></select>
+                                    </div>
+                                </section>
+
+                                <section class="col col-6">
+                                    <div class="col col-4 required">
+                                        <label class="control-label">RFC</label>
+                                    </div>
+                                    <div class="col col-6 form-group">
+                                        <input type="text" id="RFC" onkeypress="" class="form-control" name="RFC" />
+                                    </div>
+                                </section>
+
+                                <section class="col col-6">
+                                    <div class="col col-4 required">
+                                        <label class="control-label">Tipo de Persona</label>
+                                    </div>
+                                    <div class="col col-6 form-group">
+                                        <select type="text" id="ComboTPer" onkeypress="" class="form-control" name="ComboTPer"></select>
+                                    </div>
+                                </section>
+
+                                <section class="col col-6">
+                                    <div class="col col-4 required">
+                                        <label class="control-label">Razon Social</label>
+                                    </div>
+                                    <div class="col col-6 form-group">
+                                        <input type="text" id="RS" onkeypress="" class="form-control" name="RS" />
+                                    </div>
+                                </section>
+
+                                <section class="col col-6">
+                                    <div class="col col-4 required">
+                                        <label class="control-label">Calle</label>
+                                    </div>
+                                    <div class="col col-6 form-group">
+                                        <input type="text" id="Calle" onkeypress="" class="form-control" name="Calle" />
+                                    </div>
+                                </section>
+
+                                <section class="col col-6">
+                                    <div class="col col-4 required">
+                                        <label class="control-label">Numero Ext.</label>
+                                    </div>
+                                    <div class="col col-6 form-group">
+                                        <input type="text" id="NumExt" onkeypress="" class="form-control" name="NumExt" />
+                                    </div>
+                                </section>
+
+                                <section class="col col-6">
+                                    <div class="col col-4 required">
+                                        <label class="control-label">Numero Int.</label>
+                                    </div>
+                                    <div class="col col-6 form-group">
+                                        <input type="text" id="NumInt" onkeypress="" class="form-control" name="NumInt" />
+                                    </div>
+                                </section>
+
+                                <section class="col col-6">
+                                    <div class="col col-4 required">
+                                        <label class="control-label">Estado</label>
+                                    </div>
+                                    <div class="col col-6 form-group">
+                                        <select type="text" id="ComboEstado" onchange="actualizaCP()" class="form-control" name="ComboEstado"></select>
+                                    </div>
+                                </section>
+ 
+                                <section class="col col-6">
+                                    <div class="col col-4 required">
+                                        <label class="control-label">Codigo Postal</label>
+                                    </div>
+                                    <div class="col col-6 form-group">
+                                        <select type="text" id="ComboCP" onkeypress="" class="form-control" name="ComboCP">
+                                            <option value="0">Seleccione</option>
+                                        </select>
+                                    </div>
+                                </section>
+
+                              </div>
+                        </form>
+
+                        <div id="botones" class="widget-body-toolbar">
+                            <button id="btnguardar" type="button" class="btn btn-primary btn-sm">
+                                <i class="fa fa-arrow"></i> Guardar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+</body>
+</html>

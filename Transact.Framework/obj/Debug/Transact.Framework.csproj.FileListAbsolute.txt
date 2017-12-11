@@ -1,0 +1,28 @@
+C:\Users\DESARROLLO\Desktop\PROYECTO TRANSACT\Transact.Framework\bin\Debug\Transact.Framework.dll
+C:\Users\DESARROLLO\Desktop\PROYECTO TRANSACT\Transact.Framework\bin\Debug\Transact.Framework.pdb
+C:\Users\DESARROLLO\Desktop\PROYECTO TRANSACT\Transact.Framework\obj\Debug\Transact.Framework.csprojResolveAssemblyReference.cache
+C:\Users\DESARROLLO\Desktop\PROYECTO TRANSACT\Transact.Framework\obj\Debug\Transact.Framework.csproj.CoreCompileInputs.cache
+C:\Users\DESARROLLO\Desktop\PROYECTO TRANSACT\Transact.Framework\obj\Debug\Transact.Framework.dll
+C:\Users\DESARROLLO\Desktop\PROYECTO TRANSACT\Transact.Framework\obj\Debug\Transact.Framework.pdb
+C:\Users\cristoph.ramirez\Desktop\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Framework\bin\Debug\Transact.Framework.dll
+C:\Users\cristoph.ramirez\Desktop\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Framework\bin\Debug\Transact.Framework.pdb
+C:\Users\cristoph.ramirez\Desktop\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Framework\obj\Debug\Transact.Framework.csproj.CoreCompileInputs.cache
+C:\Users\cristoph.ramirez\Desktop\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Framework\obj\Debug\Transact.Framework.dll
+C:\Users\cristoph.ramirez\Desktop\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Framework\obj\Debug\Transact.Framework.pdb
+C:\Users\cristoph.ramirez\Desktop\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Framework\obj\Debug\Transact.Framework.csprojResolveAssemblyReference.cache
+D:\Respaldo transact\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Framework\bin\Debug\Transact.Framework.dll
+D:\Respaldo transact\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Framework\bin\Debug\Transact.Framework.pdb
+D:\Respaldo transact\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Framework\obj\Debug\Transact.Framework.csprojResolveAssemblyReference.cache
+D:\Respaldo transact\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Framework\obj\Debug\Transact.Framework.dll
+D:\Respaldo transact\PROYECTO TRANSACT\PROYECTO TRANSACT\Transact.Framework\obj\Debug\Transact.Framework.pdb
+C:\Users\DESARROLLO\Documents\´´´´´´´´\transa\Transact.Framework\bin\Debug\Transact.Framework.dll
+C:\Users\DESARROLLO\Documents\´´´´´´´´\transa\Transact.Framework\bin\Debug\Transact.Framework.pdb
+C:\Users\DESARROLLO\Documents\´´´´´´´´\transa\Transact.Framework\obj\Debug\Transact.Framework.csprojResolveAssemblyReference.cache
+C:\Users\DESARROLLO\Documents\´´´´´´´´\transa\Transact.Framework\obj\Debug\Transact.Framework.csproj.CoreCompileInputs.cache
+C:\Users\DESARROLLO\Documents\´´´´´´´´\transa\Transact.Framework\obj\Debug\Transact.Framework.dll
+C:\Users\DESARROLLO\Documents\´´´´´´´´\transa\Transact.Framework\obj\Debug\Transact.Framework.pdb
+C:\Users\Mario\Documents\Visual Studio 2017\Projects\TransactV1\Transact.Framework\bin\Debug\Transact.Framework.dll
+C:\Users\Mario\Documents\Visual Studio 2017\Projects\TransactV1\Transact.Framework\bin\Debug\Transact.Framework.pdb
+C:\Users\Mario\Documents\Visual Studio 2017\Projects\TransactV1\Transact.Framework\obj\Debug\Transact.Framework.dll
+C:\Users\Mario\Documents\Visual Studio 2017\Projects\TransactV1\Transact.Framework\obj\Debug\Transact.Framework.pdb
+C:\Users\Mario\Documents\Visual Studio 2017\Projects\TransactV1\Transact.Framework\obj\Debug\Transact.Framework.csprojResolveAssemblyReference.cache

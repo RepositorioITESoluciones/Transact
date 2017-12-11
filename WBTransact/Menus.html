@@ -1,0 +1,172 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Menús</title>
+    <script src="js/Menu.js"></script>
+</head>
+<body>
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+        <h1 class="page-title txt-color-blueDark">
+            <i class="fa fa-inbox fa-fw"></i> Menús
+        </h1>
+    </div>
+
+    <section id="widget-grid">
+        <div id="divTiposTransaccion" class="row">
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget" id="AdminTransaccion" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-sortable="false">
+                    <header>
+                        <h2><i class="icon-prepend  icon-edit"></i><strong>Administrar Menús<label id="Title"></label></strong></h2>
+                    </header>
+                    <div>
+                        <div class="widget-body-toolbar">
+                            <button id="btnPlus" type="button" class="btn btn-primary btn-sm">
+                                <i class="fa fa-user-plus"></i> Agregar
+                            </button>
+                            <button id="btnEdit" type="button" class="btn btn-warning btn-sm">
+                                <i class="fa fa-pencil"></i> Editar
+                            </button>
+                            <!--<button id="btnDelete" type="button" class="btn btn-danger btn-sm">
+                                <i class="fa fa-trash"></i> Eliminar
+                            </button>-->
+                        </div>
+
+                        <div class="widget-body">
+                            <table id="detalleMenus" class="table table-striped table-bordered table-hover DTTT_selectable" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th class="hasinput" style="width:5%">
+                                            <input type="text" class="form-control" placeholder="id" />
+                                        </th>
+                                        <th class="hasinput" style="width:5%">
+                                            <input type="text" class="form-control" placehold er="Menú" />
+                                        </th>
+                                        <th class="hasinput" style="width:5%">
+                                            <input type="text" class="form-control" placehold er="Menú Padre" />
+                                        </th>
+                                        <th class="hasinput" style="width:5%">
+                                            <input type="text" class="form-control" placeholder="Descripción" />
+                                        </th>
+                                        <th class="hasinput" style="width:5%">
+                                            <input type="text" class="form-control" placeholder="Icono" />
+                                        </th>
+                                        <th class="hasinput" style="width:5%">
+                                            <input type="text" class="form-control" placeholder="Liga" />
+                                        </th>
+                                        <th class="hasinput" style="width:5%">
+                                            <input type="text" class="form-control" placeholder="Aplicaciones" />
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th data-class="expand">id</th>
+                                        <th data-class="expand">Menú</th>
+                                        <th data-class="expand">Menú Padre</th>
+                                        <th data-class="expand">Descripción</th>
+                                        <th data-class="expand">Icono</th>
+                                        <th data-class="expand">Liga</th>
+                                        <th data-hide="phone,tablet,desktop">Aplicaciones</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <div id="FormularioAlta" class="row" style="display: none">
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget" id="wid-id-2" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-sortable="false">
+                    <header>
+                        <h2><i class="icon-prepend  icon-edit"></i><strong><label id="tituloOperacion"></label><label id="Title"></label></strong></h2>
+                    </header>
+
+                    <div class="widget-body" style="padding-bottom: 0px">
+                        <form id="FormMenu" class="smart-form">
+                            <div class="widget-body-toolbar">
+                                <button id="btnAtras" type="button" class="btn btn-danger btn-sm">
+                                    <i class="fa fa-arrow-left"></i> Atrás
+                                </button>
+                            </div>
+                            <div class="row" style="margin-top: 2%; margin-bottom: 2%;">
+                                <input type="hidden" id="idMenu" name="idMenu" />
+                                <div class="col col-6">
+                                    <div class="col col-4 required">
+                                        <label class="control-label negritas">Nivel de Menú</label>
+                                    </div>
+                                    <div class="col col-6 form-group">
+                                        <!--<input type="text" id="nombreMenuPadre" onkeypress="" class="form-control" name="nombreMenuPadre" />-->
+                                            <select type="text" id="menuPadre" onkeypress="" onchange="llenaComboMenuPadre()" class="form-control" name="menuPadre">
+                                                <option value="">Selecciona nivel de menú</option>
+                                                <option value=0>Padre</option>
+                                                <option value=1>Hijo</option>
+                                            </select>
+                                        <div id="menuPadre"></div>
+                                    </div>
+                                </div>
+                                <div class="col col-6">
+                                    <div class="col col-4 required">
+                                        <label class="control-label negritas">Menú Padre</label>
+                                    </div>
+                                    <div class="col col-6 form-group">
+                                        <select id="combomenuPadre" name="combomenuPadre" type="text" onkeypress="" class="form-control">
+                                            </select>
+                                    </div>
+                                </div>
+                                <div class="col col-6" style="margin-top: 20px">
+                                    <div class="col col-4 required">
+                                        <label class="control-label negritas">Nombre</label>
+                                    </div>
+                                    <div class="col col-6 form-group">
+                                        <input type="text" id="nombreMenu" onkeypress="" class="form-control" name="nombreMenu" />
+                                    </div>
+                                </div>
+                                
+                                <div class="col col-6" style="margin-top: 20px">
+                                    <div class="col col-4 required">
+                                        <label class="control-label negritas">Descripción</label>
+                                    </div>
+                                    <div class="col col-6 form-group">
+                                        <input type="text" id="descripcion" onkeypress="" class="form-control" name="descripcion" />
+                                    </div>
+                                </div>
+                                <div class="col col-6" style="margin-top: 20px">
+                                    <div class="col col-4 required">
+                                        <label class="control-label negritas">Icono</label>
+                                    </div>
+                                    <div class="col col-6 form-group">
+                                        <input type="text" id="icono" onkeypress="" class="form-control" name="icono" />
+                                    </div>
+                                </div>
+                                <div class="col col-6" style="margin-top: 20px">
+                                    <div class="col col-4 required">
+                                        <label class="control-label negritas">Liga</label>
+                                    </div>
+                                    <div class="col col-6 form-group">
+                                        <input type="text" id="liga" onkeypress="" class="form-control" name="liga" />
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="col col-6 " style="margin-top: 20px">
+                                    <div class="col col-4 required">
+                                        <label class="control-label negritas">Aplicaciones</label>
+                                    </div>
+                                    <div class="col col-6 form-group">  
+                                       <div id="aplicaciones" name="aplicaciones"/> 
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="widget-body-toolbar">
+                            <button id="btnguardar" type="button" class="btn btn-primary btn-sm">
+                                <i class="fa fa-arrow"></i> Guardar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+</body>
+</html>

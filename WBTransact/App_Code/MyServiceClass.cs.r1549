@@ -1,0 +1,668 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Web.Services;
+using Transact.Entidades;
+using System.Data;
+
+
+
+
+/// <summary>
+/// Summary description for MyServiceClass
+/// </summary>
+/// 
+    [System.Web.Script.Services.ScriptService]
+
+    public class MyServiceClass : System.Web.Services.WebService
+    {
+        public MyServiceClass() { }
+
+        readonly Transact.Negocio.RegistrarTransaccion arma = new Transact.Negocio.RegistrarTransaccion();
+        readonly Transact.Negocio.Transacciones tran = new Transact.Negocio.Transacciones();
+        readonly Transact.Negocio.AltaTipoTransaccionNeg AltaDatos = new Transact.Negocio.AltaTipoTransaccionNeg();
+        readonly Transact.Negocio.ValidaUsuario ChecaLogin = new Transact.Negocio.ValidaUsuario();
+        readonly Transact.Negocio.BandejaNegocio BandejaNegocio = new Transact.Negocio.BandejaNegocio();
+
+
+        #region Armaformulario
+        [WebMethod]
+        public CamposTransaccion ArmaFormulario(int idtransa)
+        {
+            CamposTransaccion campos;
+            campos = arma.ArmaCampos(idtransa);
+            return campos;
+
+        }
+        [WebMethod]
+        public Combo CrearCombo(int idTransaccion, string idRef, string nomRef)
+        {
+            Combo campos;
+            campos = arma.ArmaSelect(idTransaccion, idRef, nomRef);
+            return campos;
+        }
+        [WebMethod]
+        public bool InsertarTransaccion(string json, string idTransaccion, string Categoria, int idEtapa, int idAccion)
+        {
+            return arma.insert(json, idTransaccion, Categoria, idEtapa, idAccion);
+        }
+        [WebMethod]
+        public CategTransac TiposTrans()
+        {
+            CategTransac campos;
+            campos = arma.CategoriasTrans();
+            return campos;
+        }
+        [WebMethod]
+        public comboTransac camposTrans(int idtipo)
+        {
+            comboTransac campos;
+            campos = arma.CatCompTrans(idtipo);
+            return campos;
+        }
+        [WebMethod]
+        public ValoresComplemento CamposComplemento(int idTransaccion, string primarykey, string Valor, string IdRef, string CampRef)
+        {
+            ValoresComplemento campos;
+            campos = arma.AutoComplit(idTransaccion, primarykey, Valor, IdRef, CampRef);
+            return campos;
+        }
+        [WebMethod]
+        public int AutoIncrementWS(int idTipoTransaccion, string CAuto)
+        {
+            return arma.AutoIncrementN(idTipoTransaccion, CAuto);
+        }
+        [WebMethod]
+        public DetalleTransaccionBit detalleTBWS(string idTransaccion)
+        {
+            return arma.detalleTBN(idTransaccion);
+        }
+
+        [WebMethod]
+        public CamposTransaccion ArmaFormularioxEtapa(int idTipoTransaccion, string idtransaccion)
+        {
+            return arma.ArmaFormularioxEtapa(idTipoTransaccion, idtransaccion);
+        }
+        #endregion
+        /*******    Métodos de AltaTipoTransacción     *****/
+        #region AltaTipoTransacción
+        //Método Insertar
+        #region Insert 
+        [WebMethod]
+        public int InsertDatosGenerales(int proceso, string nombre1, string clave, int categoria)
+        {
+
+
+
+            int resp = AltaDatos.InDGral(proceso, nombre1, clave, categoria);
+
+
+
+
+            return resp;
+
+        }
+
+        [WebMethod]
+        public void InsertCampos(int idTipoTran, int idNivel, string nombreCampo, string descripcion, int idTipoDatoCampo, int idTipoOperacion, string longitudCampo)
+        {
+
+
+
+            AltaDatos.InDCampo(idTipoTran, idNivel, nombreCampo, descripcion, idTipoDatoCampo, idTipoOperacion, longitudCampo);
+
+
+
+
+
+
+        }
+
+
+
+        [WebMethod]
+        public bool InsertEtapas(int idTipoTran, string descripcion, int orden)
+        {
+
+
+
+            return AltaDatos.InEtapas(idTipoTran, descripcion, orden);
+
+
+
+
+        }
+
+        [WebMethod]
+        public bool InsertAcciones(int idTipoTran, string claveAccion, string descripcion, int orden)
+        {
+
+
+
+            return AltaDatos.InAcciones(idTipoTran, claveAccion, descripcion, orden);
+
+
+
+
+        }
+
+        [WebMethod]
+        public bool InsertAccEtap(int idTipoTransaccion, int idEtapa, string NomAccion)
+        {
+
+
+
+            return AltaDatos.InInsertAccEtap(idTipoTransaccion, idEtapa, NomAccion);
+
+
+
+
+        }
+
+        [WebMethod]
+        public bool InsertEtapasAccRol(int idTipoTransaccion, string nomEtapa, string NomAccion, string nombreRol)
+        {
+
+
+
+            return AltaDatos.InInsertEtapasAccRol(idTipoTransaccion, nomEtapa, NomAccion, nombreRol);
+
+
+
+
+        }
+
+
+        [WebMethod]
+        public bool InsertRNC(string jsonRG)
+        {
+            return AltaDatos.inInsertReglasNC(jsonRG);
+
+        }
+        [WebMethod]
+        public bool InsertFormulaWS(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo, string cadenaGenerada)
+        {
+            return AltaDatos.InsertFormulaN(idTipoTransaccion, idEtapa, idAccion, idCampo, cadenaGenerada);
+        }
+
+
+        [WebMethod]
+        public bool InsertReglasNegocioxAWS(int idTipoTransaccion, int idEtapa, int idAccion, string cadenaGenerada, int idEtapaDestino)
+        {
+            return AltaDatos.InsertReglasNegocioxAN(idTipoTransaccion, idEtapa, idAccion, cadenaGenerada, idEtapaDestino);
+        }
+        #endregion
+        // metodos de consulta
+        #region consultas
+        [WebMethod]
+        public TiposDatosCampos tipoDatosATT()
+        {
+            TiposDatosCampos datosCampos = new TiposDatosCampos();
+            Console.WriteLine(datosCampos);
+            datosCampos = AltaDatos.CatTiposDatosCamposN();
+            return datosCampos;
+        }
+        [WebMethod]
+        public NivelesTransacciones nivelTransATT()
+        {
+            NivelesTransacciones nivTrans = new NivelesTransacciones();
+            Console.WriteLine(nivTrans);
+            nivTrans = AltaDatos.CatNivelesTransaccionesN();
+            return nivTrans;
+        }
+        [WebMethod]
+        public TiposOperaciones operacionTransATT()
+        {
+            TiposOperaciones opeTrnas = new TiposOperaciones();
+            Console.WriteLine(opeTrnas);
+            opeTrnas = AltaDatos.CatTiposOperacionesN();
+            return opeTrnas;
+        }
+        [WebMethod]
+        public RolesTransaccion rolesTransATT()
+        {
+            RolesTransaccion rolTrans = new RolesTransaccion();
+            Console.WriteLine(rolTrans);
+            rolTrans = AltaDatos.CatTiposRolesTransaccionN();
+            return rolTrans;
+        }
+        [WebMethod]
+        public AreasTipoTransaccion areasTransATT()
+        {
+            AreasTipoTransaccion areaTrans = new AreasTipoTransaccion();
+            Console.WriteLine(areaTrans);
+            areaTrans = AltaDatos.CatAreasTipoTransaccionN();
+            return areaTrans;
+        }
+        [WebMethod]
+        public ProcesosTipoTransaccion procesosTransATT(int idArea)
+        {
+            ProcesosTipoTransaccion procTrans = new ProcesosTipoTransaccion();
+            Console.WriteLine(procTrans);
+            procTrans = AltaDatos.CatProcesoTransaccionN(idArea);
+            return procTrans;
+        }
+        [WebMethod]
+        public TiposVisualizacion visualizacionTansATT(int idTipoDatoCampo)
+        {
+            TiposVisualizacion visTrans = new TiposVisualizacion();
+            Console.WriteLine(visTrans);
+            visTrans = AltaDatos.TiposVisualizacion(idTipoDatoCampo);
+            return visTrans;
+        }
+        [WebMethod]
+        public EntEtapas.EtapasCombo llenaComboEtapas(int idTipoTran)
+        {
+
+
+
+            return AltaDatos.CatTEtapasN(idTipoTran);
+
+
+        }
+        [WebMethod]
+        public EntEtapas.EtapasCombo llenaComboSoloEtapas(int idTipoTran)
+        {
+
+
+
+            return AltaDatos.CatTsoloEtapasN(idTipoTran);
+
+
+        }
+        [WebMethod]
+        public AccionesEnt.AccionesCombo llenaComboAcciones(int idTipoTran, int idEtapas)
+        {
+
+
+
+            return AltaDatos.CatTAccionesN(idTipoTran, idEtapas);
+
+
+        }
+
+        [WebMethod]
+        public TipoTransaccion LlenaTipoTransaccion()
+        {
+
+            return AltaDatos.LlenaTipoTran();
+        }
+        [WebMethod]
+        public EntEtapas.EtapasCombo CatETapasAcionesWS(int idTipoTransaccion, int idEtapa)
+        {
+            return AltaDatos.CatETapasAcionesN(idTipoTransaccion, idEtapa);
+        }
+        [WebMethod]
+        public RolesTransaccion CatRolesWS(int idTipoTransaccion, int idEtapa, string descripcion)
+        {
+            return AltaDatos.CatRolesN(idTipoTransaccion, idEtapa, descripcion);
+        }
+
+        [WebMethod]
+        public EnFormula CatformulasWS(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo)
+        {
+            return AltaDatos.CatformulasN(idTipoTransaccion, idEtapa, idAccion, idCampo);
+        }
+
+        [WebMethod]
+        public ENReglasNeg CatReglasNegocioWS(int idTipoTransaccion, int idEtapa, int idAccion)
+        {
+            return AltaDatos.CatReglasNegocioN(idTipoTransaccion, idEtapa, idAccion);
+        }
+        [WebMethod]
+        public CamposConbo CatCamposconboboxWS(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo)
+        {
+            return AltaDatos.CatCamposconboboxN(idTipoTransaccion, idEtapa, idAccion, idCampo);
+        }
+        [WebMethod]
+        public int CountReglasWS(int idTipoTransaccion, string nombreCampo, int idEtapa, int idAccion)
+        {
+            return AltaDatos.CountReglasN(idTipoTransaccion, nombreCampo, idEtapa, idAccion);
+        }
+        [WebMethod]
+        public DTCamposDinamicos DTCamposWS(int idTipoTransaccion)
+        {
+
+            return AltaDatos.DTCamposN(idTipoTransaccion);
+        }
+        [WebMethod]
+        public LisFormula DTFormulaWS(int idTipoTransaccion, int idEtapa, int idAccion)
+        {
+
+            return AltaDatos.DTFormulasN(idTipoTransaccion, idEtapa, idAccion);
+        }
+        [WebMethod]
+        public DTCamposDinamicos DTDetalleNS(int idTipoTransaccion)
+        {
+
+            return AltaDatos.DTDetalleN(idTipoTransaccion);
+        }
+        [WebMethod]
+        public DTCamposDinamicos DTCabezeraNS(int idTipoTransaccion)
+        {
+
+            return AltaDatos.DTCabezeraN(idTipoTransaccion);
+        }
+        [WebMethod]
+        public List<Transaccion> ObtenerTransaccionesN()
+        {
+
+            DataTable dt = tran.ObtieneTransacciones();
+
+            List<Transaccion> List = new List<Transaccion>();
+            foreach (DataRow row in dt.Rows)
+            {
+                Transaccion tr = new Transaccion();
+                tr.idTransaccion = Convert.ToInt32(row["idTransaccion"].ToString());
+                tr.idTipoTrasaccion = Convert.ToInt32(row["idTipoTransaccion"].ToString());
+                tr.tipo = row["Tipo"].ToString();
+                tr.fechaTransaccion = row["fechaIniTransaccion"].ToString();
+                tr.idEstatus = Convert.ToInt32(row["idEstatus"].ToString());
+                tr.claveTT = row["cveTipoTransaccion"].ToString();
+                tr.idUsuario = Convert.ToInt32(row["idUsuario"].ToString());
+                List.Add(tr);
+            }
+
+
+            return List;
+        }
+        [WebMethod]
+        public String ObtenerCampos(int idTransaccion)
+        {
+
+            String json = tran.ObtenerTransaccion(idTransaccion);
+
+
+            return json;
+        }
+        [WebMethod]
+        public TransaccionGralA EtapasTransaccionN(int idTipoTransaccion)
+        {
+            return AltaDatos.EtapasTransaccionN(idTipoTransaccion);
+        }
+        [WebMethod]
+        public DTCamposDinamicos ListCamposAbiertoWS(int idTipotransaccion)
+        {
+
+            return AltaDatos.ListCamposAbiertoN(idTipotransaccion);
+        }
+        [WebMethod]
+        public AltaTiposTransacciones CatTiposTransaccionesWS(int idTipoTransaccion)
+        {
+            return AltaDatos.CatTiposTransaccionesN(idTipoTransaccion);
+        }
+        [WebMethod]
+        public ReglasxCampo ReglasxCamposWS(int idTipoTransaccion, int idEtapa, int idAccion)
+        {
+            return AltaDatos.ReglasxCamposN(idTipoTransaccion, idEtapa, idAccion);
+        }
+        public CatCombobox CatComboboxWS(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo)
+        {
+            return AltaDatos.CatComboboxN(idTipoTransaccion, idEtapa, idAccion, idCampo);
+        }
+        [WebMethod]
+        public DTCamposDinamicos CamposConboboxWS(int idTipotransaccion, int idEtapa, int idAccion)
+        {
+            return AltaDatos.CamposConboboxN(idTipotransaccion, idEtapa, idAccion);
+
+        }
+        [WebMethod]
+        public DTCamposDinamicos CamposWS(int idTipotransaccion)
+        {
+            return AltaDatos.CamposN(idTipotransaccion);
+
+        }
+        [WebMethod]
+        public camposConboboxId CatConboboxRNGWS(int idTipoTransaccion, int idEtapa, int idAccion)
+        {
+            return AltaDatos.CatConboboxRNGN(idTipoTransaccion, idEtapa, idAccion);
+        }
+        [WebMethod]
+        public DTCamposDinamicos CamposCabeceraWS(int idTipotransaccion, int idEtapa, int idAccion)
+        {
+            return AltaDatos.CamposCabeceraN(idTipotransaccion, idEtapa, idAccion);
+        }
+        [WebMethod]
+        public DTCamposDinamicos CamposDetalleWS(int idTipotransaccion, int idEtapa, int idAccion)
+        {
+            return AltaDatos.CamposDetalleN(idTipotransaccion, idEtapa, idAccion);
+        }
+
+        [WebMethod]
+        public ENReglasNeg CattooltipWS(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo)
+        {
+            return AltaDatos.CattooltipN(idTipoTransaccion, idEtapa, idAccion, idCampo);
+        }
+
+        [WebMethod]
+        public ReglasNegocioxAccion CatReglasNegocioxAccionWS(int idTipoTransaccion, int idEtapa, int idAccion, int idEtapaF)
+        {
+            return AltaDatos.CatReglasNegocioxAccionN(idTipoTransaccion, idEtapa, idAccion, idEtapaF);
+        }
+        [WebMethod]
+        public DTCamposDinamicos campCombWS(int idTipotransaccion, int idEtapa, int idAccion)
+        {
+            return AltaDatos.campCombN(idTipotransaccion, idEtapa, idAccion);
+        }
+        [WebMethod]
+        public Autocompletar campNCombWS(int idTipotransaccion, int idEtapa, int idAccion, int idCampo)
+        {
+            return AltaDatos.campNCombN(idTipotransaccion, idEtapa, idAccion, idCampo);
+        }
+        [WebMethod]
+        public DTCamposDinamicos campJsonWS(int idTipotransaccion, int idEtapa, int idAccion, string nombreCampo)
+        {
+            return AltaDatos.campJsonN(idTipotransaccion, idEtapa, idAccion, nombreCampo);
+        }
+
+        [WebMethod]
+        public DTCamposDinamicos selectDeleteCampoDinamicoW(int idTipotransaccion, int idCampo)
+        {
+            return AltaDatos.selectDeleteCampoDinamicoN(idTipotransaccion, idCampo);
+        }
+        [WebMethod]
+        public DTCamposDinamicos selectDeleteCampoEtapaW(int idTipotransaccion, string nombre)
+        {
+            return AltaDatos.selectDeleteEtapaN(idTipotransaccion, nombre);
+        }
+        [WebMethod]
+        public DTCamposDinamicos selectDeleteAccionRncW(int idTipotransaccion, int idAccion)
+        {
+            return AltaDatos.selectDeleteAccionRncN(idTipotransaccion, idAccion);
+        }
+        [WebMethod]
+        public DTCamposDinamicos selectDeleteAccionxComboW(int idTipotransaccion, int idAccion)
+        {
+            return AltaDatos.selectDeleteAccionxComboN(idTipotransaccion, idAccion);
+        }
+        [WebMethod]
+        public DTCamposDinamicos selectDeleteAccionxAutoW(int idTipotransaccion, int idAccion)
+        {
+            return AltaDatos.selectDeleteAccionxAutoN(idTipotransaccion, idAccion);
+        }
+        [WebMethod]
+        public DTCamposDinamicos selectDeleteAccionxFormulaW(int idTipotransaccion, int idAccion)
+        {
+            return AltaDatos.selectDeleteAccionxFormulaN(idTipotransaccion, idAccion);
+        }
+        [WebMethod]
+        public DTCamposDinamicos selectDeleteAccionxRnAW(int idTipotransaccion, int idAccion)
+        {
+            return AltaDatos.selectDeleteAccionxRnAN(idTipotransaccion, idAccion);
+        }
+
+
+        #endregion
+        // Metodos para Actualizar
+        #region Actualizar
+        [WebMethod]
+        public bool UpdateCamposWS(int idTipoTransaccion, string nombreUP, string nombreCampo, string descCampo, int tipoDato, string longitud, int nivel, int tipoOperacion)
+        {
+            return AltaDatos.UpdateCamposN(idTipoTransaccion, nombreUP, nombreCampo, descCampo, tipoDato, longitud, nivel, tipoOperacion);
+        }
+        [WebMethod]
+        public bool UpdateEtapasWS(int IdTipoTransaccion, String nombreUPE, String descripcionE, int ordenE)
+        {
+            return AltaDatos.UpdateEtapasN(IdTipoTransaccion, nombreUPE, descripcionE, ordenE);
+        }
+        [WebMethod]
+        public bool UpdateAccionesWS()
+        {
+            return false;
+        }
+        [WebMethod]
+        public bool ActualisarComboboxWS(string JsonConbobox)
+        {
+            return AltaDatos.ActualisarComboboxN(JsonConbobox);
+
+        }
+        [WebMethod]
+        public bool UpdateTipoTransaccionN(int IdTipoTransaccion, string descripcion, string clave, int idProceso, int idCatTipoTransac)
+        {
+            return AltaDatos.UpdateTipoTransaccionN(IdTipoTransaccion, descripcion, clave, idProceso, idCatTipoTransac);
+        }
+        [WebMethod]
+        public bool UpdateCicloVidaWS(string descripcion, int orden, string cveAccion, string descripcionN, int ordenN, string cveAccionN)
+        {
+            return AltaDatos.UpdateCicloVidaN(descripcion, orden, cveAccion, descripcionN, ordenN, cveAccionN);
+        }
+        [WebMethod]
+        public bool updateReglasNegocioCamposxTTWS(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo, string nombreReferencia, string idReferencia, int idTipoTransaccionReferencia)
+        {
+            return AltaDatos.updateReglasNegocioCamposxTTN(idTipoTransaccion, idEtapa, idAccion, idCampo, nombreReferencia, idReferencia, idTipoTransaccionReferencia);
+        }
+        [WebMethod]
+        public bool updateCOMBOBOXWS(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo, bool newnombreReferencia, bool newidReferencia, bool newidTipoTransaccionReferencia)
+        {
+            return AltaDatos.updateCOMBOBOXN(idTipoTransaccion, idEtapa, idAccion, idCampo, newnombreReferencia, newidReferencia, newidTipoTransaccionReferencia);
+
+        }
+        [WebMethod]
+        public bool UpdateStatusWS(int IdTipoTransaccion, int estatus)
+        {
+
+            return AltaDatos.UpdateStatusN(IdTipoTransaccion, estatus);
+        }
+        [WebMethod]
+        public bool UpdateJsonAutoN(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo, string CadenaJson)
+        {
+            return AltaDatos.UpdateJsonAutoN(idTipoTransaccion, idEtapa, idAccion, idCampo, CadenaJson);
+
+        }
+
+        #endregion
+        // Metodos para Eliminar
+        #region eliminar
+        [WebMethod]
+        public bool DeleteCamposWS(string nombreCampo)
+        {
+            return AltaDatos.DeleteCamposN(nombreCampo);
+        }
+        [WebMethod]
+        public bool DeleteEtapasWS(string descripcion, int idTipoTransaccion)
+        {
+            return AltaDatos.DeleteEtapasN(descripcion, idTipoTransaccion);
+        }
+        [WebMethod]
+        public bool DeleteAccionesWS(string descripcion)
+        {
+            return AltaDatos.DeleteAccionesN(descripcion);
+        }
+
+        [WebMethod]
+        public bool DeleteEtapasAccionesRolesWS(int idTipoTransaccion, int idEtapa, int idAccion)
+        {
+            return AltaDatos.DeleteEtapasAccionesRolesN(idTipoTransaccion, idEtapa, idAccion);
+        }
+        [WebMethod]
+        public bool DeleteEtapasAccionesTipoTransaccionesWS(int idTipoTransaccion, int idEtapa, int idAccion)
+        {
+            return AltaDatos.DeleteEtapasAccionesTipoTransaccionesN(idTipoTransaccion, idEtapa, idAccion);
+        }
+
+        [WebMethod]
+        public bool DeleteFormulaWS(int idTipoTransaccion, int idEtapa, int idAccion, int idcampo)
+        {
+            return AltaDatos.DeleteFormulaN(idTipoTransaccion, idEtapa, idAccion, idcampo);
+        }
+        [WebMethod]
+        public bool ReglasNegocioXCampoWS(int idTipoTransaccion, int idEtapa, int idAccion, int idcampo)
+        {
+            return AltaDatos.DeleteFormulaN(idTipoTransaccion, idEtapa, idAccion, idcampo);
+        }
+        [WebMethod]
+        public bool DeleteReglasCamposWS(int idTipoTransaccion, int idcampo)
+        {
+            return AltaDatos.DeleteReglasCamposN(idTipoTransaccion, idcampo);
+        }
+        [WebMethod]
+        public bool DeleteCamposDinamicosWS(int idTipoTransaccion, int idcampo)
+        {
+            return AltaDatos.DeleteCamposDinamicosN(idTipoTransaccion, idcampo);
+        }
+        #endregion
+        [WebMethod]
+        public bool ActuaInsertWS(string jsonDatos)
+        {
+            return AltaDatos.ActuaInsert(jsonDatos);
+        }
+        [WebMethod]
+        public bool DeleteCamposConboboxWS(int idTipoTransaccion, int idcampo)
+        {
+            return AltaDatos.DeleteCamposConboboxN(idTipoTransaccion, idcampo);
+        }
+        [WebMethod]
+        public bool DeleteReglasNegocioxAWS(int idTipoTransaccion, int idEtapa, int idAccion, int idEtapaF)
+        {
+            return AltaDatos.DeleteReglasNegocioxAN(idTipoTransaccion, idEtapa, idAccion, idEtapaF);
+        }
+        [WebMethod]
+        public string DeleteTransaccion(int idTipoTransaccion)
+        {
+            return AltaDatos.DeleteTransaccion(idTipoTransaccion);
+        }
+
+        #endregion
+        // Metodo Para Login 
+        #region Login
+        [WebMethod]
+        public Usuario Login(string Usuario, string contraseña)
+        {
+            Usuario SecionUser = new Usuario();
+
+            Console.WriteLine(SecionUser);
+            SecionUser = ChecaLogin.ChecarExitencia(Usuario, contraseña);
+
+
+
+
+            return SecionUser;
+
+
+        }
+        [WebMethod(EnableSession = true)]
+        public string GetSessionValue(String Name)
+        {
+
+            Session["nombre"] = Name;
+
+            return (Session["nombre"]).ToString();
+        }
+        #endregion
+
+
+        //Metodos para Bandeja
+        #region Bandeja
+        [WebMethod]
+        public EstatusTransacciones ObtenerStatusWS()
+        {
+            return BandejaNegocio.ObtenerStatusNeg();
+        }
+        [WebMethod]
+        public TransactBitacora DetalleTransaccionesWS(int idEstatus)
+        {
+            return BandejaNegocio.DetalleTransaccionesN(idEstatus);
+        }
+
+        #endregion
+
+    }
