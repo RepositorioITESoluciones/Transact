@@ -631,6 +631,7 @@ namespace Transact.Datos
                         }
                     }
                 }
+
                 foreach (DataRow drUp in datosNew.Tables["Detalle"].Rows) {
 
                     foreach (DataRow dr in datosBD.Tables["Detalle"].Rows) {

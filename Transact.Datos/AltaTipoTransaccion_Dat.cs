@@ -1781,7 +1781,7 @@ namespace Transact.Datos
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT CDT.idCampo, CDT.nombreCampo"
-                                                                      + " FROM Configuracion.ReglasNegocioCamposxTipoTransaccion RNCT, Configuracion.VisualizacionTipoTransacciones VTT, Configuracion.CamposDinamicosTransacciones CDT"
+                                                                      + " FROM Configuracion.ReglasNegocioCamposxTipoTransaccion RNCT, VisualizacionTipoTransacciones VTT, CamposDinamicosTransacciones CDT"
                                                                       + " where RNCT.idCampo = CDT.idCampo"
                                                                       + " and RNCT.idVisualizacion = VTT.idVisualizacion"
                                                                       + " and RNCT.idVisualizacion <> 24"
@@ -1794,7 +1794,7 @@ namespace Transact.Datos
 
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT RNCT.cadenaJsonHijos"
-                                                                       + " FROM Configuracion.ReglasNegocioCamposxTipoTransaccion RNCT, Configuracion.VisualizacionTipoTransacciones VTT, Configuracion.CamposDinamicosTransacciones CDT"
+                                                                       + " FROM Configuracion.ReglasNegocioCamposxTipoTransaccion RNCT, VisualizacionTipoTransacciones VTT, CamposDinamicosTransacciones CDT"
                                                                        + " where RNCT.idCampo = CDT.idCampo"
                                                                        + " and RNCT.idVisualizacion = VTT.idVisualizacion"
                                                                        + " and RNCT.idVisualizacion = 24"
@@ -1901,7 +1901,7 @@ namespace Transact.Datos
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT CDT.nombreCampo idCampo, idReferencia PrimaryKey"
-                                                                       + " FROM Configuracion.ReglasNegocioCamposxTipoTransaccion RNCT, Configuracion.VisualizacionTipoTransacciones VTT, Configuracion.CamposDinamicosTransacciones CDT"
+                                                                       + " FROM Configuracion.ReglasNegocioCamposxTipoTransaccion RNCT, VisualizacionTipoTransacciones VTT, CamposDinamicosTransacciones CDT"
                                                                        + " where RNCT.idCampo = CDT.idCampo"
                                                                        + " and RNCT.idVisualizacion = VTT.idVisualizacion"
                                                                        + " and RNCT.idVisualizacion = 24"
