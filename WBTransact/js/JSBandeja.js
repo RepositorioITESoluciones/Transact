@@ -656,6 +656,7 @@ function GeneraFormularioBND(xml_json) {
             excuteformulaBND(rgm1.IdCampo, rgm1.Json);
         });
         $.each(objeto, function (rowcom, regcom) {
+            console.log(regcom.Json);
             addEventChangeBND(regcom.IdCampo, regcom.Json);
 
         })
@@ -1432,6 +1433,7 @@ function GuardarRegitrosBND() {
 //recupera valores del formulario para generar json
 function addEventChangeBND(idCampo, jsonComple) {
 
+    console.log("ddddddddd. "+idCampo);
 
 
     $('#' + idCampo).change(function (e) {
@@ -1477,9 +1479,9 @@ function addEventChangeBND(idCampo, jsonComple) {
                     bostrapvaliBND();
                     $('#formCabecera').data('bootstrapValidator').validate();
 
-                    $('#formdetalle').bootstrapValidator('destroy');
+                    $('#form2').bootstrapValidator('destroy');
                     bostrapvaliBND();
-                    $('#formdetalle').data('bootstrapValidator').validate();
+                    $('#form2').data('bootstrapValidator').validate();
 
 
                 }
@@ -1498,7 +1500,7 @@ function addEventChangeBND(idCampo, jsonComple) {
     });
 };
 function recuvalorBND(idTransaccion, primarykey, Valor, IdRef, CampRef) {
-    console.log("--------------" + " idTransaccion: " + idTransaccion + " primarykey: " + primarykey + " Valor: " + Valor);
+   console.log("--------------" + " idTransaccion: " + idTransaccion + " primarykey: " + primarykey + " Valor: " + Valor);
 
     var varcomplemento = "";
 

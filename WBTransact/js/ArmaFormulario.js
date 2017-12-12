@@ -605,7 +605,7 @@ function GeneraFormulafrio(xml_json) {
 
 
         $.each(objeto, function(rowcom, regcom) {
-            //console.log(regcom.IdCampo+" -- "+ regcom.Json);
+            console.log(regcom.Json);
             addEventChange(regcom.IdCampo, regcom.Json);
 
         })
