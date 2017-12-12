@@ -256,6 +256,8 @@ function Optenerdetalle(idTipoTransaccion, idtransaccion) {
 
 }
 function ArmaFormularioxetapa(idTipoTransaccion, idtransaccion) {
+
+    parametroE = idtransaccion;
     $.ajax({
         async: false,
         type: 'POST',
@@ -336,8 +338,8 @@ function GeneraFormularioBND(xml_json) {
 
         idTran = rowgral.idTipoTrasaccion;
 
-        //console.log("eeeeeeeeeeeeeeeeeeeeeeeeeee" + idTran);
-
+        console.log("eeeeeeeeeeeeeeeeeeeeeeeeeee" + idTran);
+        //parametroE = idreferencia;
         Transaccion = rowgral.descripcion;
         CatTransaccion = rowgral.categoriaTransac;
         idEtapa = rowgral.idEtapa;
@@ -922,7 +924,7 @@ function GeneraComposBND(Visualisacion, idCampo, nombreCampo, descripcionCampo, 
 }
 function GenerarComboBND(idcampo, nomcampo, desccampo, idreferencia, idRef, nomRef, CadenaComplementos) {
 
-    parametroE = idreferencia;
+    
     var TextoCom = "";
     $.ajax({
         async: false,
@@ -1320,7 +1322,7 @@ function GuardarRegitrosBND() {
                             $.ajax({
                                 async: false,
                                 type: 'POST',
-                                url: 'MyWebService.asmx/ArmaFormulario',
+                                url: 'MyWebService.asmx/ArmaFormularioxEtapa',
                                 data: JSON.stringify({
                                     idtransa: idtransacccion
                                 }),
@@ -1385,7 +1387,7 @@ function GuardarRegitrosBND() {
                             $.ajax({
                                 async: false,
                                 type: 'POST',
-                                url: 'MyWebService.asmx/ArmaFormulario',
+                                url: 'MyWebService.asmx/ArmaFormularioxEtapa',
                                 data: JSON.stringify({
                                     idtransa: idtransacccion
                                 }),
