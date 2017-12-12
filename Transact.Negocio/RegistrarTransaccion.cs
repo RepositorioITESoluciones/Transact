@@ -51,7 +51,7 @@ namespace Transact.Negocio
         {
             bool respuesta = false;
 
-            if (Categoria == "Catálogos")
+            if (Categoria == "Catálogo")
             {
 
                 respuesta = arma.InsertarCatalogos(json, idTransaccion, idEtapa, idAccion);

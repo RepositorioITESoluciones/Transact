@@ -61,7 +61,7 @@ public class MyServiceClass : System.Web.Services.WebService
 
         
     }
-
+    [WebMethod]
     public bool InsertarTransaccionxEtapa(string json, string idTransaccion, string Categoria, int idEtapa, int idAccion) {
 
        return arma.insertXetapa(json, idTransaccion, Categoria, idEtapa, idAccion); 
