@@ -256,6 +256,8 @@ function Optenerdetalle(idTipoTransaccion, idtransaccion) {
 
 }
 function ArmaFormularioxetapa(idTipoTransaccion, idtransaccion) {
+
+    parametroE = idtransaccion;
     $.ajax({
         async: false,
         type: 'POST',
@@ -336,8 +338,8 @@ function GeneraFormularioBND(xml_json) {
 
         idTran = rowgral.idTipoTrasaccion;
 
-        //console.log("eeeeeeeeeeeeeeeeeeeeeeeeeee" + idTran);
-
+        console.log("eeeeeeeeeeeeeeeeeeeeeeeeeee" + idTran);
+        //parametroE = idreferencia;
         Transaccion = rowgral.descripcion;
         CatTransaccion = rowgral.categoriaTransac;
         idEtapa = rowgral.idEtapa;
@@ -656,6 +658,7 @@ function GeneraFormularioBND(xml_json) {
             excuteformulaBND(rgm1.IdCampo, rgm1.Json);
         });
         $.each(objeto, function (rowcom, regcom) {
+            console.log(regcom.Json);
             addEventChangeBND(regcom.IdCampo, regcom.Json);
 
         })
@@ -921,7 +924,7 @@ function GeneraComposBND(Visualisacion, idCampo, nombreCampo, descripcionCampo, 
 }
 function GenerarComboBND(idcampo, nomcampo, desccampo, idreferencia, idRef, nomRef, CadenaComplementos) {
 
-    parametroE = idreferencia;
+    
     var TextoCom = "";
     $.ajax({
         async: false,
@@ -1291,7 +1294,7 @@ function GuardarRegitrosBND() {
         console.log("primermetodo");
         $.ajax({
             type: 'POST',
-            url: 'MyWebService.asmx/InsertarTransaccion',
+            url: 'MyWebService.asmx/InsertarTransaccionxEtapa',
             data: JSON.stringify({
                 json: Datos,
                 idTransaccion: parametroE,
@@ -1319,7 +1322,7 @@ function GuardarRegitrosBND() {
                             $.ajax({
                                 async: false,
                                 type: 'POST',
-                                url: 'MyWebService.asmx/ArmaFormulario',
+                                url: 'MyWebService.asmx/ArmaFormularioxEtapa',
                                 data: JSON.stringify({
                                     idtransa: idtransacccion
                                 }),
@@ -1356,7 +1359,7 @@ function GuardarRegitrosBND() {
         console.log("segundometodo");
         $.ajax({
             type: 'POST',
-            url: 'MyWebService.asmx/InsertarTransaccion',
+            url: 'MyWebService.asmx/InsertarTransaccionxEtapa',
             data: JSON.stringify({
                 json: Datos,
                 idTransaccion: parametroE,
@@ -1384,7 +1387,7 @@ function GuardarRegitrosBND() {
                             $.ajax({
                                 async: false,
                                 type: 'POST',
-                                url: 'MyWebService.asmx/ArmaFormulario',
+                                url: 'MyWebService.asmx/ArmaFormularioxEtapa',
                                 data: JSON.stringify({
                                     idtransa: idtransacccion
                                 }),
@@ -1432,6 +1435,7 @@ function GuardarRegitrosBND() {
 //recupera valores del formulario para generar json
 function addEventChangeBND(idCampo, jsonComple) {
 
+    console.log("ddddddddd. "+idCampo);
 
 
     $('#' + idCampo).change(function (e) {
@@ -1477,9 +1481,9 @@ function addEventChangeBND(idCampo, jsonComple) {
                     bostrapvaliBND();
                     $('#formCabecera').data('bootstrapValidator').validate();
 
-                    $('#formdetalle').bootstrapValidator('destroy');
+                    $('#form2').bootstrapValidator('destroy');
                     bostrapvaliBND();
-                    $('#formdetalle').data('bootstrapValidator').validate();
+                    $('#form2').data('bootstrapValidator').validate();
 
 
                 }
@@ -1498,7 +1502,7 @@ function addEventChangeBND(idCampo, jsonComple) {
     });
 };
 function recuvalorBND(idTransaccion, primarykey, Valor, IdRef, CampRef) {
-    console.log("--------------" + " idTransaccion: " + idTransaccion + " primarykey: " + primarykey + " Valor: " + Valor);
+   console.log("--------------" + " idTransaccion: " + idTransaccion + " primarykey: " + primarykey + " Valor: " + Valor);
 
     var varcomplemento = "";
 
