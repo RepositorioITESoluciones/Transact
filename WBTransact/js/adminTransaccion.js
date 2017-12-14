@@ -1431,12 +1431,16 @@ function ResetPlus() {
 //}
 
 function agregarReglasNegocio() {
-
-
     var data = [];
     var val = [];
     var nombre = [];
     var con = 0;
+    var listaCorreccion = [];
+    var listaCorreccion2 = [];
+    var countCorreccion = 0;
+
+
+
 
     var jsonInsert = '';
     var union = '{"IdTipoTran":"' + IdTipoTran + '", "Etapa":"' + $("#rn2_etapa").val() + '","Accion":"' + $("#rn2_accion").val() + '","valoresRN": [{';
@@ -1453,10 +1457,20 @@ function agregarReglasNegocio() {
     nombre.push("Obligatorio");
     nombre.push("Visualización");
 
-
     data = table.$('input, select').serializeArray({
         checkboxesAsBools: true
     });
+
+    $.each(data, function (index, valo) {
+        listaCorreccion2.push(valo.value);
+        countCorreccion++;
+        if (countCorreccion == 5) {      
+            countCorreccion = 0;
+            listaCorreccion.push(listaCorreccion2);
+            listaCorreccion2 = [];
+        }          
+    })
+
 
     $.each(data, function (index, valo) {
 
@@ -1480,110 +1494,85 @@ function agregarReglasNegocio() {
         }
     }
 
-    for (var i = 0; i < val.length; i++) {
-        if (con + 1 < nombre.length) {
 
-            if (nombre[con] == "Visible") {
+    console.log("LA lista chida: " + listaCorreccion[0]);
+    console.log("LA lista chida: " + listaCorreccion[1]);
+    console.log("LA lista chida: " + listaCorreccion[2]);
 
-                if (val[i = (i)] == 'false' && val[i = (i + 2)] == 'true') {
-
-                    validacionCheck1 = 'si';
-                    showWarningMessage('Información </b>', '<i>no puedes guardar el campo <b> ' + val[i = (i - 3)] + ' </b> si esta seleccionando como obligatorio y si no es visible </i>');
+    for (var i = 0; i < listaCorreccion.length; i++) {
+        for (var j = 0; j < listaCorreccion[i].length; j++) {
+            if (listaCorreccion[i][2] == 'true' && listaCorreccion[i][3] == 'true' && listaCorreccion[i][1] == 'false') {
+                var count = 0;
+                if (count == 0) {
+                    showWarningMessage('Información </b>', '<i>no puedes guardar el campo <b> ' + listaCorreccion[i][0] + ' </b> si esta seleccionando como obligatorio - editable y no es visible </i>');
                     $('#form_RN2').bootstrapValidator('destroy');
+                    count++;
+                    validacion = "no";
                     return false;
-
-                } else {
-
-                    validacionCheck1 = 'no';
                 }
-            } else {
-                validacionCheck1 = 'no'
-            }
-            if (nombre[con] == "Editable") {
-
-                if (val[i = (i)] == 'false' && val[i = (i + 2)] == '1') {
-                    validacion = 'si';
-                    showWarningMessage('Información </b>', '<i>Debes seleccionar la visualización del campo <b> ' + val[i - 4] + ' </b> </i>');
+            } else if (listaCorreccion[i][1] == 'false' && listaCorreccion[i][2] == 'false' && listaCorreccion[i][3] == 'false' && listaCorreccion[i][4] == 0) {
+          
+                    validacion = "vacio";
+              
+            } else if (listaCorreccion[i][1] == 'false' && listaCorreccion[i][2] == 'true') {
+                var count = 0;
+                if (count == 0) {
+                    showWarningMessage('Información </b>', '<i>no puedes guardar el campo <b> ' + listaCorreccion[i][0] + ' </b> si esta seleccionando como editable y no es visible </i>');
                     $('#form_RN2').bootstrapValidator('destroy');
+                    count++;
+                    validacion = "no";
                     return false;
-
-                } else {
-                    validacion = 'no';
                 }
-            } else {
-                validacion = 'no';
-            }
-            con++;
-
-        } else {
-            validacion = "";
-            if (nombre[con] == "Visualización") {
-                if (val[i] == '0' && val[i - 1] == 'true' && val[i - 2] == 'true' && val[i - 3] == 'true') {
-                    console.log(nombre[con], val[i], nombre[con], val[i - 1], nombre[con], val[i - 2], nombre[con], val[i - 3])
-                    validacion = 'si';
-                    showWarningMessage('Información </b>', '<i>Debes seleccionar la visualización del campo <b> ' + val[i - 4] + ' </b> </i>');
+            } else if (listaCorreccion[i][1] == 'false' && listaCorreccion[i][3] == 'true') {
+                var count = 0;
+                if (count == 0) {
+                    showWarningMessage('Información </b>', '<i>no puedes guardar el campo <b> ' + listaCorreccion[i][0] + ' </b> si esta seleccionando como obligatorio y no es visible </i>');
                     $('#form_RN2').bootstrapValidator('destroy');
+                    count++;
+                    validacion = "no";
                     return false;
-
-                } else {
-                    validacion = 'no';
                 }
-            } else {
-                validacion = 'no';
-            }
-
-            if (nombre[con] == "Visualización") {
-                if (val[i] == '0' && val[i - 1] == 'true' && val[i - 2] == 'false' && val[i - 3] == 'false') {
-                    console.log(nombre[con], val[i], nombre[con], val[i - 1], nombre[con], val[i - 2], nombre[con], val[i - 3])
-                    validacion = 'si';
-                    showWarningMessage('Información </b>', '<i>Debes seleccionar la visualización del campo <b> ' + val[i - 4] + ' </b> </i>');
+            } else if (listaCorreccion[i][1] == 'false' && listaCorreccion[i][4] != 0) {
+                var count = 0;
+                if (count == 0) {
+                    showWarningMessage('Información </b>', '<i>no puedes guardar el campo <b> ' + listaCorreccion[i][0] + ' </b> si tiene un tipo de visualización y no es visible </i>');
                     $('#form_RN2').bootstrapValidator('destroy');
+                    count++;
+                    validacion = "no";
                     return false;
-
-                } else {
-                    validacion = 'no';
                 }
-            } else {
-                validacion = 'no';
-            }
-
-            if (nombre[con] == "Visualización") {
-                if (val[i] == '0' && val[i - 1] == 'false' && val[i - 2] == 'false' && val[i - 3] == 'true') {
-                    console.log(nombre[con], val[i], nombre[con], val[i - 1], nombre[con], val[i - 2], nombre[con], val[i - 3])
-                    validacion = 'si';
-                    showWarningMessage('Información </b>', '<i>Debes seleccionar la visualización del campo <b> ' + val[i - 4] + ' </b> </i>');
+            } else if (listaCorreccion[i][2] == 'true' && listaCorreccion[i][4] == 0) {
+                    showWarningMessage('Información </b>', '<i>no puedes guardar el campo <b> ' + listaCorreccion[i][0] + ' </b> si esta seleccionado como editable y no tiene un tipo de visualización</i>');
                     $('#form_RN2').bootstrapValidator('destroy');
+                    validacion = "no";
                     return false;
-
-                } else {
-                    validacion = 'no';
-                }
-            } else {
-                validacion = 'no';
-            }
-            if (nombre[con] == "Visualización") {
-                if (val[i] == '0' && val[i - 1] == 'false' && val[i - 2] == 'true' && val[i - 3] == 'false') {
-                    console.log(nombre[con], val[i], nombre[con], val[i - 1], nombre[con], val[i - 2], nombre[con], val[i - 3])
-                    validacion = 'si';
-                    showWarningMessage('Información </b>', '<i>Debes seleccionar la visualización del campo <b> ' + val[i - 4] + ' </b> </i>');
+            } else if (listaCorreccion[i][3] == 'true' && listaCorreccion[i][4] == 0) {
+                    showWarningMessage('Información </b>', '<i>no puedes guardar el campo <b> ' + listaCorreccion[i][0] + ' </b> si esta seleccionado como obligatorio y no tiene un tipo de visualización</i>');
+                    $('#form_RN2').bootstrapValidator('destroy');                  
+                    validacion = "no";
+                    return false;
+                
+            } else if (listaCorreccion[i][2] == 'true' && listaCorreccion[i][3] == 'true' && listaCorreccion[i][4] == 0) {
+                var count = 0;
+                if (count == 0) {
+                    showWarningMessage('Información </b>', '<i>no puedes guardar el campo <b> ' + listaCorreccion[i][0] + ' </b> si esta seleccionado como obligatorio - editable y no tiene un tipo de visualización</i>');
                     $('#form_RN2').bootstrapValidator('destroy');
+                    count++;
+                    validacion = "no";
                     return false;
-
-                } else {
-                    validacion = 'no';
                 }
+            } else if (listaCorreccion[i][1] == 'true' && listaCorreccion[i][2] == 'true' && listaCorreccion[i][3] == 'true' && listaCorreccion[i][4] == 0) {
+                    showWarningMessage('Información </b>', '<i>no puedes guardar el campo <b> ' + listaCorreccion[i][0] + ' </b> si esta seleccionado como visible - obligatorio - editable y no tiene un tipo de visualización</i>');
+                    $('#form_RN2').bootstrapValidator('destroy');
+                    validacion = "no";
+                    return false;
             } else {
-                validacion = 'no';
+                validacion = "ok";
             }
-            con = 0;
-        }
+            validacion = "ok";    
+        }        
     }
-
-
-    if (validacion == 'si' && validacionCheck1 == 'si') {
-        return false
-    } else {
-
+    if (validacion == 'ok') {
 
         tamaño = union.length;
         unionN = union.substring(0, (tamaño - 3));
@@ -1747,9 +1736,7 @@ function agregarReglasNegocio() {
             }
         })
 
-
     }
-
 }
 
 
