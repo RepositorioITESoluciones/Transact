@@ -1781,7 +1781,7 @@ namespace Transact.Datos
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT CDT.idCampo, CDT.nombreCampo"
-                                                                      + " FROM Configuracion.ReglasNegocioCamposxTipoTransaccion RNCT, VisualizacionTipoTransacciones VTT, CamposDinamicosTransacciones CDT"
+                                                                      + " FROM Configuracion.ReglasNegocioCamposxTipoTransaccion RNCT, Configuracion.VisualizacionTipoTransacciones VTT, Configuracion.CamposDinamicosTransacciones CDT"
                                                                       + " where RNCT.idCampo = CDT.idCampo"
                                                                       + " and RNCT.idVisualizacion = VTT.idVisualizacion"
                                                                       + " and RNCT.idVisualizacion <> 24"
@@ -1794,7 +1794,7 @@ namespace Transact.Datos
 
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT RNCT.cadenaJsonHijos"
-                                                                       + " FROM Configuracion.ReglasNegocioCamposxTipoTransaccion RNCT, VisualizacionTipoTransacciones VTT, CamposDinamicosTransacciones CDT"
+                                                                       + " FROM Configuracion.ReglasNegocioCamposxTipoTransaccion RNCT, Configuracion.VisualizacionTipoTransacciones VTT, Configuracion.CamposDinamicosTransacciones CDT"
                                                                        + " where RNCT.idCampo = CDT.idCampo"
                                                                        + " and RNCT.idVisualizacion = VTT.idVisualizacion"
                                                                        + " and RNCT.idVisualizacion = 24"
@@ -1845,17 +1845,7 @@ namespace Transact.Datos
                         copia.Rows.Add(row);
 
                     }
-
-
-
                 }
-
-
-
-
-
-
-
                 foreach (DataRow rowDet in copia.Rows)
                 {
                     Entidades.autoCampos compos = new Entidades.autoCampos();
@@ -1901,7 +1891,7 @@ namespace Transact.Datos
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT CDT.nombreCampo idCampo, idReferencia PrimaryKey"
-                                                                       + " FROM Configuracion.ReglasNegocioCamposxTipoTransaccion RNCT, VisualizacionTipoTransacciones VTT, CamposDinamicosTransacciones CDT"
+                                                                       + " FROM Configuracion.ReglasNegocioCamposxTipoTransaccion RNCT, Configuracion.VisualizacionTipoTransacciones VTT, Configuracion.CamposDinamicosTransacciones CDT"
                                                                        + " where RNCT.idCampo = CDT.idCampo"
                                                                        + " and RNCT.idVisualizacion = VTT.idVisualizacion"
                                                                        + " and RNCT.idVisualizacion = 24"
@@ -2054,8 +2044,8 @@ namespace Transact.Datos
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT (select COUNT(*) "
-                                                                       + " FROM CamposDinamicosTransacciones CDT"
-                                                                       + " INNER JOIN ReglasNegocioCamposxTipoTransaccion RNC"
+                                                                       + " FROM Configuracion.CamposDinamicosTransacciones CDT"
+                                                                       + " INNER JOIN Configuracion.ReglasNegocioCamposxTipoTransaccion RNC"
                                                                        + " ON RNC.idCampo = CDT.idCampo"
                                                                        + " WHERE CDT.idTipoTransaccion = " + idTipoTransaccion + ")"
                                                                        + " AS campo,visible,editable,obligatorio,idVisualizacion,idCampo  "
@@ -2109,7 +2099,7 @@ namespace Transact.Datos
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "select COUNT(*) AS campo"
-                                                                       + " from ReglasNegocioCamposxTipoTransaccion"
+                                                                       + " from Configuracion.ReglasNegocioCamposxTipoTransaccion"
                                                                        + " WHERE idVisualizacion = " + 24 + " AND idAccion =" + idAccion + " AND idTipoTransaccion =" + idTipoTransaccion + " AND idReferencia is not null AND nombreReferencia is not null");
                     dt.Load(consulta);
                     connection.Close();
@@ -2154,7 +2144,7 @@ namespace Transact.Datos
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT COUNT( RNC.cadenaJsonHijos ) AS campo"
-                                                                       + " FROM ReglasNegocioCamposxTipoTransaccion RNC"
+                                                                       + " FROM Configuracion.ReglasNegocioCamposxTipoTransaccion RNC"
                                                                        + " WHERE RNC.idAccion = " + idAccion + " AND RNC.idTipoTransaccion =" + idTipoTransaccion + " AND RNC.cadenaJsonHijos IS NOT NULL");
                     dt.Load(consulta);
                     connection.Close();
@@ -2199,7 +2189,7 @@ namespace Transact.Datos
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT COUNT(*) AS campo"
-                                                                       + " FROM Formulas"
+                                                                       + " FROM Configuracion.Formulas"
                                                                        + " WHERE idAccion = " + idAccion + " AND idTipoTransaccion =" + idTipoTransaccion );
                     dt.Load(consulta);
                     connection.Close();
@@ -2244,7 +2234,7 @@ namespace Transact.Datos
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT COUNT(*) AS campo"
-                                                                       + " FROM ReglasNegocioxAccion"
+                                                                       + " FROM Configuracion.ReglasNegocioxAccion"
                                                                        + " WHERE idAccion = " + idAccion + " AND idTipoTransaccion =" + idTipoTransaccion);
                     dt.Load(consulta);
                     connection.Close();
