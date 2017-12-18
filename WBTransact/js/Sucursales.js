@@ -15,6 +15,8 @@ function initEventos() {
             $('#detalleSucursal').DataTable().$('tr.selected').removeClass('selected');
         }
         limpiaDivs();
+        validateForm();
+        $('#FormSucursal').data('bootstrapValidator').resetForm();
         document.getElementById("FormSucursal").reset();
         $('#divTiposTransaccion').hide();
         $('#FormularioAlta').show();

@@ -13,6 +13,9 @@ function initEventos() {
         if (row) {
             $('#TablaDetalle').DataTable().$('tr.selected').removeClass('selected');
         }
+        //limpiaDivs();
+        validateForm();
+        $('#FormAltaAplicacion').data('bootstrapValidator').resetForm();
         document.getElementById("FormAltaAplicacion").reset();
         $('#divTiposTransaccion').hide();
         $('#FormularioAlta').show();

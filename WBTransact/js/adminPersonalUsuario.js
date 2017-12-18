@@ -36,6 +36,9 @@ function initEventos() {
         if (row) {
             $('#TablaDetalle').DataTable().$('tr.selected').removeClass('selected');
         }
+   
+        validateFormAlta();
+        $('#FormAltaPersonal').data('bootstrapValidator').resetForm();
         document.getElementById("FormAltaPersonal").reset();
         $('#divTiposTransaccion').hide();
         $('#FormularioAlta').show();
@@ -1301,5 +1304,8 @@ function validaAlta() {
         $("#emailS").show();
         $("#accesoS").show();
     }
+    validateFormAlta();
+    $('#FormAltaPersonal').data('bootstrapValidator').resetForm();
+    //document.getElementById("FormAltaPersonal").reset();
 }
 
