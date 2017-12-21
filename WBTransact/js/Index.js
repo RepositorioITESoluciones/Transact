@@ -98,3 +98,12 @@ function showWarningMessage(titulo, mensaje) {
         icon: "fa fa-exclamation-circle swing animated"
     });
 }
+
+//Función que valida caracteres especiales en formularios
+function validarCaracteresN(e) {
+    tecla = (e.keyCode ? e.keyCode : e.which);
+    if (tecla == 8) return true;
+    patron = /[0-9A-Za-záÁéÉíÍóÓúÚñÑ\s\t\-\_]/;
+    te = String.fromCharCode(tecla);
+    return patron.test(te);
+}
