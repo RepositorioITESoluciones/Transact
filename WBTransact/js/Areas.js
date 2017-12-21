@@ -100,20 +100,20 @@ function initEventos() {
                 var idArea = row[0];
                 $.SmartMessageBox({
                     title: "¿Desea <font color='#ff9100'><b>eliminar</b></font> el area <b>" + row[1] + "</b>?",
-                    content: "Una vez eliminada la Transaccion no podras volver acceder a ella.",
+                    content: "Una vez eliminada el Área no podras volver acceder a ella.",
                     buttons: '[No][Si]'
                 }, function (ButtonPressed) {
                     if (ButtonPressed === "Si") {
                         $.ajax({
                             async: false,
                             type: "POST",
-                            url: 'MyWebService/eliminarAreaWs',
+                            url: 'MyWebService.asmx/eliminarAreaWs',
                             data: JSON.stringify({ idArea: idArea }),
                             contentType: "application/json; charset=utf-8",
                             dataType: "json",
                             success: function (output) {
                                 $.each(output, function (j, cam) {
-                                    showOkMessage('Transaccion Eliminada', 'Se ha Eliminado la Transaccion <b>' + row[1] + '<b>');
+                                    showOkMessage('Área Eliminada', 'Se ha Eliminado el Área <b>' + row[1] + '<b>');
                                     llenaDataTable();
                                 });
                             },

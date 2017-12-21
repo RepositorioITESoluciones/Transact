@@ -1227,6 +1227,15 @@ public class MyServiceClass : System.Web.Services.WebService
     }
 
     [WebMethod]
+    public bool eliminarAreaWs(int idArea)
+    {
+        CamposArea campos = new CamposArea();
+        campos.idArea = idArea;
+
+        return negocioArea.eliminarAreaNegocio(campos);
+    }
+
+    [WebMethod]
     public Area LlenaCheckBoxAreasEdit(int idArea)
     {
         Area listcampos;

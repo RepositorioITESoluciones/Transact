@@ -183,7 +183,7 @@ namespace Transact.Datos
             return respuesta;
         }
 
-        public bool EliminaAreaBySP(int idArea)
+        public bool EliminaAreaBySP(CamposArea campos)
         {
             bool respuesta = false;
             SqlConnection connection = null;
@@ -193,7 +193,7 @@ namespace Transact.Datos
                 {
                     connection.Open();
                     var parametros = new[]{
-                        ParametroAcceso.CrearParametro("@idArea", SqlDbType.Int, idArea , ParameterDirection.Input)
+                        ParametroAcceso.CrearParametro("@idArea", SqlDbType.Int, campos.idArea , ParameterDirection.Input)
                     };
                     Ejecuta.ProcedimientoAlmacenado(connection, "Usp_CatAreaEliminar", parametros);
                     connection.Close();
