@@ -47,11 +47,11 @@ namespace Transact.Negocio
             return respuesta;
         }
 
-        public bool eliminarAreaNegocio(int idArea)
+        public bool eliminarRolNegocio(CamposRoles campos)
         {
             bool respuesta = false;
 
-            respuesta = clasedatos.EliminaAreaBySP(idArea);
+            respuesta = clasedatos.EliminaRolBySP(campos);
             return respuesta;
         }
 

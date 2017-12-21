@@ -1306,6 +1306,15 @@ public class MyServiceClass : System.Web.Services.WebService
     }
 
     [WebMethod]
+    public bool eliminarRolWs(int idRol)
+    {
+        CamposRoles campos = new CamposRoles();
+        campos.idRol = idRol;
+
+        return negocioRoles.eliminarRolNegocio(campos);
+    }
+
+    [WebMethod]
     public Roles LlenaCheckBoxRolEdit(int idRol)
     {
         Roles listcampos;

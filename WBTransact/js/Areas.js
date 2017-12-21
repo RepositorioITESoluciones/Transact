@@ -7,6 +7,8 @@
 
 function initEventos() {
     $('#btnPlus').click(function () {
+        
+        llenaComboSucursal();
         var row = $("#detalleArea").DataTable().row('.selected').data();
         if (row) {
             $('#detalleArea').DataTable().$('tr.selected').removeClass('selected');
@@ -58,7 +60,7 @@ function initEventos() {
                     success: function (response) {
                         $.smallBox({
                             title: "Éxito!",
-                            content: "Area <b>" + $('#descripcion').val() + "</b> agregado",
+                            content: "Área <b>" + $('#nombreArea').val() + "</b> agregada",
                             color: "#739e73",
                             timeout: 2000,
                             icon: "fa fa-thumbs-up swing animated"
@@ -90,7 +92,7 @@ function initEventos() {
             $('#FormularioAlta').show();
             $("#tituloOperacion").html('Editar Área');
         } else {
-            showWarningMessage('Información </b>', '<i>Debe seleccionar un elemento</i>');
+            showWarningMessage('Información </b>', '<i>Debe seleccionar un área</i>');
         }
         })
 
@@ -99,7 +101,7 @@ function initEventos() {
             if (row) {
                 var idArea = row[0];
                 $.SmartMessageBox({
-                    title: "¿Desea <font color='#ff9100'><b>eliminar</b></font> el area <b>" + row[1] + "</b>?",
+                    title: "¿Desea <font color='#ff9100'><b>eliminar</b></font> el área <b>" + row[1] + "</b>?",
                     content: "Una vez eliminada el Área no podras volver acceder a ella.",
                     buttons: '[No][Si]'
                 }, function (ButtonPressed) {
@@ -369,7 +371,7 @@ function editArea() {
             success: function () {
                 $.smallBox({
                     title: "Éxito!",
-                    content: "Area <b>" + $("#descripcion").val() + "</b> Editado",
+                    content: "Área <b>" + $("#nombreArea").val() + "</b> Editada",
                     color: "#739e73",
                     timeout: 2000,
                     icon: "fa fa-thumbs-up swing animated"

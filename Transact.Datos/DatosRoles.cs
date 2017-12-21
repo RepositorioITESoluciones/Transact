@@ -163,7 +163,7 @@ namespace Transact.Datos
             return respuesta;
         }
 
-        public bool EliminaAreaBySP(int idArea)
+        public bool EliminaRolBySP(CamposRoles campos)
         {
             bool respuesta = false;
             SqlConnection connection = null;
@@ -173,9 +173,9 @@ namespace Transact.Datos
                 {
                     connection.Open();
                     var parametros = new[]{
-                        ParametroAcceso.CrearParametro("@idArea", SqlDbType.Int, idArea , ParameterDirection.Input)
+                        ParametroAcceso.CrearParametro("@idRol", SqlDbType.Int, campos.idRol , ParameterDirection.Input)
                     };
-                    Ejecuta.ProcedimientoAlmacenado(connection, "Usp_CatAreaEliminar", parametros);
+                    Ejecuta.ProcedimientoAlmacenado(connection, "Usp_CatRolEliminar", parametros);
                     connection.Close();
                 }
                 respuesta = true;
