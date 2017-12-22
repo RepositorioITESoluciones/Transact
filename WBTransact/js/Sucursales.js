@@ -186,6 +186,7 @@ function editSucursal() {
 
 //Validaciones
 function validateForm() {
+    $('#FormSucursal').bootstrapValidator('destroy');
     $("#FormSucursal").bootstrapValidator({
         excluded: [':disabled'],
         live: 'enabled',
