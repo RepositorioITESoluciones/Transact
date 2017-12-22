@@ -55,6 +55,7 @@ function initEventos() {
             editAplicacion();
         } else {
             var valido;
+            var duplicado = 0;
             valido = validateForm();
             if (valido) {
                 $.ajax({
@@ -75,6 +76,7 @@ function initEventos() {
                             icon: "fa fa-thumbs-up swing animated"
                             });
                         } else {
+                            duplicado = 1;
                             $.smallBox({
                                 title: "Error!",
                                 content: "<i>La Aplicacion no se agrego (No pueden existir nombres de aplicaciones repetidas)</i>",
@@ -83,13 +85,19 @@ function initEventos() {
                                 icon: "fa fa-warning shake animated"
                             });
                         }
-                        //console.log(response);
+                        //console.log(response);   
                         llenaDataTable();
                     }
                 });
-                $('#FormAltaAplicacion').data('bootstrapValidator').resetForm();
-                $('#divTiposTransaccion').show();
-                $('#FormularioAlta').hide();
+                console.log(duplicado);
+                if (duplicado == 0) {
+                    $('#FormAltaAplicacion').data('bootstrapValidator').resetForm();
+                    $('#divTiposTransaccion').show();
+                    $('#FormularioAlta').hide();
+                } else {
+                    $('#divTiposTransaccion').hide();
+                    $('#FormularioAlta').show();
+                }
 
             } else {
                 $('#divTiposTransaccion').hide();

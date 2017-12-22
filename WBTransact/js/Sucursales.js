@@ -63,6 +63,7 @@ function initEventos() {
             editSucursal();
         } else {
             var valido;
+            var duplicado = 0;
             valido = validateForm();
             if (valido) {
            //     console.log(JSON.stringify($('#FormSucursal').serializeArray()));
@@ -85,6 +86,7 @@ function initEventos() {
                             icon: "fa fa-thumbs-up swing animated"
                             });
                         } else {
+                            duplicado = 1;
                             $.smallBox({
                                 title: "Error!",
                                 content: "<i>La Sucursal no se agrego (No pueden existir rfc o razon social repetidas)</i>",
@@ -98,9 +100,15 @@ function initEventos() {
                         llenaDataTable();
                     }
                 });
-                $('#FormSucursal').data('bootstrapValidator').resetForm();
-                $('#divTiposTransaccion').show();
-                $('#FormularioAlta').hide();
+                console.log(duplicado);
+                if (duplicado == 0) {
+                    $('#FormSucursal').data('bootstrapValidator').resetForm();
+                    $('#divTiposTransaccion').show();
+                    $('#FormularioAlta').hide();
+                } else {
+                    $('#divTiposTransaccion').hide();
+                    $('#FormularioAlta').show();
+                }
 
             } else {
                 $('#divTiposTransaccion').hide();
