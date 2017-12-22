@@ -69,17 +69,31 @@ function initEventos() {
                 $.ajax({
                     async: false,
                     type: 'POST',
+                    dataType: "text",
                     url: 'MyWebService.asmx/InsertarSucursal',
                     data: $('#FormSucursal').serializeArray(),
                     success: function (response) {
+                        //console.log(response);
+                        var resultadoXML = response.substring(77, response.indexOf('</boolean>'));
+                        console.log(resultadoXML);
+                        if (resultadoXML == "true") {
                         $.smallBox({
                             title: "Éxito!",
                             content: "Sucursal <b>" + $('#Nombre').val() + "</b> agregado",
                             color: "#739e73",
                             timeout: 2000,
                             icon: "fa fa-thumbs-up swing animated"
-                        });
-                        console.log(response);
+                            });
+                        } else {
+                            $.smallBox({
+                                title: "Error!",
+                                content: "<i>La Sucursal no se agrego (No pueden existir rfc o razon social repetidas)</i>",
+                                color: "#C46A69",
+                                timeout: 3000,
+                                icon: "fa fa-warning shake animated"
+                            });
+                        }
+                        //console.log(response);
                         //initDataTable();
                         llenaDataTable();
                     }
