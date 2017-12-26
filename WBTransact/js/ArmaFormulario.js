@@ -17,6 +17,11 @@ var idEtapa = 0;
 var idAccion = 0;
 var namesDetalle = []
 var longitudC = 0;
+var XmlJson = '';
+
+var var1 = 0;
+var var2 = '';
+
 //funcion principal
 $(function() {
     $("#StatusTran").empty();
@@ -239,12 +244,12 @@ function getcategorias(idtra, nombre) {
 };
 
 function seleccionaFormulario(id, descrip) {
-    console.log("Entro")
+
     idtransacccion = id;
     $("#idTranss").empty();
     $("#idTranss").append(descrip);
-    arregloC = [];
-    arregloD = [];
+    //arregloC = [];
+    //arregloD = [];
     $.ajax({
         async: false,
         type: 'POST',
@@ -256,6 +261,8 @@ function seleccionaFormulario(id, descrip) {
         contentType: 'application/json; charset=utf-8',
         success: function(respuesta) {
 
+
+            XmlJson = respuesta;
             GeneraFormulafrio(respuesta);
             //console.log(respuesta);
 
@@ -277,7 +284,7 @@ function GeneraFormulafrio(xml_json) {
 
         idTran = rowgral.idTipoTrasaccion;
 
-        console.log("eeeeeeeeeeeeeeeeeeeeeeeeeee"+idTran);
+        //console.log("eeeeeeeeeeeeeeeeeeeeeeeeeee"+idTran);
 
         Transaccion = rowgral.descripcion;
         CatTransaccion = rowgral.categoriaTransac;
@@ -594,12 +601,12 @@ function GeneraFormulafrio(xml_json) {
 
         $.each(objetoFormula, function (rm1, rgm1) {
 
+            var1 = rgm1.IdCampo;
+            var2 = rgm1.Json;
 
-            console.log("formula kjkjljlkj" + rgm1.Json)
                 
-                excuteformula(rgm1.IdCampo, rgm1.Json);
-
-            });
+            excuteformula(var1, var2);
+        });
 
 
 
@@ -710,7 +717,7 @@ function GeneraCompos(Visualisacion, idCampo, nombreCampo, descripcionCampo, log
 
         Campo += '<div class="col-md-3 form-group">';
         Campo += '<label class="control-label">'
-        if (obligatorio != true) {
+        if (obligatorio == 'required') {
             Campo += '* '
         }
         Campo += descripcionCampo + '</label>';
@@ -961,15 +968,24 @@ function bostrapvali() {
         });
     }
 }
-function excuteformula(IdCampo, Json) {
+function excuteformula(IdCampo, Json) {  
 
-    console.log("formula excute: " + Json);
+    console.log("entro a ejecutar");
+    console.log(arregloC.length);
+    console.log(arregloD.length);
 
     $('#' + IdCampo).on('keyup', function () {
-        console.log("Campo Activador  " + "#" + IdCampo);
+
+        var ban = 0;
+        var con = 0;
+        var res = '';
+        var arreglo = [];
+
+        
+
         formula = '';
         jsonFormula = '';
-        var arreglo = [];
+
 
 
         jsonFormula = jQuery.parseJSON(Json)
@@ -987,7 +1003,7 @@ function excuteformula(IdCampo, Json) {
                 formula = cam13.Formula;
 
 
-                console.log("Formulas : " + formula);
+
                 formulas = [];
                 formulas = formula.split("|");
                 var union = '';
@@ -998,7 +1014,8 @@ function excuteformula(IdCampo, Json) {
                 var subVariable;
                 arreglo = arregloC.concat(arregloD);
 
-                console.log(arreglo);
+                //console.log(arreglo);
+                //console.log(formulas);
 
                 for (var i = 1; i < formulas.length; i++) {
                     for (var j = 1; j < arreglo.length; j++) {
@@ -1006,6 +1023,8 @@ function excuteformula(IdCampo, Json) {
 
 
                             variable += $("#" + arreglo[j]).val() + ',';
+
+                            console.log($("#" + arreglo[j]).val() + ',');
                         }
 
                     }
@@ -1015,9 +1034,12 @@ function excuteformula(IdCampo, Json) {
 
                 var datos = variable.split(",");
 
-                var ban = 0;
-                var con = 0;
-                var res = '';
+
+               
+
+                 ban = 0;
+                 con = 0;
+                 res = '';
 
 
                 for (var i = 0; i < formulas.length; i++) {
@@ -1057,15 +1079,13 @@ function excuteformula(IdCampo, Json) {
                     $('#formdetalle').data('bootstrapValidator').validate();
 
                 }
-
-
-                //console.log("Union: " + union);
+                console.log("Union: " + union);
 
             });
 
         });
 
-    }).keyup();
+    });
 
 }
 function autoincrement(idTipoTransaccion, CAuto) {
@@ -1104,7 +1124,7 @@ function autoincrement(idTipoTransaccion, CAuto) {
     });
     return regreso
 
-}
+}9
 function matchStart(params, data) {
     // If there are no search terms, return all of the data
     if ($.trim(params.term) === '') {
@@ -1259,6 +1279,12 @@ function GuardarRegitros() {
                             });
                             $('#formCabecera')[0].reset();
                             $('#formCabecera').bootstrapValidator('destroy');
+                            $('#formdetalle').bootstrapValidator('destroy');
+                            $('#formdetalle')[0].reset();
+                            bostrapvali();
+                            arregloC = [];
+                            arregloD = [];
+                            excuteformula(var1, var2);
                             $.ajax({
                                 async: false,
                                 type: 'POST',
@@ -1273,6 +1299,7 @@ function GuardarRegitros() {
                                     GeneraFormulafrio(respuesta);
                                 }
                             });
+                            
                             break;
                         case false:
                             $.smallBox({
@@ -1324,6 +1351,12 @@ function GuardarRegitros() {
                             });
                             $('#formCabecera')[0].reset();
                             $('#formCabecera').bootstrapValidator('destroy');
+                            //$('#formdetalle').bootstrapValidator('destroy');
+                            //$('#formdetalle')[0].reset();
+                            bostrapvali();
+                            arregloC = [];
+                            arregloD = [];
+                            excuteformula(var1, var2);
                             $.ajax({
                                 async: false,
                                 type: 'POST',
@@ -1441,7 +1474,7 @@ function addEventChange(idCampo, jsonComple) {
     });
 };
 function recuvalor(idTransaccion, primarykey, Valor, IdRef, CampRef) {
-    console.log("--------------" + " idTransaccion: " + idTransaccion + " primarykey: " + primarykey + " Valor: " + Valor);
+    //console.log("--------------" + " idTransaccion: " + idTransaccion + " primarykey: " + primarykey + " Valor: " + Valor);
 
     var varcomplemento = "";
 
@@ -1462,7 +1495,7 @@ function recuvalor(idTransaccion, primarykey, Valor, IdRef, CampRef) {
 
             $.each(output, function(rowValor, regValor) {
 
-                console.log("------------------" + regValor.Valor);
+                //console.log("------------------" + regValor.Valor);
 
                 varcomplemento = regValor.Valor;
 
