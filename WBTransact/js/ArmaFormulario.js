@@ -1204,7 +1204,7 @@ function GuardarRegitros() {
         Datos += ',"Detalle":[';
         if (namesDetalle.length != 0) {
 
-            var table = $('#dtDetalle').DataTable();
+            var table = $('#dtDetalle').DataTable()
             tablaNReg = table.data().length;
             if (table.data().length != 0) {
                 var id = 0;
