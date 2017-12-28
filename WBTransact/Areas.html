@@ -27,9 +27,9 @@
                             <button id="btnEdit" type="button" class="btn btn-warning btn-sm">
                                 <i class="fa fa-pencil"></i> Editar
                             </button>
-                            <!--<button id="btnDelete" type="button" class="btn btn-danger btn-sm">
+                            <button id="btnDelete" type="button" class="btn btn-danger btn-sm">
                                 <i class="fa fa-trash"></i> Eliminar
-                            </button>-->
+                            </button>
                         </div>
 
                         <div class="widget-body">
@@ -79,31 +79,35 @@
                             </div>
                             <div class="row" style="margin-top: 2%; margin-bottom: 2%;">
                                 <input type="hidden" id="idArea" name="idArea" />
-                                <div class="col col-6">
-                                    <div class="col col-4 required">
-                                        <label class="control-label negritas">Nombre</label>
+
+                                <section class="col col-6">
+                                    <div class=" required">
+                                        <label class="control-label">* Nombre</label>
                                     </div>
-                                    <div class="col col-6 form-group">
-                                        <input type="text" id="nombreArea" onkeypress="" class="form-control" name="nombreArea" />
+                                    <div class=" form-group">
+                                        <input ondrop="return false;" type="text" id="nombreArea" onkeypress="return validarCaracteresN(event)" class="form-control" name="nombreArea" />
                                     </div>
-                                </div>
-                                <div class="col col-6">
-                                    <div class="col col-4 required">
-                                        <label class="control-label negritas">Descripción</label>
+                                </section>
+
+
+                                <section class="col col-6">
+                                    <div class="required">
+                                        <label class="control-label negritas">* Descripción</label>
                                     </div>
-                                    <div class="col col-6 form-group">
-                                        <input type="text" id="descripcion" onkeypress="" class="form-control" name="descripcion" />
+                                    <div class="form-group">
+                                        <input ondrop="return false;" type="text" id="descripcion" onkeypress="return validarCaracteresN(event)" class="form-control" name="descripcion" />
                                     </div>
-                                </div>
-                                <br />
-                                <div class="col col-6 " style="margin-top: 20px">
-                                    <div class="col col-4 required">
+                                </section>
+                            </div>
+                            <div class="row" style="margin-top: -2%; margin-bottom: 3%;">
+                                <section class="col col-6">
+                                    <div class="required">
                                         <label class="control-label negritas">Sucursal</label>
                                     </div>
-                                    <div class="col col-6 form-group">  
-                                       <div id="sucursal" name="sucursal"/> 
+                                    <div class="form-group">
+                                        <div id="sucursal" name="sucursal" />
                                     </div>
-                                </div>
+                                </section>
                             </div>
                         </form>
                         <div class="widget-body-toolbar">

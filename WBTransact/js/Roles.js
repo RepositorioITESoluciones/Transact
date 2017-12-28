@@ -7,6 +7,7 @@
 
 function initEventos() {
     $('#btnPlus').click(function () {
+        llenaCheckMenu();
         var row = $("#detalleRoles").DataTable().row('.selected').data();
         if (row) {
             $('#detalleRoles').DataTable().$('tr.selected').removeClass('selected');
@@ -18,11 +19,11 @@ function initEventos() {
         $('#menus').find("option[value='0']").attr("selected", true);
         $('#divTiposTransaccion').hide();
         $('#FormularioAlta').show();
-        $("#tituloOperacion").html('Crear Área');
+        $("#tituloOperacion").html('Crear Rol');
     });
 
     $('#btnAtras').click(function () {
-        $('#FormularioAlta').bootstrapValidator('destroy');
+        $('#FormRol').bootstrapValidator('destroy');
         $('#divTiposTransaccion').show();
         $('#FormularioAlta').hide();
     });
@@ -45,7 +46,7 @@ function initEventos() {
                 descripcion: $("#descripcion").val(),
                 idMenus: menus
             };
-
+            var rolDuplicado = 0;
             var valido = validateForm();
             if (valido) {
                 $.ajax({
@@ -56,20 +57,39 @@ function initEventos() {
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(parameters),
                     success: function (response) {
-                        $.smallBox({
-                            title: "Éxito!",
-                            content: "Rol <b>" + $('#descripcion').val() + "</b> agregado",
-                            color: "#739e73",
-                            timeout: 2000,
-                            icon: "fa fa-thumbs-up swing animated"
-                        });
+                        var tmp = JSON.stringify(response).split("}");
+                        var ban = tmp[0].split(":");
+                        if (ban[1] == "true") {
+                            $.smallBox({
+                                title: "Éxito!",
+                                content: "Rol <b>" + $('#nombreRol').val() + "</b> agregado",
+                                color: "#739e73",
+                                timeout: 2000,
+                                icon: "fa fa-thumbs-up swing animated"
+                            });
+                            llenaDataTable();
+                        } else {
+                            rolDuplicado = 1;
+                            $.smallBox({
+                                title: "Error!",
+                                content: "<i>El rol <b>" + $('#nombreRol').val() + "</b> ya existe </i>",
+                                color: "#C46A69",
+                                timeout: 3000,
+                                icon: "fa fa-warning shake animated"
+                            });
+                        }
                         console.log(response);
-                        llenaDataTable();
+                        
                     }
                 });
-                $('#FormRol').data('bootstrapValidator').resetForm();
-                $('#divTiposTransaccion').show();
-                $('#FormularioAlta').hide();
+                if (rolDuplicado == 0) {
+                    $('#FormRol').data('bootstrapValidator').resetForm();
+                    $('#divTiposTransaccion').show();
+                    $('#FormularioAlta').hide();
+                } else {
+                    $('#divTiposTransaccion').hide();
+                    $('#FormularioAlta').show();
+                }
             } else {
                 $('#divTiposTransaccion').hide();
                 $('#FormularioAlta').show();
@@ -88,7 +108,7 @@ function initEventos() {
             $('#menus').find("option[value='" + row[3] + "']").attr("selected", true);
             $('#divTiposTransaccion').hide();
             $('#FormularioAlta').show();
-            $("#tituloOperacion").html('Editar Área');
+            $("#tituloOperacion").html('Editar Rol');
         } else {
             showWarningMessage('Información </b>', '<i>Debe seleccionar un elemento</i>');
         }
@@ -97,23 +117,23 @@ function initEventos() {
         $("#btnDelete").click(function () {
             var row = $('#detalleRoles').DataTable().row('.selected').data();
             if (row) {
-                var idArea = row[0];
+                var idRol = row[0];
                 $.SmartMessageBox({
-                    title: "¿Desea <font color='#ff9100'><b>eliminar</b></font> el area <b>" + row[1] + "</b>?",
-                    content: "Una vez eliminada la Transaccion no podras volver acceder a ella.",
+                    title: "¿Desea <font color='#ff9100'><b>eliminar</b></font> el rol <b>" + row[1] + "</b>?",
+                    content: "Una vez eliminado el Rol, no podras volver acceder a él.",
                     buttons: '[No][Si]'
                 }, function (ButtonPressed) {
                     if (ButtonPressed === "Si") {
                         $.ajax({
                             async: false,
                             type: "POST",
-                            url: 'MyWebService/eliminarAreaWs',
-                            data: JSON.stringify({ idArea: idArea }),
+                            url: 'MyWebService.asmx/eliminarRolWs',
+                            data: JSON.stringify({ idRol: idRol }),
                             contentType: "application/json; charset=utf-8",
                             dataType: "json",
                             success: function (output) {
                                 $.each(output, function (j, cam) {
-                                    showOkMessage('Transaccion Eliminada', 'Se ha Eliminado la Transaccion <b>' + row[1] + '<b>');
+                                    showOkMessage('Rol Eliminado', 'Se ha Eliminado el Rol <b>' + row[1] + '<b>');
                                     llenaDataTable();
                                 });
                             },
@@ -126,7 +146,7 @@ function initEventos() {
                     }
                 });
             } else {
-                showWarningMessage('Información </b>', '<i>Debe seleccionar un elemento</i>');
+                showWarningMessage('Información </b>', '<i>Debe seleccionar un rol</i>');
             }
         })
 }
@@ -232,7 +252,7 @@ function initDataTable() {
         $('#menus').val(row[3]);
         $('#divTiposTransaccion').hide();
         $('#FormularioAlta').show();
-        $("#tituloOperacion").html('Editar Área');
+        $("#tituloOperacion").html('Editar Rol');
     });
 }
 
@@ -320,6 +340,7 @@ function editRol() {
     var valido;
     valido = validateForm();
     var menus = new Array();
+    var rolDuplicadoEdit = 0;
     if (valido) {
 
         $("input[name='menus']").each(function (index, item) {
@@ -342,20 +363,38 @@ function editRol() {
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(parameters),
-            success: function () {
-                $.smallBox({
-                    title: "Éxito!",
-                    content: "Rol <b>" + $("#descripcion").val() + "</b> Editado",
-                    color: "#739e73",
-                    timeout: 2000,
-                    icon: "fa fa-thumbs-up swing animated"
-                });
-                llenaDataTable();
+            success: function (response) {
+                var tmp = JSON.stringify(response).split("}");
+                var ban = tmp[0].split(":");
+                if (ban[1] == "true") {
+                    $.smallBox({
+                        title: "Éxito!",
+                        content: "Rol <b>" + $('#nombreRol').val() + "</b> editado",
+                        color: "#739e73",
+                        timeout: 2000,
+                        icon: "fa fa-thumbs-up swing animated"
+                    });
+                    llenaDataTable();
+                } else {
+                    rolDuplicadoEdit = 1;
+                    $.smallBox({
+                        title: "Error!",
+                        content: "<i>El rol <b>" + $('#nombreRol').val() + "</b> ya existe </i>",
+                        color: "#C46A69",
+                        timeout: 3000,
+                        icon: "fa fa-warning shake animated"
+                    });
+                }
             }
         });
-        $('#FormRol').data('bootstrapValidator').resetForm();
-        $('#divTiposTransaccion').show();
-        $('#FormularioAlta').hide();
+        if (rolDuplicadoEdit == 0) {
+            $('#FormRol').data('bootstrapValidator').resetForm();
+            $('#divTiposTransaccion').show();
+            $('#FormularioAlta').hide();
+        } else {
+            $('#divTiposTransaccion').hide();
+            $('#FormularioAlta').show();
+        }
     } else {
         $('#divTiposTransaccion').hide();
         $('#FormularioAlta').show();

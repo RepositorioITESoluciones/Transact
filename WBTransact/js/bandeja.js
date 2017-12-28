@@ -1497,11 +1497,7 @@ function initDataTable() {
 }
 
 function bostrapvali() {
-    //console.log("hora por aca");
 
-    //console.log(Valicabecera);
-    //console.log("----------------------------------");
-    //console.log(detallevalida);
 
     if (Valicabecera != "") {
 

@@ -1,4 +1,4 @@
-﻿                                                                                                                                   $(function () {
+﻿$(function () {
     initEventos();
     initDataTable();
     llenaCheckAplicaciones();
@@ -6,8 +6,6 @@
 });
 
 function initEventos() {
-
-   
 
     $('#btnPlus').click(function () {
         
@@ -33,7 +31,6 @@ function initEventos() {
 
     $('#btnguardar').click(function () {
         
-
         var row = $("#detalleMenus").DataTable().row('.selected').data();
         var aplicaciones = new Array();
         if (row) {
@@ -54,8 +51,9 @@ function initEventos() {
                 icono: $("#icono").val(),
                 liga: $("#liga").val(),
                 idAplicaciones: aplicaciones
-            };
+                                };
 
+            var menuDuplicado = 0;
             var valido = validateForm();
             if (valido) {
                 $.ajax({
@@ -66,21 +64,42 @@ function initEventos() {
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(parameters),
                     success: function (response) {
-                        $.smallBox({
-                            title: "Éxito!",
-                            content: "Rol <b>" + $('#descripcion').val() + "</b> agregado",
-                            color: "#739e73",
-                            timeout: 2000,
-                            icon: "fa fa-thumbs-up swing animated"
-                        });
+                        var tmp = JSON.stringify(response).split("}");
+                        var ban = tmp[0].split(":");
+                        if (ban[1] == "true") {
+                            $.smallBox({
+                                title: "Éxito!",
+                                content: "Menú <b>" + $('#nombreMenu').val() + "</b> agregado",
+                                color: "#739e73",
+                                timeout: 2000,
+                                icon: "fa fa-thumbs-up swing animated"
+                            });
+                            llenaDataTable();
+                        } else {
+                            menuDuplicado = 1;
+                            $.smallBox({
+                                title: "Error!",
+                                content: "<i>El menú <b>" + $('#nombreMenu').val() + "</b> ya existe </i>",
+                                color: "#C46A69",
+                                timeout: 3000,
+                                icon: "fa fa-warning shake animated"
+                            });
+                        }
                         console.log(response);
-                        llenaDataTable();
+                        
                     }
                 });
-                $('#FormularioAlta').bootstrapValidator('destroy');
-                $('#FormMenu').data('bootstrapValidator').resetForm();
-                $('#divTiposTransaccion').show();
-                $('#FormularioAlta').hide();
+
+                if (menuDuplicado == 0) {
+                    $('#FormularioAlta').bootstrapValidator('destroy');
+                    $('#FormMenu').data('bootstrapValidator').resetForm();
+                    $('#divTiposTransaccion').show();
+                    $('#FormularioAlta').hide();
+                } else {
+                    $('#divTiposTransaccion').hide();
+                    $('#FormularioAlta').show();
+                }
+
             } else {
                 $('#divTiposTransaccion').hide();
                 $('#FormularioAlta').show();
@@ -90,64 +109,62 @@ function initEventos() {
 
     $("#btnEdit").click(function () {
 
-        
-
         limpiaDivs();
-        
+
         var row = $("#detalleMenus").DataTable().row('.selected').data();
         if (row) {
 
             LlenaCheckBoxMenusEdit(row[0]);
             $("#idMenu").val(row[0]);
             $("#nombreMenu").val(row[1]);
-                $("#menuPadre").find("option[value='" + row[2] + "']").attr("selected", true);
-                $("#descripcion").val(row[3]);
-                $("#icono").val(row[4]);
-                $("#liga").val(row[5]);
-                $("#ligaaplicaciones").val(row[6]);
+            $("#menuPadre").find("option[value='" + row[2] + "']").attr("selected", true);
+            $("#descripcion").val(row[3]);
+            $("#icono").val(row[4]);
+            $("#liga").val(row[5]);
+            $("#ligaaplicaciones").val(row[6]);
             $('#divTiposTransaccion').hide();
             $('#FormularioAlta').show();
             $("#tituloOperacion").html('Editar Menú');
         } else {
             showWarningMessage('Información </b>', '<i>Debe seleccionar un elemento</i>');
         }
-        })
+    });
 
-        $("#btnDelete").click(function () {
-            var row = $('#detalleMenus').DataTable().row('.selected').data();
-            if (row) {
-                var idArea = row[0];
-                $.SmartMessageBox({
-                    title: "¿Desea <font color='#ff9100'><b>eliminar</b></font> el area <b>" + row[1] + "</b>?",
-                    content: "Una vez eliminada la Transaccion no podras volver acceder a ella.",
-                    buttons: '[No][Si]'
-                }, function (ButtonPressed) {
-                    if (ButtonPressed === "Si") {
-                        $.ajax({
-                            async: false,
-                            type: "POST",
-                            url: 'MyWebService/eliminarAreaWs',
-                            data: JSON.stringify({ idArea: idArea }),
-                            contentType: "application/json; charset=utf-8",
-                            dataType: "json",
-                            success: function (output) {
-                                $.each(output, function (j, cam) {
-                                    showOkMessage('Transaccion Eliminada', 'Se ha Eliminado la Transaccion <b>' + row[1] + '<b>');
-                                    llenaDataTable();
-                                });
-                            },
-                            error: function (e) {
-                                console.log("error");
-                            }
-                        });
-                    } else {
-                        $('#bot1-Msg1').prop('disabled', true);
-                    }
-                });
-            } else {
-                showWarningMessage('Información </b>', '<i>Debe seleccionar un elemento</i>');
-            }
-        })
+    $("#btnDelete").click(function () {
+        var row = $('#detalleMenus').DataTable().row('.selected').data();
+        if (row) {
+            var idMenu = row[0];
+            $.SmartMessageBox({
+                title: "¿Desea <font color='#ff9100'><b>eliminar</b></font> el menú <b>" + row[1] + "</b>?",
+                content: "Una vez eliminado el Menú no podras volver acceder a él.",
+                buttons: '[No][Si]'
+            }, function (ButtonPressed) {
+                if (ButtonPressed === "Si") {
+                    $.ajax({
+                        async: false,
+                        type: "POST",
+                        url: 'MyWebService.asmx/eliminarMenuWs',
+                        data: JSON.stringify({ idMenu: idMenu }),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (output) {
+                            $.each(output, function (j, cam) {
+                                showOkMessage('Menú Eliminado', 'Se ha Eliminado el Menú <b>' + row[1] + '<b>');
+                                llenaDataTable();
+                            });
+                        },
+                        error: function (e) {
+                            console.log("error");
+                        }
+                    });
+                } else {
+                    $('#bot1-Msg1').prop('disabled', true);
+                }
+            });
+        } else {
+            showWarningMessage('Información </b>', '<i>Debe seleccionar un elemento</i>');
+        }
+    });
 }
 
 function initDataTable() {
@@ -180,6 +197,7 @@ function initDataTable() {
             });
         }
     });
+
     var otable = $('#detalleMenus').DataTable({
         "aLengthMenu": [
             [5, 10, 25, 50],
@@ -387,6 +405,7 @@ function LlenaCheckBoxMenusEdit(idMenu) {
 function editMenu() {
     var valido;
     valido = validateForm();
+    var menuDuplicadoEdit = 0;
     var aplicaciones = new Array();
     if (valido) {
 
@@ -414,20 +433,44 @@ function editMenu() {
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(parameters),
-            success: function () {
-                $.smallBox({
-                    title: "Éxito!",
-                    content: "Area <b>" + $("#descripcion").val() + "</b> Editado",
-                    color: "#739e73",
-                    timeout: 2000,
-                    icon: "fa fa-thumbs-up swing animated"
-                });
-                llenaDataTable();
+            success: function (response) {
+                var tmp = JSON.stringify(response).split("}");
+                var ban = tmp[0].split(":");
+                if (ban[1] == "true") {
+                    $.smallBox({
+                        title: "Éxito!",
+                        content: "Menú <b>" + $('#nombreMenu').val() + "</b> editado",
+                        color: "#739e73",
+                        timeout: 2000,
+                        icon: "fa fa-thumbs-up swing animated"
+                    }
+                    );
+                    llenaDataTable();
+                } else {
+                    menuDuplicadoEdit = 1;
+                    $.smallBox({
+                        title: "Error!",
+                        content: "<i>El menú <b>" + $('#nombreMenu').val() + "</b> ya existe </i>",
+                        color: "#C46A69",
+                        timeout: 3000,
+                        icon: "fa fa-warning shake animated"
+                    });
+
+                }
+                console.log(response);
+
             }
         });
-        $('#FormMenu').data('bootstrapValidator').resetForm();
-        $('#divTiposTransaccion').show();
-        $('#FormularioAlta').hide();
+
+        if (menuDuplicadoEdit == 0) {
+            $('#FormMenu').data('bootstrapValidator').resetForm();
+            $('#divTiposTransaccion').show();
+            $('#FormularioAlta').hide();
+        } else {
+            $('#divTiposTransaccion').hide();
+            $('#FormularioAlta').show();
+        }
+        
     } else {
         $('#divTiposTransaccion').hide();
         $('#FormularioAlta').show();

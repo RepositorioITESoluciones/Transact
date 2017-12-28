@@ -13,6 +13,9 @@ function initEventos() {
         if (row) {
             $('#TablaDetalle').DataTable().$('tr.selected').removeClass('selected');
         }
+        //limpiaDivs();
+        validateForm();
+        $('#FormAltaAplicacion').data('bootstrapValidator').resetForm();
         document.getElementById("FormAltaAplicacion").reset();
         $('#divTiposTransaccion').hide();
         $('#FormularioAlta').show();
@@ -52,28 +55,49 @@ function initEventos() {
             editAplicacion();
         } else {
             var valido;
+            var duplicado = 0;
             valido = validateForm();
             if (valido) {
                 $.ajax({
                     async: false,
                     type: 'POST',
+                    dataType: "text",
                     url: 'MyWebService.asmx/insertaAplicaciones',
                     data: $('#FormAltaAplicacion').serializeArray(),
                     success: function (response) {
+                        var resultadoXML = response.substring(77, response.indexOf('</boolean>'));
+                        console.log(resultadoXML);
+                        if (resultadoXML == "true") {
                         $.smallBox({
                             title: "Éxito!",
                             content: "Aplicación <b>" + $('#nombreAplicacion').val() + "</b> agregada",
                             color: "#739e73",
                             timeout: 2000,
                             icon: "fa fa-thumbs-up swing animated"
-                        });
-                        console.log(response);
+                            });
+                        } else {
+                            duplicado = 1;
+                            $.smallBox({
+                                title: "Error!",
+                                content: "<i>La Aplicacion no se agrego (No pueden existir nombres de aplicaciones repetidas)</i>",
+                                color: "#C46A69",
+                                timeout: 3000,
+                                icon: "fa fa-warning shake animated"
+                            });
+                        }
+                        //console.log(response);   
                         llenaDataTable();
                     }
                 });
-                $('#FormAltaAplicacion').data('bootstrapValidator').resetForm();
-                $('#divTiposTransaccion').show();
-                $('#FormularioAlta').hide();
+                console.log(duplicado);
+                if (duplicado == 0) {
+                    $('#FormAltaAplicacion').data('bootstrapValidator').resetForm();
+                    $('#divTiposTransaccion').show();
+                    $('#FormularioAlta').hide();
+                } else {
+                    $('#divTiposTransaccion').hide();
+                    $('#FormularioAlta').show();
+                }
 
             } else {
                 $('#divTiposTransaccion').hide();

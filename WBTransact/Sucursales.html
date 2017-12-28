@@ -89,19 +89,7 @@
                                         <th data-hide="phone,tablet">NumInt</th>
                                         <th data-hide="phone,tablet">IdEstado</th>
                                         <th data-hide="phone,tablet">CP</th>
-                                        <th data-hide="phone,tablet">Tipo Persona</th>
-
-                                        <th data-class="expand">RFC</th>
-                                        <th>Nombre</th>
-                                        <th data-hide="phone,tablet">Razón social</th>
-                                        <th data-hide="phone,tablet">Calle</th>
-                                        <th data-hide="phone,tablet,desktop">No Exterior</th>
-                                        <th data-hide="phone,tablet,desktop">No interior</th>
-                                        <th data-hide="phone,tablet">Colonia</th>
-                                        <th data-hide="phone,tablet">Municipio</th>
-                                        <th data-hide="phone,tablet">Estado</th>
-                                        <th data-hide="phone,tablet">C.P.</th>
-                                        <th data-hide="phone,tablet,desktop">Regimen</th>
+                                        <th data-hide="phone,tablet">Tipo Persona</th>                                     
 
 
                                     </tr>
@@ -131,91 +119,91 @@
                             <div class="row" style="margin-top: 2%; margin-bottom: 2%;">
                             
                                 <section class="col col-6">
-                                    <div class="col col-4 required">
-                                        <label class="control-label">Nombre</label>
+                                    <div class=" required">
+                                        <label class="control-label">* Nombre</label>
                                     </div>
-                                    <div class="col col-6 form-group">
-                                        <input type="text" id="Nombre" onkeypress="" class="form-control" name="nombre" />
+                                    <div class=" form-group">
+                                        <input type="text" ondrop="return false" id="Nombre" onkeypress="return validarCaracteresN(event)" class="form-control" name="nombre" />
                                     </div>
                                 </section>
 
                                 <section class="col col-6">
-                                    <div class="col col-4 required">
-                                        <label class="control-label">Empresa</label>
+                                    <div class=" required">
+                                        <label class="control-label">* Empresa</label>
                                     </div>
-                                    <div class="col col-6 form-group">
+                                    <div class=" form-group">
                                         <select type="text" id="ComboEmpresa" onkeypress="" class="form-control" name="idEmpresa"></select>
                                     </div>
                                 </section>
 
                                 <section class="col col-6">
-                                    <div class="col col-4 required">
-                                        <label class="control-label">RFC</label>
+                                    <div class=" required">
+                                        <label class="control-label">* RFC</label>
                                     </div>
-                                    <div class="col col-6 form-group">
-                                        <input type="text" id="RFC" onkeypress="" class="form-control" name="RFC" />
+                                    <div class=" form-group">
+                                        <input type="text" ondrop="return false" id="RFC" onkeypress="return validarCaracteresN(event)" class="form-control" name="RFC" />
                                     </div>
                                 </section>
 
                                 <section class="col col-6">
-                                    <div class="col col-4 required">
-                                        <label class="control-label">Tipo de Persona</label>
+                                    <div class=" required">
+                                        <label class="control-label">* Tipo de Persona</label>
                                     </div>
-                                    <div class="col col-6 form-group">
+                                    <div class=" form-group">
                                         <select type="text" id="ComboTPer" onkeypress="" class="form-control" name="ComboTPer"></select>
                                     </div>
                                 </section>
 
                                 <section class="col col-6">
-                                    <div class="col col-4 required">
-                                        <label class="control-label">Razon Social</label>
+                                    <div class=" required">
+                                        <label class="control-label">* Razon Social</label>
                                     </div>
-                                    <div class="col col-6 form-group">
-                                        <input type="text" id="RS" onkeypress="" class="form-control" name="RS" />
-                                    </div>
-                                </section>
-
-                                <section class="col col-6">
-                                    <div class="col col-4 required">
-                                        <label class="control-label">Calle</label>
-                                    </div>
-                                    <div class="col col-6 form-group">
-                                        <input type="text" id="Calle" onkeypress="" class="form-control" name="Calle" />
+                                    <div class=" form-group">
+                                        <input type="text" ondrop="return false" id="RS" onkeypress="return validarCaracteresN(event)" class="form-control" name="RS" />
                                     </div>
                                 </section>
 
                                 <section class="col col-6">
-                                    <div class="col col-4 required">
-                                        <label class="control-label">Numero Ext.</label>
+                                    <div class=" required">
+                                        <label class="control-label">* Calle</label>
                                     </div>
-                                    <div class="col col-6 form-group">
-                                        <input type="text" id="NumExt" onkeypress="" class="form-control" name="NumExt" />
+                                    <div class=" form-group">
+                                        <input type="text" ondrop="return false" id="Calle" onkeypress="return validarCaracteresN(event)" class="form-control" name="Calle" />
                                     </div>
                                 </section>
 
                                 <section class="col col-6">
-                                    <div class="col col-4 required">
+                                    <div class=" required">
+                                        <label class="control-label">* Numero Ext.</label>
+                                    </div>
+                                    <div class=" form-group">
+                                        <input type="text" ondrop="return false" id="NumExt" onkeypress="return validarCaracteresN(event)" class="form-control" name="NumExt" />
+                                    </div>
+                                </section>
+
+                                <section class="col col-6">
+                                    <div class=" required">
                                         <label class="control-label">Numero Int.</label>
                                     </div>
-                                    <div class="col col-6 form-group">
-                                        <input type="text" id="NumInt" onkeypress="" class="form-control" name="NumInt" />
+                                    <div class=" form-group">
+                                        <input type="text" ondrop="return false" id="NumInt" onkeypress="return validarCaracteresN(event)" class="form-control" name="NumInt" />
                                     </div>
                                 </section>
 
                                 <section class="col col-6">
-                                    <div class="col col-4 required">
-                                        <label class="control-label">Estado</label>
+                                    <div class=" required">
+                                        <label class="control-label">* Estado</label>
                                     </div>
-                                    <div class="col col-6 form-group">
+                                    <div class=" form-group">
                                         <select type="text" id="ComboEstado" onchange="actualizaCP()" class="form-control" name="ComboEstado"></select>
                                     </div>
                                 </section>
- 
+
                                 <section class="col col-6">
-                                    <div class="col col-4 required">
-                                        <label class="control-label">Codigo Postal</label>
+                                    <div class=" required">
+                                        <label class="control-label">* Codigo Postal</label>
                                     </div>
-                                    <div class="col col-6 form-group">
+                                    <div class=" form-group">
                                         <select type="text" id="ComboCP" onkeypress="" class="form-control" name="ComboCP">
                                             <option value="0">Seleccione</option>
                                         </select>

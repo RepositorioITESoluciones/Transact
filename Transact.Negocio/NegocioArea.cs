@@ -21,14 +21,12 @@ namespace Transact.Negocio
             return listadatos;
         }
 
-        public bool InsertaAreaNegocio(CamposArea areas)
+        public bool InsertaAreaNegocio(CamposArea areas, int[] idSucursal)
         {
             bool respuesta = false;
             try
             {
-                clasedatos.InsertaAreaBySP(areas);
-                respuesta = true;
-
+                respuesta = clasedatos.InsertaAreaBySP(areas, idSucursal);
             }
             catch (Exception ex)
             {
@@ -38,7 +36,7 @@ namespace Transact.Negocio
 
             return respuesta;
         }
-
+        /*
         public bool InsertaAreaxSucursalNegocio(CamposArea areas)
         {
             bool respuesta = false;
@@ -55,7 +53,7 @@ namespace Transact.Negocio
             }
 
             return respuesta;
-        }
+        }*/
 
         public bool actualizarAreaNegocio(CamposArea camposArea, int[] idSucursal)
         {
@@ -65,11 +63,11 @@ namespace Transact.Negocio
             return respuesta;
         }
 
-        public bool eliminarAreaNegocio(int idArea)
+        public bool eliminarAreaNegocio(CamposArea campos)
         {
             bool respuesta = false;
 
-            respuesta = clasedatos.EliminaAreaBySP(idArea);
+            respuesta = clasedatos.EliminaAreaBySP(campos);
             return respuesta;
         }
 

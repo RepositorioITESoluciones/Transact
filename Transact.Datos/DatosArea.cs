@@ -49,6 +49,86 @@ namespace Transact.Datos
             return listadatos;
         }
 
+        public bool InsertaAreaBySP(CamposArea areas, int[] idSucursal)
+        {
+            bool respuesta = false;
+            SqlConnection connection = null;
+
+            try
+            {
+                int idValidaArea = 0;
+                DataTable dt = new DataTable();
+
+                //Valida que no exista un área con el mismo nombre
+                using (connection = Conexion.ObtieneConexion("ConexionBD"))
+                {
+                    connection.Open();
+                    var parametros = new[]{
+                        ParametroAcceso.CrearParametro("@nombreArea", SqlDbType.VarChar, areas.nombreArea.ToUpper() , ParameterDirection.Input),
+                        ParametroAcceso.CrearParametro("@idArea", SqlDbType.Int, areas.idArea , ParameterDirection.Input)
+                    };
+                    dt = Ejecuta.EjecutarConsulta(connection, parametros, "Usp_CatAreasValidaNombre");
+
+                    connection.Close();
+                }
+                foreach (DataRow row in dt.Rows)
+                {
+
+                    idValidaArea = Convert.ToInt32(row["idArea"].ToString());
+                }
+
+                    if(idValidaArea == 0)
+                    {
+
+                        using (connection = Conexion.ObtieneConexion("ConexionBD"))
+                        {
+                            connection.Open();
+                            var parametrosAreas = new[]
+                             {
+                             ParametroAcceso.CrearParametro("@nombreArea", SqlDbType.VarChar, areas.nombreArea, ParameterDirection.Input),
+                            ParametroAcceso.CrearParametro("@descripcion", SqlDbType.VarChar, areas.descripcion , ParameterDirection.Input)
+                             };
+
+                            Ejecuta.ProcedimientoAlmacenado(connection, "Usp_CatAreaInsertar", parametrosAreas);
+
+                        }
+
+                        connection.Close();
+
+                        using (connection = Conexion.ObtieneConexion("ConexionBD"))
+                        {
+
+                            foreach (int i in idSucursal)
+                            {
+                                connection.Open();
+
+                                areas.camposSucursal = new CamposSucursal();
+                                areas.camposSucursal.idSucursal = i;
+
+                                var parametrosAreaxSucursales = new[]{
+
+                                ParametroAcceso.CrearParametro("@idArea", SqlDbType.Int, areas.idArea , ParameterDirection.Input),
+                                ParametroAcceso.CrearParametro("@nombreArea", SqlDbType.VarChar, areas.nombreArea, ParameterDirection.Input),
+                                ParametroAcceso.CrearParametro("@idSucursal", SqlDbType.Int, areas.camposSucursal.idSucursal, ParameterDirection.Input)
+                            };
+                                Ejecuta.ProcedimientoAlmacenado(connection, "Usp_CatAreaxSucursalInsertar", parametrosAreaxSucursales);
+
+                                connection.Close();
+                            }
+                        }
+
+                        respuesta = true;
+
+                    }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return respuesta;
+        }
+
+        /*
         public bool InsertaAreaBySP(CamposArea areas)
         {
             bool respuesta = false;
@@ -122,6 +202,7 @@ namespace Transact.Datos
             }
             return respuesta;
         }
+        */
 
         public bool actualizarAreaBySP(CamposArea camposArea, int[] idSucursal)
         {
@@ -129,52 +210,74 @@ namespace Transact.Datos
             SqlConnection connection = null;
             try
             {
+                int idValidaArea = 0;
+                DataTable dt = new DataTable();
+
+                //Valida que no exista un área con el mismo nombre
                 using (connection = Conexion.ObtieneConexion("ConexionBD"))
                 {
                     connection.Open();
-                    var parametrosArea = new[]{
+                    var parametros = new[]{
+                        ParametroAcceso.CrearParametro("@nombreArea", SqlDbType.VarChar, camposArea.nombreArea.ToUpper() , ParameterDirection.Input),
+                        ParametroAcceso.CrearParametro("@idArea", SqlDbType.Int, camposArea.idArea , ParameterDirection.Input)
+                    };
+                    dt = Ejecuta.EjecutarConsulta(connection, parametros, "Usp_CatAreasValidaNombre");
+
+                    connection.Close();
+                }
+                foreach (DataRow row in dt.Rows)
+                {
+
+                    idValidaArea = Convert.ToInt32(row["idArea"].ToString());
+                }
+
+                if (idValidaArea == 0)
+                {
+                    using (connection = Conexion.ObtieneConexion("ConexionBD"))
+                    {
+                        connection.Open();
+                        var parametrosArea = new[]{
                         ParametroAcceso.CrearParametro("@idArea", SqlDbType.Int, camposArea.idArea , ParameterDirection.Input),
                         ParametroAcceso.CrearParametro("@nombreArea",SqlDbType.VarChar, camposArea.nombreArea, ParameterDirection.Input),
                         ParametroAcceso.CrearParametro("@descripcion", SqlDbType.VarChar, camposArea.descripcion, ParameterDirection.Input)
                     };
-                    Ejecuta.ProcedimientoAlmacenado(connection, "Usp_CatAreaActualizar", parametrosArea);
+                        Ejecuta.ProcedimientoAlmacenado(connection, "Usp_CatAreaActualizar", parametrosArea);
 
-                    connection.Close();
+                        connection.Close();
 
-                }
+                    }
 
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
-                    
-
-                    //Bloque que itera el arreglo de sucursales e inserta relacion SUCURSALES-ÁREAS
-                    foreach (int i in idSucursal)
+                    using (connection = Conexion.ObtieneConexion("ConexionBD"))
                     {
-                        connection.Open();
 
-                        CamposArea campos = new CamposArea();
-                        campos.camposSucursal = new CamposSucursal();
-                        campos.camposSucursal.idSucursal = i;
 
-                        var parametrosAreaxSucursal = new[]{
+                        //Bloque que itera el arreglo de sucursales e inserta relacion SUCURSALES-ÁREAS
+                        foreach (int i in idSucursal)
+                        {
+                            connection.Open();
+
+                            CamposArea campos = new CamposArea();
+                            campos.camposSucursal = new CamposSucursal();
+                            campos.camposSucursal.idSucursal = i;
+
+                            var parametrosAreaxSucursal = new[]{
 
                         ParametroAcceso.CrearParametro("@idArea", SqlDbType.Int, camposArea.idArea , ParameterDirection.Input),
                         ParametroAcceso.CrearParametro("@nombreArea", SqlDbType.VarChar, camposArea.nombreArea, ParameterDirection.Input),
                         ParametroAcceso.CrearParametro("@idSucursal", SqlDbType.Int, campos.camposSucursal.idSucursal, ParameterDirection.Input)
                     };
-                        Ejecuta.ProcedimientoAlmacenado(connection, "Usp_CatAreaxSucursalInsertar", parametrosAreaxSucursal);
+                            Ejecuta.ProcedimientoAlmacenado(connection, "Usp_CatAreaxSucursalInsertar", parametrosAreaxSucursal);
 
-                        connection.Close();
+                            connection.Close();
+                        }
+
+
+
                     }
-
-                    
-
+                    respuesta = true;
                 }
 
                 
-
-
-                respuesta = true;
             }
             catch (Exception ex)
             {
@@ -183,7 +286,7 @@ namespace Transact.Datos
             return respuesta;
         }
 
-        public bool EliminaAreaBySP(int idArea)
+        public bool EliminaAreaBySP(CamposArea campos)
         {
             bool respuesta = false;
             SqlConnection connection = null;
@@ -193,7 +296,7 @@ namespace Transact.Datos
                 {
                     connection.Open();
                     var parametros = new[]{
-                        ParametroAcceso.CrearParametro("@idArea", SqlDbType.Int, idArea , ParameterDirection.Input)
+                        ParametroAcceso.CrearParametro("@idArea", SqlDbType.Int, campos.idArea , ParameterDirection.Input)
                     };
                     Ejecuta.ProcedimientoAlmacenado(connection, "Usp_CatAreaEliminar", parametros);
                     connection.Close();

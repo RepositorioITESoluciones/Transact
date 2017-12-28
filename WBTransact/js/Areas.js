@@ -1,4 +1,5 @@
-﻿$(function () {
+﻿var row;
+$(function () {
     initEventos();
     initDataTable();
     llenaComboSucursal();
@@ -7,6 +8,8 @@
 
 function initEventos() {
     $('#btnPlus').click(function () {
+        
+        llenaComboSucursal();
         var row = $("#detalleArea").DataTable().row('.selected').data();
         if (row) {
             $('#detalleArea').DataTable().$('tr.selected').removeClass('selected');
@@ -28,7 +31,7 @@ function initEventos() {
     });
 
     $('#btnguardar').click(function () {
-        var row = $("#detalleArea").DataTable().row('.selected').data();
+        row = $("#detalleArea").DataTable().row('.selected').data();
         var sucursales = new Array();
         if (row) {
             editArea();
@@ -46,6 +49,7 @@ function initEventos() {
                 idSucursal: sucursales
             };
 
+            var areaDuplicada = 0;
             var valido = validateForm();
             if (valido) {
                 $.ajax({
@@ -56,24 +60,44 @@ function initEventos() {
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(parameters),
                     success: function (response) {
+                        var tmp = JSON.stringify(response).split("}");
+                        var ban = tmp[0].split(":");
+                        if (ban[1] == "true") {
                         $.smallBox({
                             title: "Éxito!",
-                            content: "Area <b>" + $('#descripcion').val() + "</b> agregado",
+                            content: "Área <b>" + $('#nombreArea').val() + "</b> agregada",
                             color: "#739e73",
                             timeout: 2000,
                             icon: "fa fa-thumbs-up swing animated"
-                        });
+                            });
+                        } else {
+                            areaDuplicada = 1;
+                            $.smallBox({
+                                title: "Error!",
+                                content: "<i>El área <b>" + $('#nombreArea').val() + "</b> ya existe </i>",
+                                color: "#C46A69",
+                                timeout: 3000,
+                                icon: "fa fa-warning shake animated"
+                            });
+                        }
                         console.log(response);
                         llenaDataTable();
                     }
                 });
-                $('#FormArea').data('bootstrapValidator').resetForm();
-                $('#divTiposTransaccion').show();
-                $('#FormularioAlta').hide();
-            } else {
+                if (areaDuplicada == 0) {
+                   
+                    $('#FormArea').data('bootstrapValidator').resetForm();
+                    $('#divTiposTransaccion').show();
+                    $('#FormularioAlta').hide();
+                } else {
+                    $('#divTiposTransaccion').hide();
+                    $('#FormularioAlta').show();
+                }
+               
+            } /*else {
                 $('#divTiposTransaccion').hide();
                 $('#FormularioAlta').show();
-            }
+            }*/
         }
     });
 
@@ -90,7 +114,7 @@ function initEventos() {
             $('#FormularioAlta').show();
             $("#tituloOperacion").html('Editar Área');
         } else {
-            showWarningMessage('Información </b>', '<i>Debe seleccionar un elemento</i>');
+            showWarningMessage('Información </b>', '<i>Debe seleccionar un área</i>');
         }
         })
 
@@ -99,21 +123,21 @@ function initEventos() {
             if (row) {
                 var idArea = row[0];
                 $.SmartMessageBox({
-                    title: "¿Desea <font color='#ff9100'><b>eliminar</b></font> el area <b>" + row[1] + "</b>?",
-                    content: "Una vez eliminada la Transaccion no podras volver acceder a ella.",
+                    title: "¿Desea <font color='#ff9100'><b>eliminar</b></font> el área <b>" + row[1] + "</b>?",
+                    content: "Una vez eliminada el Área no podras volver acceder a ella.",
                     buttons: '[No][Si]'
                 }, function (ButtonPressed) {
                     if (ButtonPressed === "Si") {
                         $.ajax({
                             async: false,
                             type: "POST",
-                            url: 'MyWebService/eliminarAreaWs',
+                            url: 'MyWebService.asmx/eliminarAreaWs',
                             data: JSON.stringify({ idArea: idArea }),
                             contentType: "application/json; charset=utf-8",
                             dataType: "json",
                             success: function (output) {
                                 $.each(output, function (j, cam) {
-                                    showOkMessage('Transaccion Eliminada', 'Se ha Eliminado la Transaccion <b>' + row[1] + '<b>');
+                                    showOkMessage('Área Eliminada', 'Se ha Eliminado el Área <b>' + row[1] + '<b>');
                                     llenaDataTable();
                                 });
                             },
@@ -342,6 +366,7 @@ function LlenaCheckBoxAreasEdit(idArea) {
 
 function editArea() {
     var valido;
+    var areaDuplicadaEdit = 0;
     valido = validateForm();
     var sucursales = new Array();
     if (valido) {
@@ -366,20 +391,44 @@ function editArea() {
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(parameters),
-            success: function () {
-                $.smallBox({
-                    title: "Éxito!",
-                    content: "Area <b>" + $("#descripcion").val() + "</b> Editado",
-                    color: "#739e73",
-                    timeout: 2000,
-                    icon: "fa fa-thumbs-up swing animated"
-                });
-                llenaDataTable();
+            success: function (response) 
+            {
+                var tmp = JSON.stringify(response).split("}");
+                var ban = tmp[0].split(":");
+                if(ban[1] == "true") {
+                    $.smallBox({
+                        title: "Éxito!",
+                        content: "Área <b>" + $('#nombreArea').val() + "</b> editada",
+                        color: "#739e73",
+                        timeout: 2000,
+                        icon: "fa fa-thumbs-up swing animated"
+                    }
+                    );
+                    llenaDataTable();
+                } else {
+                    areaDuplicadaEdit = 1;
+                    $.smallBox({
+                        title: "Error!",
+                        content: "<i>El área <b>" + $('#nombreArea').val() + "</b> ya existe </i>",
+                        color: "#C46A69",
+                        timeout: 3000,
+                        icon: "fa fa-warning shake animated"
+                    });
+
+                }
+                        console.log(response);
+               
             }
+
         });
-        $('#FormArea').data('bootstrapValidator').resetForm();
-        $('#divTiposTransaccion').show();
-        $('#FormularioAlta').hide();
+        if (areaDuplicadaEdit == 0) {
+            $('#FormArea').data('bootstrapValidator').resetForm();
+            $('#divTiposTransaccion').show();
+            $('#FormularioAlta').hide();
+        } else {
+            $('#divTiposTransaccion').hide();
+            $('#FormularioAlta').show();
+        }
     } else {
         $('#divTiposTransaccion').hide();
         $('#FormularioAlta').show();

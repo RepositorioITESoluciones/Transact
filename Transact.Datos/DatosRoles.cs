@@ -58,7 +58,29 @@ namespace Transact.Datos
             
             try
             {
+                int idValidaRol = 0;
+                DataTable dt = new DataTable();
+
+                //Valida que no exista un área con el mismo nombre
                 using (connection = Conexion.ObtieneConexion("ConexionBD"))
+                {
+                    connection.Open();
+                    var parametros = new[]{
+                        ParametroAcceso.CrearParametro("@nombreRol", SqlDbType.VarChar, roles.nombreRol.ToUpper() , ParameterDirection.Input)
+                    };
+                    dt = Ejecuta.EjecutarConsulta(connection, parametros, "Usp_CatRolesValidaNombre");
+
+                    connection.Close();
+                }
+                foreach (DataRow row in dt.Rows)
+                {
+
+                    idValidaRol = Convert.ToInt32(row["idRol"].ToString());
+                }
+
+                if (idValidaRol == 0)
+                {
+                    using (connection = Conexion.ObtieneConexion("ConexionBD"))
                 {
                     connection.Open();
                     var parametrosRoles = new[]
@@ -95,6 +117,9 @@ namespace Transact.Datos
                     }
                 }
 
+                    respuesta = true;
+
+                }
             }
             catch (Exception ex)
             {
@@ -109,52 +134,73 @@ namespace Transact.Datos
             SqlConnection connection = null;
             try
             {
+                int idValidaRol = 0;
+                DataTable dt = new DataTable();
+
+                //Valida que no exista un área con el mismo nombre
                 using (connection = Conexion.ObtieneConexion("ConexionBD"))
                 {
                     connection.Open();
-                    var parametrosRol = new[]{
+                    var parametros = new[]{
+                        ParametroAcceso.CrearParametro("@nombreRol", SqlDbType.VarChar, camposRol.nombreRol.ToUpper() , ParameterDirection.Input),
+                        ParametroAcceso.CrearParametro("@idRol", SqlDbType.Int, camposRol.idRol , ParameterDirection.Input)
+                    };
+                    dt = Ejecuta.EjecutarConsulta(connection, parametros, "Usp_CatRolesValidaNombre");
+
+                    connection.Close();
+                }
+                foreach (DataRow row in dt.Rows)
+                {
+
+                    idValidaRol = Convert.ToInt32(row["idRol"].ToString());
+                }
+
+                if (idValidaRol == 0)
+                {
+                    using (connection = Conexion.ObtieneConexion("ConexionBD"))
+                    {
+                        connection.Open();
+                        var parametrosRol = new[]{
                         ParametroAcceso.CrearParametro("@idRol", SqlDbType.Int, camposRol.idRol , ParameterDirection.Input),
                         ParametroAcceso.CrearParametro("@nombreRol",SqlDbType.VarChar, camposRol.nombreRol, ParameterDirection.Input),
                         ParametroAcceso.CrearParametro("@descripcion", SqlDbType.VarChar, camposRol.descripcionRol, ParameterDirection.Input)
                     };
-                    Ejecuta.ProcedimientoAlmacenado(connection, "Usp_CatRolActualizar", parametrosRol);
+                        Ejecuta.ProcedimientoAlmacenado(connection, "Usp_CatRolActualizar", parametrosRol);
 
-                    connection.Close();
+                        connection.Close();
 
-                }
+                    }
 
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
-                    
-
-                    //Bloque que itera el arreglo de sucursales e inserta relacion SUCURSALES-ÁREAS
-                    foreach (int i in idMenus)
+                    using (connection = Conexion.ObtieneConexion("ConexionBD"))
                     {
-                        connection.Open();
 
-                        //CamposRoles campos = new CamposRoles();
-                        //campos.camposMenus = new CamposMenus();
-                        camposRol.camposMenus.idMenu = i;
 
-                        var parametrosRolxMenu = new[]{
+                        //Bloque que itera el arreglo de sucursales e inserta relacion SUCURSALES-ÁREAS
+                        foreach (int i in idMenus)
+                        {
+                            connection.Open();
+
+                            //CamposRoles campos = new CamposRoles();
+                            //campos.camposMenus = new CamposMenus();
+                            camposRol.camposMenus.idMenu = i;
+
+                            var parametrosRolxMenu = new[]{
 
                         ParametroAcceso.CrearParametro("@idRol", SqlDbType.Int, camposRol.idRol , ParameterDirection.Input),
                         ParametroAcceso.CrearParametro("@nombreRol", SqlDbType.VarChar, camposRol.nombreRol, ParameterDirection.Input),
                         ParametroAcceso.CrearParametro("@idMenu", SqlDbType.Int, camposRol.camposMenus.idMenu, ParameterDirection.Input)
                     };
-                        Ejecuta.ProcedimientoAlmacenado(connection, "Usp_CatRolesxMenusInsertar", parametrosRolxMenu);
+                            Ejecuta.ProcedimientoAlmacenado(connection, "Usp_CatRolesxMenusInsertar", parametrosRolxMenu);
 
-                        connection.Close();
+                            connection.Close();
+                        }
+
+
+
                     }
 
-                    
-
+                    respuesta = true;
                 }
-
-                
-
-
-                respuesta = true;
             }
             catch (Exception ex)
             {
@@ -163,7 +209,7 @@ namespace Transact.Datos
             return respuesta;
         }
 
-        public bool EliminaAreaBySP(int idArea)
+        public bool EliminaRolBySP(CamposRoles campos)
         {
             bool respuesta = false;
             SqlConnection connection = null;
@@ -173,9 +219,9 @@ namespace Transact.Datos
                 {
                     connection.Open();
                     var parametros = new[]{
-                        ParametroAcceso.CrearParametro("@idArea", SqlDbType.Int, idArea , ParameterDirection.Input)
+                        ParametroAcceso.CrearParametro("@idRol", SqlDbType.Int, campos.idRol , ParameterDirection.Input)
                     };
-                    Ejecuta.ProcedimientoAlmacenado(connection, "Usp_CatAreaEliminar", parametros);
+                    Ejecuta.ProcedimientoAlmacenado(connection, "Usp_CatRolEliminar", parametros);
                     connection.Close();
                 }
                 respuesta = true;
