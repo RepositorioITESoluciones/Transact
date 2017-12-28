@@ -26,9 +26,7 @@ namespace Transact.Negocio
             bool respuesta = false;
             try
             {
-                clasedatos.InsertaRolBySP(roles, idMenus);
-                respuesta = true;
-
+                respuesta = clasedatos.InsertaRolBySP(roles, idMenus);
             }
             catch (Exception ex)
             {

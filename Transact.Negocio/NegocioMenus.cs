@@ -26,9 +26,7 @@ namespace Transact.Negocio
             bool respuesta = false;
             try
             {
-                clasedatos.InsertaMenuNegocio(camposMenus, idAplicaciones);
-                respuesta = true;
-
+                respuesta = clasedatos.InsertaMenuNegocio(camposMenus, idAplicaciones);
             }
             catch (Exception ex)
             {
@@ -47,11 +45,11 @@ namespace Transact.Negocio
             return respuesta;
         }
 
-        public bool eliminarAreaNegocio(int idArea)
+        public bool eliminarMenuNegocio(CamposMenus campos)
         {
             bool respuesta = false;
 
-            respuesta = clasedatos.EliminaAreaBySP(idArea);
+            respuesta = clasedatos.EliminaMenuBySP(campos);
             return respuesta;
         }
 

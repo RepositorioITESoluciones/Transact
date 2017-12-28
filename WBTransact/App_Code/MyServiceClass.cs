@@ -1172,7 +1172,7 @@ public class MyServiceClass : System.Web.Services.WebService
         return listcampos;
 
     }
-
+    /*
     [WebMethod]
     public bool insertaAreaWs(string nombreArea, string descripcion, int[] idSucursal)
     {
@@ -1194,6 +1194,28 @@ public class MyServiceClass : System.Web.Services.WebService
             }
             respuesta = true;
 
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+
+        }
+
+        return respuesta;
+
+    }*/
+    [WebMethod]
+    public bool insertaAreaWs(string nombreArea, string descripcion, int[] idSucursal)
+    {
+        bool respuesta = false;
+        try
+        {
+            CamposArea campos = new CamposArea();
+            campos.camposSucursal = new CamposSucursal();
+            campos.nombreArea = nombreArea;
+            campos.descripcion = descripcion;
+
+            respuesta = negocioArea.InsertaAreaNegocio(campos, idSucursal);
         }
         catch (Exception ex)
         {
@@ -1270,9 +1292,7 @@ public class MyServiceClass : System.Web.Services.WebService
             campos.nombreRol = nombreRol;
             campos.descripcionRol = descripcion;
 
-            negocioRoles.InsertaRolNegocio(campos, idMenus);
-
-            respuesta = true;
+            respuesta = negocioRoles.InsertaRolNegocio(campos, idMenus);
 
         }
         catch (Exception ex)
@@ -1362,9 +1382,7 @@ public class MyServiceClass : System.Web.Services.WebService
             campos.liga = liga;
             campos.descripcionMenu = descripcion;
 
-            negocioMenus.InsertaMenuNegocio(campos, idAplicaciones);
-
-            respuesta = true;
+            respuesta = negocioMenus.InsertaMenuNegocio(campos, idAplicaciones);
 
         }
         catch (Exception ex)
@@ -1393,6 +1411,15 @@ public class MyServiceClass : System.Web.Services.WebService
         campos.descripcionMenu = descripcion;
 
         return negocioMenus.actualizarMenuNegocio(campos, idAplicaciones);
+    }
+
+    [WebMethod]
+    public bool eliminarMenuWs(int idMenu)
+    {
+        CamposMenus campos = new CamposMenus();
+        campos.idMenu = idMenu;
+
+        return negocioMenus.eliminarMenuNegocio(campos);
     }
 
 

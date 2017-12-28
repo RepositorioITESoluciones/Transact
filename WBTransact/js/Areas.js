@@ -1,4 +1,5 @@
-﻿$(function () {
+﻿var row;
+$(function () {
     initEventos();
     initDataTable();
     llenaComboSucursal();
@@ -30,7 +31,7 @@ function initEventos() {
     });
 
     $('#btnguardar').click(function () {
-        var row = $("#detalleArea").DataTable().row('.selected').data();
+        row = $("#detalleArea").DataTable().row('.selected').data();
         var sucursales = new Array();
         if (row) {
             editArea();
@@ -48,6 +49,7 @@ function initEventos() {
                 idSucursal: sucursales
             };
 
+            var areaDuplicada = 0;
             var valido = validateForm();
             if (valido) {
                 $.ajax({
@@ -58,24 +60,44 @@ function initEventos() {
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(parameters),
                     success: function (response) {
+                        var tmp = JSON.stringify(response).split("}");
+                        var ban = tmp[0].split(":");
+                        if (ban[1] == "true") {
                         $.smallBox({
                             title: "Éxito!",
                             content: "Área <b>" + $('#nombreArea').val() + "</b> agregada",
                             color: "#739e73",
                             timeout: 2000,
                             icon: "fa fa-thumbs-up swing animated"
-                        });
+                            });
+                        } else {
+                            areaDuplicada = 1;
+                            $.smallBox({
+                                title: "Error!",
+                                content: "<i>El área <b>" + $('#nombreArea').val() + "</b> ya existe </i>",
+                                color: "#C46A69",
+                                timeout: 3000,
+                                icon: "fa fa-warning shake animated"
+                            });
+                        }
                         console.log(response);
                         llenaDataTable();
                     }
                 });
-                $('#FormArea').data('bootstrapValidator').resetForm();
-                $('#divTiposTransaccion').show();
-                $('#FormularioAlta').hide();
-            } else {
+                if (areaDuplicada == 0) {
+                   
+                    $('#FormArea').data('bootstrapValidator').resetForm();
+                    $('#divTiposTransaccion').show();
+                    $('#FormularioAlta').hide();
+                } else {
+                    $('#divTiposTransaccion').hide();
+                    $('#FormularioAlta').show();
+                }
+               
+            } /*else {
                 $('#divTiposTransaccion').hide();
                 $('#FormularioAlta').show();
-            }
+            }*/
         }
     });
 
@@ -344,6 +366,7 @@ function LlenaCheckBoxAreasEdit(idArea) {
 
 function editArea() {
     var valido;
+    var areaDuplicadaEdit = 0;
     valido = validateForm();
     var sucursales = new Array();
     if (valido) {
@@ -368,20 +391,44 @@ function editArea() {
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(parameters),
-            success: function () {
-                $.smallBox({
-                    title: "Éxito!",
-                    content: "Área <b>" + $("#nombreArea").val() + "</b> Editada",
-                    color: "#739e73",
-                    timeout: 2000,
-                    icon: "fa fa-thumbs-up swing animated"
-                });
-                llenaDataTable();
+            success: function (response) 
+            {
+                var tmp = JSON.stringify(response).split("}");
+                var ban = tmp[0].split(":");
+                if(ban[1] == "true") {
+                    $.smallBox({
+                        title: "Éxito!",
+                        content: "Área <b>" + $('#nombreArea').val() + "</b> editada",
+                        color: "#739e73",
+                        timeout: 2000,
+                        icon: "fa fa-thumbs-up swing animated"
+                    }
+                    );
+                    llenaDataTable();
+                } else {
+                    areaDuplicadaEdit = 1;
+                    $.smallBox({
+                        title: "Error!",
+                        content: "<i>El área <b>" + $('#nombreArea').val() + "</b> ya existe </i>",
+                        color: "#C46A69",
+                        timeout: 3000,
+                        icon: "fa fa-warning shake animated"
+                    });
+
+                }
+                        console.log(response);
+               
             }
+
         });
-        $('#FormArea').data('bootstrapValidator').resetForm();
-        $('#divTiposTransaccion').show();
-        $('#FormularioAlta').hide();
+        if (areaDuplicadaEdit == 0) {
+            $('#FormArea').data('bootstrapValidator').resetForm();
+            $('#divTiposTransaccion').show();
+            $('#FormularioAlta').hide();
+        } else {
+            $('#divTiposTransaccion').hide();
+            $('#FormularioAlta').show();
+        }
     } else {
         $('#divTiposTransaccion').hide();
         $('#FormularioAlta').show();

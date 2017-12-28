@@ -61,11 +61,34 @@ namespace Transact.Datos
             
             try
             {
+                int idValidaMenu = 0;
+                DataTable dt = new DataTable();
+
+                //Valida que no exista un área con el mismo nombre
                 using (connection = Conexion.ObtieneConexion("ConexionBD"))
                 {
                     connection.Open();
-                    var parametrosRoles = new[]
-                     {
+                    var parametros = new[]{
+                        ParametroAcceso.CrearParametro("@nombreMenu", SqlDbType.VarChar, camposMenus.nombreMenu.ToUpper() , ParameterDirection.Input),
+                        ParametroAcceso.CrearParametro("@idMenu", SqlDbType.Int, camposMenus.idMenu , ParameterDirection.Input)
+                    };
+                    dt = Ejecuta.EjecutarConsulta(connection, parametros, "Usp_CatMenusValidaNombre");
+
+                    connection.Close();
+                }
+                foreach (DataRow row in dt.Rows)
+                {
+
+                    idValidaMenu = Convert.ToInt32(row["idMenu"].ToString());
+                }
+
+                if (idValidaMenu == 0)
+                {
+                    using (connection = Conexion.ObtieneConexion("ConexionBD"))
+                    {
+                        connection.Open();
+                        var parametrosRoles = new[]
+                         {
                     ParametroAcceso.CrearParametro("@nombreMenu", SqlDbType.VarChar, camposMenus.nombreMenu, ParameterDirection.Input),
                     ParametroAcceso.CrearParametro("@idNivelPadre", SqlDbType.VarChar, camposMenus.idNivelPadre, ParameterDirection.Input),
                     ParametroAcceso.CrearParametro("@idPadre", SqlDbType.VarChar, camposMenus.idPadre, ParameterDirection.Input),
@@ -74,36 +97,39 @@ namespace Transact.Datos
                     ParametroAcceso.CrearParametro("@liga", SqlDbType.VarChar, camposMenus.liga, ParameterDirection.Input)
                      };
 
-                    Ejecuta.ProcedimientoAlmacenado(connection, "Usp_CatMenusInsertar", parametrosRoles);
-                   
-                }
-               
-                connection.Close();
+                        Ejecuta.ProcedimientoAlmacenado(connection, "Usp_CatMenusInsertar", parametrosRoles);
 
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+                    }
 
-                    foreach (int i in idAplicaciones)
+                    connection.Close();
+
+                    using (connection = Conexion.ObtieneConexion("ConexionBD"))
                     {
-                        connection.Open();
-                        
-                       // roles.camposAplicaciones = new CamposMenus();
-                       // roles.camposMenus.idMenu = i;
 
-                        camposMenus.camposAplicaciones.idAplicacion = i;
+                        foreach (int i in idAplicaciones)
+                        {
+                            connection.Open();
 
-                        var parametrosRolesxMenus = new[]{
+                            // roles.camposAplicaciones = new CamposMenus();
+                            // roles.camposMenus.idMenu = i;
+
+                            camposMenus.camposAplicaciones.idAplicacion = i;
+
+                            var parametrosRolesxMenus = new[]{
 
                         ParametroAcceso.CrearParametro("@idMenu", SqlDbType.Int, camposMenus.idMenu , ParameterDirection.Input),
                         ParametroAcceso.CrearParametro("@nombreMenu", SqlDbType.VarChar, camposMenus.nombreMenu, ParameterDirection.Input),
                         ParametroAcceso.CrearParametro("@idAplicacion", SqlDbType.Int, camposMenus.camposAplicaciones.idAplicacion, ParameterDirection.Input)
                     };
-                        Ejecuta.ProcedimientoAlmacenado(connection, "Usp_CatMenusxAplicacionesInsertar", parametrosRolesxMenus);
+                            Ejecuta.ProcedimientoAlmacenado(connection, "Usp_CatMenusxAplicacionesInsertar", parametrosRolesxMenus);
 
-                        connection.Close();
+                            connection.Close();
+                        }
                     }
-                }
 
+                    respuesta = true;
+
+                }
             }
             catch (Exception ex)
             {
@@ -118,10 +144,33 @@ namespace Transact.Datos
             SqlConnection connection = null;
             try
             {
+                int idValidaMenu = 0;
+                DataTable dt = new DataTable();
+
+                //Valida que no exista un área con el mismo nombre
                 using (connection = Conexion.ObtieneConexion("ConexionBD"))
                 {
                     connection.Open();
-                    var parametrosRol = new[]{
+                    var parametros = new[]{
+                        ParametroAcceso.CrearParametro("@nombreMenu", SqlDbType.VarChar, camposMenus.nombreMenu.ToUpper() , ParameterDirection.Input),
+                        ParametroAcceso.CrearParametro("@idMenu", SqlDbType.Int, camposMenus.idMenu , ParameterDirection.Input)
+                    };
+                    dt = Ejecuta.EjecutarConsulta(connection, parametros, "Usp_CatMenusValidaNombre");
+
+                    connection.Close();
+                }
+                foreach (DataRow row in dt.Rows)
+                {
+
+                    idValidaMenu = Convert.ToInt32(row["idMenu"].ToString());
+                }
+
+                if (idValidaMenu == 0)
+                {
+                    using (connection = Conexion.ObtieneConexion("ConexionBD"))
+                    {
+                        connection.Open();
+                        var parametrosRol = new[]{
                         ParametroAcceso.CrearParametro("@idMenu", SqlDbType.Int, camposMenus.idMenu , ParameterDirection.Input),
                         ParametroAcceso.CrearParametro("@nombreMenu",SqlDbType.VarChar, camposMenus.nombreMenu, ParameterDirection.Input),
                         ParametroAcceso.CrearParametro("@idNivelPadre",SqlDbType.Int, camposMenus.idNivelPadre, ParameterDirection.Input),
@@ -130,44 +179,39 @@ namespace Transact.Datos
                         ParametroAcceso.CrearParametro("@icono", SqlDbType.VarChar, camposMenus.icono, ParameterDirection.Input),
                         ParametroAcceso.CrearParametro("@liga", SqlDbType.VarChar, camposMenus.liga, ParameterDirection.Input)
                     };
-                    Ejecuta.ProcedimientoAlmacenado(connection, "Usp_CatMenuActualizar", parametrosRol);
+                        Ejecuta.ProcedimientoAlmacenado(connection, "Usp_CatMenuActualizar", parametrosRol);
 
-                    connection.Close();
+                        connection.Close();
 
-                }
+                    }
 
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
-                    
-
-                    //Bloque que itera el arreglo de sucursales e inserta relacion MENUS-APLICACIONES
-                    foreach (int i in idAplicaciones)
+                    using (connection = Conexion.ObtieneConexion("ConexionBD"))
                     {
-                        connection.Open();
 
-                        //CamposRoles campos = new CamposRoles();
-                        //campos.camposMenus = new CamposMenus();
-                        camposMenus.camposAplicaciones.idAplicacion = i;
+                        //Bloque que itera el arreglo de sucursales e inserta relacion MENUS-APLICACIONES
+                        foreach (int i in idAplicaciones)
+                        {
+                            connection.Open();
 
-                        var parametrosRolxMenu = new[]{
+                            //CamposRoles campos = new CamposRoles();
+                            //campos.camposMenus = new CamposMenus();
+                            camposMenus.camposAplicaciones.idAplicacion = i;
+
+                            var parametrosRolxMenu = new[]{
 
                         ParametroAcceso.CrearParametro("@idMenu", SqlDbType.Int, camposMenus.idMenu , ParameterDirection.Input),
                         ParametroAcceso.CrearParametro("@nombreMenu", SqlDbType.VarChar, camposMenus.nombreMenu, ParameterDirection.Input),
                         ParametroAcceso.CrearParametro("@idAplicacion", SqlDbType.Int, camposMenus.camposAplicaciones.idAplicacion, ParameterDirection.Input)
                     };
-                        Ejecuta.ProcedimientoAlmacenado(connection, "Usp_CatMenusxAplicacionesInsertar", parametrosRolxMenu);
+                            Ejecuta.ProcedimientoAlmacenado(connection, "Usp_CatMenusxAplicacionesInsertar", parametrosRolxMenu);
 
-                        connection.Close();
+                            connection.Close();
+                        }
+
                     }
 
-                    
-
+                    respuesta = true;
                 }
-
-                
-
-
-                respuesta = true;
             }
             catch (Exception ex)
             {
@@ -176,7 +220,7 @@ namespace Transact.Datos
             return respuesta;
         }
 
-        public bool EliminaAreaBySP(int idArea)
+        public bool EliminaMenuBySP(CamposMenus campos)
         {
             bool respuesta = false;
             SqlConnection connection = null;
@@ -186,9 +230,9 @@ namespace Transact.Datos
                 {
                     connection.Open();
                     var parametros = new[]{
-                        ParametroAcceso.CrearParametro("@idArea", SqlDbType.Int, idArea , ParameterDirection.Input)
+                        ParametroAcceso.CrearParametro("@idMenu", SqlDbType.Int, campos.idMenu , ParameterDirection.Input)
                     };
-                    Ejecuta.ProcedimientoAlmacenado(connection, "Usp_CatAreaEliminar", parametros);
+                    Ejecuta.ProcedimientoAlmacenado(connection, "Usp_CatMenuEliminar", parametros);
                     connection.Close();
                 }
                 respuesta = true;
