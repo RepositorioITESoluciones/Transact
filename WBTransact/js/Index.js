@@ -98,3 +98,76 @@ function showWarningMessage(titulo, mensaje) {
         icon: "fa fa-exclamation-circle swing animated"
     });
 }
+
+//Funciones para validar los formularios -caracteres especiales, espacios
+
+//Funciones validar
+function validarN(e, id, longg) {
+    //console.log("maxLength");
+    $("#" + id.getAttribute("id")).attr('maxLength', longg).keypress(limitMe);
+    tecla = (e.keyCode ? e.keyCode : e.which);
+    if (tecla == 8) return true;
+    patron = /[0-9\s\t\.]/;
+    te = String.fromCharCode(tecla);
+    return patron.test(te);
+}
+function limitMe(e) {
+    if (e.keyCode == 8) { return true; }
+    return this.value.length < $(this).attr("maxLength");
+}
+function validarLetra(e) {
+    tecla = (e.keyCode ? e.keyCode : e.which);
+    if (tecla == 8) return true;
+    patron = /[A-Za-záÁéÉíÍóÓúÚñÑ\s\t]/;
+    te = String.fromCharCode(tecla);
+    return patron.test(te);
+}
+function validarLetra2(e) {
+    tecla = (e.keyCode ? e.keyCode : e.which);
+    if (tecla == 8) return true;
+    patron = /[0-9A-Za-záÁéÉíÍóÓúÚñÑ\s\t]/;
+    te = String.fromCharCode(tecla);
+    return patron.test(te);
+}
+function validarNL(e) {
+    tecla = (e.keyCode ? e.keyCode : e.which);
+    if (tecla == 8) return true;
+    patron = /[A-Za-záÁéÉíÍóÓúÚñÑ\s\-\_\.\&\t\S]/;
+    te = String.fromCharCode(tecla);
+    return patron.test(te);
+}
+function validarRFC(e) {
+    tecla = (e.keyCode ? e.keyCode : e.which);
+    if (tecla == 8) return true;
+    patron = /[0-9A-Za-z\t\&]/;
+    te = String.fromCharCode(tecla);
+    return patron.test(te);
+}
+function validarNLug(e) {
+    tecla = (e.keyCode ? e.keyCode : e.which);
+    if (tecla == 8) return true;
+    patron = /[0-9A-Za-zñÑ\s\t]/;
+    te = String.fromCharCode(tecla);
+    return patron.test(te);
+}
+function validarNLS(e) {
+    tecla = (e.keyCode ? e.keyCode : e.which);
+    if (tecla == 8) return true;
+    patron = /[0-9A-Za-záÁéÉíÍóÓúÚñÑ\s\t]/;
+    te = String.fromCharCode(tecla);
+    return patron.test(te);
+}
+function validarTodo(e) {
+    tecla = (e.keyCode ? e.keyCode : e.which);
+    if (tecla == 8) return true;
+    patron = /[0-9A-Za-záÁéÉíÍóÓúÚñÑ\s\-\t\"\&\=]/;
+    te = String.fromCharCode(tecla);
+    return patron.test(te);
+}
+function sinEspacios() {
+    $('body').on('keydown', function (e) {
+        if (e.which === 32 && e.target.selectionStart === 0) {
+            return false;
+        }
+    });
+}

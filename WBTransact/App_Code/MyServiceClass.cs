@@ -956,6 +956,8 @@ public class MyServiceClass : System.Web.Services.WebService
         return ListaRegistrosEstado;
     }
     #endregion
+
+    //Método Categoría de Transacción
     #region Categoria de Transaccion
 
     [WebMethod]
@@ -999,6 +1001,8 @@ public class MyServiceClass : System.Web.Services.WebService
     }
 
     #endregion
+
+    //Método Datos empresariales
     #region Datos empresariales
 
     [WebMethod]
@@ -1104,7 +1108,19 @@ public class MyServiceClass : System.Web.Services.WebService
         return ListaRegistrosEstado;
     }
 
+
+    [WebMethod]
+    public bool ExisteRFC(string rfc)
+    {
+        CamposDatosFiscales camposEntidad = new CamposDatosFiscales();
+        camposEntidad.RFC = rfc;
+
+        return metodoNegocioEmpre.ExisteRFC(camposEntidad);
+    }
+
     #endregion
+
+    //Método Gestión de Procesos
     #region Gestión de Procesos
 
     [WebMethod]
@@ -1161,6 +1177,7 @@ public class MyServiceClass : System.Web.Services.WebService
     }
 
 #endregion
+
     //Metodos para Áreas
     #region CrudAreas
 

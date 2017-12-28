@@ -6,6 +6,7 @@ var data;
 var cadena = "";
 var cadenaCombo = "";
 var cadenacomboSucursal = "";
+var banderaRFC = "";
 
 $(function () {
     initEventos();
@@ -14,9 +15,23 @@ $(function () {
 });
 
 function initEventos() {
-    $("#ComboCP").prop("disabled", true);
 
+    $('#ComboEstado').select2();
+    $('#ComboCP').select2();
+
+    $("#rfcFisico").hide();
+    $("#rfcMoral").hide();
+    $(".rfcFisico").hide();
+    $("#errorFisico").hide();
+    $("#errorMoral").hide();
+    $("#errorCp").hide();
+    $("#errorEstado").hide();
+    $(".rfcMoral").hide();
+    $("#ComboCP").prop("disabled", true);
+    $('#rfc').prop("disabled", true);
+    validaRFCs();
     bootsVal();
+
     $.ajax({
         async: false,
         type: 'POST',
@@ -24,6 +39,7 @@ function initEventos() {
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
+            cadena = "";
             $.each(response, function (row, index) {
                 cadena += '<option value="' + 0 + '"> Seleccione una opción </option>'
                 $.each(index.ListaRegistros, function (r, arr) {
@@ -41,6 +57,7 @@ function initEventos() {
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
+            cadenacomboSucursal = "";
             $.each(response, function (row, index) {
                 cadenacomboSucursal += '<option value="' + 0 + '"> Seleccione una opción </option>'
                 $.each(index.ListaRegTipoPersona, function (r, arr) {
@@ -51,64 +68,143 @@ function initEventos() {
         }
     });
 
+   
     var f = new Date();
 
     $("#fecha").val(f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear());
     $('#fecha').prop('readonly', true);
 
     $('#btnPlus').click(function () {
+        $("#rfcFisico").hide();
+        $("#ComboCP").prop("disabled", true);
+        $("#rfcMoral").hide();
+        $("#rfc").show();
+        bootsVal();
+        fechaHoyDefault();
         $("#ComboCP").empty();
         $('#divDatosEmpresariales').hide();
         $('#FormularioDatosEmpresariales').show();
         $('#btnguardar2').hide();
         $('#btnguardar').show();
-        url = 'MyWebService.asmx/insertaWs';
+        url = 'MyWebService.asmx/InsertarDatosEmpresariales';
+
+        $("#ComboEstado").val(0);
+        $("#ComboEstado").trigger("change");
+        $(".estado").removeClass("has-error");
+
+        $("#ComboCP").val(0);
+        $("#ComboCP").trigger("change");
+        $(".codigo").removeClass("has-error");
+
+        $("#errorCp").hide();
+        $("#errorEstado").hide();
+
+
+
     });
 
     $('#btnAtras').click(function () {
         $('#divDatosEmpresariales').show();
         $('#FormularioDatosEmpresariales').hide();
         $('#FormEmpresa')[0].reset();
+        $("#ComboEstado").val(0);
+        $("#ComboEstado").trigger("change");
+        $(".estado").removeClass("has-error");
+
+        $("#ComboCP").val(0);
+        $("#ComboCP").trigger("change");
+        $(".codigo").removeClass("has-error");
+
+        $("#errorCp").hide();
+        $("#errorEstado").hide();
+
+
         $('#FormEmpresa').bootstrapValidator('destroy');
     });
 
     $('#btnguardar').click(function () {
+        if ($("#ComboEstado").val() != 0) {
+            $("#errorEstado").hide();
+            $(".estado").removeClass("has-error");
+            $(".estado").addClass("has-success");
+        } else {
+            $("#errorEstado").show();
+            $(".estado").removeClass("has-success");
+            $(".estado").addClass("has-error");
+        }
+        if ($("#ComboCP").val() != 0) {
+            $(".codigo").removeClass("has-error");
+            $(".codigo").addClass("has-success");
+
+            $("#errorCp").hide();
+        } else {
+            $(".codigo").removeClass("has-success");
+            $(".codigo").addClass("has-error");
+
+            $("#errorCp").show();
+        }
+        var rfc = "";
+        console.log("banderaRFC:: " + banderaRFC);
+        if (banderaRFC == "Fisico") {
+            rfc = $("#rfcFisico").val();
+        } else {
+            rfc = $("#rfcMoral").val();
+        }
+        rfc = rfc.toUpperCase();
         bootsVal();
         $('#FormEmpresa').data('bootstrapValidator').validate();
         var n = $('#FormEmpresa').data('bootstrapValidator').isValid();
         if (n) {
-            $('#divDatosEmpresariales').show();
-            $('#FormularioDatosEmpresariales').hide();
-            $.ajax({
-                async: false,
-                type: 'POST',
-                url: 'MyWebService.asmx/InsertarDatosEmpresariales',
-                data: {
-                    nombre: $('#nombre').val(),
-                    fechaRegistro: $('#fecha').val(),
-                    idGiro: $('#giro').val(),
-                    ComboTPer: $('#tipoPer').val(),
-                    RazonSocial: $('#razonSocial').val(),
-                    RFC: $('#rfc').val(),
-                    ComboEstado: $('#ComboEstado').val(),
-                    ComboCP: $('#ComboCP').val(),
-                    Calle: $('#calle').val(),
-                    NumExt: $('#numExt').val(),
-                    NumInt: $('#numInt').val()
-                },
-                success: function () {
-                    $.smallBox({
-                        title: "Éxito!",
-                        content: "Empresa <b>" + $('#nombre').val() + "</b> agregada",
-                        color: "#739e73",
-                        timeout: 2000,
-                        icon: "fa fa-thumbs-up swing animated"
-                    });
-                    cargarTabla();
-                    $('#FormEmpresa')[0].reset();
-                    $('#FormEmpresa').bootstrapValidator('destroy');
-                }
-            })
+            if ($("#ComboCP").val() != 0 && $("#ComboEstado").val() != 0) {
+                $('#divDatosEmpresariales').show();
+                $('#FormularioDatosEmpresariales').hide();
+                $.ajax({
+                    async: false,
+                    type: 'POST',
+                    url: 'MyWebService.asmx/InsertarDatosEmpresariales',
+                    data: {
+                        nombre: $('#nombre').val(),
+                        fechaRegistro: $('#fecha').val(),
+                        idGiro: $('#giro').val(),
+                        ComboTPer: $('#tipoPer').val(),
+                        RazonSocial: $('#razonSocial').val(),
+                        RFC: rfc,
+                        ComboEstado: $('#ComboEstado').val(),
+                        ComboCP: $('#ComboCP').val(),
+                        Calle: $('#calle').val(),
+                        NumExt: $('#numExt').val(),
+                        NumInt: $('#numInt').val()
+                    },
+                    success: function () {
+                        $.smallBox({
+                            title: "Éxito!",
+                            content: "Empresa <b>" + $('#nombre').val() + "</b> agregada",
+                            color: "#739e73",
+                            timeout: 2000,
+                            icon: "fa fa-thumbs-up swing animated"
+                        });
+                        $("#ComboEstado").val(0);
+                        $("#ComboEstado").trigger("change");
+                        $(".estado").removeClass("has-error");
+
+                        $("#ComboCP").val(0);
+                        $("#ComboCP").trigger("change");
+                        $(".codigo").removeClass("has-error");
+
+                        $("#errorCp").hide();
+                        $("#errorEstado").hide();
+                        //cargarTabla();
+                        //$('#FormEmpresa')[0].reset();
+                        //$('#FormEmpresa').bootstrapValidator('destroy');
+                    }
+
+                });
+                cargarTabla();
+                $('#FormEmpresa')[0].reset();
+                $('#FormEmpresa').bootstrapValidator('destroy');
+
+            }
+
         } else {
             $('#btnguardar').prop("disabled", false);
             bootsVal();
@@ -116,13 +212,21 @@ function initEventos() {
     });
 
     $('#btnguardar2').click(function () {
+        var rfc = "";
+        console.log("banderaRFC:: " + banderaRFC);
+        if (banderaRFC == "Fisico") {
+            rfc = $("#rfcFisico").val();
+        } else {
+            rfc = $("#rfcMoral").val();
+        }
+        rfc = rfc.toUpperCase();
         bootsVal();
         $('#FormEmpresa').data('bootstrapValidator').validate();
         var n = $('#FormEmpresa').data('bootstrapValidator').isValid();
         if (n) {
             $('#divDatosEmpresariales').show();
             $('#FormularioDatosEmpresariales').hide();
-            //console.log("wwwww: " + rows[12]);
+            console.log("wwwww: " + rows[12]);
             $.ajax({
                 async: false,
                 type: 'POST',
@@ -134,26 +238,28 @@ function initEventos() {
                     idGiro: $('#giro').val(),
                     ComboTPer: $('#tipoPer').val(),
                     RazonSocial: $('#razonSocial').val(),
-                    RFC: $('#rfc').val(),
+                    RFC: rfc,
                     ComboEstado: $('#ComboEstado').val(),
                     ComboCP: $('#ComboCP').val(),
                     Calle: $('#calle').val(),
                     NumExt: $('#numExt').val(),
                     NumInt: $('#numInt').val()
                 },
-                success: function () {
+                success: function (data) {
                     $.smallBox({
                         title: "Éxito!",
-                        content: "Usuario <b>" + rows[0] + "</b> Editado",
+                        content: "Empresa <b>" + rows[0] + "</b> editada",
                         color: "#739e73",
                         timeout: 2000,
                         icon: "fa fa-thumbs-up swing animated"
                     });
-                    cargarTabla();
-                    $('#FormEmpresa')[0].reset();
-                    $('#FormEmpresa').bootstrapValidator('destroy');
+
+
                 }
-            })
+            });
+            cargarTabla();
+            $('#FormEmpresa')[0].reset();
+            $('#FormEmpresa').bootstrapValidator('destroy');
         } else {
             $('#btnguardar2').prop("disabled", false);
             bootsVal();
@@ -162,9 +268,10 @@ function initEventos() {
 
     $("#btnDelete").click(function () {
         var row = $('#TablaDatosEmpresariales').DataTable().row('.selected').data();
+
         if (row) {
-            console.log(JSON.stringify(row[12]));
             var idEmpresa = row[12];
+
             $.SmartMessageBox({
                 title: "¿Desea <font color='#ff9100'><b>eliminar</b></font> la empresa <b>" + row[0] + "</b>?",
                 content: "Una vez eliminada la empresa no podras volver acceder a ella.",
@@ -173,40 +280,53 @@ function initEventos() {
                 if (ButtonPressed === "Si") {
                     $.ajax({
                         async: false,
-                        type: "POST",
+                        type: 'POST',
                         url: 'MyWebService.asmx/EliminarDatosEmpresariales',
-                        data: JSON.stringify({
+                        data: {
                             idEmpresa: idEmpresa
-                        }),
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        success: function (output) {
-                            $.each(output, function (j, cam) {
-                                showOkMessage('Empresa eliminada', 'Se ha eliminado la empresa <b>' + row[0] + '<b>');
-                                cargarTabla();
-                                $('#FormEmpresa')[0].reset();
-                                $('#FormEmpresa').bootstrapValidator('destroy');
-                            });
                         },
-                        error: function (e) {
-                            console.log("error");
+                        success: function (data) {
+                            $.smallBox({
+                                title: "Éxito!",
+                                content: "Empresa <b>" + row[0] + "</b> eliminada",
+                                color: "#739e73",
+                                timeout: 2000,
+                                icon: "fa fa-thumbs-up swing animated"
+                            });
+                            cargarTabla();
+                            $('#FormEmpresa')[0].reset();
+                            $('#FormEmpresa').bootstrapValidator('destroy');
                         }
-                    });
+                    })
                 } else {
                     $('#bot1-Msg1').prop('disabled', true);
                 }
             });
+
         } else {
             showWarningMessage('Información </b>', '<i>Debe seleccionar por lo menos un elemento</i>');
+
         }
+
     })
 
     $("#btnEdit").click(function () {
+
         bootsVal();
         editUsuario();
         $('#btnguardar2').show();
         $('#btnguardar').hide();
         edit = 1;
+        $("#ComboEstado").val(0);
+        $("#ComboEstado").trigger("change");
+        $(".estado").removeClass("has-error");
+
+        $("#ComboCP").val(0);
+        $("#ComboCP").trigger("change");
+        $(".codigo").removeClass("has-error");
+
+        $("#errorCp").hide();
+        $("#errorEstado").hide();
     })
 }
 
@@ -237,7 +357,6 @@ function initDataTable() {
                 $.each(index.ListaRegistros, function (r, arr) {
                     console.log(row);
                     var d = new Date(arr.fechaRegistro).forma;
-                    //console.log("RRRRR: " + JSON.stringify(arr));
                     datos.push([arr.nombre, arr.fechaRegistro.substring(0, 10), arr.DatosFiscales.RFC, arr.DatosFiscales.RazonSocial, arr.DatosFiscales.TipoPersona.TipoPersona, arr.idGiro, arr.DatosFiscales.TipoPersona.IdTipoPersona, arr.DatosFiscales.Estado.idEstado, arr.DatosFiscales.C_CP, arr.DatosFiscales.Calle, arr.DatosFiscales.NumeroExterior, arr.DatosFiscales.NumeroInterior, arr.idEmpresa]);
                 });
             });
@@ -346,6 +465,16 @@ function initDataTable() {
     // registro
     $('#TablaDatosEmpresariales tbody').on('dblclick', 'tr', function () {
         $(this).addClass('selected');
+        $("#ComboEstado").val(0);
+        $("#ComboEstado").trigger("change");
+        $(".estado").removeClass("has-error");
+
+        $("#ComboCP").val(0);
+        $("#ComboCP").trigger("change");
+        $(".codigo").removeClass("has-error");
+
+        $("#errorCp").hide();
+        $("#errorEstado").hide();
         bootsVal();
         editUsuario();
         edit = 1;
@@ -354,12 +483,9 @@ function initDataTable() {
 }
 
 function editUsuario() {
-
-
     var row = $("#TablaDatosEmpresariales").DataTable().row('.selected').data();
     rows = $("#TablaDatosEmpresariales").DataTable().row('.selected').data();
     if (row) {
-
         $("#nombre").val(row[0]);
         $("#fecha").val(row[1]);
         $("#giro").val(row[5]);
@@ -368,8 +494,15 @@ function editUsuario() {
         $("#tipoPer").val(row[6]);
         $("#tipoPer").trigger('change');
 
+        if ($("#tipoPer").val() == 1) {
+            $("#rfcFisico").val(row[2]);
+        } else {
+            $("#rfcMoral").val(row[2]);
+        }
+
+
+
         $("#razonSocial").val(row[3]);
-        $("#rfc").val(row[2]);
 
         $("#ComboEstado").val(row[7]);
         $("#ComboEstado").trigger('change');
@@ -390,7 +523,6 @@ function editUsuario() {
         $('#btnguardar2').show();
         $('#btnguardar').hide();
 
-        cargarTabla();
 
     } else {
         showWarningMessage('Información </b>', '<i>Debe seleccionar por lo menos un elemento</i>');
@@ -408,6 +540,7 @@ function llenaComboEstado() {
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
+            html = "";
             $.each(data, function (index, item) {
                 html += '<option value="' + 0 + '"> Seleccione una opción </option>'
                 $.each(item.ListaRegistrosEstado, function (index1, item1) {
@@ -448,10 +581,9 @@ function actualizaCP() {
     });
 
 }
-
 //Funcion creada para validar campos vacios en formulario
-function bootsVal() {
-    console.log("dsdasd");
+function bootsVal(rfc) {
+
     $('#FormEmpresa').bootstrapValidator({
         live: 'enabled',
         submitButtons: 'button[id="btnguardar"]',
@@ -501,11 +633,9 @@ function bootsVal() {
                     callback: {
                         message: 'Seleccione un estado',
                         callback: function (value, validator, $field) {
-                            if (value === '0') {
-                                return false
-                            } else {
-                                return true
-                            }
+                            // Get the selected options
+                            var options = validator.getFieldElements('ComboEstado').val();
+                            return (options != null);
                         }
                     }
                 }
@@ -549,25 +679,39 @@ function bootsVal() {
                     },
                 }
             },
-            rfc: {
+            rfcFisico: {
                 verbose: false,
-                selector: '#rfc',
+                selector: '#rfcFisico',
                 group: '.col-6',
                 validators: {
                     notEmpty: {
-                        message: 'El RFC es obligatorio'
+                        message: 'El RFC fisico es obligatorio'
                     },
                     regexp: {
                         regexp: /^([aA-zZñÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[aA-zZ|\&\d]{3})$/,
-                        message: 'RFC no tiene el formato adecuado.'
+                        message: 'RFC fisico no tiene el formato adecuado.',
                     }
                 }
             },
+            rfcMoral: {
+                verbose: false,
+                selector: '#rfcMoral',
+                group: '.col-6',
+                validators: {
+                    notEmpty: {
+                        message: 'El RFC moral es obligatorio'
+                    },
+                    regexp: {
+                        regexp: /^([aA-zZñÑ\x26]{3}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[aA-zZ|\&\d]{3})$/,
+                        message: 'RFC moral no tiene el formato adecuado.'
+                    }
+
+                }
+            }
         }
-
-
     });
 }
+
 
 //Funcion encargada de refrescar la tabla despues de haber creado, editado o eliminado un registro
 function cargarTabla() {
@@ -593,8 +737,112 @@ function cargarTabla() {
             });
         }
     });
-
     otable.clear();
     otable.rows.add(datos);
     otable.draw();
 }
+
+function fechaHoyDefault() {
+    var f = new Date();
+    $("#fecha").val(f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear());
+    $('#fecha').prop('readonly', true);
+}
+$("#tipoPer").change(function () {
+    if ($("#tipoPer").val() == 1) {
+        banderaRFC = "Fisico";
+        bootsVal();
+        $(".rfcMoral").removeClass('has-success');
+        $(".rfcMoral").removeClass('has-error');
+        $(".rfcFisico").removeClass('has-error');
+        $(".rfcFisico").removeClass('has-success');
+        $("#rfcMoral").val('');
+        $("#rfcFisico").show();
+        $(".rfcFisico").show();
+        $("#rfc").hide();
+        $(".rfcNormal").hide();
+        $("#rfcMoral").hide();
+        $(".rfcMoral").hide();
+    } else if ($("#tipoPer").val() == 2) {
+        banderaRFC = "Moral";
+        console.log(">>>>>>>>: " + banderaRFC);
+        bootsVal();
+        $(".rfcMoral").removeClass('has-success');
+        $(".rfcMoral").removeClass('has-error');
+        $(".rfcFisico").removeClass('has-error');
+        $(".rfcFisico").removeClass('has-success');
+        $("#rfcFisico").val('');
+        $("#rfcMoral").show();
+        $(".rfcMoral").show();
+        $("#rfc").hide();
+        $(".rfcNormal").hide();
+        $("#rfcFisico").hide();
+        $(".rfcFisico").hide();
+    }
+})
+function validaRFCs(banderaRFC) {
+    var rfc = "";
+    if (banderaRFC == "Fisico") {
+        rfc = "rfcMoral";
+    } else {
+        rfc = "rfcFisico";
+    }
+    $('#' + rfc).blur(function () {
+        var upper = $('#' + rfc).val();
+
+        upper = upper.toUpperCase();
+        $('#' + rfc).val(upper);
+        var comboTipoPer = $("#tipoPer").val();
+        $.ajax({
+            async: false,
+            type: 'POST',
+            url: 'MyWebService.asmx/ExisteRFC',
+            data: JSON.stringify({
+                rfc: $('#' + rfc).val()
+            }),
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                $.each(response, function (row, index) {
+                    if (index == false) {
+                        $(".rfcMoral").addClass('has-error');
+                        $(".rfcFisico").addClass('has-error');
+                        $("#errorFisico").show();
+                        $("#errorMoral").show();
+                    } else if (index == true) {
+                        $("#errorFisico").hide();
+                        $("#errorMoral").hide();
+                        $(".rfcMoral").addClass('has-success');
+                        $(".rfcFisico").addClass('has-success');
+                    }
+                })
+            }
+        });
+    });
+
+}
+$("#ComboEstado").change(function () {
+    console.log($("#ComboEstado").val());
+    if ($("#ComboEstado").val() != 0) {
+        $("#errorEstado").hide();
+        $(".estado").removeClass("has-error");
+        $(".estado").addClass("has-success");
+    } else {
+        $("#errorEstado").show();
+        $(".estado").removeClass("has-success");
+        $(".estado").addClass("has-error");
+    }
+})
+
+$("#ComboCP").change(function () {
+    console.log($("#ComboCP").val());
+    if ($("#ComboCP").val() != 0) {
+        $(".codigo").removeClass("has-error");
+        $(".codigo").addClass("has-success");
+
+        $("#errorCp").hide();
+    } else {
+        $(".codigo").removeClass("has-success");
+        $(".codigo").addClass("has-error");
+
+        $("#errorCp").show();
+    }
+})

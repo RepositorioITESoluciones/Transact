@@ -15,8 +15,7 @@ namespace Transact.Negocio
 
         public DatosEmpresariales LlenaTablaDE()
         {
-            DatosEmpresariales listadatos;
-
+            DatosEmpresariales listadatos = new DatosEmpresariales();
             listadatos = clasedatos.LlenaTablaDatosDE();
 
             return listadatos;
@@ -93,6 +92,14 @@ namespace Transact.Negocio
             listadatos = clasedatos.LlenaComboEstados();
 
             return listadatos;
+        }
+
+
+       public bool ExisteRFC(CamposDatosFiscales campos)
+        {
+            bool respuesta = false;
+        
+            return respuesta = clasedatos.ExisteRFC(campos);
         }
 
     }

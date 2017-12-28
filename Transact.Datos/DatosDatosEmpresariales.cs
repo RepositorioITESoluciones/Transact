@@ -247,13 +247,10 @@ namespace Transact.Datos
                 }
                 campos.ListaRegistroCP = ListaCamposCP.ToArray();
 
-
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-
-
             }
 
             return campos;
@@ -280,7 +277,6 @@ namespace Transact.Datos
                     connection.Close();
                 }
 
-
                 foreach (DataRow row in dt.Rows)
                 {
                     CamposEstado reg = new CamposEstado();
@@ -300,8 +296,32 @@ namespace Transact.Datos
             }
 
             return campos;
-
         }
 
+
+        public bool ExisteRFC(CamposDatosFiscales campos)
+        {
+            SqlConnection connection = null;
+            using (connection = Conexion.ObtieneConexion("ConexionBD"))
+            {
+
+                string query =  " select count(*) " +
+                    " from[Negocio].Empresas em " +
+                    " INNER JOIN Comunes.DatosFiscales df " +
+                    " on em.idDatosFiscales = df.idDatosFiscales " +
+                    " where em.activo = 1 " +
+                    " AND df.rfc = @rfc; ";
+
+                SqlCommand cmd = new SqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("rfc", campos.RFC);
+                connection.Open();
+
+                int count = Convert.ToInt32(cmd.ExecuteScalar());
+                if (count >= 1)
+                    return false;
+                else
+                    return true;
+            }
+        }
     }
 }
