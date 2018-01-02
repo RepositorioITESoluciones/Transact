@@ -24,17 +24,16 @@ namespace Transact.Negocio
 
         public bool InsertaProcesos(CamposProceso campos)
         {
-            bool respuesta = false;
             try
             {
-                clasedatos.InsertaDatosProcesos(campos);
-                respuesta = true;
+                return clasedatos.InsertaDatosProcesos(campos);
+
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
-            return respuesta;
+            return false;
         }
 
         public bool ActualizarProceso(CamposProceso campos)

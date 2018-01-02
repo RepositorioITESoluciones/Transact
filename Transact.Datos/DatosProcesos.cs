@@ -55,47 +55,40 @@ namespace Transact.Datos
             return listadatos;
         }
 
-        public bool InsertaDatosProcesos(CamposProceso campos)
-        {
+        public bool InsertaDatosProcesos(CamposProceso campos){
             bool respuesta = false;
             SqlConnection connection = null;
-            try
-            {
+            try{
                 int validaNombreProceso = 0;
                 DataTable dt = new DataTable();
 
                 //Valida que no exista un proceso con el mismo nombre
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")){
+                    SqlDataReader consulta;
+                    connection.Open();
+                  
+                    consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT count(*) as hay from [Negocio].[Procesos] where(nombreProceso) = '" + campos.nombreProceso + "' and activo = 1; ");
+                    dt.Load(consulta);
+                    connection.Close();
+
+                }
+                foreach (DataRow row in dt.Rows){
+                    validaNombreProceso = Convert.ToInt32(row["hay"].ToString());
+                }
+
+                if (validaNombreProceso >=  1) {
+                    respuesta = false;
+                } else if (validaNombreProceso == 0) {
+
+                    using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     connection.Open();
                     var parametros = new[]{
-                        ParametroAcceso.CrearParametro("@nombreProceso", SqlDbType.VarChar, campos.nombreProceso.ToUpper() , ParameterDirection.Input),
-                        ParametroAcceso.CrearParametro("@idProceso", SqlDbType.Int, campos.idProceso , ParameterDirection.Input)
-                    };
-                    dt = Ejecuta.EjecutarConsulta(connection, parametros, "Usp_ProcesoValidaNombre");
-
-                    connection.Close();
-                }
-                foreach (DataRow row in dt.Rows)
-                {
-
-                    validaNombreProceso = Convert.ToInt32(row["idProceso"].ToString());
-                }
-
-                if (validaNombreProceso == 0)
-                {
-                    using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                    {
-                        connection.Open();
-                        var parametros = new[]
-                         {
                     ParametroAcceso.CrearParametro("@nombreProceso", SqlDbType.VarChar, campos.nombreProceso , ParameterDirection.Input),
                     ParametroAcceso.CrearParametro("@descripcionProceso", SqlDbType.VarChar, campos.descripcion , ParameterDirection.Input),
                     ParametroAcceso.CrearParametro("@idArea", SqlDbType.Int, campos.idArea.idArea, ParameterDirection.Input)
-
-                };
-                        Ejecuta.ProcedimientoAlmacenado(connection, "Usp_ProcesosInsertar", parametros);
-                        connection.Close();
+                    };
+                    Ejecuta.ProcedimientoAlmacenado(connection, "Usp_ProcesosInsertar", parametros);
+                    connection.Close();
                     }
                     respuesta = true;
                 }

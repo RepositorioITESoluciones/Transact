@@ -16,6 +16,7 @@ function initEventos() {
     ComboArea();
     $('#btnPlus').click(function () {
         //area();
+        bootsVal();
         //$("#area").empty();
         $('#divProcesos').hide();
         $('#divFormulario').show();
@@ -36,28 +37,38 @@ function initEventos() {
         $('#FormProcesos').data('bootstrapValidator').validate();
         var n = $('#FormProcesos').data('bootstrapValidator').isValid();
         if (n) {
-            $('#divProcesos').show();
-            $('#divFormulario').hide();
+          
             $.ajax({
                 async: false,
                 type: 'POST',
+                dataType : 'text',
                 url: 'MyWebService.asmx/InsertarProceso',
                 data: {
                     nombreProceso: $('#nombre').val(),
                     descripcion: $('#descripcion').val(),
                     idArea: $('#area').val()
                 },
-                success: function () {
-                    $.smallBox({
-                        title: "Éxito!",
-                        content: "Proceso <b>" + $('#nombre').val() + "</b> agregado",
-                        color: "#739e73",
-                        timeout: 2000,
-                        icon: "fa fa-thumbs-up swing animated"
-                    });
-                    cargarTabla();
-                    $('#FormProcesos')[0].reset();
-                    $('#FormProcesos').bootstrapValidator('destroy');
+                success: function (data) {
+                    console.log(data);
+                    var repetido = data.substring(77, data.indexOf('</boolean>'));
+                    console.log("EL resultado: " + repetido);
+                    if (repetido == "false") {
+                        showWarningMessage('Información </b>', '<i>El nombre del proceso <b>' + $("#nombre").val() + '</b> ya existe</i>');
+
+                    } else {
+                        $.smallBox({
+                            title: "¡Éxito!",
+                            content: "Proceso <b>" + $("#nombre").val() + "</b> creado",
+                            color: "#739e73",
+                            timeout: 2000,
+                            icon: "fa fa-thumbs-up swing animated"
+                        });
+                        $('#divProcesos').show();
+                        $('#divFormulario').hide();
+                        cargarTabla();
+                        $('#FormProcesos')[0].reset();
+                        $('#FormProcesos').bootstrapValidator('destroy');
+                    }               
                 }
             })
         } else {
