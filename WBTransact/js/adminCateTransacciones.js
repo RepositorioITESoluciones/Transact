@@ -13,6 +13,7 @@ $(function () {
 function initEventos() {
 
     $('#btnPlus').click(function () {
+        bootsVal();
         $('#divCatTrans').hide();
         $('#divFormulario').show();
         $('#btnguardar2').hide();
@@ -32,27 +33,35 @@ function initEventos() {
         $('#FormCategoria').data('bootstrapValidator').validate();
         var n = $('#FormCategoria').data('bootstrapValidator').isValid();
         if (n) {
-            $('#divCatTrans').show();
-            $('#divFormulario').hide();
             $.ajax({
                 async: false,
                 type: 'POST',
                 url: 'MyWebService.asmx/InsertarCategoriaTransaccion',
+                dataType: 'text',
                 data: {
                     categoriaTransac: $('#nombre').val(),
                     descripcionCategoria: $('#descripcion').val()
                 },
-                success: function () {
-                    $.smallBox({
-                        title: "Éxito!",
-                        content: "Categoria de transacción <b>" + $('#nombre').val() + "</b> agregada",
-                        color: "#739e73",
-                        timeout: 2000,
-                        icon: "fa fa-thumbs-up swing animated"
-                    });
-                    cargarTabla();
-                    $('#FormCategoria')[0].reset();
-                    $('#FormCategoria').bootstrapValidator('destroy');
+                success: function (data) {
+                    //console.log('data: ' + data);
+                    var repetido = data.substring(77, data.indexOf('</boolean>'));
+                    //console.log("EL resultado: " + repetido);
+                    if (repetido == "false") {  //Valida si existe una categoria ya en DB y retorna "false"
+                        showWarningMessage('Información </b>', '<i>La categoría de transacción <b>' + $("#nombre").val() + '</b> ya existe</i>');
+                    } else {   //Si no crea una categoria exitosa
+                        $.smallBox({
+                            title: "Éxito!",
+                            content: "Categoria de transacción <b>" + $('#nombre').val() + "</b> agregada",
+                            color: "#739e73",
+                            timeout: 2000,
+                            icon: "fa fa-thumbs-up swing animated"
+                        });
+                        $('#divCatTrans').show();
+                        $('#divFormulario').hide();
+                        cargarTabla();
+                        $('#FormCategoria')[0].reset();
+                        $('#FormCategoria').bootstrapValidator('destroy');
+                    }
                 }
             })
         } else {

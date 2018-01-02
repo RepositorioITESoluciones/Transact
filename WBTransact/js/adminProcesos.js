@@ -37,7 +37,6 @@ function initEventos() {
         $('#FormProcesos').data('bootstrapValidator').validate();
         var n = $('#FormProcesos').data('bootstrapValidator').isValid();
         if (n) {
-          
             $.ajax({
                 async: false,
                 type: 'POST',
@@ -49,13 +48,12 @@ function initEventos() {
                     idArea: $('#area').val()
                 },
                 success: function (data) {
-                    console.log(data);
+                    console.log('DATAAA: ' +  data);
                     var repetido = data.substring(77, data.indexOf('</boolean>'));
                     console.log("EL resultado: " + repetido);
-                    if (repetido == "false") {
+                    if (repetido == "false") { //Valida si existe un proceso ya en DB y retorna "false"
                         showWarningMessage('Información </b>', '<i>El nombre del proceso <b>' + $("#nombre").val() + '</b> ya existe</i>');
-
-                    } else {
+                    } else {   //Si no crea un proceso exitoso
                         $.smallBox({
                             title: "¡Éxito!",
                             content: "Proceso <b>" + $("#nombre").val() + "</b> creado",

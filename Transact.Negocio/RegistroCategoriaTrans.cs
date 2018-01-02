@@ -24,18 +24,16 @@ namespace Transact.Negocio {
 
         public bool InsertarCategoriaTransaccionNegocio(CamposCategoriaTrans campos)
         {
-            bool respuesta = false;
             try
             {
-                clasedatos.InsertarCategoriaTransaccion(campos);
-                respuesta = true;
+              return clasedatos.InsertarCategoriaTransaccion(campos);
 
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
-            return respuesta;
+            return false;
         }
 
         public bool ActualizarCategoriaTransaccionNegocio(CamposCategoriaTrans campos)

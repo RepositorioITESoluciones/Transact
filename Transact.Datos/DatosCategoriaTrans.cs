@@ -55,8 +55,28 @@ namespace Transact.Datos {
             SqlConnection connection = null;
             try
             {
+                int validaNombreCategoria = 0;
+                DataTable dt = new DataTable();
+
+                //Valida que no exista una categoría con el mismo nombre
                 using (connection = Conexion.ObtieneConexion("ConexionBD"))
                 {
+                    SqlDataReader consulta;
+                    connection.Open();
+                    consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT count(*) as hay from Configuracion.CategoriaTipoTransaccion where(categoriaTransac) = '" + campos.categoriaTransac + "' and activo = 1;");
+                    dt.Load(consulta);
+                    connection.Close();
+                }
+                foreach (DataRow row in dt.Rows)
+                {
+                    validaNombreCategoria = Convert.ToInt32(row["hay"].ToString());
+                }
+
+                if (validaNombreCategoria >= 1)
+                {
+                    respuesta = false;
+                }else if (validaNombreCategoria == 0){
+                    using (connection = Conexion.ObtieneConexion("ConexionBD")){
                     connection.Open();
                     var parametros = new[]{
                     ParametroAcceso.CrearParametro("@categoriaTransac", SqlDbType.VarChar, campos.categoriaTransac , ParameterDirection.Input),
@@ -64,12 +84,12 @@ namespace Transact.Datos {
                     };
                     Ejecuta.ProcedimientoAlmacenado(connection, "[Usp_InsertarCategoriaTransaccion]", parametros);
                     connection.Close();
+                    }
                     respuesta = true;
                 }
             }
             catch (Exception ex)
             {
-                respuesta = false;
                 Console.WriteLine(ex);
             }
             return respuesta;
