@@ -42,7 +42,7 @@ function initEventos() {
             $.ajax({
                 async: false,
                 type: 'POST',
-                dataType : 'text',
+                dataType: 'text',
                 url: 'MyWebService.asmx/InsertarProceso',
                 data: {
                     nombreProceso: $('#nombre').val(),
@@ -50,7 +50,7 @@ function initEventos() {
                     idArea: $('#area').val()
                 },
                 success: function (data) {
-                    console.log('DATAAA: ' +  data);
+                    console.log('DATAAA: ' + data);
                     var repetido = data.substring(77, data.indexOf('</boolean>'));
                     console.log("EL resultado: " + repetido);
                     if (repetido == "false") { //Valida si existe un proceso ya en DB y retorna "false"
@@ -68,7 +68,7 @@ function initEventos() {
                         cargarTabla();
                         $('#FormProcesos')[0].reset();
                         $('#FormProcesos').bootstrapValidator('destroy');
-                    }               
+                    }
                 }
             })
         } else {
@@ -289,7 +289,7 @@ function editProceso() {
         $("#descripcion").val(row[1]);
         $("#area").val(row[4]);
         $("#area").trigger('change');
-       
+
         $('#divProcesos').hide();
         $('#divFormulario').show();
 
@@ -377,22 +377,22 @@ function cargarTabla() {
 }
 
 function ComboArea() {
-$.ajax({
-    async: false,
-    type: 'POST',
-    url: 'MyWebService.asmx/LlenaComboAreaByProceso',
-    dataType: 'json',
-    contentType: 'application/json; charset=utf-8',
-    success: function (response) {
-        $.each(response, function (row, index) {
-            area += '<option value="' + 0 + '"> Seleccione una opción </option>'
-            $.each(index.ListaAreaByProceso, function (r, arr) {
-                area += '<option value="' + arr.idArea + '">' + arr.nombreArea + '</option>';
+    $.ajax({
+        async: false,
+        type: 'POST',
+        url: 'MyWebService.asmx/LlenaComboAreaByProceso',
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+            $.each(response, function (row, index) {
+                area += '<option value="' + 0 + '"> Seleccione una opción </option>'
+                $.each(index.ListaAreaByProceso, function (r, arr) {
+                    area += '<option value="' + arr.idArea + '">' + arr.nombreArea + '</option>';
+                });
             });
-        });
-        $("#area").html(area);
-    }
-});
+            $("#area").html(area);
+        }
+    });
 }
 
 

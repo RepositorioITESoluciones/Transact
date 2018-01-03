@@ -226,7 +226,7 @@ function initDataTable() {
                 name: 'descripcionCategoria',
                 title: "Descripción de la categoría"
             },
-            
+
             {
                 name: 'activo',
                 title: "activo",
@@ -275,7 +275,7 @@ function editCategoria() {
 
         $("#nombre").val(row[0]);
         $("#descripcion").val(row[1]);
-        
+
         $('#divCatTrans').hide();
         $('#divFormulario').show();
 
@@ -315,7 +315,7 @@ function bootsVal() {
                     },
                 }
             },
-            
+
         }
 
 
