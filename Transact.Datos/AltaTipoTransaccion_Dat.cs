@@ -3329,7 +3329,6 @@ namespace Transact.Datos
 
             try
             {
-
                 using (connection = Conexion.ObtieneConexion("ConexionBD"))
                 {
                     SqlDataReader consulta;
