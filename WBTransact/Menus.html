@@ -91,71 +91,79 @@
                             </div>
                             <div class="row" style="margin-top: 2%; margin-bottom: 2%;">
                                 <input type="hidden" id="idMenu" name="idMenu" />
-                                <div class="col col-6">
-                                    <div class="col col-4 required">
-                                        <label class="control-label negritas">Nivel de Menú</label>
-                                    </div>
-                                    <div class="col col-6 form-group">
-                                        <!--<input type="text" id="nombreMenuPadre" onkeypress="" class="form-control" name="nombreMenuPadre" />-->
+                                <section class="col col-6">
+                                    <div>
+                                        <div class="required">
+                                            <label class="control-label negritas">* Nivel de Menú</label>
+                                        </div>
+                                        <div class="form-group">
+                                            
+                                            <!--<input type="text" id="nombreMenuPadre" onkeypress="" class="form-control" name="nombreMenuPadre" />
+                                                -->
+                                            <div id="menuPadre1" ></div>
                                             <select type="text" id="menuPadre" onkeypress="" onchange="llenaComboMenuPadre()" class="form-control" name="menuPadre">
                                                 <option value="">Selecciona nivel de menú</option>
                                                 <option value=0>Padre</option>
                                                 <option value=1>Hijo</option>
                                             </select>
-                                        <div id="menuPadre"></div>
+
+
+                                        </div>
+
                                     </div>
-                                </div>
-                                <div class="col col-6">
-                                    <div class="col col-4 required">
-                                        <label class="control-label negritas">Menú Padre</label>
+                                </section>
+                                <section class="col col-6">
+                                   
+                                    <div id="combomenuPadre" ></div>
+                                </section>
+                            </div>
+                            <div class="row" style="margin-top: -2%; margin-bottom: 3%;">
+                                <section class="col col-6">
+                                    <div class="required">
+                                        <label class="control-label negritas">* Nombre</label>
                                     </div>
-                                    <div class="col col-6 form-group">
-                                        <select id="combomenuPadre" name="combomenuPadre" type="text" onkeypress="" class="form-control">
-                                            </select>
+                                    <div class="form-group">
+                                        <input ondrop="return false;" type="text" id="nombreMenu" onkeypress="return validarCaracteresN(event)" class="form-control" name="nombreMenu" />
                                     </div>
-                                </div>
-                                <div class="col col-6" style="margin-top: 20px">
-                                    <div class="col col-4 required">
-                                        <label class="control-label negritas">Nombre</label>
+                                </section>
+
+                                <section class="col col-6">
+                                    <div class="required">
+                                        <label class="control-label negritas">* Descripción</label>
                                     </div>
-                                    <div class="col col-6 form-group">
-                                        <input type="text" id="nombreMenu" onkeypress="" class="form-control" name="nombreMenu" />
+                                    <div class="form-group">
+                                        <input ondrop="return false;" type="text" id="descripcion" onkeypress="return validarCaracteresN(event)" class="form-control" name="descripcion" />
                                     </div>
-                                </div>
-                                
-                                <div class="col col-6" style="margin-top: 20px">
-                                    <div class="col col-4 required">
-                                        <label class="control-label negritas">Descripción</label>
-                                    </div>
-                                    <div class="col col-6 form-group">
-                                        <input type="text" id="descripcion" onkeypress="" class="form-control" name="descripcion" />
-                                    </div>
-                                </div>
-                                <div class="col col-6" style="margin-top: 20px">
-                                    <div class="col col-4 required">
+                                </section>
+                            </div>
+                            <div class="row" style="margin-top: -2%; margin-bottom: 3%;">
+                                <section class="col col-6">
+                                    <div class="required">
                                         <label class="control-label negritas">Icono</label>
                                     </div>
-                                    <div class="col col-6 form-group">
-                                        <input type="text" id="icono" onkeypress="" class="form-control" name="icono" />
+                                    <div class="form-group">
+                                        <input ondrop="return false;" type="text" id="icono" onkeypress="return validarCaracteresN(event)" class="form-control" name="icono" />
                                     </div>
-                                </div>
-                                <div class="col col-6" style="margin-top: 20px">
-                                    <div class="col col-4 required">
+                                </section>
+                                <section class="col col-6">
+                                    <div class="required">
                                         <label class="control-label negritas">Liga</label>
                                     </div>
-                                    <div class="col col-6 form-group">
-                                        <input type="text" id="liga" onkeypress="" class="form-control" name="liga" />
+                                    <div class="form-group">
+                                        <input ondrop="return false;" type="text" id="liga" onkeypress="return validarCaracteresN(event)" class="form-control" name="liga" />
                                     </div>
-                                </div>
-                                <br />
-                                <div class="col col-6 " style="margin-top: 20px">
-                                    <div class="col col-4 required">
+                                </section>
+
+                            </div>
+                            <div class="row" style="margin-top: -2%; margin-bottom: 3%;">
+                                <section class="col col-6 ">
+                                    <div class="required">
                                         <label class="control-label negritas">Aplicaciones</label>
                                     </div>
-                                    <div class="col col-6 form-group">  
-                                       <div id="aplicaciones" name="aplicaciones"/> 
+                                    <div class="form-group">
+                                        <div id="aplicaciones" name="aplicaciones" />
                                     </div>
-                                </div>
+                                </section>
                             </div>
                         </form>
                         <div class="widget-body-toolbar">

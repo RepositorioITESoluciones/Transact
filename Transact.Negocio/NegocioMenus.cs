@@ -71,6 +71,15 @@ namespace Transact.Negocio
             return listadatos;
         }
 
+        public Menus LlenaComboMenuPadreEdit(CamposMenus camposMenus)
+        {
+            Menus listadatos;
+
+            listadatos = clasedatos.LlenaComboMenuPadreEdit(camposMenus);
+
+            return listadatos;
+        }
+
         public Menus LlenaCheckBoxMenusEdit(CamposMenus camposMenus)
         {
             Menus listadatos;
