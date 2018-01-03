@@ -18,7 +18,7 @@
     <title></title>
 </head>
 
-<body>
+<body onload="ini()">
 
     <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
         <h1 class="page-title txt-color-blueDark">
@@ -106,11 +106,11 @@
 
                                 <section class="col col-6">
                                     <label class="control-label">* Nombre</label>
-                                    <input placeholder="Ingresa el nombre" type="text" id="nombre" onkeypress="return validarCaracteresN(event)" class="form-control" name="nombre" />
+                                    <input placeholder="Ingresa el nombre" type="text" id="nombre" ondrop="return false" onkeypress="return validarCaracteresN(event)" class="form-control" name="nombre" />
                                 </section>
                                 <section class="col col-6">
                                     <label class="control-label">* Fecha de registro</label>
-                                    <input type="text" id="fecha" onkeypress="" class="form-control" name="fecha" />
+                                    <input type="text" id="fecha" ondrop="return false" onkeypress="" class="form-control" name="fecha" />
                                 </section>
                             </div>
                             <div class="row" style="margin-top: 10px">
@@ -129,7 +129,7 @@
                             <div class="row" style="margin-top: 10px">
                                 <section class="col col-6">
                                     <label class="control-label">* Razon social</label>
-                                    <input placeholder="Ingresa la razon social" type="text" id="razonSocial" onkeypress="return validarCaracteresN(event)" class="form-control" name="razonSocial" />
+                                    <input placeholder="Ingresa la razon social" type="text" id="razonSocial" ondrop="return false" onkeypress="return validarCaracteresN(event)" class="form-control" name="razonSocial" />
                                 </section>
                                 <section class="col col-6 rfcFisico">
                                     <label class="control-label rfcFisico">* RFC</label>
@@ -139,7 +139,7 @@
                                 <section class="col col-6 rfcMoral ">
 
                                     <label class="control-label ">* RFC</label>
-                                    <input placeholder="Ingresa el RFC Moral" type="text" id="rfcMoral" onkeypress="return validarCaracteresN(event)" class="form-control" name="rfcMoral" />
+                                    <input placeholder="Ingresa el RFC Moral" type="text" id="rfcMoral" ondrop="return false" onkeypress="return validarCaracteresN(event)" class="form-control" name="rfcMoral" />
                                     <label id="errorMoral" class="error" style="color: #a94442">El RFC solicitado ya existe</label>
 
 
@@ -147,7 +147,7 @@
                                 <section class="col col-6 rfc ">
 
                                     <label class="control-label rfcNormal">* RFC</label>
-                                    <input placeholder="Ingresa el RFC" type="text" id="rfc" onkeypress="return validarCaracteresN(event)" class="form-control" name="rfc" />
+                                    <input placeholder="Ingresa el RFC" type="text" id="rfc" ondrop="return false" onkeypress="return validarCaracteresN(event)" class="form-control" name="rfc" />
                                 </section>
                             </div>
 
@@ -167,18 +167,18 @@
                             <div class="row" style="margin-top: 10px">
                                 <section class="col col-6">
                                     <label class="control-label">* Calle</label>
-                                    <input placeholder="Ingresa la calle" type="text" id="calle" onkeypress="return validarCaracteresN(event)" class="form-control" name="calle" />
+                                    <input placeholder="Ingresa la calle" type="text" id="calle" ondrop="return false" onkeypress="return validarCaracteresN(event)" class="form-control" name="calle" />
                                 </section>
                                 <section class="col col-6">
                                     <label class="control-label">* Numero exterior</label>
-                                    <input placeholder="Ingresa el numero exterior" type="text" id="numExt" onkeypress="return validarCaracteresN(event)" class="form-control" name="numExt" />
+                                    <input placeholder="Ingresa el numero exterior" type="text" id="numExt" ondrop="return false" onkeypress="return validarCaracteresN(event)" class="form-control" name="numExt" />
                                 </section>
                             </div>
 
                             <div class="row" style="margin-top: 10px">
                                 <section class="col col-6">
                                     <label class="control-label">Numero interior</label>
-                                    <input placeholder="Ingresa el numero interior" type="text" id="numInt" onkeypress="return validarCaracteresN(event)" class="form-control" name="numInt" />
+                                    <input placeholder="Ingresa el numero interior" type="text" id="numInt" ondrop="return false" onkeypress="return validarCaracteresN(event)" class="form-control" name="numInt" />
                                 </section>
                             </div>
                             <section>
@@ -204,14 +204,5 @@
     </section>
     <script src="js/adminEmpresas.js"></script>
     <script src="js/Index.js"></script>
-    <script>
-        function sinEspacios() {
-            $('#nombre').on('keydown', function (e) {
-                if (e.which === 32 && e.target.selectionStart === 0) {
-                    return false;
-                }
-            });
-        }
-    </script>
 </body>
 </html>

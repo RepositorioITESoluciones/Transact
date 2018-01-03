@@ -8,9 +8,11 @@ var cadenaCombo = "";
 var area = "";
 
 $(function () {
+    $('#TablaProcesos').empty();
     initEventos();
     initDataTable();
 });
+
 
 function initEventos() {
     ComboArea();
@@ -374,7 +376,6 @@ function cargarTabla() {
     otable.draw();
 }
 
-
 function ComboArea() {
 $.ajax({
     async: false,
@@ -393,3 +394,6 @@ $.ajax({
     }
 });
 }
+
+
+

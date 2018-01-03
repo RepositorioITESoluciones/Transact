@@ -5,9 +5,9 @@ var rows;
 var data;
 
 $(function () {
+    $('#TablaCatTrans').empty();
     initEventos();
     initDataTable();
-    
 });
 
 function initEventos() {

@@ -14,6 +14,14 @@ $(function () {
     llenaComboEstado();
 });
 
+
+
+var bool;
+function ini() {
+    //bool = setTimeout('location="AdminEmpresas.html"', 1200000); // 5 segundos
+    window.location.reload();
+}
+
 function initEventos() {
 
     $('#ComboEstado').select2();

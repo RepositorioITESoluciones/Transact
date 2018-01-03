@@ -109,4 +109,13 @@ function validarCaracteresN(e) {
 }
 
 
+function ReloadMenu() {
+    var cadena = "AdminEmpresas.html";
+    if (cadea == $('#empresas').val()) {
+        location.reload();
+    } else {
+        alert('error');
+    }
+}
+
 
