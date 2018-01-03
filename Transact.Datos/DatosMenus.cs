@@ -318,6 +318,46 @@ namespace Transact.Datos
             return campos;
         }
 
+        public Menus LlenaComboMenuPadreEdit(CamposMenus camposMenus)
+        {
+            Menus campos = new Menus();
+            DataTable dt = new DataTable();
+            List<CamposMenus> composList = new List<CamposMenus>();
+
+            SqlConnection connection = null;
+            try
+            {
+                using (connection = Conexion.ObtieneConexion("ConexionBD"))
+                {
+                    connection.Open();
+                    var parametros = new[]{
+                        ParametroAcceso.CrearParametro("@idMenu", SqlDbType.Int, camposMenus.idMenu , ParameterDirection.Input)
+                    };
+                    dt = Ejecuta.EjecutarConsulta(connection, parametros, "Usp_CatMenuEditarMenuPadre");
+
+                    connection.Close();
+                }
+
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    CamposMenus reg = new CamposMenus();
+                    reg.idNivelPadre = Convert.ToInt32(row["nivelMenu"].ToString());
+                    reg.idMenu = Convert.ToInt32(row["idMenu"].ToString());
+                    reg.nombreMenu = row["nombreMenu"].ToString();
+                    composList.Add(reg);
+                }
+                campos.listaRegistrosMenu = composList.ToArray();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return campos;
+        }
+
         public Menus LlenaCheckBoxMenusEdit(CamposMenus camposMenus)
         {
             DataTable dt = new DataTable();

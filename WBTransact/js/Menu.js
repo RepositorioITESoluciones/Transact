@@ -6,24 +6,29 @@
 });
 
 function initEventos() {
+   
 
     $('#btnPlus').click(function () {
-        
+        $("#combomenuPadre").html('');
+        llenaCheckAplicaciones();
         var row = $("#detalleMenus").DataTable().row('.selected').data();
         if (row) {
             $('#detalleMenus').DataTable().$('tr.selected').removeClass('selected');
         }
+       
         limpiaDivs();
         validateForm();
-        $('#FormMenu').data('bootstrapValidator').resetForm();
+        $('#FormMenu').data('bootstrapValidator').resetForm();                                          
         document.getElementById("FormMenu").reset();
         $('#aplicaciones').find("option[value='0']").attr("selected", true);
         $('#divTiposTransaccion').hide();
         $('#FormularioAlta').show();
-        $("#tituloOperacion").html('Crear Área');
+        $("#tituloOperacion").html('Crear Menú');
     });
 
     $('#btnAtras').click(function () {
+       
+        $("#combomenuPadre").html('');
         $('#FormularioAlta').bootstrapValidator('destroy');
         $('#divTiposTransaccion').show();
         $('#FormularioAlta').hide();
@@ -46,13 +51,13 @@ function initEventos() {
                 var parameters = {
                 nombreMenu: $("#nombreMenu").val(),
                 idNivelPadre: $("#menuPadre").val(),
-                idPadre: $("#combomenuPadre").val(),
+                idPadre: $("#combomenuPadre1").val(),
                 descripcion: $("#descripcion").val(),
                 icono: $("#icono").val(),
                 liga: $("#liga").val(),
                 idAplicaciones: aplicaciones
                                 };
-
+                alert(JSON.stringify(parameters));
             var menuDuplicado = 0;
             var valido = validateForm();
             if (valido) {
@@ -74,6 +79,7 @@ function initEventos() {
                                 timeout: 2000,
                                 icon: "fa fa-thumbs-up swing animated"
                             });
+                            $("#combomenuPadre").html('');
                             llenaDataTable();
                         } else {
                             menuDuplicado = 1;
@@ -113,7 +119,7 @@ function initEventos() {
 
         var row = $("#detalleMenus").DataTable().row('.selected').data();
         if (row) {
-
+            
             LlenaCheckBoxMenusEdit(row[0]);
             $("#idMenu").val(row[0]);
             $("#nombreMenu").val(row[1]);
@@ -271,7 +277,7 @@ function initDataTable() {
     $('#detalleMenus tbody').on('dblclick', 'tr', function () {
         $(this).addClass('selected');
         var row = $("#detalleMenus").DataTable().row('.selected').data();
-
+        
         LlenaCheckBoxMenusEdit(row[0]);
         $("#idMenu").val(row[0]);
         $("#nombreMenu").val(row[1]);
@@ -341,8 +347,25 @@ function llenaCheckAplicaciones() {
 
 function llenaComboMenuPadre() {
     var html = '';
-    
-    if ($("#menuPadre").val() == 1) {
+    if ($("#menuPadre").val() == 0) {
+
+        if ($("#menuPadre").val() == ''  ) {
+
+            $("#combomenuPadre").html('');
+        } else {
+            html = ' <div class="required">' +
+                ' <label class="control-label negritas"> Menú Padre </label >' +
+                ' </div >';
+            html += ' <div class="form-group">';
+            html += ' <select type = "text" id = "combomenuPadre1" onkeypress="" class = "form-control" name = "combomenuPadre1" >';
+            html += ' <option value="' + 0 + '"> Nivel Padre </option>';
+            html += ' </select >';
+            html += ' </div>';
+            $("#combomenuPadre").html(html);
+
+        }
+    }
+  if ($("#menuPadre").val() == 1) {
 
         $.ajax({
             async: false,
@@ -351,29 +374,93 @@ function llenaComboMenuPadre() {
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             success: function (dataList) {
-                html = '<option value="">Selecciona un menú padre</option>';
+                html = ' <div class="required">' +
+                    ' <label class="control-label negritas"> Menú Padre </label >' +
+                    ' </div >';
+                html += ' <div class="form-group">';
+                html += ' <select type = "text" id = "combomenuPadre1" onkeypress="" class = "form-control" name = "combomenuPadre1" >';
+                //html += ' <option value="">Selecciona un menú padre</option>';
                 $.each(dataList, function (index, list) {
                     $.each(list.listaRegistrosMenu, function (index, item) {
-                        html += '<option value="' + item.idMenu + '">' + item.nombreMenu + '</option>';
+                        html += ' <option value="' + item.idMenu + '">' + item.nombreMenu + '</option>';
                     });
+
+                    html += ' </select >';
+                    html += ' </div>';
+
                     $("#combomenuPadre").html(html);
 
-                    lbl = '<label class="control-label negritas">Nivel de Menú</label>'
-                    $("#lblnivelmenu").html(lbl);
+                 
+                });
+            }
+        });
+    } 
+}
+
+//Llena checkBox Menu Padre al Editar
+/*function llenaComboMenuPadreEdit(idMenu) {
+
+    var html = '';
+    var menuPadre;
+    var parametros = {
+        idMenu: idMenu
+    }
+
+        $.ajax({
+            async: false,
+            type: 'POST',
+            url: 'MyWebService.asmx/LlenaComboMenuPadreEdit',
+            data: JSON.stringify(parametros),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (dataList) {
+                html = ' <div class="required">' +
+                    ' <label class="control-label negritas"> Menú Padre </label >' +
+                    ' </div >';
+                html += ' <div class="form-group">';
+                html += ' <select type = "text" id = "combomenuPadre1" onkeypress="" class = "form-control" name = "combomenuPadre1" >';
+                $.each(dataList, function (index, list) {
+                    $.each(list.listaRegistrosMenu, function (index, item) {
+                        html += ' <option value="' + item.idMenu + '">' + item.nombreMenu + '</option>';
+
+                        menuPadre = item.idNivelPadre;
+                        
+                    });
+
+                    if (menuPadre === 0) {
+                        alert('padre '+menuPadre);
+                        menuPadre = ' <select type="text" id="menuPadre" onkeypress="" onchange="llenaComboMenuPadre()" class="form-control" name="menuPadre">';
+                        menuPadre += ' <option value = 0 > Padre </option> ';
+                        menuPadre += ' <option value = 1 > Hijo </option>';
+                        menuPadre += ' </select>';
+                        alert('padre ' + menuPadre);
+
+                    } else if (menuPadre === 1) {
+                        alert('hijo '+ menuPadre);
+                        menuPadre = ' <select type="text" id="menuPadre" onkeypress="" onchange="llenaComboMenuPadre()" class="form-control" name="menuPadre">';
+                        menuPadre += ' <option value = 1 > Hijo </option>';
+                        menuPadre += ' <option value = 0 > Padre </option>';
+                        menuPadre += ' </select>';
+                        alert('hijo ' + menuPadre);
+                    }
+
+                    html += ' </select >';
+                    html += ' </div>';
+
+                    $("#menuPadre").html(menuPadre);
+                    $("#combomenuPadre").html(html);
+
+
+
+
+                    
 
                 });
             }
         });
-    } else {
+}*/
 
-        html = '<option value="0">Nivel Padre</option>'
-
-        
-        $("#combomenuPadre").html(html);
-    }
-}
-
-//Llena checkBox Privilegios al Editar
+//Llena checkBox Aplicaciones al Editar
 function LlenaCheckBoxMenusEdit(idMenu) {
     var chk = "";
     var parameters = {
@@ -419,13 +506,13 @@ function editMenu() {
             idMenu: $("#idMenu").val(),
             nombreMenu: $("#nombreMenu").val(),
             idNivelPadre: $("#menuPadre").val(),
-            idPadre: $("#combomenuPadre").val(),
+            idPadre: $("#combomenuPadre1").val(),
             descripcion: $("#descripcion").val(),
             icono: $("#icono").val(),
             liga: $("#liga").val(),
             idAplicaciones: aplicaciones
         };
-
+        alert(JSON.stringify(parameters));
         $.ajax({
             async: false,
             type: 'POST',
@@ -512,22 +599,6 @@ function validateForm() {
                         callback: function (value, validator, $field) {
                             if (value === '') {
                                 return  false
-                            } else {
-                                return true
-                            }
-                        }
-                    }
-                }
-            },
-            combomenuPadre: {
-                selector: '#combomenuPadre',
-                group: '.form-group',
-                validators: {
-                    callback: {
-                        message: 'Selecciona un menú padre',
-                        callback: function (value, validator, $field) {
-                            if (value === '') {
-                                return false
                             } else {
                                 return true
                             }
