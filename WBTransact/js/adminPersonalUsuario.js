@@ -117,6 +117,7 @@ function initEventos() {
             editPersonal();
         } else {
             //var valido = true;
+            var duplicado = 0;
             valido = validateFormAlta();
             //alert(JSON.stringify($('#FormAltaPersonal').serializeArray()));
 
@@ -173,9 +174,10 @@ function initEventos() {
                                     icon: "fa fa-thumbs-up swing animated"
                                 });
                             } else {
+                                duplicado = 1;
                                 $.smallBox({
                                     title: "Error!",
-                                    content: "<i>La persona y usuario no se agregaron (No pueden existir usuarios repetidos)</i>",
+                                    content: "<i>La persona y usuario no se agregaron (No pueden existir usuarios, email o rfc repetidos)</i>",
                                     color: "#C46A69",
                                     timeout: 3000,
                                     icon: "fa fa-warning shake animated"
@@ -187,9 +189,15 @@ function initEventos() {
                         }
                     });
                     //$('#FormAltaPersonal').data('bootstrapValidator').resetForm();
-                    $('#FormAltaPersonal').bootstrapValidator('destroy');
-                    $('#divTiposTransaccion').show();
-                    $('#FormularioAlta').hide();
+                    
+                    if (duplicado == 0) {
+                        $('#FormAltaPersonal').bootstrapValidator('destroy');
+                        $('#divTiposTransaccion').show();
+                        $('#FormularioAlta').hide();
+                    } else {
+                        $('#divTiposTransaccion').hide();
+                        $('#FormularioAlta').show();
+                    }
                 } else {
                     $('#divTiposTransaccion').hide();
                     $('#FormularioAlta').show();
@@ -232,6 +240,7 @@ function initEventos() {
                                     icon: "fa fa-thumbs-up swing animated"
                                 });
                             } else {
+                                duplicado = 1;
                                 $.smallBox({
                                     title: "Error!",
                                     content: "<i>El usuario no se agregó (No pueden existir usuarios repetidos)</i>",
@@ -247,9 +256,15 @@ function initEventos() {
                         }
                     });
                     //$('#FormAltaPersonal').data('bootstrapValidator').resetForm();
-                    $('#FormAltaPersonal').bootstrapValidator('destroy');
-                    $('#divTiposTransaccion').show();
-                    $('#FormularioAlta').hide();
+                    
+                    if (duplicado == 0) {
+                        $('#FormAltaPersonal').bootstrapValidator('destroy');
+                        $('#divTiposTransaccion').show();
+                        $('#FormularioAlta').hide();
+                    } else {
+                        $('#divTiposTransaccion').hide();
+                        $('#FormularioAlta').show();
+                    }
 
                 } else {
                     $('#divTiposTransaccion').hide();
@@ -326,6 +341,7 @@ function editPersonal() {
     }
 
     valido = validateFormEdita();
+    var duplicado = 0;
 
     if (valido) {
         var row = $("#TablaDetalle").DataTable().row('.selected').data();
@@ -392,9 +408,10 @@ function editPersonal() {
                         icon: "fa fa-thumbs-up swing animated"
                     });
                 } else {
+                    duplicado = 1;
                     $.smallBox({
                         title: "Error!",
-                        content: "<i>El usuario no se editó (No pueden existir usuarios repetidos)</i>",
+                        content: "<i>El usuario no se editó (No pueden existir usuarios, email o rfc repetidos)</i>",
                         color: "#C46A69",
                         timeout: 3000,
                         icon: "fa fa-warning shake animated"
@@ -403,12 +420,24 @@ function editPersonal() {
                 //llenaDataTable();
                 //console.log(response);
                 //initDataTable();
-                llenaDataTable();
+                if (duplicado == 0) {
+                    llenaDataTable();
+                }
+                
             }
             });
-        $('#FormAltaPersonal').bootstrapValidator('destroy');
-        $('#divTiposTransaccion').show();
-        $('#FormularioAlta').hide();
+        if (duplicado == 0) {
+            //llenaDataTable();
+            //Asignar el tipo 
+            $('#FormAltaPersonal').bootstrapValidator('destroy');
+            //$('#FormAltaPersonal').data('bootstrapValidator').resetForm();
+            $('#divTiposTransaccion').show();
+            $('#FormularioAlta').hide();
+        } else {
+            $('#divTiposTransaccion').hide();
+            $('#FormularioAlta').show();
+        }
+        
     } else {
         console.log('Entre al else de editar personal')
         $('#divTiposTransaccion').hide();

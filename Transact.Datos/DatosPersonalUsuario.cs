@@ -342,15 +342,17 @@ namespace Transact.Datos
                     //Parametros de entrada para buscar un usuario
                     var parametrosBuscaUsuario = new[]
                     {
+                        ParametroAcceso.CrearParametro("@RFC", SqlDbType.VarChar, rfc, ParameterDirection.Input),
+                        ParametroAcceso.CrearParametro("@email", SqlDbType.VarChar, email, ParameterDirection.Input),
                         ParametroAcceso.CrearParametro("@nombreUsuario", SqlDbType.VarChar, usuario, ParameterDirection.Input),
                     };
                     //Ejecuta el sp de busqueda de usuario y regresa un id en el datatable
-                    DataTable regresaIdUsuarioBuscado = Ejecuta.EjecutarConsulta(connection, parametrosBuscaUsuario, "[dbo].[Usp_CnfUsuariosTConsultarUsuario]");
+                    DataTable regresaIdUsuarioBuscado = Ejecuta.EjecutarConsulta(connection, parametrosBuscaUsuario, "[dbo].[Usp_CnfUsuariosTConsultarPersona]");
 
                     //Itera el datatable donde el primer registro que regresa es el id de usuario
                     foreach (DataRow row in regresaIdUsuarioBuscado.Rows)
                     {
-                        idUsuarioEncontrado = Convert.ToInt32(row["idUsuario"].ToString());
+                        idUsuarioEncontrado = Convert.ToInt32(row["idPersonal"].ToString());
                     }
                     connection.Close();
 
@@ -413,9 +415,12 @@ namespace Transact.Datos
                         }
 
                         connection.Close();
-                    }
+                    
                     respuesta = true;
+                    } else {
+                    respuesta = false;
                 }
+            }
             }
             catch (Exception ex)
             {
@@ -511,7 +516,9 @@ namespace Transact.Datos
             bool respuesta = false;
             ConvertJsonToDataset cj = new ConvertJsonToDataset();
             SqlConnection connection = null;
+            int idPersonaEncontrada = 0;
             int idUsuarioEncontrado = 0;
+            int modifica = 1;
 
             try
             {
@@ -520,21 +527,56 @@ namespace Transact.Datos
                     connection.Open();
 
                     //Parametros de entrada para buscar un usuario
-                    var parametrosBuscaUsuario = new[]
+                    var parametrosBuscaPersona = new[]
                     {
+                        ParametroAcceso.CrearParametro("@RFC", SqlDbType.VarChar, rfc, ParameterDirection.Input),
+                        ParametroAcceso.CrearParametro("@email", SqlDbType.VarChar, email, ParameterDirection.Input),
                         ParametroAcceso.CrearParametro("@nombreUsuario", SqlDbType.VarChar, usuario, ParameterDirection.Input),
+                        ParametroAcceso.CrearParametro("@idUsuario", SqlDbType.Int, idUsuario, ParameterDirection.Input),
                     };
                     //Ejecuta el sp de busqueda de usuario y regresa un id en el datatable
-                    DataTable regresaIdUsuario = Ejecuta.EjecutarConsulta(connection, parametrosBuscaUsuario, "[dbo].[Usp_CnfUsuariosTConsultarUsuario]");
+                    DataTable regresaIdPersona = Ejecuta.EjecutarConsulta(connection, parametrosBuscaPersona, "[dbo].[Usp_CnfUsuariosTConsultarPersonaDif]");
 
                     //Itera el datatable donde el primer registro que regresa es el id de usuario
-                    foreach (DataRow row in regresaIdUsuario.Rows)
+                    foreach (DataRow row in regresaIdPersona.Rows)
                     {
-                        idUsuarioEncontrado = Convert.ToInt32(row["idUsuario"].ToString());
+                        idPersonaEncontrada = Convert.ToInt32(row["idPersonal"].ToString());
                     }
                     connection.Close();
 
-                    if (idUsuarioEncontrado == 0 || idUsuarioEncontrado == idUsuario)
+                    //Si la persona encontrada es la misma q se quiere modificar, se busca si es el mismo nombre de usuario
+                    if (idPersonaEncontrada == idPersonal)
+                    {
+                        connection.Open();
+
+                        //Parametros de entrada para buscar un usuario
+                        var parametrosBuscaUsuario = new[]
+                        {
+                        ParametroAcceso.CrearParametro("@nombreUsuario", SqlDbType.VarChar, usuario, ParameterDirection.Input),
+                        ParametroAcceso.CrearParametro("@idUsuario", SqlDbType.Int, idUsuario, ParameterDirection.Input),
+                        };
+                        //Ejecuta el sp de busqueda de usuario y regresa un id en el datatable
+                        DataTable regresaIdUsuarioBuscado = Ejecuta.EjecutarConsulta(connection, parametrosBuscaUsuario, "[dbo].[Usp_CnfUsuariosTConsultarUsuarioDif]");
+
+                        //Itera el datatable donde el primer registro que regresa es el id de usuario
+                        foreach (DataRow row in regresaIdUsuarioBuscado.Rows)
+                        {
+                            idUsuarioEncontrado = Convert.ToInt32(row["idUsuario"].ToString());
+                        }
+                        connection.Close();
+
+                        //Si la persona es la misma, pero ya tiene un nombreUsuario igual al que quiero modificar, no permitira modificarlo
+                        if (idUsuarioEncontrado != idUsuario && idUsuarioEncontrado != 0) {
+                            modifica = 0;
+                        }
+                    }
+                    //Si la persona no es la misma (si regresa un id diferente a 0, por que 0 significa q no encontro ninguna coincidencia), no dejara modificar por que ya existe una persona con rfc, mail o nombreUsuario iguales
+                    else if (idPersonaEncontrada != 0)
+                    {
+                        modifica = 0;
+                    }
+
+                    if (modifica == 1)
                     {
                         connection.Open();
 
