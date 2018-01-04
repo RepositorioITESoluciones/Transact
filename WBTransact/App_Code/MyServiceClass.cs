@@ -1458,6 +1458,16 @@ public class MyServiceClass : System.Web.Services.WebService
         return listcampos;
     }
 
+    [WebMethod]
+    public Menus LlenaComboMenuPadreEdit(int idMenu)
+    {
+        Menus listcampos;
+        CamposMenus campos = new CamposMenus();
+        campos.idMenu = idMenu;
+        listcampos = negocioMenus.LlenaComboMenuPadreEdit(campos);
+        return listcampos;
+    }
+
     #endregion
 
 
