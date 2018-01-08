@@ -250,6 +250,10 @@ function validateForm() {
                     notEmpty: {
                         message: 'La Version de la Aplicacion es requerida'
                     },
+                    stringLength: {
+                        max: 8,
+                        message: 'La Version de la Aplicacion no puede tener mas de 8 caracteres'
+                    }
                 }
             }
         }
