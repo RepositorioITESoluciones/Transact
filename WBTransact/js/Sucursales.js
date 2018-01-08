@@ -207,8 +207,27 @@ function editSucursal() {
 }
 
 //Validaciones
+function validaTamanio() {
+    document.getElementById("RFC").disabled = false;
+    var tipo = $("#ComboTPer").val();
+    //alert(tipo);
+    if (tipo == 1) {
+        document.getElementById("Tamanio").value = 13;
+    } else if(tipo == 2) {
+        document.getElementById("Tamanio").value = 12;
+    } else{
+        document.getElementById("Tamanio").value = null;
+        document.getElementById("RFC").value = null;
+        document.getElementById("RFC").disabled = true;
+    }
+    validateForm();
+}
+
 function validateForm() {
     $('#FormSucursal').bootstrapValidator('destroy');
+    var tamanio = $("#Tamanio").val();
+    console.log('tamanio: ' + tamanio);
+
     $("#FormSucursal").bootstrapValidator({
         excluded: [':disabled'],
         live: 'enabled',
@@ -237,8 +256,9 @@ function validateForm() {
                         message: 'El RFC de la Persona es requerido'
                     },
                     stringLength: {
-                        max: 13,
-                        message: 'El RFC no puede tener mas de 13 caracteres'
+                        min: tamanio,
+                        max: tamanio,
+                        message: 'El RFC debe tener ' + tamanio + ' caracteres'
                     },
                     regexp: {
                         regexp: /^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))((-)?([A-Z\d]{3}))?$/,
