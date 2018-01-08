@@ -226,14 +226,35 @@ namespace Transact.Datos
         public bool InsertaSucursalBySP(CamposSucursal campos)
         {
             bool respuesta = false;
+            int idSucursalEncontrado = 0;
             SqlConnection connection = null;
             try
             {
                 using (connection = Conexion.ObtieneConexion("ConexionBD"))
                 {
                     connection.Open();
-                    var parametros = new[]
-                     {
+
+                    //Parametros de entrada para buscar un usuario
+                    var parametrosBuscaUsuario = new[]
+                    {
+                        ParametroAcceso.CrearParametro("@razonSocial", SqlDbType.VarChar, campos.DatosFiscales.RazonSocial, ParameterDirection.Input),
+                        ParametroAcceso.CrearParametro("@RFC", SqlDbType.VarChar, campos.DatosFiscales.RFC, ParameterDirection.Input),
+                    };
+                    //Ejecuta el sp de busqueda de usuario y regresa un id en el datatable
+                    DataTable regresaIdUsuarioBuscado = Ejecuta.EjecutarConsulta(connection, parametrosBuscaUsuario, "[dbo].[Usp_CatSucursalConsultarSucursal]");
+
+                    //Itera el datatable donde el primer registro que regresa es el id de usuario
+                    foreach (DataRow row in regresaIdUsuarioBuscado.Rows)
+                    {
+                        idSucursalEncontrado = Convert.ToInt32(row["idSucursal"].ToString());
+                    }
+                    connection.Close();
+
+                    if (idSucursalEncontrado == 0)
+                    {
+                        connection.Open();
+                        var parametros = new[]
+                         {
                     ParametroAcceso.CrearParametro("@nombre", SqlDbType.VarChar, campos.nombre , ParameterDirection.Input),
                     ParametroAcceso.CrearParametro("@idEmpresa", SqlDbType.Int, campos.idEmpresa , ParameterDirection.Input),
                     ParametroAcceso.CrearParametro("@razonSocial", SqlDbType.VarChar, campos.DatosFiscales.RazonSocial, ParameterDirection.Input),
@@ -246,10 +267,15 @@ namespace Transact.Datos
                     ParametroAcceso.CrearParametro("@Estado", SqlDbType.Int, campos.DatosFiscales.Estado.idEstado, ParameterDirection.Input)
 
                 };
-                    Ejecuta.ProcedimientoAlmacenado(connection, "[Usp_CatSucursalInsertar]", parametros);
-                    connection.Close();
+                        Ejecuta.ProcedimientoAlmacenado(connection, "[Usp_CatSucursalInsertar]", parametros);
+                        connection.Close();
+                        respuesta = true;
+                    }
+                    else
+                    {
+                        respuesta = false;
+                    }
                 }
-                respuesta = true;
             }
             catch (Exception ex)
             {

@@ -59,8 +59,7 @@ namespace Transact.Negocio
             try
             {
 
-                clasedatos.InsertaSucursalBySP(campos);
-                respuesta = true;
+                respuesta = clasedatos.InsertaSucursalBySP(campos);
 
             }
             catch (Exception ex)

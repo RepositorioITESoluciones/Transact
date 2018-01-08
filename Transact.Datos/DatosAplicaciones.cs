@@ -52,25 +52,51 @@ namespace Transact.Datos
 
         public bool insertarAplicaciones(CamposAplicaciones campos) {
             bool respuesta = false;
+            int idAplicacionEncontrado = 0;
             SqlConnection connection = null;
             try
             {
                 using (connection = Conexion.ObtieneConexion("ConexionBD"))
                 {
                     connection.Open();
-                    var parametros = new[]
+
+                    //Parametros de entrada para buscar un usuario
+                    var parametrosBuscaUsuario = new[]
                     {
+                        ParametroAcceso.CrearParametro("@nombreAplicacion", SqlDbType.VarChar, campos.nombreAplicacion, ParameterDirection.Input),
+                    };
+                    //Ejecuta el sp de busqueda de usuario y regresa un id en el datatable
+                    DataTable regresaIdUsuarioBuscado = Ejecuta.EjecutarConsulta(connection, parametrosBuscaUsuario, "[dbo].[Usp_CnfAplicacionesConsultarAplicacion]");
+
+                    //Itera el datatable donde el primer registro que regresa es el id de usuario
+                    foreach (DataRow row in regresaIdUsuarioBuscado.Rows)
+                    {
+                        idAplicacionEncontrado = Convert.ToInt32(row["idAplicacion"].ToString());
+                    }
+                    connection.Close();
+
+                    if (idAplicacionEncontrado == 0)
+                    {
+                        connection.Open();
+                        var parametros = new[]
+                        {
                         ParametroAcceso.CrearParametro("@nombreAplicacion", SqlDbType.VarChar, campos.nombreAplicacion, ParameterDirection.Input),
                         ParametroAcceso.CrearParametro("@descripcionAplicacion", SqlDbType.VarChar, campos.descripcionAplicacion, ParameterDirection.Input),
                         ParametroAcceso.CrearParametro("@idioma", SqlDbType.VarChar, campos.idioma, ParameterDirection.Input),
                         ParametroAcceso.CrearParametro("@version", SqlDbType.VarChar, campos.version, ParameterDirection.Input)
                     };
-                    Ejecuta.ProcedimientoAlmacenado(connection, "[dbo].[Usp_CnfAplicacionesInsertar]", parametros);
-                    connection.Close();
+                        Ejecuta.ProcedimientoAlmacenado(connection, "[dbo].[Usp_CnfAplicacionesInsertar]", parametros);
+                        connection.Close();
+
+                        respuesta = true;
+                    }
+                    else
+                    {
+                        respuesta = false;
+                    }
                 }
-                respuesta = true;
-            }
-            catch(Exception ex)
+                }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
