@@ -695,6 +695,10 @@ function bootsVal(rfc) {
                     notEmpty: {
                         message: 'El RFC fisico es obligatorio'
                     },
+                    //stringLength: {
+                    //    max: 14,
+                    //    message: 'El RFC FISICO debe ser menor que 13 caracteres'
+                    //},
                     regexp: {
                         regexp: /^([aA-zZñÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[aA-zZ|\&\d]{3})$/,
                         message: 'RFC fisico no tiene el formato adecuado.',
@@ -709,6 +713,10 @@ function bootsVal(rfc) {
                     notEmpty: {
                         message: 'El RFC moral es obligatorio'
                     },
+                    //stringLength: {
+                    //    max: 13,
+                    //    message: 'El RFC MORAL debe ser menor que 12 caracteres'
+                    //},
                     regexp: {
                         regexp: /^([aA-zZñÑ\x26]{3}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[aA-zZ|\&\d]{3})$/,
                         message: 'RFC moral no tiene el formato adecuado.'
