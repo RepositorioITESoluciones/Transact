@@ -11,21 +11,16 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
 
-namespace Transact.Datos
-{
-    public class AltaTipoTransaccionDat
-    {
+namespace Transact.Datos {
+    public class AltaTipoTransaccionDat {
         // Metodos para Agregar
         #region Insert
-        public int InsertDGral(Entidades.AltaTiposTransacciones AltaTipoTrans)
-        {
+        public int InsertDGral(Entidades.AltaTiposTransacciones AltaTipoTrans) {
 
             Int32 idTran;
             SqlConnection connection = null;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
 
                     connection.Open();
 
@@ -45,26 +40,21 @@ namespace Transact.Datos
                 }
 
                 return idTran;
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 return 0;
-                 
+
             }
 
 
 
         }
-        public bool InsertCamp(int idTipoTran, Entidades.CamposDinamicos campos)
-        {
+        public bool InsertCamp(int idTipoTran, Entidades.CamposDinamicos campos) {
 
             SqlConnection connection = null;
             bool ins;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
 
                     connection.Open();
 
@@ -81,9 +71,7 @@ namespace Transact.Datos
                     connection.Close();
                 }
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
@@ -91,15 +79,12 @@ namespace Transact.Datos
 
             return ins;
         }
-        public bool InsertEtapas(int idTipoTran, string descripcion, int orden)
-        {
+        public bool InsertEtapas(int idTipoTran, string descripcion, int orden) {
 
             SqlConnection connection = null;
             bool ins;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
 
                     connection.Open();
 
@@ -116,9 +101,7 @@ namespace Transact.Datos
                     connection.Close();
                 }
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
 
                 throw;
@@ -128,15 +111,12 @@ namespace Transact.Datos
 
             return ins;
         }
-        public bool InsertAcciones(int idTipoTran, string claveAccion, string descripcion, int orden)
-        {
+        public bool InsertAcciones(int idTipoTran, string claveAccion, string descripcion, int orden) {
 
             SqlConnection connection = null;
             bool ins;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
 
                     connection.Open();
 
@@ -152,9 +132,7 @@ namespace Transact.Datos
                     connection.Close();
                 }
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
 
                 throw;
@@ -163,15 +141,12 @@ namespace Transact.Datos
 
             return ins;
         }
-        public bool InsertAccEtap(int idTipoTransaccion, int idEtapa, string NomAccion)
-        {
+        public bool InsertAccEtap(int idTipoTransaccion, int idEtapa, string NomAccion) {
 
             SqlConnection connection = null;
             bool ins;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
 
                     connection.Open();
                     SqlDataReader Resul2 = Ejecuta.ConsultaConRetorno(connection, "SELECT idAccion FROM Configuracion.AccionesTipoTransaccion WHERE descripcion = '" + NomAccion + "'");
@@ -186,9 +161,7 @@ namespace Transact.Datos
                     connection.Close();
                 }
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
@@ -196,15 +169,12 @@ namespace Transact.Datos
 
             return ins;
         }
-        public bool InsertEtapasAccRol(int idTipoTransaccion, string nomEtapa, string NomAccion, string nombreRol)
-        {
+        public bool InsertEtapasAccRol(int idTipoTransaccion, string nomEtapa, string NomAccion, string nombreRol) {
 
             SqlConnection connection = null;
             bool ins;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
 
                     connection.Open();
                     SqlDataReader Resul2 = Ejecuta.ConsultaConRetorno(connection, "SELECT idAccion FROM Configuracion.AccionesTipoTransaccion WHERE descripcion = '" + NomAccion + "'");
@@ -226,9 +196,7 @@ namespace Transact.Datos
                     connection.Close();
                 }
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
@@ -236,15 +204,12 @@ namespace Transact.Datos
 
             return ins;
         }
-        public bool InsertRNC(string NomCampo, int idTransaccion, int idetapa, int idaccion, int visible, int editable, int obligatorio, int idvisualisacion)
-        {
+        public bool InsertRNC(string NomCampo, int idTransaccion, int idetapa, int idaccion, int visible, int editable, int obligatorio, int idvisualisacion) {
 
             SqlConnection connection = null;
             bool ins;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
 
                     connection.Open();
 
@@ -266,9 +231,7 @@ namespace Transact.Datos
                     connection.Close();
                 }
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
@@ -276,14 +239,11 @@ namespace Transact.Datos
 
             return ins;
         }
-        public bool InsertFormulaD(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo, string cadenaGenerada)
-        {
+        public bool InsertFormulaD(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo, string cadenaGenerada) {
             SqlConnection connection = null;
             bool ins;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
 
                     connection.Open();
 
@@ -300,9 +260,7 @@ namespace Transact.Datos
                     connection.Close();
                 }
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
@@ -310,38 +268,32 @@ namespace Transact.Datos
 
             return ins;
         }
-        public bool InsertReglasNegocioxAD(int idTipoTransaccion, int idEtapa, int idAccion, string cadenaGenerada, int idEtapaDestino)
-        {
+        public bool InsertReglasNegocioxAD(int idTipoTransaccion, int idEtapa, int idAccion, string cadenaGenerada, int idEtapaDestino) {
             SqlConnection connection = null;
             bool ins;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
 
                     connection.Open();
 
                     SqlDataReader Resul = Ejecuta.ConsultaConRetorno(connection, "SELECT MAX(idReglaxAccion) FROM Configuracion.ReglasNegocioxAccion");
                     Resul.Read();
                     int resultadoid = 0;
-                    if (Resul.Read())
-                    {
-                         resultadoid = Resul.GetInt32(0);
+                    if (Resul.Read()) {
+                        resultadoid = Resul.GetInt32(0);
                     }
-                    Int32 idRegla= resultadoid + 1;
+                    Int32 idRegla = resultadoid + 1;
                     connection.Close();
 
 
 
                     connection.Open();
                     ins = Ejecuta.ConsultaSinRetorno1(connection, "INSERT INTO Configuracion.ReglasNegocioxAccion"
-                                                                  + " VALUES("+ idRegla + ", "+ idTipoTransaccion + ", "+ idEtapa + ", "+ idAccion + ", "+ idEtapaDestino + ", '"+ cadenaGenerada + "', null, null); ");
+                                                                  + " VALUES(" + idRegla + ", " + idTipoTransaccion + ", 1,1,11, '" + cadenaGenerada + "', null, null); ");
                     connection.Close();
                 }
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
@@ -352,14 +304,11 @@ namespace Transact.Datos
         #endregion
         // Metodos para Actualisar
         #region Update
-        public bool UpdateCamposD(int idTipoTransaccion, string nombreUP, string nombreCampo, string decripcion, int idTipoDato, string longitud, int idNivel, int idTipoOperacion)
-        {
+        public bool UpdateCamposD(int idTipoTransaccion, string nombreUP, string nombreCampo, string decripcion, int idTipoDato, string longitud, int idNivel, int idTipoOperacion) {
             SqlConnection connection = null;
             bool resultUC = false;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     connection.Open();
                     SqlDataReader Resul2 = Ejecuta.ConsultaConRetorno(connection, "SELECT idCampo  FROM Configuracion.CamposDinamicosTransacciones where nombreCampo= '" + nombreUP + "' and idTipoTransaccion =" + idTipoTransaccion);
                     Resul2.Read();
@@ -371,23 +320,18 @@ namespace Transact.Datos
                     resultUC = Ejecuta.ConsultaSinRetorno1(connection, "UPDATE Configuracion.CamposDinamicosTransacciones SET nombreCampo = '" + nombreCampo + "', descripcion = '" + decripcion + "', idTipoDatoCampo = '" + idTipoDato + "', longitudCampo = '" + longitud + "', idNivel = '" + idNivel + "', idTipoOperacion = '" + idTipoOperacion + "' WHERE idCampo = " + idCampo);
                     connection.Close();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
 
             return resultUC;
         }
-        public bool UpdateEtapasD(int IdTipoTransaccion, string nombreUP, String descripcion, int orden)
-        {
+        public bool UpdateEtapasD(int IdTipoTransaccion, string nombreUP, String descripcion, int orden) {
             SqlConnection connection = null;
             bool resultUE = false;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
 
                     connection.Open();
                     SqlDataReader Resul = Ejecuta.ConsultaConRetorno(connection, "SELECT idEtapa FROM Configuracion.EtapasTipoTransaccion WHERE descripcion = '" + nombreUP + "' and idTipoTransaccion =" + IdTipoTransaccion);
@@ -401,23 +345,18 @@ namespace Transact.Datos
                     connection.Close();
 
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
 
             return resultUE;
         }
-        public bool UpdateAccionesD(string nombreUP, string cveAccion, string descripcion, int orden)
-        {
+        public bool UpdateAccionesD(string nombreUP, string cveAccion, string descripcion, int orden) {
             SqlConnection connection = null;
             bool resultUA = false;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     connection.Open();
                     SqlDataReader Resul2 = Ejecuta.ConsultaConRetorno(connection, "SELECT idAccion FROM Configuracion.AccionesTipoTransaccion WHERE descripcion = '" + nombreUP + "'");
                     Resul2.Read();
@@ -431,32 +370,25 @@ namespace Transact.Datos
                     connection.Close();
 
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
 
             return resultUA;
         }
-        public bool UpdateStatusD(int IdTipoTransaccion, int estatus)
-        {
+        public bool UpdateStatusD(int IdTipoTransaccion, int estatus) {
             SqlConnection connection = null;
             bool resultUA = false;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     connection.Open();
                     resultUA = Ejecuta.ConsultaSinRetorno1(connection, "UPDATE Configuracion.TiposTransacciones SET idEstatusAlta = " + estatus + " ,fechaAlta = GETDATE() WHERE idTipoTransaccion=" + IdTipoTransaccion);
                     connection.Close();
 
                 }
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
 
@@ -464,15 +396,12 @@ namespace Transact.Datos
 
             return resultUA;
         }
-        public bool ActualisarComboboxD(string idCampo, int idTipoTransaccion, int idTipoTranConbo, string idReferencia, string nombreReferencia)
-        {
+        public bool ActualisarComboboxD(string idCampo, int idTipoTransaccion, int idTipoTranConbo, string idReferencia, string nombreReferencia) {
 
             SqlConnection connection = null;
             bool resultUA = false;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
 
                     connection.Open();
                     SqlDataReader Resul2 = Ejecuta.ConsultaConRetorno(connection, "SELECT idCampo  FROM Configuracion.CamposDinamicosTransacciones where nombreCampo= '" + idCampo.ToString() + "' and idTipoTransaccion = " + idTipoTransaccion);
@@ -497,9 +426,7 @@ namespace Transact.Datos
 
                 }
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
 
@@ -512,23 +439,18 @@ namespace Transact.Datos
 
 
         }
-        public bool UpdateTipoTransaccionD(int IdTipoTransaccion, string descripcion, string clave, int idProceso, int idCatTipoTransac)
-        {
+        public bool UpdateTipoTransaccionD(int IdTipoTransaccion, string descripcion, string clave, int idProceso, int idCatTipoTransac) {
             SqlConnection connection = null;
             bool resultUA = false;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     connection.Open();
                     resultUA = Ejecuta.ConsultaSinRetorno1(connection, "UPDATE Configuracion.TiposTransacciones SET descripcion = '" + descripcion + "',cveTipoTransaccion = '" + clave + "',idProceso = " + idProceso + ",idCatTipoTransac = " + idCatTipoTransac + " WHERE idTipoTransaccion =" + IdTipoTransaccion);
                     connection.Close();
 
                 }
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
 
@@ -537,14 +459,11 @@ namespace Transact.Datos
             return resultUA;
         }
 
-        public bool UpdateCicloVidaD(string descripcion, int orden, string cveAccion, string descripcionN, int ordenN, string cveAccionN)
-        {
+        public bool UpdateCicloVidaD(string descripcion, int orden, string cveAccion, string descripcionN, int ordenN, string cveAccionN) {
             SqlConnection connection = null;
             bool resultUCV = false;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
 
 
 
@@ -561,9 +480,7 @@ namespace Transact.Datos
 
                 }
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
 
@@ -572,14 +489,11 @@ namespace Transact.Datos
             return resultUCV;
         }
 
-        public bool UpdateRNCTTD(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo, int visible, int editable, int obligatorio, int idVisualizacion)
-        {
+        public bool UpdateRNCTTD(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo, int visible, int editable, int obligatorio, int idVisualizacion) {
             SqlConnection connection = null;
             bool resultUCV = false;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
 
 
 
@@ -598,9 +512,7 @@ namespace Transact.Datos
 
                 }
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
 
@@ -609,14 +521,11 @@ namespace Transact.Datos
             return resultUCV;
         }
 
-        public bool updateReglasNegocioCamposxTTD(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo, string nombreReferencia, string idReferencia, int idTipoTransaccionReferencia)
-        {
+        public bool updateReglasNegocioCamposxTTD(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo, string nombreReferencia, string idReferencia, int idTipoTransaccionReferencia) {
             SqlConnection connection = null;
             bool resultUCRNCTT = false;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
 
 
 
@@ -634,9 +543,7 @@ namespace Transact.Datos
 
                 }
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
 
@@ -645,14 +552,11 @@ namespace Transact.Datos
             return resultUCRNCTT;
         }
 
-        public bool updateReglasNegocioXCampoD(int idTipoTransaccion, int idEtapa, int idAccion, string nombrecampo, int newvisible, int neweditable, int newobligatorio, int newidVisualizacion)
-        {
+        public bool updateReglasNegocioXCampoD(int idTipoTransaccion, int idEtapa, int idAccion, string nombrecampo, int newvisible, int neweditable, int newobligatorio, int newidVisualizacion) {
             SqlConnection connection = null;
             bool resultReglasNegocioXCampo = false;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     connection.Open();
                     SqlDataReader Resul2 = Ejecuta.ConsultaConRetorno(connection, "SELECT idCampo  FROM Configuracion.CamposDinamicosTransacciones where nombreCampo= '" + nombrecampo + "'" + "and idTipoTransaccion= " + idTipoTransaccion);
                     Resul2.Read();
@@ -676,9 +580,7 @@ namespace Transact.Datos
 
                 }
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
 
@@ -687,16 +589,13 @@ namespace Transact.Datos
             return resultReglasNegocioXCampo;
         }
 
-        public bool updateCOMBOBOXD(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo, bool newnombreReferencia, bool newidReferencia, bool newidTipoTransaccionReferencia)
-        {
+        public bool updateCOMBOBOXD(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo, bool newnombreReferencia, bool newidReferencia, bool newidTipoTransaccionReferencia) {
             SqlConnection connection = null;
             bool resultCOMBOBOXD = false;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
 
-                    
+
 
                     connection.Open();
                     resultCOMBOBOXD = Ejecuta.ConsultaSinRetorno1(connection, "UPDATE Configuracion.ReglasNegocioCamposxTipoTransaccion"
@@ -712,9 +611,7 @@ namespace Transact.Datos
 
                 }
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
 
@@ -723,20 +620,17 @@ namespace Transact.Datos
             return resultCOMBOBOXD;
         }
 
-        public bool UpdateJsonAutoD(int idTipoTransaccion, int idEtapa, int idAccion,int idCampo, string CadenaJson)
-        {
+        public bool UpdateJsonAutoD(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo, string CadenaJson) {
             SqlConnection connection = null;
             bool resultupdateJson = false;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
 
 
 
                     connection.Open();
                     resultupdateJson = Ejecuta.ConsultaSinRetorno1(connection, "UPDATE Configuracion.ReglasNegocioCamposxTipoTransaccion " +
-                                                                               " SET cadenaJsonHijos = '"+ CadenaJson + "' " +
+                                                                               " SET cadenaJsonHijos = '" + CadenaJson + "' " +
                                                                                " WHERE idCampo = " + idCampo +
                                                                                " AND idEtapa = " + idEtapa +
                                                                                " AND idAccion = " + idAccion +
@@ -746,9 +640,7 @@ namespace Transact.Datos
 
                 }
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
 
@@ -761,14 +653,11 @@ namespace Transact.Datos
         #endregion
         // Metodos para Eliminar
         #region Delete
-        public bool DeleteCamposD(string nombreCampo)
-        {
+        public bool DeleteCamposD(string nombreCampo) {
             SqlConnection connection = null;
             bool resultDC = false;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     connection.Open();
                     SqlDataReader Resul2 = Ejecuta.ConsultaConRetorno(connection, "SELECT idCampo  FROM CamposDinamicosTransacciones where nombreCampo= '" + nombreCampo + "'");
                     Resul2.Read();
@@ -781,25 +670,20 @@ namespace Transact.Datos
                     connection.Close();
 
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
 
             return resultDC;
         }
-        public bool DeleteEtapasD(string descripcion, int idTipoTransaccion)
-        {
+        public bool DeleteEtapasD(string descripcion, int idTipoTransaccion) {
             SqlConnection connection = null;
             bool resultDE = false;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     connection.Open();
-                    SqlDataReader Resul = Ejecuta.ConsultaConRetorno(connection, "SELECT idEtapa FROM EtapasTipoTransaccion WHERE idTipoTransaccion = "+ idTipoTransaccion + " AND descripcion = '" + descripcion + "'");
+                    SqlDataReader Resul = Ejecuta.ConsultaConRetorno(connection, "SELECT idEtapa FROM EtapasTipoTransaccion WHERE idTipoTransaccion = " + idTipoTransaccion + " AND descripcion = '" + descripcion + "'");
                     Resul.Read();
                     int resultadoid = Resul.GetInt32(0);
                     Int32 idetapa = resultadoid;
@@ -810,23 +694,18 @@ namespace Transact.Datos
                     connection.Close();
 
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine("" + ex.Message, ex, resultDE);
                 throw;
             }
 
             return false;
         }
-        public bool DeleteAccionesD(string descripcion)
-        {
+        public bool DeleteAccionesD(string descripcion) {
             SqlConnection connection = null;
             bool resultDA = false;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     connection.Open();
                     SqlDataReader Resul2 = Ejecuta.ConsultaConRetorno(connection, "SELECT idAccion FROM AccionesTipoTransaccion WHERE descripcion = '" + descripcion + "'");
                     Resul2.Read();
@@ -838,23 +717,18 @@ namespace Transact.Datos
                     resultDA = Ejecuta.ConsultaSinRetorno1(connection, "DELETE AccionesTipoTransaccion WHERE idAccion = " + idaccion);
                     connection.Close();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
 
             return resultDA;
         }
-        public bool DeleteEtapasAccionesRolesD(int idTipoTransaccion, int idEtapa, int idAccion)
-        {
+        public bool DeleteEtapasAccionesRolesD(int idTipoTransaccion, int idEtapa, int idAccion) {
             SqlConnection connection = null;
             bool resultDA = false;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     connection.Open();
                     resultDA = Ejecuta.ConsultaSinRetorno1(connection, "DELETE EtapasAccionesRoles"
                                                                         + " WHERE idTipoTransaccion = " + idTipoTransaccion
@@ -862,23 +736,18 @@ namespace Transact.Datos
                                                                         + " AND idAccion =" + idAccion);
                     connection.Close();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
 
             return resultDA;
         }
-        public bool DeleteEtapasAccionesTipoTransaccionesD(int idTipoTransaccion, int idEtapa, int idAccion)
-        {
+        public bool DeleteEtapasAccionesTipoTransaccionesD(int idTipoTransaccion, int idEtapa, int idAccion) {
             SqlConnection connection = null;
             bool resultDA = false;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     connection.Open();
                     resultDA = Ejecuta.ConsultaSinRetorno1(connection, "DELETE EtapasAccionesTipoTransacciones"
                                                                         + " WHERE idTipoTransaccion = " + idTipoTransaccion
@@ -886,23 +755,18 @@ namespace Transact.Datos
                                                                         + " AND idAccion =" + idAccion);
                     connection.Close();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
 
             return resultDA;
         }
-        public bool DeleteFormulaD(int idTipoTransaccion, int idEtapa, int idAccion, int idcampo)
-        {
+        public bool DeleteFormulaD(int idTipoTransaccion, int idEtapa, int idAccion, int idcampo) {
             SqlConnection connection = null;
             bool resultDA = false;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     connection.Open();
                     resultDA = Ejecuta.ConsultaSinRetorno1(connection, "DELETE Formulas"
                                                                        + " WHERE idTipoTransaccion = " + idTipoTransaccion
@@ -911,23 +775,18 @@ namespace Transact.Datos
                                                                        + " and idCampo = " + idcampo);
                     connection.Close();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
 
             return resultDA;
         }
-        public bool DeleteReglasNegocioXCampoD(int idTipoTransaccion, int idEtapa, int idAccion, int idcampo)
-        {
+        public bool DeleteReglasNegocioXCampoD(int idTipoTransaccion, int idEtapa, int idAccion, int idcampo) {
             SqlConnection connection = null;
             bool resultDRNC = false;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     connection.Open();
                     resultDRNC = Ejecuta.ConsultaSinRetorno1(connection, "DELETE ReglasNegocioCamposxTipoTransaccion"
                                                                         + " WHERE idTipoTransaccion = " + idTipoTransaccion
@@ -936,55 +795,43 @@ namespace Transact.Datos
                                                                         + " AND idCampo = " + idcampo);
                     connection.Close();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
 
             return resultDRNC;
         }
-        public bool DeleteReglasCamposD(int idTipoTransaccion, int idcampo)
-        {
+        public bool DeleteReglasCamposD(int idTipoTransaccion, int idcampo) {
             SqlConnection connection = null;
             bool resultDRNC = false;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     connection.Open();
                     resultDRNC = Ejecuta.ConsultaSinRetorno1(connection, "DELETE FROM ReglasNegocioCamposxTipoTransaccion"
                                                                          + " WHERE idTipoTransaccion = " + idTipoTransaccion
                                                                          + " AND idCampo = " + idcampo);
                     connection.Close();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
 
             return resultDRNC;
         }
-        public bool DeleteCamposDinamicosD(int idTipoTransaccion,int idcampo)
-        {
+        public bool DeleteCamposDinamicosD(int idTipoTransaccion, int idcampo) {
             SqlConnection connection = null;
             bool resultDRNC = false;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     connection.Open();
-                    resultDRNC = Ejecuta.ConsultaSinRetorno1(connection, "DELETE FROM CamposDinamicosTransacciones" 
-                                                                         + " WHERE idTipoTransaccion = "+ idTipoTransaccion
-                                                                         + " AND idCampo = "+ idcampo);
+                    resultDRNC = Ejecuta.ConsultaSinRetorno1(connection, "DELETE FROM CamposDinamicosTransacciones"
+                                                                         + " WHERE idTipoTransaccion = " + idTipoTransaccion
+                                                                         + " AND idCampo = " + idcampo);
                     connection.Close();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
@@ -992,18 +839,15 @@ namespace Transact.Datos
             return resultDRNC;
         }
 
-        public string DeleteTransaccion(int idTipoTransaccion)
-        {
+        public string DeleteTransaccion(int idTipoTransaccion) {
 
             SqlConnection connection = null;
             string resultDTran = "";
             int resultadoid = 0;
 
 
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT COUNT(*) Resultado " +
@@ -1016,8 +860,7 @@ namespace Transact.Datos
                     resultadoid = consulta.GetInt32(0);
                     connection.Close();
 
-                    if(resultadoid == 0)
-                    {
+                    if (resultadoid == 0) {
                         //Eliminar 1
                         connection.Open();
                         consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT COUNT(*) " +
@@ -1026,8 +869,7 @@ namespace Transact.Datos
                         consulta.Read();
                         int resultado1 = consulta.GetInt32(0);
                         connection.Close();
-                        if (resultado1 > 0)
-                        {
+                        if (resultado1 > 0) {
                             connection.Open();
                             bool result1 = Ejecuta.ConsultaSinRetorno1(connection, "DELETE FROM Configuracion.ReglasNegocioCamposxTipoTransaccion WHERE idTipoTransaccion = " + idTipoTransaccion);
                             connection.Close();
@@ -1041,10 +883,9 @@ namespace Transact.Datos
                         int resultado2 = consulta.GetInt32(0);
                         connection.Close();
 
-                        if (resultado2 > 0)
-                        {
+                        if (resultado2 > 0) {
                             connection.Open();
-                             bool result2 = Ejecuta.ConsultaSinRetorno1(connection, "DELETE FROM Configuracion.ReglasNegocioxAccion WHERE idTipoTransaccion = " + idTipoTransaccion);
+                            bool result2 = Ejecuta.ConsultaSinRetorno1(connection, "DELETE FROM Configuracion.ReglasNegocioxAccion WHERE idTipoTransaccion = " + idTipoTransaccion);
                             connection.Close();
                             Console.WriteLine(result2);
 
@@ -1056,8 +897,7 @@ namespace Transact.Datos
                         int resultado3 = consulta.GetInt32(0);
                         connection.Close();
 
-                        if (resultado3 > 0)
-                        {
+                        if (resultado3 > 0) {
                             connection.Open();
                             bool result3 = Ejecuta.ConsultaSinRetorno1(connection, "DELETE FROM Configuracion.Formulas WHERE idTipoTransaccion = " + idTipoTransaccion);
                             connection.Close();
@@ -1070,8 +910,7 @@ namespace Transact.Datos
                         int resultado4 = consulta.GetInt32(0);
                         connection.Close();
 
-                        if (resultado4 > 0)
-                        {
+                        if (resultado4 > 0) {
                             connection.Open();
                             bool result4 = Ejecuta.ConsultaSinRetorno1(connection, "DELETE FROM Configuracion.EtapasAccionesRoles WHERE idTipoTransaccion = " + idTipoTransaccion);
                             connection.Close();
@@ -1085,8 +924,7 @@ namespace Transact.Datos
                         int resultado5 = consulta.GetInt32(0);
                         connection.Close();
 
-                        if (resultado5 > 0)
-                        {
+                        if (resultado5 > 0) {
                             connection.Open();
                             bool result5 = Ejecuta.ConsultaSinRetorno1(connection, "DELETE FROM Configuracion.EtapasAccionesTipoTransacciones WHERE idTipoTransaccion = " + idTipoTransaccion);
                             connection.Close();
@@ -1100,8 +938,7 @@ namespace Transact.Datos
                         int resultado6 = consulta.GetInt32(0);
                         connection.Close();
 
-                        if (resultado6 > 0)
-                        {
+                        if (resultado6 > 0) {
                             connection.Open();
                             bool result6 = Ejecuta.ConsultaSinRetorno1(connection, "DELETE FROM EtapasTipoTransaccion WHERE idTipoTransaccion = " + idTipoTransaccion);
                             connection.Close();
@@ -1115,8 +952,7 @@ namespace Transact.Datos
                         int resultado7 = consulta.GetInt32(0);
                         connection.Close();
 
-                        if (resultado7 > 0)
-                        {
+                        if (resultado7 > 0) {
                             connection.Open();
                             bool result7 = Ejecuta.ConsultaSinRetorno1(connection, "DELETE FROM Configuracion.AccionesTipoTransaccion WHERE idTipoTransaccion = " + idTipoTransaccion);
                             connection.Close();
@@ -1130,8 +966,7 @@ namespace Transact.Datos
                         int resultado8 = consulta.GetInt32(0);
                         connection.Close();
 
-                        if (resultado8 > 0)
-                        {
+                        if (resultado8 > 0) {
                             connection.Open();
                             bool result8 = Ejecuta.ConsultaSinRetorno1(connection, "DELETE FROM Configuracion.CamposDinamicosTransacciones WHERE idTipoTransaccion = " + idTipoTransaccion);
                             connection.Close();
@@ -1145,8 +980,7 @@ namespace Transact.Datos
                         int resultado9 = consulta.GetInt32(0);
                         connection.Close();
 
-                        if (resultado9 > 0)
-                        {
+                        if (resultado9 > 0) {
                             connection.Open();
                             bool result9 = Ejecuta.ConsultaSinRetorno1(connection, "DELETE FROM Configuracion.TiposTransacciones WHERE idTipoTransaccion = " + idTipoTransaccion);
                             connection.Close();
@@ -1154,16 +988,12 @@ namespace Transact.Datos
 
                         }
                         resultDTran = "La transacción fue eliminada";
-                    }
-                    else
-                    {
+                    } else {
                         resultDTran = "La transacción ya cuenta con valores";
                     }
 
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine("" + ex.Message, ex);
 
                 throw;
@@ -1173,51 +1003,37 @@ namespace Transact.Datos
 
         }
 
-        public bool DeleteCamposConbobox(int idTipoTransaccion, int idcampo)
-        {
+        public bool DeleteCamposConbobox(int idTipoTransaccion, int idcampo) {
             SqlConnection connection = null;
             bool resultDRNC = false;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     connection.Open();
                     resultDRNC = Ejecuta.ConsultaSinRetorno1(connection, "UPDATE ReglasNegocioCamposxTipoTransaccion"
                                                                          + " SET  idTipoTransaccionReferencia = NULL,"
                                                                          + " idReferencia = 'NULL',"
                                                                          + " nombreReferencia = 'NULL'"
-                                                                         + " WHERE idTipoTransaccion = "+ idTipoTransaccion
-                                                                         + " AND idCampo = "+ idcampo);
+                                                                         + " WHERE idTipoTransaccion = " + idTipoTransaccion
+                                                                         + " AND idCampo = " + idcampo);
                     connection.Close();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
 
             return resultDRNC;
         }
-        public bool DeleteReglasNegocioxAD(int idTipoTransaccion,int idEtapa,int idAccion,int idEtapaF)
-        {
+        public bool DeleteReglasNegocioxAD(int idTipoTransaccion, int idEtapa, int idAccion, int idEtapaF) {
             SqlConnection connection = null;
             bool resultDRNC = false;
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     connection.Open();
-                    resultDRNC = Ejecuta.ConsultaSinRetorno1(connection, "DELETE ReglasNegocioxAccion"
-                                                                         + " WHERE idTipoTransaccion = " + idTipoTransaccion
-                                                                         + " AND idEtapa = "+ idEtapa
-                                                                         + " AND idAccion = "+ idAccion
-                                                                         + " AND idEtapaDestino = " + idEtapaF);
+                    resultDRNC = Ejecuta.ConsultaSinRetorno1(connection, "DELETE from Configuracion.ReglasNegocioxAccion WHERE idTipoTransaccion =" + idTipoTransaccion);
                     connection.Close();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
@@ -1228,25 +1044,21 @@ namespace Transact.Datos
         #endregion
         // Metodos para Connsultas
         #region Select
-        public Entidades.TransaccionGralA EtapasTransaccionD(int idTipoTransaccion)
-        {
+        public Entidades.TransaccionGralA EtapasTransaccionD(int idTipoTransaccion) {
             Entidades.TransaccionGralA etapas = new Entidades.TransaccionGralA();
             List<Entidades.EtapasTransaccion> composCon = new List<Entidades.EtapasTransaccion>();
             SqlConnection connection = null;
             DataTable dt = new DataTable();
 
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT idEtapa,descripcion,orden,predecesor,idTipoTransaccion   FROM Configuracion.EtapasTipoTransaccion where idTipoTransaccion = " + idTipoTransaccion + " order by idEtapa asc");
                     dt.Load(consulta);
                     connection.Close();
                 }
-                foreach (DataRow rowDet in dt.Rows)
-                {
+                foreach (DataRow rowDet in dt.Rows) {
                     Entidades.EtapasTransaccion compos = new Entidades.EtapasTransaccion();
                     compos.descripcion = rowDet["descripcion"].ToString();
                     compos.Orden = Convert.ToInt32(rowDet["orden"].ToString());
@@ -1254,27 +1066,22 @@ namespace Transact.Datos
                 }
 
                 etapas.etapaslista = composCon.ToArray();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
             return etapas;
 
         }
-        public Entidades.DTCamposDinamicos DTCamposD(int idTipoTransaccion)
-        {
+        public Entidades.DTCamposDinamicos DTCamposD(int idTipoTransaccion) {
 
             Entidades.DTCamposDinamicos ReturnCampos = new Entidades.DTCamposDinamicos();
             List<Entidades.DTregistrosCampos> ListaCampos = new List<Entidades.DTregistrosCampos>();
             SqlConnection connection = null;
             DataTable dt = new DataTable();
-            try
-            {
+            try {
 
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
 
@@ -1287,8 +1094,7 @@ namespace Transact.Datos
 
                 }
 
-                foreach (DataRow rowDet in dt.Rows)
-                {
+                foreach (DataRow rowDet in dt.Rows) {
                     Entidades.DTregistrosCampos valores1 = new Entidades.DTregistrosCampos();
                     if (rowDet["idCampo"].ToString() != "") { valores1.idCampo = Convert.ToInt32(rowDet["idCampo"].ToString()); } else { valores1.idCampo = 0; }
                     if (rowDet["nombreCampo"].ToString() != "") { valores1.nombreCampo = rowDet["nombreCampo"].ToString(); } else { valores1.nombreCampo = ""; }
@@ -1307,9 +1113,7 @@ namespace Transact.Datos
                 ReturnCampos.ListCamposTransaccion = ListaCampos.ToArray();
 
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
 
                 Console.WriteLine(ex);
                 throw;
@@ -1317,18 +1121,15 @@ namespace Transact.Datos
 
             return ReturnCampos;
         }
-        public Entidades.LisFormula DTFormulasD(int idTipoTransaccion, int idEtapa, int idAccion)
-        {
+        public Entidades.LisFormula DTFormulasD(int idTipoTransaccion, int idEtapa, int idAccion) {
 
             Entidades.LisFormula ReturnCampos = new Entidades.LisFormula();
             List<Entidades.DTFormula> ListaCampos = new List<Entidades.DTFormula>();
             SqlConnection connection = null;
             DataTable dt = new DataTable();
-            try
-            {
+            try {
 
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT ETT.descripcion NombreEtapa, ATT.descripcion NombreAccion, F.cadenaGenerada Formula, ETT.idEtapa, ATT.idAccion FROM Configuracion.TiposTransacciones TT, Configuracion.AccionesTipoTransaccion ATT, Configuracion.EtapasTipoTransaccion ETT, Configuracion.EtapasAccionesTipoTransacciones EATT, Configuracion.Formulas F, Configuracion.CamposDinamicosTransacciones CDT WHERE ETT.idEtapa = EATT.idEtapa AND EATT.idAccion = ATT.idAccion AND TT.idTipoTransaccion = EATT.idTipoTransaccion AND F.idTipoTransaccion = TT.idTipoTransaccion AND CDT.idCampo = F.idCampo AND ETT.idEtapa = " + idEtapa + " AND ATT.idAccion = " + idAccion + " AND TT.idTipoTransaccion = " + idTipoTransaccion);
@@ -1337,8 +1138,7 @@ namespace Transact.Datos
 
                 }
 
-                foreach (DataRow rowDet in dt.Rows)
-                {
+                foreach (DataRow rowDet in dt.Rows) {
                     Entidades.DTFormula valores1 = new Entidades.DTFormula();
                     valores1.idAccion = rowDet["idAccion"].ToString();
                     valores1.idEtapa = rowDet["idEtapa"].ToString();
@@ -1352,9 +1152,7 @@ namespace Transact.Datos
                 ReturnCampos.listFormula = ListaCampos.ToArray();
 
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
 
                 Console.WriteLine(ex);
                 throw;
@@ -1362,18 +1160,15 @@ namespace Transact.Datos
 
             return ReturnCampos;
         }
-        public Entidades.DTCamposDinamicos CamposConboboxD(int idTipotransaccion,int idEtapa,int idAccion)
-        {
+        public Entidades.DTCamposDinamicos CamposConboboxD(int idTipotransaccion, int idEtapa, int idAccion) {
             List<Entidades.DTregistrosCampos> composCon = new List<Entidades.DTregistrosCampos>();
 
             Entidades.DTCamposDinamicos camposconbo = new Entidades.DTCamposDinamicos();
             SqlConnection connection = null;
             DataTable dt = new DataTable();
 
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT CDT.nombreCampo"
@@ -1381,8 +1176,8 @@ namespace Transact.Datos
                                                                       + " where RNCT.idCampo = CDT.idCampo"
                                                                       + " and RNCT.idVisualizacion = VTT.idVisualizacion"
                                                                       + " and RNCT.idVisualizacion = 24"
-                                                                      + " and CDT.idTipoTransaccion = "+ idTipotransaccion
-                                                                      + " and RNCT.idEtapa = "+ idEtapa
+                                                                      + " and CDT.idTipoTransaccion = " + idTipotransaccion
+                                                                      + " and RNCT.idEtapa = " + idEtapa
                                                                       + " and RNCT.idAccion = " + idAccion
                                                                       + " order by RNCT.idCampo asc");
                     dt.Load(consulta);
@@ -1390,8 +1185,7 @@ namespace Transact.Datos
 
                 }
 
-                foreach (DataRow rowDet in dt.Rows)
-                {
+                foreach (DataRow rowDet in dt.Rows) {
                     Entidades.DTregistrosCampos compos = new Entidades.DTregistrosCampos();
                     compos.nombreCampo = rowDet["nombreCampo"].ToString();
                     composCon.Add(compos);
@@ -1400,9 +1194,7 @@ namespace Transact.Datos
                 camposconbo.ListCamposTransaccion = composCon.ToArray();
 
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
 
                 Console.WriteLine(ex);
                 throw;
@@ -1412,17 +1204,14 @@ namespace Transact.Datos
             return camposconbo;
 
         }
-        public Entidades.DTCamposDinamicos DTCabezera(int idTipotransaccion)
-        {
+        public Entidades.DTCamposDinamicos DTCabezera(int idTipotransaccion) {
             Entidades.DTCamposDinamicos ReturnCampos = new Entidades.DTCamposDinamicos();
             List<Entidades.DTregistrosCampos> composCon = new List<Entidades.DTregistrosCampos>();
             SqlConnection connection = null;
             DataTable dt = new DataTable();
 
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT CDT.nombreCampo FROM Configuracion.TiposTransacciones TT, Configuracion.NivelTransacciones NT, Configuracion.CamposDinamicosTransacciones CDT WHERE TT.idTipoTransaccion = CDT.idTipoTransaccion AND CDT.idNivel = NT.idNivel AND TT.idTipoTransaccion = " + idTipotransaccion + " AND NT.descripcion = 'Cabecera'");
@@ -1431,8 +1220,7 @@ namespace Transact.Datos
 
                 }
 
-                foreach (DataRow rowDet in dt.Rows)
-                {
+                foreach (DataRow rowDet in dt.Rows) {
                     Entidades.DTregistrosCampos compos = new Entidades.DTregistrosCampos();
                     compos.nombreCampo = rowDet["nombreCampo"].ToString();
                     composCon.Add(compos);
@@ -1441,9 +1229,7 @@ namespace Transact.Datos
                 ReturnCampos.ListCamposTransaccion = composCon.ToArray();
 
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
 
                 Console.WriteLine(ex);
                 throw;
@@ -1453,17 +1239,14 @@ namespace Transact.Datos
             return ReturnCampos;
 
         }
-        public Entidades.DTCamposDinamicos DTDetalle(int idTipotransaccion)
-        {
+        public Entidades.DTCamposDinamicos DTDetalle(int idTipotransaccion) {
             Entidades.DTCamposDinamicos ReturnCampos = new Entidades.DTCamposDinamicos();
             List<Entidades.DTregistrosCampos> composCon = new List<Entidades.DTregistrosCampos>();
             SqlConnection connection = null;
             DataTable dt = new DataTable();
 
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT CDT.nombreCampo FROM Configuracion.TiposTransacciones TT, Configuracion.NivelTransacciones NT, Configuracion.CamposDinamicosTransacciones CDT WHERE TT.idTipoTransaccion = CDT.idTipoTransaccion AND CDT.idNivel = NT.idNivel AND TT.idTipoTransaccion = " + idTipotransaccion + " AND NT.descripcion = 'Detalle'");
@@ -1472,8 +1255,7 @@ namespace Transact.Datos
 
                 }
 
-                foreach (DataRow rowDet in dt.Rows)
-                {
+                foreach (DataRow rowDet in dt.Rows) {
                     Entidades.DTregistrosCampos compos = new Entidades.DTregistrosCampos();
                     compos.nombreCampo = rowDet["nombreCampo"].ToString();
                     composCon.Add(compos);
@@ -1482,9 +1264,7 @@ namespace Transact.Datos
                 ReturnCampos.ListCamposTransaccion = composCon.ToArray();
 
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
 
                 Console.WriteLine(ex);
                 throw;
@@ -1494,17 +1274,14 @@ namespace Transact.Datos
             return ReturnCampos;
 
         }
-        public Entidades.DTCamposDinamicos ListCamposAbiertoD(int idTipotransaccion)
-        {
+        public Entidades.DTCamposDinamicos ListCamposAbiertoD(int idTipotransaccion) {
             Entidades.DTCamposDinamicos ReturnCampos = new Entidades.DTCamposDinamicos();
             List<Entidades.DTregistrosCampos> composCon = new List<Entidades.DTregistrosCampos>();
             SqlConnection connection = null;
             DataTable dt = new DataTable();
 
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT CDT.nombreCampo,CDT.idCampo "
@@ -1519,8 +1296,7 @@ namespace Transact.Datos
 
                 }
 
-                foreach (DataRow rowDet in dt.Rows)
-                {
+                foreach (DataRow rowDet in dt.Rows) {
                     Entidades.DTregistrosCampos compos = new Entidades.DTregistrosCampos();
                     compos.nombreCampo = rowDet["nombreCampo"].ToString();
                     compos.idCampoC = rowDet["idCampo"].ToString();
@@ -1530,9 +1306,7 @@ namespace Transact.Datos
                 ReturnCampos.ListCamposTransaccion = composCon.ToArray();
 
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
 
                 Console.WriteLine(ex);
                 throw;
@@ -1542,17 +1316,14 @@ namespace Transact.Datos
             return ReturnCampos;
 
         }
-        public Entidades.DTCamposDinamicos CamposD(int idTipotransaccion)
-        {
+        public Entidades.DTCamposDinamicos CamposD(int idTipotransaccion) {
             List<Entidades.DTregistrosCampos> composCon = new List<Entidades.DTregistrosCampos>();
             Entidades.DTCamposDinamicos lista = new Entidades.DTCamposDinamicos();
             SqlConnection connection = null;
             DataTable dt = new DataTable();
 
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT idCampo,nombreCampo,descripcion"
@@ -1564,8 +1335,7 @@ namespace Transact.Datos
 
                 }
 
-                foreach (DataRow rowDet in dt.Rows)
-                {
+                foreach (DataRow rowDet in dt.Rows) {
                     Entidades.DTregistrosCampos compos = new Entidades.DTregistrosCampos();
                     compos.idCampo = Convert.ToInt32(rowDet["idCampo"].ToString());
                     compos.nombreCampo = rowDet["nombreCampo"].ToString();
@@ -1576,9 +1346,7 @@ namespace Transact.Datos
                 lista.ListCamposTransaccion = composCon.ToArray();
 
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
 
                 Console.WriteLine(ex);
                 throw;
@@ -1588,18 +1356,15 @@ namespace Transact.Datos
             return lista;
 
         }
-        public Entidades.DTCamposDinamicos CamposCabeceraD(int idTipotransaccion, int idEtapa, int idAccion)
-        {
+        public Entidades.DTCamposDinamicos CamposCabeceraD(int idTipotransaccion, int idEtapa, int idAccion) {
             List<Entidades.DTregistrosCampos> composCon = new List<Entidades.DTregistrosCampos>();
 
             Entidades.DTCamposDinamicos camposconbo = new Entidades.DTCamposDinamicos();
             SqlConnection connection = null;
             DataTable dt = new DataTable();
 
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT  CDT.nombreCampo,CDT.idCampo"
@@ -1616,17 +1381,16 @@ namespace Transact.Datos
                                                                       + " AND RN.idTipoTransaccion = CDT.idTipoTransaccion"
                                                                       + " AND RN.idTipoTransaccion = TT.idTipoTransaccion"
                                                                       + " AND RN.idVisualizacion = VTT.idVisualizacion"
-                                                                      + " AND RN.idEtapa = "+ idEtapa
-                                                                      + " AND RN.idAccion = "+ idAccion
-                                                                      + " AND RN.idTipoTransaccion = "+ idTipotransaccion
+                                                                      + " AND RN.idEtapa = " + idEtapa
+                                                                      + " AND RN.idAccion = " + idAccion
+                                                                      + " AND RN.idTipoTransaccion = " + idTipotransaccion
                                                                       + " AND CDT.idNivel = 1");
                     dt.Load(consulta);
                     connection.Close();
 
                 }
 
-                foreach (DataRow rowDet in dt.Rows)
-                {
+                foreach (DataRow rowDet in dt.Rows) {
                     Entidades.DTregistrosCampos compos = new Entidades.DTregistrosCampos();
                     compos.nombreCampo = rowDet["nombreCampo"].ToString();
                     compos.idCampo = Convert.ToInt32(rowDet["idCampo"].ToString());
@@ -1636,9 +1400,7 @@ namespace Transact.Datos
                 camposconbo.ListCamposTransaccion = composCon.ToArray();
 
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
 
                 Console.WriteLine(ex);
                 throw;
@@ -1648,18 +1410,15 @@ namespace Transact.Datos
             return camposconbo;
 
         }
-        public Entidades.DTCamposDinamicos CamposDetalleD(int idTipotransaccion, int idEtapa, int idAccion)
-        {
+        public Entidades.DTCamposDinamicos CamposDetalleD(int idTipotransaccion, int idEtapa, int idAccion) {
             List<Entidades.DTregistrosCampos> composCon = new List<Entidades.DTregistrosCampos>();
 
             Entidades.DTCamposDinamicos camposconbo = new Entidades.DTCamposDinamicos();
             SqlConnection connection = null;
             DataTable dt = new DataTable();
 
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT  CDT.nombreCampo,CDT.idCampo"
@@ -1685,8 +1444,7 @@ namespace Transact.Datos
 
                 }
 
-                foreach (DataRow rowDet in dt.Rows)
-                {
+                foreach (DataRow rowDet in dt.Rows) {
                     Entidades.DTregistrosCampos compos = new Entidades.DTregistrosCampos();
                     compos.nombreCampo = rowDet["nombreCampo"].ToString();
                     compos.idCampo = Convert.ToInt32(rowDet["idCampo"].ToString());
@@ -1696,9 +1454,7 @@ namespace Transact.Datos
                 camposconbo.ListCamposTransaccion = composCon.ToArray();
 
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
 
                 Console.WriteLine(ex);
                 throw;
@@ -1708,17 +1464,14 @@ namespace Transact.Datos
             return camposconbo;
 
         }
-        public Entidades.DTCamposDinamicos campCombD(int idTipotransaccion, int idEtapa, int idAccion)
-        {
+        public Entidades.DTCamposDinamicos campCombD(int idTipotransaccion, int idEtapa, int idAccion) {
             List<Entidades.DTregistrosCampos> composCon = new List<Entidades.DTregistrosCampos>();
             Entidades.DTCamposDinamicos camposconbo = new Entidades.DTCamposDinamicos();
             SqlConnection connection = null;
             DataTable dt = new DataTable();
 
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT CDT.idCampo, CDT.nombreCampo"
@@ -1726,9 +1479,9 @@ namespace Transact.Datos
                                                                        + " where RNCT.idCampo = CDT.idCampo"
                                                                        + " and RNCT.idVisualizacion = VTT.idVisualizacion"
                                                                        + " and RNCT.idVisualizacion = 24"
-                                                                       + " and CDT.idTipoTransaccion = "+ idTipotransaccion
-                                                                       + " and RNCT.idEtapa = "+ idEtapa
-                                                                       + " and RNCT.idAccion = "+ idAccion+ " order by CDT.nombreCampo ASC");
+                                                                       + " and CDT.idTipoTransaccion = " + idTipotransaccion
+                                                                       + " and RNCT.idEtapa = " + idEtapa
+                                                                       + " and RNCT.idAccion = " + idAccion + " order by CDT.nombreCampo ASC");
 
 
 
@@ -1739,8 +1492,7 @@ namespace Transact.Datos
 
                 }
 
-                foreach (DataRow rowDet in dt.Rows)
-                {
+                foreach (DataRow rowDet in dt.Rows) {
                     Entidades.DTregistrosCampos compos = new Entidades.DTregistrosCampos();
                     compos.nombreCampo = rowDet["nombreCampo"].ToString();
                     compos.idCampo = Convert.ToInt32(rowDet["idCampo"].ToString());
@@ -1750,9 +1502,7 @@ namespace Transact.Datos
                 camposconbo.ListCamposTransaccion = composCon.ToArray();
 
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
 
                 Console.WriteLine(ex);
                 throw;
@@ -1763,8 +1513,7 @@ namespace Transact.Datos
 
             return camposconbo;
         }
-        public Entidades.Autocompletar campNCombD(int idTipotransaccion, int idEtapa, int idAccion, int idCampo)
-        {
+        public Entidades.Autocompletar campNCombD(int idTipotransaccion, int idEtapa, int idAccion, int idCampo) {
             ConvertJsonToDataset convertidor = new ConvertJsonToDataset();
             List<Entidades.autoCampos> composCon = new List<Entidades.autoCampos>();
             Entidades.Autocompletar camposconbo = new Entidades.Autocompletar();
@@ -1774,10 +1523,8 @@ namespace Transact.Datos
             DataSet dtCamJson = new DataSet();
             DataTable copia = new DataTable();
 
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT CDT.idCampo, CDT.nombreCampo"
@@ -1785,9 +1532,9 @@ namespace Transact.Datos
                                                                       + " where RNCT.idCampo = CDT.idCampo"
                                                                       + " and RNCT.idVisualizacion = VTT.idVisualizacion"
                                                                       + " and RNCT.idVisualizacion <> 24"
-                                                                      + " and CDT.idTipoTransaccion = "+ idTipotransaccion
-                                                                      + " and RNCT.idEtapa = "+ idEtapa
-                                                                      + " and RNCT.idAccion = "+ idAccion);
+                                                                      + " and CDT.idTipoTransaccion = " + idTipotransaccion
+                                                                      + " and RNCT.idEtapa = " + idEtapa
+                                                                      + " and RNCT.idAccion = " + idAccion);
                     dtCampos.Load(consulta);
                     connection.Close();
 
@@ -1798,30 +1545,26 @@ namespace Transact.Datos
                                                                        + " where RNCT.idCampo = CDT.idCampo"
                                                                        + " and RNCT.idVisualizacion = VTT.idVisualizacion"
                                                                        + " and RNCT.idVisualizacion = 24"
-                                                                       + " and CDT.idTipoTransaccion = "+ idTipotransaccion
-                                                                       + " and RNCT.idEtapa = "+ idEtapa
-                                                                       + " and RNCT.idAccion = "+ idAccion
-                                                                       + " and CDT.idCampo = "+ idCampo);
+                                                                       + " and CDT.idTipoTransaccion = " + idTipotransaccion
+                                                                       + " and RNCT.idEtapa = " + idEtapa
+                                                                       + " and RNCT.idAccion = " + idAccion
+                                                                       + " and CDT.idCampo = " + idCampo);
                     dtJson.Load(consulta);
                     connection.Close();
 
                 }
 
-                
 
-                foreach (DataRow rowDet in dtJson.Rows)
-                {
+
+                foreach (DataRow rowDet in dtJson.Rows) {
                     dtCamJson = convertidor.ConvertJsonStringToDataSet(rowDet["cadenaJsonHijos"].ToString());
-    
+
                 }
 
-                if (dtCamJson.Tables.Count != 0)
-                {
+                if (dtCamJson.Tables.Count != 0) {
                     DataTable dataJson = dtCamJson.Tables["Hijo"];
-                      copia = dataJson;
-                }
-                else
-                {
+                    copia = dataJson;
+                } else {
                     copia.Columns.Add("idCampo");
                     copia.Columns.Add("primarykey");
                     copia.Columns.Add("Types");
@@ -1830,8 +1573,7 @@ namespace Transact.Datos
                     copia.Columns.Add("idRef");
                     copia.Columns.Add("CampoRef");
 
-                    foreach (DataRow varr in dtCampos.Rows)
-                    {
+                    foreach (DataRow varr in dtCampos.Rows) {
 
                         DataRow row = copia.NewRow();
                         row["idCampo"] = varr["nombreCampo"].ToString();
@@ -1846,8 +1588,7 @@ namespace Transact.Datos
 
                     }
                 }
-                foreach (DataRow rowDet in copia.Rows)
-                {
+                foreach (DataRow rowDet in copia.Rows) {
                     Entidades.autoCampos compos = new Entidades.autoCampos();
 
                     if (rowDet["idCampo"].ToString() != "") { compos.idCampo = rowDet["idCampo"].ToString(); } else { compos.idCampo = ""; }
@@ -1864,9 +1605,7 @@ namespace Transact.Datos
                 camposconbo.listaCamp = composCon.ToArray();
 
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
 
                 Console.WriteLine(ex);
                 throw;
@@ -1877,17 +1616,14 @@ namespace Transact.Datos
 
             return camposconbo;
         }
-        public Entidades.DTCamposDinamicos campJsonD(int idTipotransaccion, int idEtapa, int idAccion,string nombreCampo)
-        {
+        public Entidades.DTCamposDinamicos campJsonD(int idTipotransaccion, int idEtapa, int idAccion, string nombreCampo) {
             List<Entidades.DTregistrosCampos> composCon = new List<Entidades.DTregistrosCampos>();
             Entidades.DTCamposDinamicos camposconbo = new Entidades.DTCamposDinamicos();
             SqlConnection connection = null;
             DataTable dt = new DataTable();
 
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT CDT.nombreCampo idCampo, idReferencia PrimaryKey"
@@ -1895,17 +1631,16 @@ namespace Transact.Datos
                                                                        + " where RNCT.idCampo = CDT.idCampo"
                                                                        + " and RNCT.idVisualizacion = VTT.idVisualizacion"
                                                                        + " and RNCT.idVisualizacion = 24"
-                                                                       + " and CDT.idTipoTransaccion = "+ idTipotransaccion
-                                                                       + " and RNCT.idEtapa = "+ idEtapa
-                                                                       + " and RNCT.idAccion = "+ idAccion
+                                                                       + " and CDT.idTipoTransaccion = " + idTipotransaccion
+                                                                       + " and RNCT.idEtapa = " + idEtapa
+                                                                       + " and RNCT.idAccion = " + idAccion
                                                                        + " and CDT.nombreCampo ='" + nombreCampo + "'");
                     dt.Load(consulta);
                     connection.Close();
 
                 }
 
-                foreach (DataRow rowDet in dt.Rows)
-                {
+                foreach (DataRow rowDet in dt.Rows) {
                     Entidades.DTregistrosCampos compos = new Entidades.DTregistrosCampos();
                     compos.nombreCampo = rowDet["idCampo"].ToString();
                     compos.idReferencia = rowDet["PrimaryKey"].ToString();
@@ -1915,9 +1650,7 @@ namespace Transact.Datos
                 camposconbo.ListCamposTransaccion = composCon.ToArray();
 
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
 
                 Console.WriteLine(ex);
                 throw;
@@ -1928,34 +1661,31 @@ namespace Transact.Datos
 
             return camposconbo;
         }
-        public Entidades.DTCamposDinamicos selectDeleteCampoDinamico(int idTipoTransaccion,int idCampo) {
+        public Entidades.DTCamposDinamicos selectDeleteCampoDinamico(int idTipoTransaccion, int idCampo) {
 
             List<Entidades.DTregistrosCampos> composCon = new List<Entidades.DTregistrosCampos>();
             Entidades.DTCamposDinamicos camposconbo = new Entidades.DTCamposDinamicos();
             SqlConnection connection = null;
             DataTable dt = new DataTable();
 
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT (select COUNT(*) "
                                                                        + " FROM Configuracion.CamposDinamicosTransacciones CDT"
                                                                        + " INNER JOIN Configuracion.ReglasNegocioCamposxTipoTransaccion RNC"
                                                                        + " ON RNC.idCampo = CDT.idCampo"
-                                                                       + " WHERE CDT.idTipoTransaccion = " + idTipoTransaccion +")"
+                                                                       + " WHERE CDT.idTipoTransaccion = " + idTipoTransaccion + ")"
                                                                        + " AS campo,visible,editable,obligatorio,idVisualizacion "
                                                                        + " FROM Configuracion.ReglasNegocioCamposxTipoTransaccion "
-                                                                       + " WHERE idCampo = "+ idCampo + " AND idTipoTransaccion = "+ idTipoTransaccion);
+                                                                       + " WHERE idCampo = " + idCampo + " AND idTipoTransaccion = " + idTipoTransaccion);
                     dt.Load(consulta);
                     connection.Close();
 
                 }
 
-                foreach (DataRow rowDet in dt.Rows)
-                {
+                foreach (DataRow rowDet in dt.Rows) {
                     Entidades.DTregistrosCampos compos = new Entidades.DTregistrosCampos();
                     compos.valorSelect = Convert.ToInt32(rowDet["campo"].ToString());
                     compos.valorVisible = rowDet["visible"].ToString();
@@ -1968,9 +1698,7 @@ namespace Transact.Datos
                 camposconbo.ListCamposTransaccion = composCon.ToArray();
 
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
 
                 Console.WriteLine(ex);
                 throw;
@@ -1981,18 +1709,15 @@ namespace Transact.Datos
 
             return camposconbo;
         }
-        public Entidades.DTCamposDinamicos selectDeleteEtapa(int idTipoTransaccion, string nombre)
-        {
+        public Entidades.DTCamposDinamicos selectDeleteEtapa(int idTipoTransaccion, string nombre) {
 
             List<Entidades.DTregistrosCampos> composCon = new List<Entidades.DTregistrosCampos>();
             Entidades.DTCamposDinamicos camposconbo = new Entidades.DTCamposDinamicos();
             SqlConnection connection = null;
             DataTable dt = new DataTable();
 
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT COUNT(*) AS campo"
@@ -2000,14 +1725,13 @@ namespace Transact.Datos
                                                                        + " WHERE idTipoTransaccion = " + idTipoTransaccion + ""
                                                                        + " AND idEtapa = (select idEtapa "
                                                                        + " from EtapasTipoTransaccion "
-                                                                       + " WHERE idTipoTransaccion = " + idTipoTransaccion + " AND descripcion ='" + nombre+"')");
+                                                                       + " WHERE idTipoTransaccion = " + idTipoTransaccion + " AND descripcion ='" + nombre + "')");
                     dt.Load(consulta);
                     connection.Close();
 
                 }
 
-                foreach (DataRow rowDet in dt.Rows)
-                {
+                foreach (DataRow rowDet in dt.Rows) {
                     Entidades.DTregistrosCampos compos = new Entidades.DTregistrosCampos();
                     compos.valorSelect = Convert.ToInt32(rowDet["campo"].ToString());
                     composCon.Add(compos);
@@ -2016,9 +1740,7 @@ namespace Transact.Datos
                 camposconbo.ListCamposTransaccion = composCon.ToArray();
 
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
 
                 Console.WriteLine(ex);
                 throw;
@@ -2029,18 +1751,15 @@ namespace Transact.Datos
 
             return camposconbo;
         }
-        public Entidades.DTCamposDinamicos selectDeleteAccionxRnc(int idTipoTransaccion, int idAccion)
-        {
+        public Entidades.DTCamposDinamicos selectDeleteAccionxRnc(int idTipoTransaccion, int idAccion) {
 
             List<Entidades.DTregistrosCampos> composCon = new List<Entidades.DTregistrosCampos>();
             Entidades.DTCamposDinamicos camposconbo = new Entidades.DTCamposDinamicos();
             SqlConnection connection = null;
             DataTable dt = new DataTable();
 
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT (select COUNT(*) "
@@ -2056,8 +1775,7 @@ namespace Transact.Datos
 
                 }
 
-                foreach (DataRow rowDet in dt.Rows)
-                {
+                foreach (DataRow rowDet in dt.Rows) {
                     Entidades.DTregistrosCampos compos = new Entidades.DTregistrosCampos();
                     compos.valorSelect = Convert.ToInt32(rowDet["campo"].ToString());
                     compos.valorVisible = rowDet["visible"].ToString();
@@ -2071,9 +1789,7 @@ namespace Transact.Datos
                 camposconbo.ListCamposTransaccion = composCon.ToArray();
 
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
 
                 Console.WriteLine(ex);
                 throw;
@@ -2084,18 +1800,15 @@ namespace Transact.Datos
 
             return camposconbo;
         }
-        public Entidades.DTCamposDinamicos selectDeleteAccionxCombo(int idTipoTransaccion, int idAccion)
-        {
+        public Entidades.DTCamposDinamicos selectDeleteAccionxCombo(int idTipoTransaccion, int idAccion) {
 
             List<Entidades.DTregistrosCampos> composCon = new List<Entidades.DTregistrosCampos>();
             Entidades.DTCamposDinamicos camposconbo = new Entidades.DTCamposDinamicos();
             SqlConnection connection = null;
             DataTable dt = new DataTable();
 
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "select COUNT(*) AS campo"
@@ -2106,8 +1819,7 @@ namespace Transact.Datos
 
                 }
 
-                foreach (DataRow rowDet in dt.Rows)
-                {
+                foreach (DataRow rowDet in dt.Rows) {
                     Entidades.DTregistrosCampos compos = new Entidades.DTregistrosCampos();
                     compos.valorSelect = Convert.ToInt32(rowDet["campo"].ToString());
                     composCon.Add(compos);
@@ -2116,9 +1828,7 @@ namespace Transact.Datos
                 camposconbo.ListCamposTransaccion = composCon.ToArray();
 
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
 
                 Console.WriteLine(ex);
                 throw;
@@ -2129,18 +1839,15 @@ namespace Transact.Datos
 
             return camposconbo;
         }
-        public Entidades.DTCamposDinamicos selectDeleteAccionxAuto(int idTipoTransaccion, int idAccion)
-        {
+        public Entidades.DTCamposDinamicos selectDeleteAccionxAuto(int idTipoTransaccion, int idAccion) {
 
             List<Entidades.DTregistrosCampos> composCon = new List<Entidades.DTregistrosCampos>();
             Entidades.DTCamposDinamicos camposconbo = new Entidades.DTCamposDinamicos();
             SqlConnection connection = null;
             DataTable dt = new DataTable();
 
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT COUNT( RNC.cadenaJsonHijos ) AS campo"
@@ -2151,8 +1858,7 @@ namespace Transact.Datos
 
                 }
 
-                foreach (DataRow rowDet in dt.Rows)
-                {
+                foreach (DataRow rowDet in dt.Rows) {
                     Entidades.DTregistrosCampos compos = new Entidades.DTregistrosCampos();
                     compos.valorSelect = Convert.ToInt32(rowDet["campo"].ToString());
                     composCon.Add(compos);
@@ -2161,9 +1867,7 @@ namespace Transact.Datos
                 camposconbo.ListCamposTransaccion = composCon.ToArray();
 
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
 
                 Console.WriteLine(ex);
                 throw;
@@ -2174,30 +1878,26 @@ namespace Transact.Datos
 
             return camposconbo;
         }
-        public Entidades.DTCamposDinamicos selectDeleteAccionxFormula(int idTipoTransaccion, int idAccion)
-        {
+        public Entidades.DTCamposDinamicos selectDeleteAccionxFormula(int idTipoTransaccion, int idAccion) {
 
             List<Entidades.DTregistrosCampos> composCon = new List<Entidades.DTregistrosCampos>();
             Entidades.DTCamposDinamicos camposconbo = new Entidades.DTCamposDinamicos();
             SqlConnection connection = null;
             DataTable dt = new DataTable();
 
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT COUNT(*) AS campo"
                                                                        + " FROM Configuracion.Formulas"
-                                                                       + " WHERE idAccion = " + idAccion + " AND idTipoTransaccion =" + idTipoTransaccion );
+                                                                       + " WHERE idAccion = " + idAccion + " AND idTipoTransaccion =" + idTipoTransaccion);
                     dt.Load(consulta);
                     connection.Close();
 
                 }
 
-                foreach (DataRow rowDet in dt.Rows)
-                {
+                foreach (DataRow rowDet in dt.Rows) {
                     Entidades.DTregistrosCampos compos = new Entidades.DTregistrosCampos();
                     compos.valorSelect = Convert.ToInt32(rowDet["campo"].ToString());
                     composCon.Add(compos);
@@ -2206,9 +1906,7 @@ namespace Transact.Datos
                 camposconbo.ListCamposTransaccion = composCon.ToArray();
 
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
 
                 Console.WriteLine(ex);
                 throw;
@@ -2219,18 +1917,15 @@ namespace Transact.Datos
 
             return camposconbo;
         }
-        public Entidades.DTCamposDinamicos selectDeleteAccionxRnA(int idTipoTransaccion, int idAccion)
-        {
+        public Entidades.DTCamposDinamicos selectDeleteAccionxRnA(int idTipoTransaccion, int idAccion) {
 
             List<Entidades.DTregistrosCampos> composCon = new List<Entidades.DTregistrosCampos>();
             Entidades.DTCamposDinamicos camposconbo = new Entidades.DTCamposDinamicos();
             SqlConnection connection = null;
             DataTable dt = new DataTable();
 
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT COUNT(*) AS campo"
@@ -2241,8 +1936,7 @@ namespace Transact.Datos
 
                 }
 
-                foreach (DataRow rowDet in dt.Rows)
-                {
+                foreach (DataRow rowDet in dt.Rows) {
                     Entidades.DTregistrosCampos compos = new Entidades.DTregistrosCampos();
                     compos.valorSelect = Convert.ToInt32(rowDet["campo"].ToString());
                     composCon.Add(compos);
@@ -2251,9 +1945,7 @@ namespace Transact.Datos
                 camposconbo.ListCamposTransaccion = composCon.ToArray();
 
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
 
                 Console.WriteLine(ex);
                 throw;
@@ -2269,24 +1961,20 @@ namespace Transact.Datos
         #endregion
         // Metodos para Entidades
         #region Entidades
-        public Entidades.TiposDatosCampos CatTiposDatosCampos()
-        {
+        public Entidades.TiposDatosCampos CatTiposDatosCampos() {
             DataTable dt = new DataTable();
             SqlConnection connection = null;
             Entidades.TiposDatosCampos registros = new Entidades.TiposDatosCampos();
             List<Entidades.camposTiposDatos> tiposDatosCamp = new List<Entidades.camposTiposDatos>();
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT idTipoDatoCampo, descripcion, abreviatura FROM Configuracion.TiposDatoCampos order by descripcion ASC");
                     dt.Load(consulta);
                     connection.Close();
                 }
-                foreach (DataRow row in dt.Rows)
-                {
+                foreach (DataRow row in dt.Rows) {
                     Entidades.camposTiposDatos registrosDatos = new Entidades.camposTiposDatos();
                     registrosDatos.idTipoDatoCampo = Convert.ToInt32(row["idTipoDatoCampo"].ToString());
                     registrosDatos.descripcion = row["descripcion"].ToString();
@@ -2294,33 +1982,27 @@ namespace Transact.Datos
                     tiposDatosCamp.Add(registrosDatos);
                 }
                 registros.camposTiposDatCampos = tiposDatosCamp.ToArray();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Console.WriteLine(e);
                 throw;
             }
             return registros;
         }
-        public Entidades.NivelesTransacciones CatNivelesTransacciones()
-        {
+        public Entidades.NivelesTransacciones CatNivelesTransacciones() {
             DataTable dt = new DataTable();
             SqlConnection connection = null;
             Entidades.NivelesTransacciones registros = new Entidades.NivelesTransacciones();
             List<Entidades.camposNivelTrans> tiposNiv = new List<Entidades.camposNivelTrans>();
 
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT idNivel, descripcion FROM Configuracion.NivelTransacciones");
                     dt.Load(consulta);
                     connection.Close();
                 }
-                foreach (DataRow row in dt.Rows)
-                {
+                foreach (DataRow row in dt.Rows) {
                     Entidades.camposNivelTrans registrosNiv = new Entidades.camposNivelTrans();
 
                     registrosNiv.idNivel = Convert.ToInt32(row["idNivel"].ToString());
@@ -2329,33 +2011,27 @@ namespace Transact.Datos
                     tiposNiv.Add(registrosNiv);
                 }
                 registros.CamposNivelTransaccion = tiposNiv.ToArray();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Console.WriteLine(e);
                 throw;
             }
             return registros;
         }
-        public Entidades.TiposOperaciones CatTiposOperaciones()
-        {
+        public Entidades.TiposOperaciones CatTiposOperaciones() {
             DataTable dt = new DataTable();
             SqlConnection connection = null;
             Entidades.TiposOperaciones registros = new Entidades.TiposOperaciones();
             List<Entidades.camposTiposOperaciones> nivOperaciones = new List<Entidades.camposTiposOperaciones>();
 
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT idTipoOperacion, descripcion FROM Configuracion.TiposOperaciones");
                     dt.Load(consulta);
                     connection.Close();
                 }
-                foreach (DataRow row in dt.Rows)
-                {
+                foreach (DataRow row in dt.Rows) {
                     Entidades.camposTiposOperaciones registrosOperacion = new Entidades.camposTiposOperaciones();
 
                     registrosOperacion.idTipoOperacion = Convert.ToInt32(row["idTipoOperacion"].ToString());
@@ -2364,33 +2040,27 @@ namespace Transact.Datos
                     nivOperaciones.Add(registrosOperacion);
                 }
                 registros.CamposOperaciones = nivOperaciones.ToArray();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Console.WriteLine(e);
                 throw;
             }
             return registros;
         }
-        public Entidades.RolesTransaccion CatTiposRolesTransaccion()
-        {
+        public Entidades.RolesTransaccion CatTiposRolesTransaccion() {
             DataTable dt = new DataTable();
             SqlConnection connection = null;
             Entidades.RolesTransaccion registros = new Entidades.RolesTransaccion();
             List<Entidades.camposRolesTrans> tipoRol = new List<Entidades.camposRolesTrans>();
 
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT idRol, nombreRol FROM Seguridad.Roles");
                     dt.Load(consulta);
                     connection.Close();
                 }
-                foreach (DataRow row in dt.Rows)
-                {
+                foreach (DataRow row in dt.Rows) {
                     Entidades.camposRolesTrans registrosRol = new Entidades.camposRolesTrans();
 
                     registrosRol.idRol = Convert.ToInt32(row["idRol"].ToString());
@@ -2399,34 +2069,28 @@ namespace Transact.Datos
                     tipoRol.Add(registrosRol);
                 }
                 registros.CamposRoles = tipoRol.ToArray();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Console.WriteLine(e);
                 throw;
             }
             return registros;
 
         }
-        public Entidades.AreasTipoTransaccion CatAreasTipoTransaccion()
-        {
+        public Entidades.AreasTipoTransaccion CatAreasTipoTransaccion() {
             DataTable dt = new DataTable();
             SqlConnection connection = null;
             Entidades.AreasTipoTransaccion registros = new Entidades.AreasTipoTransaccion();
             List<Entidades.datosAreasTransaccion> areaTran = new List<Entidades.datosAreasTransaccion>();
 
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT idArea, descripcion FROM Negocio.Areas order by descripcion ASC");
                     dt.Load(consulta);
                     connection.Close();
                 }
-                foreach (DataRow row in dt.Rows)
-                {
+                foreach (DataRow row in dt.Rows) {
                     Entidades.datosAreasTransaccion registrosAreas = new Entidades.datosAreasTransaccion();
 
                     registrosAreas.idArea = Convert.ToInt32(row["idArea"].ToString());
@@ -2435,33 +2099,27 @@ namespace Transact.Datos
                     areaTran.Add(registrosAreas);
                 }
                 registros.datAreasTransac = areaTran.ToArray();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Console.WriteLine(e);
                 throw;
             }
             return registros;
         }
-        public Entidades.ProcesosTipoTransaccion CatProcesoTransaccion(int idArea)
-        {
+        public Entidades.ProcesosTipoTransaccion CatProcesoTransaccion(int idArea) {
             DataTable dt = new DataTable();
             SqlConnection connection = null;
             Entidades.ProcesosTipoTransaccion registros = new Entidades.ProcesosTipoTransaccion();
             List<Entidades.CamposProcesos> prosTran = new List<Entidades.CamposProcesos>();
 
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
-                    consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT idProceso, descripcion FROM Negocio.Procesos WHERE idArea=" + idArea+ " order by descripcion ASC");
+                    consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT idProceso, descripcion FROM Negocio.Procesos WHERE idArea=" + idArea + " order by descripcion ASC");
                     dt.Load(consulta);
                     connection.Close();
                 }
-                foreach (DataRow row in dt.Rows)
-                {
+                foreach (DataRow row in dt.Rows) {
                     Entidades.CamposProcesos registrosAreas = new Entidades.CamposProcesos();
 
                     registrosAreas.idProceso = Convert.ToInt32(row["idProceso"].ToString());
@@ -2470,37 +2128,31 @@ namespace Transact.Datos
                     prosTran.Add(registrosAreas);
                 }
                 registros.CamposProcesosTran = prosTran.ToArray();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Console.WriteLine(e);
                 throw;
             }
             return registros;
         }
-        public Entidades.TiposVisualizacion CatTVisualizacionTransaccion(int idTipoDatoCampo)
-        {
+        public Entidades.TiposVisualizacion CatTVisualizacionTransaccion(int idTipoDatoCampo) {
             DataTable dt = new DataTable();
             SqlConnection connection = null;
             Entidades.TiposVisualizacion registros = new Entidades.TiposVisualizacion();
             List<Entidades.CamposTiposVisualizacion> visTran = new List<Entidades.CamposTiposVisualizacion>();
 
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT VTT.idVisualizacion, VTT.descripcion"
                                                                       + " FROM Configuracion.VisualizacionXCampos VC, Configuracion.VisualizacionTipoTransacciones VTT, Configuracion.TiposDatoCampos TDC"
                                                                       + " WHERE VTT.idVisualizacion = VC.idVisualizacion"
                                                                       + " AND TDC.idTipoDatoCampo = VC.idTipoDatoCampo"
-                                                                      + " AND TDC.idTipoDatoCampo = "+ idTipoDatoCampo+ " order by VTT.descripcion ASC");
+                                                                      + " AND TDC.idTipoDatoCampo = " + idTipoDatoCampo + " order by VTT.descripcion ASC");
                     dt.Load(consulta);
                     connection.Close();
                 }
-                foreach (DataRow row in dt.Rows)
-                {
+                foreach (DataRow row in dt.Rows) {
                     Entidades.CamposTiposVisualizacion registrosVis = new Entidades.CamposTiposVisualizacion();
 
                     registrosVis.idVisualizacion = Convert.ToInt32(row["idVisualizacion"].ToString());
@@ -2509,26 +2161,21 @@ namespace Transact.Datos
                     visTran.Add(registrosVis);
                 }
                 registros.CamposVisualizacion = visTran.ToArray();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Console.WriteLine(e);
                 throw;
             }
             return registros;
         }
-        public Entidades.EntEtapas.EtapasCombo CatTEtapas(int idTransaccion)
-        {
+        public Entidades.EntEtapas.EtapasCombo CatTEtapas(int idTransaccion) {
             DataTable dt = new DataTable();
             SqlConnection connection = null;
             List<Entidades.EntEtapas.Etapacombo> ListaCampCatalogo = new List<Entidades.EntEtapas.Etapacombo>();
             Entidades.EntEtapas.EtapasCombo row = new Entidades.EntEtapas.EtapasCombo();
 
-            try
-            {
+            try {
 
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT ETT.idEtapa,ETT.descripcion FROM Configuracion.EtapasTipoTransaccion ETT INNER JOIN Configuracion.EtapasAccionesTipoTransacciones EATT ON EATT.idEtapa = ETT.idEtapa WHERE EATT.idTipoTransaccion =" + idTransaccion);
@@ -2537,8 +2184,7 @@ namespace Transact.Datos
 
                 }
 
-                foreach (DataRow rowDet in dt.Rows)
-                {
+                foreach (DataRow rowDet in dt.Rows) {
                     Entidades.EntEtapas.Etapacombo valores1 = new Entidades.EntEtapas.Etapacombo();
                     valores1.idEtapa = Convert.ToInt32(rowDet["idEtapa"].ToString());
                     valores1.descripcion = rowDet["descripcion"].ToString();
@@ -2548,9 +2194,7 @@ namespace Transact.Datos
 
                 row.listEtapas = ListaCampCatalogo.ToArray();
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
@@ -2559,18 +2203,15 @@ namespace Transact.Datos
 
             return row;
         }
-        public Entidades.EntEtapas.EtapasCombo CatTsoloEtapas(int idTransaccion)
-        {
+        public Entidades.EntEtapas.EtapasCombo CatTsoloEtapas(int idTransaccion) {
             DataTable dt = new DataTable();
             SqlConnection connection = null;
             List<Entidades.EntEtapas.Etapacombo> ListaCampCatalogo = new List<Entidades.EntEtapas.Etapacombo>();
             Entidades.EntEtapas.EtapasCombo row = new Entidades.EntEtapas.EtapasCombo();
 
-            try
-            {
+            try {
 
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT ETT.idEtapa,ETT.descripcion FROM Configuracion.EtapasTipoTransaccion ETT  WHERE ETT.idTipoTransaccion = " + idTransaccion);
@@ -2579,8 +2220,7 @@ namespace Transact.Datos
 
                 }
 
-                foreach (DataRow rowDet in dt.Rows)
-                {
+                foreach (DataRow rowDet in dt.Rows) {
                     Entidades.EntEtapas.Etapacombo valores1 = new Entidades.EntEtapas.Etapacombo();
                     valores1.idEtapa = Convert.ToInt32(rowDet["idEtapa"].ToString());
                     valores1.descripcion = rowDet["descripcion"].ToString();
@@ -2590,9 +2230,7 @@ namespace Transact.Datos
 
                 row.listEtapas = ListaCampCatalogo.ToArray();
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
@@ -2601,28 +2239,24 @@ namespace Transact.Datos
 
             return row;
         }
-        public Entidades.TipoTransaccion CatTTiposTransacciones()
-        {
+        public Entidades.TipoTransaccion CatTTiposTransacciones() {
             Entidades.TipoTransaccion ListaTipoTransaccion = new Entidades.TipoTransaccion();
             List<Entidades.tipoTran> ListaCampCatalogo = new List<Entidades.tipoTran>();
             SqlConnection connection = null;
             DataTable dt = new DataTable();
 
-            try
-            {
+            try {
 
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
-                    consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT TT.idTipoTransaccion, descripcion Nombre,cveTipoTransaccion Clave, TT.idProceso, (select idArea from Negocio.Procesos where idProceso=TT.idProceso) Area, TT.idCatTipoTransac, CT.categoriaTransac Categoria,EAT.descripcionEstatus Estatus,fechaAlta fecha FROM Configuracion.TiposTransacciones TT, Configuracion.CategoriaTipoTransaccion CT,Configuracion.EstatusAltaTipoTransaccion EAT where TT.idCatTipoTransac=CT.idCatTipoTransac and TT.idEstatusAlta=EAT.idEstatusAlta");
+                    consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT TT.idTipoTransaccion as idTipoTransaccion, descripcion Nombre,cveTipoTransaccion Clave, TT.idProceso, (select idArea from Negocio.Procesos where idProceso=TT.idProceso) Area, TT.idCatTipoTransac, CT.categoriaTransac Categoria,EAT.descripcionEstatus Estatus,fechaAlta fecha FROM Configuracion.TiposTransacciones TT, Configuracion.CategoriaTipoTransaccion CT,Configuracion.EstatusAltaTipoTransaccion EAT where TT.idCatTipoTransac=CT.idCatTipoTransac and TT.idEstatusAlta=EAT.idEstatusAlta");
                     dt.Load(consulta);
                     connection.Close();
 
                 }
 
-                foreach (DataRow rowDet in dt.Rows)
-                {
+                foreach (DataRow rowDet in dt.Rows) {
                     Entidades.tipoTran valores1 = new Entidades.tipoTran();
 
                     valores1.idTipoTransaccion = Convert.ToInt32(rowDet["idTipoTransaccion"]);
@@ -2641,9 +2275,7 @@ namespace Transact.Datos
 
                 ListaTipoTransaccion.ListaTipoTran = ListaCampCatalogo.ToArray();
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
@@ -2651,18 +2283,15 @@ namespace Transact.Datos
 
             return ListaTipoTransaccion;
         }
-        public Entidades.AccionesEnt.AccionesCombo CatTAcciones(int idTransaccion, int idEtapa)
-        {
+        public Entidades.AccionesEnt.AccionesCombo CatTAcciones(int idTransaccion, int idEtapa) {
             DataTable dt = new DataTable();
             SqlConnection connection = null;
             List<Entidades.AccionesEnt.Accioncombo> ListaCampCatalogo = new List<Entidades.AccionesEnt.Accioncombo>();
             Entidades.AccionesEnt.AccionesCombo row = new Entidades.AccionesEnt.AccionesCombo();
 
-            try
-            {
+            try {
 
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT ATT.idaccion,ATT.descripcion FROM Configuracion.AccionesTipoTransaccion ATT INNER JOIN Configuracion.EtapasAccionesTipoTransacciones EAT ON EAT.idaccion = ATT.idaccion WHERE EAT.idEtapa =" + idEtapa + " and EAT.idTipoTransaccion =" + idTransaccion);
@@ -2671,8 +2300,7 @@ namespace Transact.Datos
 
                 }
 
-                foreach (DataRow rowDet in dt.Rows)
-                {
+                foreach (DataRow rowDet in dt.Rows) {
                     Entidades.AccionesEnt.Accioncombo valores1 = new Entidades.AccionesEnt.Accioncombo();
                     valores1.idAccion = Convert.ToInt32(rowDet["idaccion"].ToString());
                     valores1.descripcion = rowDet["descripcion"].ToString();
@@ -2682,9 +2310,7 @@ namespace Transact.Datos
 
                 row.listAcciones = ListaCampCatalogo.ToArray();
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
@@ -2693,19 +2319,16 @@ namespace Transact.Datos
 
             return row;
         }
-        public Entidades.AltaTiposTransacciones CatTiposTransaccionesD(int idTipoTransaccion)
-        {
+        public Entidades.AltaTiposTransacciones CatTiposTransaccionesD(int idTipoTransaccion) {
             Entidades.AltaTiposTransacciones configuracion = new Entidades.AltaTiposTransacciones();
 
             DataTable dtGral = new DataTable();
 
             SqlConnection connection = null;
 
-            try
-            {
+            try {
 
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT idTipoTransaccion , descripcion, cveTipoTransaccion, activo, idProceso, idCatTipoTransac, idEstatusAlta, fechaAlta"
@@ -2715,8 +2338,7 @@ namespace Transact.Datos
                     connection.Close();
                 }
 
-                foreach (DataRow rowDet in dtGral.Rows)
-                {
+                foreach (DataRow rowDet in dtGral.Rows) {
                     configuracion.idTipoTransaccion = Convert.ToInt32(rowDet["idTipoTransaccion"].ToString());
                     configuracion.nombre = rowDet["descripcion"].ToString();
                     configuracion.cveTipoTransaccion = rowDet["cveTipoTransaccion"].ToString();
@@ -2725,9 +2347,7 @@ namespace Transact.Datos
                     configuracion.activoTipoTrans = Convert.ToBoolean(rowDet["activo"].ToString());
 
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
@@ -2736,8 +2356,7 @@ namespace Transact.Datos
 
             return configuracion;
         }
-        public Entidades.EntEtapas.EtapasCombo CatETapasAcionesD(int idTipoTransaccion, int idEtapa)
-        {
+        public Entidades.EntEtapas.EtapasCombo CatETapasAcionesD(int idTipoTransaccion, int idEtapa) {
 
 
             Entidades.EntEtapas.EtapasCombo listacombo = new Entidades.EntEtapas.EtapasCombo();
@@ -2745,11 +2364,9 @@ namespace Transact.Datos
             SqlConnection connection = null;
             DataTable dtEtapas = new DataTable();
 
-            try
-            {
+            try {
 
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT  distinct EATT.idEtapa, ATT.descripcion, ATT.cveAccion, att.orden,ATT.idAccion"
@@ -2769,8 +2386,7 @@ namespace Transact.Datos
                     connection.Close();
                 }
 
-                foreach (DataRow rowDet in dtEtapas.Rows)
-                {
+                foreach (DataRow rowDet in dtEtapas.Rows) {
                     Entidades.EntEtapas.Etapacombo valores1 = new Entidades.EntEtapas.Etapacombo();
                     valores1.idEtapa = Convert.ToInt32(rowDet["idEtapa"]);
                     valores1.descripcion = rowDet["descripcion"].ToString();
@@ -2781,26 +2397,21 @@ namespace Transact.Datos
                     lista.Add(valores1);
                 }
                 listacombo.listEtapas = lista.ToArray();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
             return listacombo;
         }
-        public Entidades.RolesTransaccion CatRolesD(int idTipoTransaccion, int idEtapa, string descripcion)
-        {
+        public Entidades.RolesTransaccion CatRolesD(int idTipoTransaccion, int idEtapa, string descripcion) {
             Entidades.RolesTransaccion Roles = new Entidades.RolesTransaccion();
             List<Entidades.camposRolesTrans> lista = new List<Entidades.camposRolesTrans>();
             SqlConnection connection = null;
             DataTable dtRoles = new DataTable();
 
-            try
-            {
+            try {
 
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT  distinct R.nombreRol,'true' estatus"
@@ -2838,8 +2449,7 @@ namespace Transact.Datos
                     connection.Close();
                 }
 
-                foreach (DataRow rowDet in dtRoles.Rows)
-                {
+                foreach (DataRow rowDet in dtRoles.Rows) {
                     Entidades.camposRolesTrans valores1 = new Entidades.camposRolesTrans();
                     valores1.nombreRol = rowDet["nombreRol"].ToString();
                     valores1.estatus = rowDet["estatus"].ToString();
@@ -2848,28 +2458,23 @@ namespace Transact.Datos
                     lista.Add(valores1);
                 }
                 Roles.CamposRoles = lista.ToArray();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
 
             return Roles;
         }
-        public Entidades.EnFormula CatformulasD(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo)
-        {
+        public Entidades.EnFormula CatformulasD(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo) {
             Entidades.EnFormula listformula = new Entidades.EnFormula();
             List<Entidades.CamposEnFormula> camposformula = new List<Entidades.CamposEnFormula>();
 
             SqlConnection connection = null;
             DataTable dtFormula = new DataTable();
 
-            try
-            {
+            try {
 
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT DISTINCT ETT.descripcion Etapa, ATT.descripcion Accion, CDT.nombreCampo, F.cadenaGenerada, f.idCampo, f.idEtapa, f.idAccion"
@@ -2891,8 +2496,7 @@ namespace Transact.Datos
                     connection.Close();
                 }
 
-                foreach (DataRow rowDet in dtFormula.Rows)
-                {
+                foreach (DataRow rowDet in dtFormula.Rows) {
 
 
                     Entidades.CamposEnFormula valores1 = new Entidades.CamposEnFormula();
@@ -2909,26 +2513,21 @@ namespace Transact.Datos
                 }
 
                 listformula.listaformula = camposformula.ToArray();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
             return listformula;
         }
-        public Entidades.ENReglasNeg CatReglasNegocioD(int idTipoTransaccion, int idEtapa, int idAccion)
-        {
+        public Entidades.ENReglasNeg CatReglasNegocioD(int idTipoTransaccion, int idEtapa, int idAccion) {
             Entidades.ENReglasNeg listareglas = new Entidades.ENReglasNeg();
             List<Entidades.CamposENReglasNeg> campos = new List<Entidades.CamposENReglasNeg>();
             SqlConnection connection = null;
             DataTable dtReglasNeg = new DataTable();
 
-            try
-            {
+            try {
 
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT ETT.descripcion Etapa , ATT.descripcion Accion, CDT.nombreCampo Campo,  visible, editable, obligatorio, VTT.descripcion Visualizacion"
@@ -2947,8 +2546,7 @@ namespace Transact.Datos
                     connection.Close();
                 }
 
-                foreach (DataRow rowDet in dtReglasNeg.Rows)
-                {
+                foreach (DataRow rowDet in dtReglasNeg.Rows) {
                     Entidades.CamposENReglasNeg valores = new Entidades.CamposENReglasNeg();
                     valores.Etapa = rowDet["Etapa"].ToString();
                     valores.Accion = rowDet["Accion"].ToString();
@@ -2963,26 +2561,21 @@ namespace Transact.Datos
                 }
                 listareglas.listaREgl = campos.ToArray();
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
             return listareglas;
         }
-        public Entidades.CamposConbo CatCamposconboboxD(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo)
-        {
+        public Entidades.CamposConbo CatCamposconboboxD(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo) {
             Entidades.CamposConbo listcampos = new Entidades.CamposConbo();
             List<Entidades.camposConbobox> campos = new List<Entidades.camposConbobox>();
             SqlConnection connection = null;
             DataTable dtConbobox = new DataTable();
 
-            try
-            {
+            try {
 
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT CT.nombreCampo,"
@@ -3002,8 +2595,7 @@ namespace Transact.Datos
                     connection.Close();
                 }
 
-                foreach (DataRow rowDet in dtConbobox.Rows)
-                {
+                foreach (DataRow rowDet in dtConbobox.Rows) {
                     Entidades.camposConbobox valores = new Entidades.camposConbobox();
                     valores.nombreCampo = rowDet["nombreCampo"].ToString();
                     valores.categoria = rowDet["categoria"].ToString();
@@ -3015,69 +2607,63 @@ namespace Transact.Datos
                 }
                 listcampos.listaCamposconbobox = campos.ToArray();
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
             return listcampos;
         }
-        public Entidades.ReglasxCampo ReglasxCamposD(int idTipoTransaccion, int idEtapa, int idAccion)
-        {
+        public Entidades.ReglasxCampo ReglasxCamposD(int idTipoTransaccion, int idEtapa, int idAccion) {
             Entidades.ReglasxCampo listcampos = new Entidades.ReglasxCampo();
             List<Entidades.ReglasCampos> campos = new List<Entidades.ReglasCampos>();
             SqlConnection connection = null;
             DataTable dtConbobox = new DataTable();
             SqlDataReader consulta;
 
-            try
-            {
+            try {
 
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
 
-                        connection.Open();
-                        consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT ET.descripcion Etapa, AT.descripcion Accion, "
-                                                                          +"  CD.nombreCampo, visible, editable, obligatorio,"
-                                                                          + "  CASE RN.idVisualizacion WHEN RN.idVisualizacion"
-                                                                          + "  THEN  RN.idVisualizacion else 0 END idVisualizacion,"
-                                                                          + "  RN.idEtapa, RN.idAccion, RN.idTipoTransaccion,"
-                                                                          + "  RN.idCampo, CD.idTipoDatoCampo"
-                                                                          + "  FROM Configuracion.ReglasNegocioCamposxTipoTransaccion RN, Configuracion.EtapasAccionesTipoTransacciones EATT, Configuracion.AccionesTipoTransaccion AT, Configuracion.EtapasTipoTransaccion ET,"
-                                                                          + "  Configuracion.CamposDinamicosTransacciones CD"
-                                                                          + "  where"
-                                                                          + "  EATT.idTipoTransaccion = RN.idTipoTransaccion"
-                                                                          + "  AND EATT.idEtapa = RN.idEtapa"
-                                                                          + "  AND EATT.idAccion = RN.idAccion"
-                                                                          + "  AND EATT.idEtapa = ET.idEtapa"
-                                                                          + "  AND EATT.idAccion = AT.idAccion"
-                                                                          + "  AND CD.idTipoTransaccion = RN.idTipoTransaccion"
-                                                                          + "  AND CD.idCampo = RN.idCampo"
-                                                                          + "  AND RN.idTipoTransaccion = "+ idTipoTransaccion
-                                                                          + "  AND RN.idEtapa = "+ idEtapa
-                                                                          + "  AND RN.idAccion = "+ idAccion
-                                                                          + "  UNION"
-                                                                          + "  SELECT '' Etapa, '' Accion,"
-                                                                          + "  nombreCampo, '' visible, '' editable, ''obligatorio,"
-                                                                          + "  0 idVisualizacion,"
-                                                                          + "  '' idEtapa, '' idAccion, idTipoTransaccion,"
-                                                                          + "  idCampo, idTipoDatoCampo"
-                                                                          + "  FROM Configuracion.CamposDinamicosTransacciones WHERE idTipoTransaccion = " + idTipoTransaccion
-                                                                          + "  AND idCampo NOT IN(SELECT idCampo FROM Configuracion.ReglasNegocioCamposxTipoTransaccion"
-                                                                          + "  where idTipoTransaccion = "+ idTipoTransaccion
-                                                                          + "  AND idEtapa = "+idEtapa
-                                                                          + "  AND idAccion = "+ idAccion+" )");
-                        dtConbobox.Load(consulta);
-                        connection.Close();
+                    connection.Open();
+                    consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT ET.descripcion Etapa, AT.descripcion Accion, "
+                                                                      + "  CD.nombreCampo, visible, editable, obligatorio,"
+                                                                      + "  CASE RN.idVisualizacion WHEN RN.idVisualizacion"
+                                                                      + "  THEN  RN.idVisualizacion else 0 END idVisualizacion,"
+                                                                      + "  RN.idEtapa, RN.idAccion, RN.idTipoTransaccion,"
+                                                                      + "  RN.idCampo, CD.idTipoDatoCampo"
+                                                                      + "  FROM Configuracion.ReglasNegocioCamposxTipoTransaccion RN, Configuracion.EtapasAccionesTipoTransacciones EATT, Configuracion.AccionesTipoTransaccion AT, Configuracion.EtapasTipoTransaccion ET,"
+                                                                      + "  Configuracion.CamposDinamicosTransacciones CD"
+                                                                      + "  where"
+                                                                      + "  EATT.idTipoTransaccion = RN.idTipoTransaccion"
+                                                                      + "  AND EATT.idEtapa = RN.idEtapa"
+                                                                      + "  AND EATT.idAccion = RN.idAccion"
+                                                                      + "  AND EATT.idEtapa = ET.idEtapa"
+                                                                      + "  AND EATT.idAccion = AT.idAccion"
+                                                                      + "  AND CD.idTipoTransaccion = RN.idTipoTransaccion"
+                                                                      + "  AND CD.idCampo = RN.idCampo"
+                                                                      + "  AND RN.idTipoTransaccion = " + idTipoTransaccion
+                                                                      + "  AND RN.idEtapa = " + idEtapa
+                                                                      + "  AND RN.idAccion = " + idAccion
+                                                                      + "  UNION"
+                                                                      + "  SELECT '' Etapa, '' Accion,"
+                                                                      + "  nombreCampo, '' visible, '' editable, ''obligatorio,"
+                                                                      + "  0 idVisualizacion,"
+                                                                      + "  '' idEtapa, '' idAccion, idTipoTransaccion,"
+                                                                      + "  idCampo, idTipoDatoCampo"
+                                                                      + "  FROM Configuracion.CamposDinamicosTransacciones WHERE idTipoTransaccion = " + idTipoTransaccion
+                                                                      + "  AND idCampo NOT IN(SELECT idCampo FROM Configuracion.ReglasNegocioCamposxTipoTransaccion"
+                                                                      + "  where idTipoTransaccion = " + idTipoTransaccion
+                                                                      + "  AND idEtapa = " + idEtapa
+                                                                      + "  AND idAccion = " + idAccion + " )");
+                    dtConbobox.Load(consulta);
+                    connection.Close();
                 }
 
-                foreach (DataRow rowDet in dtConbobox.Rows)
-                {
+                foreach (DataRow rowDet in dtConbobox.Rows) {
                     Entidades.ReglasCampos valores = new Entidades.ReglasCampos();
-                    if (rowDet["idEtapa"].ToString() !=""){valores.idEtapa = Convert.ToInt32(rowDet["idEtapa"].ToString()); } else { valores.idEtapa = 0; }
+                    if (rowDet["idEtapa"].ToString() != "") { valores.idEtapa = Convert.ToInt32(rowDet["idEtapa"].ToString()); } else { valores.idEtapa = 0; }
                     if (rowDet["Etapa"].ToString() != "") { valores.Etapa = rowDet["Etapa"].ToString(); } else { valores.Etapa = ""; }
-                    if (rowDet["idAccion"].ToString() !="") { valores.idAccion = Convert.ToInt32(rowDet["idAccion"].ToString()); } else { valores.idAccion = 0; }
+                    if (rowDet["idAccion"].ToString() != "") { valores.idAccion = Convert.ToInt32(rowDet["idAccion"].ToString()); } else { valores.idAccion = 0; }
                     if (rowDet["Accion"].ToString() != "") { valores.Accion = rowDet["Accion"].ToString(); } else { valores.Accion = ""; }
                     if (rowDet["idCampo"].ToString() != "") { valores.idCampo = Convert.ToInt32(rowDet["idCampo"].ToString()); } else { valores.idCampo = 0; }
                     if (rowDet["nombreCampo"].ToString() != "") { valores.nombreCampo = rowDet["nombreCampo"].ToString(); } else { valores.nombreCampo = ""; }
@@ -3092,27 +2678,22 @@ namespace Transact.Datos
                 }
                 listcampos.caposReglas = campos.ToArray();
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
             return listcampos;
 
         }
-        public Entidades.CatCombobox CatComboboxD(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo)
-        {
+        public Entidades.CatCombobox CatComboboxD(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo) {
             Entidades.CatCombobox listcampos = new Entidades.CatCombobox();
             List<Entidades.camConbobox> campos = new List<Entidades.camConbobox>();
             SqlConnection connection = null;
             DataTable dtConbobox = new DataTable();
 
-            try
-            {
+            try {
 
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT CT.nombreCampo,"
@@ -3133,8 +2714,7 @@ namespace Transact.Datos
                     connection.Close();
                 }
 
-                foreach (DataRow rowDet in dtConbobox.Rows)
-                {
+                foreach (DataRow rowDet in dtConbobox.Rows) {
                     Entidades.camConbobox valores = new Entidades.camConbobox();
                     valores.nombreCampo = rowDet["nombreCampo"].ToString();
                     valores.idCategoria = Convert.ToInt32(rowDet["idCategoria"].ToString());
@@ -3151,26 +2731,21 @@ namespace Transact.Datos
                 }
                 listcampos.camposCambo = campos.ToArray();
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
             return listcampos;
 
         }
-        public int CountReglasD(int idTipoTransaccion, string nombreCampo, int idEtapa, int idAccion)
-        {
+        public int CountReglasD(int idTipoTransaccion, string nombreCampo, int idEtapa, int idAccion) {
             int contador = 0;
             SqlConnection connection = null;
             DataTable dtConbobox = new DataTable();
 
-            try
-            {
+            try {
 
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT count(*) total"
@@ -3189,38 +2764,32 @@ namespace Transact.Datos
                                                                       + " AND RN.idVisualizacion = VTT.idVisualizacion"
                                                                       + " AND RN.idTipoTransaccion = " + idTipoTransaccion
                                                                       + " and CDT.nombreCampo = '" + nombreCampo + "'"
-                                                                      + " and RN.idEtapa ="+ idEtapa
-                                                                      + " and RN.idAccion = "+ idAccion);
+                                                                      + " and RN.idEtapa =" + idEtapa
+                                                                      + " and RN.idAccion = " + idAccion);
                     dtConbobox.Load(consulta);
                     connection.Close();
 
                 }
 
-                foreach (DataRow rows in dtConbobox.Rows)
-                {
+                foreach (DataRow rows in dtConbobox.Rows) {
                     contador = Convert.ToInt32(rows["total"].ToString());
                 }
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
             return contador;
         }
-        public Entidades.camposConboboxId CatConboboxRNG(int idTipoTransaccion, int idEtapa, int idAccion)
-        {
+        public Entidades.camposConboboxId CatConboboxRNG(int idTipoTransaccion, int idEtapa, int idAccion) {
             Entidades.camposConboboxId listcampos = new Entidades.camposConboboxId();
             List<Entidades.ConboboxRNG> campos = new List<Entidades.ConboboxRNG>();
             SqlConnection connection = null;
             DataTable dtConbobox = new DataTable();
 
-            try
-            {
+            try {
 
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
                     consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT CDT.nombreCampo, "
@@ -3232,16 +2801,15 @@ namespace Transact.Datos
                                                                       + " where RNCT.idCampo = CDT.idCampo"
                                                                       + " and RNCT.idVisualizacion = VTT.idVisualizacion"
                                                                       + " and RNCT.idVisualizacion = 24"
-                                                                      + " and CDT.idTipoTransaccion = "+ idTipoTransaccion
-                                                                      + " and RNCT.idEtapa = "+ idEtapa
-                                                                      + " and RNCT.idAccion = "+ idAccion
+                                                                      + " and CDT.idTipoTransaccion = " + idTipoTransaccion
+                                                                      + " and RNCT.idEtapa = " + idEtapa
+                                                                      + " and RNCT.idAccion = " + idAccion
                                                                       + " order by RNCT.idCampo asc");
                     dtConbobox.Load(consulta);
                     connection.Close();
                 }
 
-                foreach (DataRow rowDet in dtConbobox.Rows)
-                {
+                foreach (DataRow rowDet in dtConbobox.Rows) {
                     Entidades.ConboboxRNG valores = new Entidades.ConboboxRNG();
                     if (rowDet["nombreCampo"].ToString() != "") { valores.nombreCampo = rowDet["nombreCampo"].ToString(); } else { valores.nombreCampo = ""; }
                     if (rowDet["idCategoria"].ToString() != "") { valores.idCategoria = Convert.ToInt32(rowDet["idCategoria"].ToString()); } else { valores.idCategoria = 0; }
@@ -3253,30 +2821,25 @@ namespace Transact.Datos
                 }
                 listcampos.listaCamposconboboxRNG = campos.ToArray();
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
             return listcampos;
 
         }
-        public Entidades.ENReglasNeg Cattooltip(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo)
-        {
+        public Entidades.ENReglasNeg Cattooltip(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo) {
             Entidades.ENReglasNeg listareglas = new Entidades.ENReglasNeg();
             List<Entidades.CamposENReglasNeg> campos = new List<Entidades.CamposENReglasNeg>();
             SqlConnection connection = null;
             DataTable dtReglasNeg = new DataTable();
 
-            try
-            {
+            try {
 
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
-                    consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT  CDT.nombreCampo, visible, editable, obligatorio, RN.idCampo" 
+                    consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT  CDT.nombreCampo, visible, editable, obligatorio, RN.idCampo"
                                                                       + " FROM Configuracion.ReglasNegocioCamposxTipoTransaccion RN,"
                                                                       + " Configuracion.EtapasTipoTransaccion ETT, Configuracion.AccionesTipoTransaccion ATT,"
                                                                       + " Configuracion.EtapasAccionesTipoTransacciones EATT, Configuracion.CamposDinamicosTransacciones CDT,"
@@ -3290,16 +2853,15 @@ namespace Transact.Datos
                                                                       + " AND RN.idTipoTransaccion = CDT.idTipoTransaccion"
                                                                       + " AND RN.idTipoTransaccion = TT.idTipoTransaccion"
                                                                       + " AND RN.idVisualizacion = VTT.idVisualizacion"
-                                                                      + " AND RN.idEtapa = "+ idEtapa
-                                                                      + " AND RN.idAccion = "+ idAccion
-                                                                      + " AND RN.idTipoTransaccion = "+ idTipoTransaccion
-                                                                      + " and RN.idCampo = "+ idCampo);
+                                                                      + " AND RN.idEtapa = " + idEtapa
+                                                                      + " AND RN.idAccion = " + idAccion
+                                                                      + " AND RN.idTipoTransaccion = " + idTipoTransaccion
+                                                                      + " and RN.idCampo = " + idCampo);
                     dtReglasNeg.Load(consulta);
                     connection.Close();
                 }
 
-                foreach (DataRow rowDet in dtReglasNeg.Rows)
-                {
+                foreach (DataRow rowDet in dtReglasNeg.Rows) {
                     Entidades.CamposENReglasNeg valores = new Entidades.CamposENReglasNeg();
 
                     valores.Campo = rowDet["nombreCampo"].ToString();
@@ -3311,55 +2873,38 @@ namespace Transact.Datos
                 }
                 listareglas.listaREgl = campos.ToArray();
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }
             return listareglas;
         }
 
-        public Entidades.ReglasNegocioxAccion CatReglasNegocioxAccionD(int idTipoTransaccion, int idEtapa, int idAccion,int idEtapaF)
-        {
+        public Entidades.ReglasNegocioxAccion CatReglasNegocioxAccionD(int idTipoTransaccion) {
             Entidades.ReglasNegocioxAccion listcampos = new Entidades.ReglasNegocioxAccion();
             List<Entidades.camposReglasNegocioxAccion> campos = new List<Entidades.camposReglasNegocioxAccion>();
             SqlConnection connection = null;
             DataTable dtConbobox = new DataTable();
 
-            try
-            {
-                using (connection = Conexion.ObtieneConexion("ConexionBD"))
-                {
+            try {
+
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
-                    consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT ETT.descripcion NombreEtapa, ATT.descripcion NombreAccion,"
-                                                                      + " F.jsonReglas ReglaxAccion,"
-                                                                      + " (select descripcion from Configuracion.EtapasTipoTransaccion where idEtapa = F.idEtapaDestino) EtapaDestino,"
-                                                                      + " F.descripcionRegla, F.mensajeError, ETT.idEtapa, ATT.idAccion, F.idEtapaDestino"
-                                                                      + " FROM Configuracion.TiposTransacciones TT, Configuracion.AccionesTipoTransaccion ATT,"
-                                                                      + " Configuracion.EtapasTipoTransaccion ETT, Configuracion.EtapasAccionesTipoTransacciones EATT,"
-                                                                      + " Configuracion.ReglasNegocioxAccion F"
-                                                                      + " WHERE ETT.idEtapa = EATT.idEtapa AND EATT.idAccion = ATT.idAccion"
-                                                                      + " AND TT.idTipoTransaccion = EATT.idTipoTransaccion AND"
-                                                                      + " F.idTipoTransaccion = TT.idTipoTransaccion"
-                                                                      + " AND ETT.idEtapa = "+ idEtapa
-                                                                      + " AND ATT.idAccion = "+ idAccion
-                                                                      + " AND TT.idTipoTransaccion = "+ idTipoTransaccion
-                                                                      + " AND F.idEtapaDestino = " + idEtapaF);
+                    consulta = Ejecuta.ConsultaConRetorno(connection, "    Select idTipoTransaccion, idEtapa,idAccion, idEtapaDestino, jsonReglas as ReglaxAccion, descripcionRegla, mensajeError from Configuracion.ReglasNegocioxAccion where idTipoTransaccion = " + idTipoTransaccion);
+
                     dtConbobox.Load(consulta);
                     connection.Close();
                 }
 
-                foreach (DataRow rowDet in dtConbobox.Rows)
-                {
+                foreach (DataRow rowDet in dtConbobox.Rows) {
                     Entidades.camposReglasNegocioxAccion valores = new Entidades.camposReglasNegocioxAccion();
                     if (rowDet["idEtapa"].ToString() != "") { valores.idEtapa = Convert.ToInt32(rowDet["idEtapa"].ToString()); } else { valores.idEtapa = 0; }
-                    if (rowDet["NombreEtapa"].ToString() != "") { valores.NombreEtapa = rowDet["NombreEtapa"].ToString(); } else { valores.NombreEtapa = ""; }
+                    //if (rowDet["NombreEtapa"].ToString() != "") { valores.NombreEtapa = rowDet["NombreEtapa"].ToString(); } else { valores.NombreEtapa = ""; }
                     if (rowDet["idAccion"].ToString() != "") { valores.idAccion = Convert.ToInt32(rowDet["idAccion"].ToString()); } else { valores.idAccion = 0; }
-                    if (rowDet["NombreAccion"].ToString() != "") { valores.NombreAccion = rowDet["NombreAccion"].ToString(); } else { valores.NombreAccion = ""; }
+                    //if (rowDet["NombreAccion"].ToString() != "") { valores.NombreAccion = rowDet["NombreAccion"].ToString(); } else { valores.NombreAccion = ""; }
                     if (rowDet["idEtapaDestino"].ToString() != "") { valores.idEtapaDestino = Convert.ToInt32(rowDet["idEtapaDestino"].ToString()); } else { valores.idEtapaDestino = 0; }
-                    if (rowDet["EtapaDestino"].ToString() != "") { valores.EtapaDestino = rowDet["EtapaDestino"].ToString(); } else { valores.EtapaDestino = ""; }
+                    //if (rowDet["EtapaDestino"].ToString() != "") { valores.EtapaDestino = rowDet["EtapaDestino"].ToString(); } else { valores.EtapaDestino = ""; }
                     if (rowDet["ReglaxAccion"].ToString() != "") { valores.ReglaxAccion = rowDet["ReglaxAccion"].ToString(); } else { valores.ReglaxAccion = ""; }
                     if (rowDet["descripcionRegla"].ToString() != "") { valores.descripcionRegla = rowDet["descripcionRegla"].ToString(); } else { valores.descripcionRegla = ""; }
                     if (rowDet["mensajeError"].ToString() != "") { valores.mensajeError = rowDet["mensajeError"].ToString(); } else { valores.mensajeError = ""; }
@@ -3368,9 +2913,7 @@ namespace Transact.Datos
                 }
                 listcampos.listaReglasxAccion = campos.ToArray();
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex);
                 throw;
             }

@@ -1,7 +1,11 @@
 ﻿var acciones = '';
+var idTransaccionGlobal = 0;
 var botonRnC = 0;
 var etapas = '';
 var campos = '';
+var ArregloValidarAcciones = [];
+var ArregloValidarAccionesEdit = [];
+var arrayAux = new Array();
 var accionesEtapas = '';
 var formulaA = '';
 var IdTipoTran = 0;
@@ -1464,11 +1468,11 @@ function agregarReglasNegocio() {
     $.each(data, function (index, valo) {
         listaCorreccion2.push(valo.value);
         countCorreccion++;
-        if (countCorreccion == 5) {      
+        if (countCorreccion == 5) {
             countCorreccion = 0;
             listaCorreccion.push(listaCorreccion2);
             listaCorreccion2 = [];
-        }          
+        }
     })
 
 
@@ -1511,9 +1515,9 @@ function agregarReglasNegocio() {
                     return false;
                 }
             } else if (listaCorreccion[i][1] == 'false' && listaCorreccion[i][2] == 'false' && listaCorreccion[i][3] == 'false' && listaCorreccion[i][4] == 0) {
-          
-                    validacion = "vacio";
-              
+
+                validacion = "vacio";
+
             } else if (listaCorreccion[i][1] == 'false' && listaCorreccion[i][2] == 'true') {
                 var count = 0;
                 if (count == 0) {
@@ -1542,16 +1546,16 @@ function agregarReglasNegocio() {
                     return false;
                 }
             } else if (listaCorreccion[i][2] == 'true' && listaCorreccion[i][4] == 0) {
-                    showWarningMessage('Información </b>', '<i>no puedes guardar el campo <b> ' + listaCorreccion[i][0] + ' </b> si esta seleccionado como editable y no tiene un tipo de visualización</i>');
-                    $('#form_RN2').bootstrapValidator('destroy');
-                    validacion = "no";
-                    return false;
+                showWarningMessage('Información </b>', '<i>no puedes guardar el campo <b> ' + listaCorreccion[i][0] + ' </b> si esta seleccionado como editable y no tiene un tipo de visualización</i>');
+                $('#form_RN2').bootstrapValidator('destroy');
+                validacion = "no";
+                return false;
             } else if (listaCorreccion[i][3] == 'true' && listaCorreccion[i][4] == 0) {
-                    showWarningMessage('Información </b>', '<i>no puedes guardar el campo <b> ' + listaCorreccion[i][0] + ' </b> si esta seleccionado como obligatorio y no tiene un tipo de visualización</i>');
-                    $('#form_RN2').bootstrapValidator('destroy');                  
-                    validacion = "no";
-                    return false;
-                
+                showWarningMessage('Información </b>', '<i>no puedes guardar el campo <b> ' + listaCorreccion[i][0] + ' </b> si esta seleccionado como obligatorio y no tiene un tipo de visualización</i>');
+                $('#form_RN2').bootstrapValidator('destroy');
+                validacion = "no";
+                return false;
+
             } else if (listaCorreccion[i][2] == 'true' && listaCorreccion[i][3] == 'true' && listaCorreccion[i][4] == 0) {
                 var count = 0;
                 if (count == 0) {
@@ -1562,15 +1566,15 @@ function agregarReglasNegocio() {
                     return false;
                 }
             } else if (listaCorreccion[i][1] == 'true' && listaCorreccion[i][2] == 'true' && listaCorreccion[i][3] == 'true' && listaCorreccion[i][4] == 0) {
-                    showWarningMessage('Información </b>', '<i>no puedes guardar el campo <b> ' + listaCorreccion[i][0] + ' </b> si esta seleccionado como visible - obligatorio - editable y no tiene un tipo de visualización</i>');
-                    $('#form_RN2').bootstrapValidator('destroy');
-                    validacion = "no";
-                    return false;
+                showWarningMessage('Información </b>', '<i>no puedes guardar el campo <b> ' + listaCorreccion[i][0] + ' </b> si esta seleccionado como visible - obligatorio - editable y no tiene un tipo de visualización</i>');
+                $('#form_RN2').bootstrapValidator('destroy');
+                validacion = "no";
+                return false;
             } else {
                 validacion = "ok";
             }
-            validacion = "ok";    
-        }        
+            validacion = "ok";
+        }
     }
     if (validacion == 'ok') {
 
@@ -1660,6 +1664,7 @@ function agregarReglasNegocio() {
                             })
                             datosCom.push(['<input type="text" value="' + arr.nombreCampo + '" id="valor_' + check + '" text=" ' + arr.nombreCampo + '" name="Campo" readonly style="border:none; background: transparent;">', vistransact, ' <label class="select"><select class="select form-control" id="tipoTransacciones_' + x + '" name="tipoTransacciones value="0" size="1"></select></label>', ' <label class="select"><select class="select form-control" id="idReferencia_' + x + '" name="idReferencia" value="0" size="1"></select></label>', ' <label class="select"><select class="select form-control" id="nombreReferencia_' + x + '" name="nombreReferencia" value="0" size="1"></select></label>']);
                             x++;
+
                         });
                     });
 
@@ -2467,7 +2472,7 @@ function selectEtapasStep7() {
         }
     });
     $("select#RNA_etapa").change(function () {
-
+        $("#btn_agregarRNAccion").prop("disabled", false);
         $.ajax({
             async: false,
             type: 'POST',
@@ -2506,7 +2511,7 @@ function selectEtapasStep7() {
         var xj = 0;
         $('#AccionCabecera').empty();
         $('#AccionDetalle').empty();
-
+        $("#btn_agregarRNAccion").prop("disabled", false);
         $.ajax({
             async: false,
             type: 'POST',
@@ -2811,8 +2816,8 @@ function SelectCatTT() {
             });
             $("select#categoria").html(cadena);
             $("select#categorias").html(cadena);
-          }
-        
+        }
+
     });
 }
 // Funcion que llena los select de categoria de los DataTable con select's dinamicos y que crea dinamicamente los chagen de los select creados dinamicamente al igual con el select de tipo de Transaccion con su change dinamico
@@ -3683,158 +3688,234 @@ function AgregarFormula() {
 
 function AgregarReglaAccion() {
     $('#btn_agregarRNAccion').click(function () {
-        bootsVal();
-        $('#RN_Accion').data('bootstrapValidator').validate();
-        var n = $('#RN_Accion').data('bootstrapValidator').isValid();
-
-        if (n) {
-
-            if ($('.sortable li').length > 0) {
-                $("#select#RNA_EtapaFinal").prop("disabled", true);
-                $('#tablaRelasAccion tbody').removeClass('selected');
-                $('#tablaRelasAccion tbody').on('click', 'tr', function () {
-                    if ($(this).hasClass('selected')) {
-                        $(this).removeClass('selected');
-                    } else {
-                        otable2.$('tr.selected').removeClass('selected');
-                        $(this).addClass('selected');
-                    }
-                });
-
-                $(".btn-next").prop("disabled", false);
-
-                var val = [];
-                var nombre = [];
-                var con = 0;
-
-                var jsonInsert = '';
-                var union = '[{';
-                var unionN = '';
-                var unionF = '';
-                var tamaño = 0;
-
-                $.each($('.sortable li'), function (index1, item1) {
-
-                    val.push($.trim($(item1).text()));
-
-                });
-
-                for (var i = 0; i < val.length; i++) {
-                    union += val[i] + '|';
-                    unionF += val[i] + '|';
-                }
-
-                union += '}]';
-
-                formulaA = union;
-
-                $.fn.dataTable.ext.errMode = 'none';
-                var responsiveHelper_datatable_fixed_column = undefined;
-                var breakpointDefinition = {
-                    tablet: 1024,
-                    phone: 480,
-                    desktop: 1260
-                };
-                var datosCom = [];
-                var valorF = "";
-                var varF = '';
-                var resultadoF = "";
-                var formulas = [];
-
-                formulaArr = [];
-                etapaArr = [];
-                accionesArr = [];
-                etapaFuturaArr = [];
-                formulaArr.push(unionF);
-                etapaArr.push($('select#RNA_etapa option:selected').text());
-                accionesArr.push($('select#RNA_accion option:selected').text());
-                etapaFuturaArr.push($("select#RNA_EtapaFinal option:selected").text());
-                for (var i = 0; i < formulaArr.length; i++) {
-                    datosCom.push(formulaArr, etapaArr, accionesArr, etapaFuturaArr);
-                }
 
 
-                otableRA = $('#tablaRelasAccion')
-                    .DataTable({
-
-                        "scrollY": "200px",
-                        "scrollCollapse": true,
-                        "paging": false,
-
-                        "sPaginationType": "bootstrap", // full_numbers
-                        "iDisplayStart ": 10,
-                        "iDisplayLength": 10,
-                        "bPaginate": false, //hide pagination
-                        "bFilter": false, //hide Search bar
-                        "bInfo": false, // hide showing entries
-                        "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6 hidden-xs'l><'col-sm-6 col-xs-12 hidden-xs'<'toolbar'>>r>" +
-                        "t" +
-                        "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
-                        "oLanguage": {
-                            "sUrl": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-                        },
-
-                        "autoWidth": true,
-                        "preDrawCallback": function () {
-                            if (!responsiveHelper_datatable_fixed_column) {
-                                responsiveHelper_datatable_fixed_column = new ResponsiveDatatablesHelper(
-                                    $('#tablaRelasAccion'), breakpointDefinition);
-                            }
-                        },
-                        "rowCallback": function (nRow) {
-                            responsiveHelper_datatable_fixed_column
-                                .createExpandIcon(nRow);
-                        },
-                        "drawCallback": function (oSettings) {
-                            responsiveHelper_datatable_fixed_column.respond();
-                        },
-
-                        columns: [{
-                            title: "Regla de Negocio por Accion"
-                        },
-                        {
-                            title: "Etapa"
-                        },
-                        {
-                            title: "Acción"
-                        },
-                        {
-                            title: "Etapa Destino"
-                        }
-                        ]
-                    });
-                otableRA.row.add(datosCom).draw(false);
-                $('#reglaPorAccion').show();
-                $('#tablaRelasAccion tbody').on('click', 'tr', function () {
-                    if ($(this).hasClass('selected')) {
-                        $(this).removeClass('selected');
-                    } else {
-                        otable2.$('tr.selected').removeClass('selected');
-                        $(this).addClass('selected');
-                    }
-                });
-
-                $(".sortable").empty();
-                $("#btnReglasNAcciones").show();
-
-
-            } else {
-                $.smallBox({
-                    title: "Error",
-                    content: "<i class='fa fa-clock-o'></i> <i>No ha configurado ninguna regla por accion</i>",
-                    color: "#C46A69",
-                    iconSmall: "fa fa-times fa-2x fadeInRight animated",
-                    timeout: 4000
-                });
-            }
-
-
-            $('#RN_Accion').bootstrapValidator('destroy');
+        var data = otableRA.rows().data();
+        $('#RN_Accion').bootstrapValidator('destroy');
+        console.log(ArregloValidarAccionesEdit);
+        if (jQuery.inArray($('select#RNA_accion option:selected').text(), ArregloValidarAccionesEdit) !== -1) {
+            $.smallBox({
+                title: "Error",
+                content: "<i class='fa fa-clock-o'></i> <i>No se puede agregar mas reglas de la accion " + $('select#RNA_accion option:selected').text() + "</i>",
+                color: "#C46A69",
+                iconSmall: "fa fa-times fa-2x fadeInRight animated",
+                timeout: 4000
+            });
 
         } else {
-            // bootsVal();
+            bootsVal();
+            $('#RN_Accion').data('bootstrapValidator').validate();
+            var n = $('#RN_Accion').data('bootstrapValidator').isValid();
+            ArregloValidarAccionesEdit.push($('select#RNA_accion option:selected').text());
 
+            if (n) {
+
+                if ($('#Rn_AccionConfig').text() != "" || $('#Rn_AccionConfig').text() != '') {
+                    if ($('#Rn_AccionConfigAlterna').text() != "" || $('#Rn_AccionConfigAlterna').text() != '') {
+
+                        $("#select#RNA_EtapaFinal").prop("disabled", true);
+                        $('#tablaRelasAccion tbody').removeClass('selected');
+                        $('#tablaRelasAccion tbody').on('click', 'tr', function () {
+                            if ($(this).hasClass('selected')) {
+                                $(this).removeClass('selected');
+                            } else {
+                                otable2.$('tr.selected').removeClass('selected');
+                                $(this).addClass('selected');
+                            }
+                        });
+
+                        $(".btn-next").prop("disabled", false);
+
+                        var val = [];
+                        var nombre = [];
+                        var con = 0;
+
+                        var jsonInsert = '';
+                        var union = '[{';
+                        var unionN = '';
+                        var unionF = '';
+                        var tamaño = 0;
+
+                        $.each($('.sortable li'), function (index1, item1) {
+
+                            val.push($.trim($(item1).text()));
+
+                        });
+
+                        for (var i = 0; i < val.length; i++) {
+                            union += val[i] + '|';
+                            unionF += val[i] + '|';
+                        }
+
+                        union += '}]';
+
+                        formulaA = union;
+
+                        $.fn.dataTable.ext.errMode = 'none';
+                        var responsiveHelper_datatable_fixed_column = undefined;
+                        var breakpointDefinition = {
+                            tablet: 1024,
+                            phone: 480,
+                            desktop: 1260
+                        };
+                        var datosCom = [];
+                        var valorF = "";
+                        var varF = '';
+                        var resultadoF = "";
+                        var formulas = [];
+
+                        //Tabla mayo
+                        var mensajeSuccess = [];
+                        var mensajeError = [];
+                        var validacionPrincipal = [];
+                        var validacionAlterna = [];
+
+
+
+                        formulaArr = [];
+                        etapaArr = [];
+                        accionesArr = [];
+
+                        etapaFuturaArr = [];
+                        formulaArr.push(unionF);
+                        etapaArr.push($('select#RNA_etapa option:selected').text());
+                        accionesArr.push($('select#RNA_accion option:selected').text());
+                        ArregloValidarAcciones.push($('select#RNA_accion option:selected').text());
+                        etapaFuturaArr.push($("select#RNA_EtapaFinal option:selected").text());
+
+                        mensajeSuccess.push($("#mensajeSuccess").val());
+                        mensajeError.push($("#mensajeError").val());
+
+
+                        var unionValidacionP = "";
+                        $.each($('#Rn_AccionConfig'), function (index1, item1) {
+                            unionValidacionP += $.trim($(item1).text());
+                        });
+                        validacionPrincipal.push(unionValidacionP);
+
+                        var unionValidacionA = "";
+                        $.each($('#Rn_AccionConfigAlterna'), function (index1, item1) {
+                            unionValidacionA += $.trim($(item1).text());
+                        });
+                        validacionAlterna.push(unionValidacionA);
+
+
+
+
+
+                        console.log("validacionPrincipal: " + validacionPrincipal);
+                        console.log("validacionAlterna: " + validacionAlterna);
+                        for (var i = 0; i < formulaArr.length; i++) {
+                            datosCom.push(etapaArr, etapaFuturaArr, accionesArr, validacionPrincipal, validacionAlterna, mensajeSuccess, mensajeError);
+                        }
+
+
+                        otableRA = $('#tablaRelasAccion')
+                            .DataTable({
+
+                                "scrollY": "200px",
+                                "scrollCollapse": true,
+                                "paging": false,
+
+                                "sPaginationType": "bootstrap", // full_numbers
+                                "iDisplayStart ": 10,
+                                "iDisplayLength": 10,
+                                "bPaginate": false, //hide pagination
+                                "bFilter": false, //hide Search bar
+                                "bInfo": false, // hide showing entries
+                                "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6 hidden-xs'l><'col-sm-6 col-xs-12 hidden-xs'<'toolbar'>>r>" +
+                                "t" +
+                                "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+                                "oLanguage": {
+                                    "sUrl": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+                                },
+
+                                "autoWidth": true,
+                                "preDrawCallback": function () {
+                                    if (!responsiveHelper_datatable_fixed_column) {
+                                        responsiveHelper_datatable_fixed_column = new ResponsiveDatatablesHelper(
+                                            $('#tablaRelasAccion'), breakpointDefinition);
+                                    }
+                                },
+                                "rowCallback": function (nRow) {
+                                    responsiveHelper_datatable_fixed_column
+                                        .createExpandIcon(nRow);
+                                },
+                                "drawCallback": function (oSettings) {
+                                    responsiveHelper_datatable_fixed_column.respond();
+                                },
+
+                                columns: [
+                                    {
+                                        title: "Etapa"
+                                    },
+                                    {
+                                        title: "Etapa futura"
+                                    },
+                                    {
+                                        title: "Acción"
+                                    },
+                                    {
+                                        title: "Validacion principal"
+                                    },
+                                    {
+                                        title: "Validacion alterna"
+                                    },
+                                    {
+                                        title: "Mensaje success"
+                                    },
+                                    {
+                                        title: "Mensaje error"
+                                    }
+                                ]
+                            });
+                        otableRA.row.add(datosCom).draw(false);
+                        $('#reglaPorAccion').show();
+                        $('#tablaRelasAccion tbody').on('click', 'tr', function () {
+                            console.log("si");
+                            if ($(this).hasClass('selected')) {
+                                $(this).removeClass('selected');
+                            } else {
+                                otableRA.$('tr.selected').removeClass('selected');
+                                $(this).addClass('selected');
+                            }
+                        });
+
+                        $(".sortable").empty();
+                        $("#btnReglasNAcciones").show();
+
+                    } else {
+                        $.smallBox({
+                            title: "Error",
+                            content: "<i class='fa fa-clock-o'></i> <i>No ha configurado ninguna regla por accion Alterna</i>",
+                            color: "#C46A69",
+                            iconSmall: "fa fa-times fa-2x fadeInRight animated",
+                            timeout: 4000
+                        });
+                    }
+
+
+
+                } else {
+                    $.smallBox({
+                        title: "Error",
+                        content: "<i class='fa fa-clock-o'></i> <i>No ha configurado ninguna regla por accion Principal</i>",
+                        color: "#C46A69",
+                        iconSmall: "fa fa-times fa-2x fadeInRight animated",
+                        timeout: 4000
+                    });
+                }
+
+
+                $('#RN_Accion').bootstrapValidator('destroy');
+
+            } else {
+                // bootsVal();
+
+            }
         }
+
+
 
     });
 }
@@ -4770,6 +4851,62 @@ function bootsVal() {
                         }
                     }
                 }
+            },
+            mensajeSuccess: {
+                excluded: false,
+                selector: '#mensajeSuccess',
+                group: '.col-6',
+                validators: {
+                    notEmpty: {
+                        message: ' '
+                    },
+                    callback: {
+                        callback: function (value, validator,
+                            $field) {
+
+                            var valor = $('#mensajeSuccess').val();
+                            if (valor == 0 || valor == null) {
+                                return {
+                                    valid: false,
+                                    message: 'El mensaje de confirmacion de exito es obligatorio'
+                                };
+                            } else {
+
+                                return true;
+
+                            }
+
+                        }
+                    }
+                }
+            },
+            mensajeError: {
+                excluded: false,
+                selector: '#mensajeError',
+                group: '.col-6',
+                validators: {
+                    notEmpty: {
+                        message: ' '
+                    },
+                    callback: {
+                        callback: function (value, validator,
+                            $field) {
+
+                            var valor = $('#mensajeError').val();
+                            if (valor == 0 || valor == null) {
+                                return {
+                                    valid: false,
+                                    message: 'El mensaje de confirmacion de error es obligatorio'
+                                };
+                            } else {
+
+                                return true;
+
+                            }
+
+                        }
+                    }
+                }
             }
 
 
@@ -5131,7 +5268,7 @@ function initEventos() {
 
                         IdTipoTran = it;
                         //console.log(ind + "----------" + it);
-
+                        idTransaccionGlobal = IdTipoTran;
                     });
                     $.smallBox({
                         title: "Éxito!",
@@ -6167,8 +6304,17 @@ function initEventos() {
                 },
                 function (ButtonPressed) {
                     if (ButtonPressed === "Si") {
+
+                        //Aqui compa
+                        console.log(row);
+                        console.log(ArregloValidarAccionesEdit);
+
+
+                        var posicion = ArregloValidarAccionesEdit.indexOf(row[2]);
+                        ArregloValidarAccionesEdit.splice(posicion, 1);
+
                         otableRA.row('.selected').remove().draw(false);
-                        showOkMessage('Regla pos accion eliminada', 'Se ha eliminado la Regla pos accion <b>' + row[0] + '</b>');
+                        showOkMessage('Regla por accion eliminada', 'Se ha eliminado la Regla por accion <b>' + row[0] + '</b>');
 
                         var valxx = '';
                         $.each($('#tablaRelasAccion td'), function (index1, item1) {
@@ -6843,10 +6989,10 @@ function initEventos() {
     $("#btn_agregarAccionEF").click(function () {
         //$('#RN_Accion').bootstrapValidator('destroy');
         var valxx = '';
-        $.each($('#tablaRelasAccion td'), function (index1, item1) {
-            valxx = $(item1).text();
-            //console.log(" Valores " + $(item1).text());
-        });
+        var JSONcadena = "";
+
+
+
         if (validacionDelete == 1) {
             $.ajax({
                 type: 'POST',
@@ -6865,8 +7011,6 @@ function initEventos() {
                         timeout: 2000,
                         icon: "fa fa-thumbs-up swing animated"
                     });
-
-
                     $('#RN_Accion').bootstrapValidator('destroy');
                     Reset();
                     $("#select#RNA_EtapaFinal").prop("disabled", false);
@@ -6878,47 +7022,79 @@ function initEventos() {
             });
         } else if (valxx != 'Ningún dato disponible en esta tabla') {
 
+            var row = $('#dtTiposTransaccion').DataTable().row('.selected').data();
+            console.log("Para traer el id: " + row);
+            var data = otableRA.rows().data();
 
-            var idfila = 1;
-            var namesDetalle = [];
-            var conF = 0;
-            var valF = 'ReglaNA';
-            namesDetalle.push(valF);
-            var Datos = "";
-            Datos += '[{';
-            Datos += '"etapaFutura": "' + $('select#RNA_EtapaFinal option:selected').text() + '",';
-            Datos += '"ReglaNAConfig":[';
-
-            for (var i = 0; i < ($('#tablaRelasAccion tr').length - 1); i++) {
-                idfila = idfila++;
-                Datos += '{';
-
-                $.each(namesDetalle, function (j, fd) {
-                    var name = namesDetalle[j];
-
-
-                    if (j == 0) {
-
-                        var sub = otableRA.row(i).data()[j];
-
-
-                        Datos += '"' + name + '":"' + otableRA.row(i).data()[j] + '",';
-
-                        Datos = Datos.substring(0, Datos.length - 1);
-                        Datos += '},{';
-                        Datos = Datos.substring(0, Datos.length - 1);
-
-                    } else {
-                        Datos += '"' + name + '":"' + otableRA.row(i).data()[j] + '",';
-                    }
-
-
-                });
-
-
+            JSONcadena += '{"Datos": [{ ' +
+                '"idTransaccion" : "' + row[5] + '",' +
+                '"nombreTransaccion" : "' + row[0] + '"' +
+                ' }],';
+            var etapas = [];
+            var etapas2 = new Array();
+            var etapas3 = new Array();
+            var etapas4 = new Array();
+            var d = [];
+            data.each(function (value, index) {
+                console.log('Data in index: ' + index + ' is: ' + value);
+                var x = 0;
+                etapas.push(value[0]);
+            });
+            for (var i = 0; i < etapas.length; i++) {
+                if (etapas2.indexOf(etapas[i])) {
+                    etapas2.push(etapas[i]);
+                }
             }
-            var maxF = Datos.substring(0, Datos.length - 2);
-            var finalFo = maxF + "}]}]";
+            etapas2 = eliminateDuplicates(etapas2);
+            data.each(function (value, index) {
+                if (jQuery.inArray(value[0], etapas2)) {
+
+                } else {
+                    for (var i = 0; i < etapas2.length; i++) {
+                        if (etapas2[i] == value[0]) {
+                            etapas4.push(value);
+                        }
+                    }
+                }
+                if (etapas2.indexOf(value[0])) {
+                    for (var i = 0; i < etapas2.length; i++) {
+                        if (etapas2[i] == value[0]) {
+                            etapas4.push(value);
+                        }
+                    }
+                }
+            });
+            var count2 = 0;
+            for (var i = 0; i < etapas2.length; i++) {
+                JSONcadena += '"' + etapas2[i] + '":[{';
+                var count = 0;
+                for (var j = 0; j < etapas4.length; j++) {
+                    var arregloAux = new Array();
+                    arregloAux = etapas4[j];
+                    arregloAux.push(etapas4[j]);
+                    if (arregloAux[0] == etapas2[i]) {
+                        if (count >= 1) {
+                            JSONcadena += ',';
+                        }
+                        JSONcadena += '"' + arregloAux[2] + '":[{' +
+                            '"etapaFutura": "' + arregloAux[1] + '",' +
+                            '"validacion": "' + arregloAux[3] + '",' +
+                            '"alterna": "' + arregloAux[4] + '",' +
+                            '"success": "' + arregloAux[5] + '",' +
+                            '"error": "' + arregloAux[6] + '"' +
+                            '}]';
+                        count++;
+                    }
+                }
+                count2++;
+                if (count2 == etapas2.length) {
+                    JSONcadena += '}]';
+                } else {
+                    JSONcadena += '}],';
+                }
+                var count = 0;
+            }
+            JSONcadena += '}';
 
             $.ajax({
                 type: 'POST',
@@ -6940,7 +7116,7 @@ function initEventos() {
                             idEtapa: $('select#RNA_etapa').val(),
                             idAccion: $('select#RNA_accion').val(),
                             idEtapaDestino: $('select#RNA_EtapaFinal').val(),
-                            cadenaGenerada: finalFo
+                            cadenaGenerada: JSONcadena
 
                         }),
                         dataType: 'json',
@@ -6956,6 +7132,9 @@ function initEventos() {
 
 
                             Reset();
+                            InitDataTableReglaAccion();
+                            $("#mensajeSuccess").val('');
+                            $("#mensajeError").val('');
                             $("#select#RNA_EtapaFinal").prop("disabled", false);
                             $("#RNA_etapa").val(0);
                             $("#RNA_accion").val(0)
@@ -6982,7 +7161,26 @@ function initEventos() {
             });
         }
 
+
+
+
     })
+
+    function eliminateDuplicates(arr) {
+        var i,
+            len = arr.length,
+            out = [],
+            obj = {};
+
+        for (i = 0; i < len; i++) {
+            obj[arr[i]] = 0;
+        }
+        for (i in obj) {
+            out.push(i);
+        }
+        return out;
+    }
+
 
     $('#RNA_EtapaFinal').change(function () {
         if ($('#RNA_EtapaFinal').val() != 0) {
@@ -7603,9 +7801,8 @@ function initDataTable() {
             $.each(response, function (row, index) {
                 $.each(index.ListaTipoTran, function (r, arr) {
 
-                    datos.push([arr.nombre, arr.clave, arr.categoria, arr.estatus, arr.fecha, arr.idTipoTransaccion, arr.area, arr.proceso, arr.idCategoria])
-
-                        ;
+                    datos.push([arr.nombre, arr.clave, arr.categoria, arr.estatus, arr.fecha, arr.idTipoTransaccion, arr.area, arr.proceso, arr.idCategoria]);
+                    console.log("ssssss: " + JSON.stringify(datos));
                 });
             });
 
@@ -8666,7 +8863,12 @@ function InitDataTableAutocomplete() {
 
 }
 
-function InitDataTableReglaAccion() {
+function InitDataTableReglaAccion(x) {
+
+    console.log("******: " + IdTipoTran);
+
+    ArregloValidarAccionesEdit = new Array();
+    var arrayAux = new Array();
     var datosC = [];
     $.fn.dataTable.ext.errMode = 'none';
     var responsiveHelper_datatable_fixed_column = undefined;
@@ -8676,55 +8878,95 @@ function InitDataTableReglaAccion() {
         "desktop": 1260
     };
 
-    var datosCom = [];
+    var datosCom2 = [];
+    var arrayX = new Array();
     $.ajax({
         async: false,
         type: 'POST',
         url: 'MyWebService.asmx/CatReglasNegocioxAccionWS',
         data: JSON.stringify({
             idTipoTransaccion: IdTipoTran,
-            idAccion: idAccionA,
-            idEtapa: idEtapaA,
-            idEtapaF: idCampoFA
         }),
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
-            var roles = "";
-            var estatus = "";
-            var formula = "";
-            var arrForm = [];
-            var subForm = "";
-            $.each(response, function (row, index) {
-                $.each(index.listaReglasxAccion, function (r, arr) {
+            var cadenaAux;
 
-                    jsonFormula = jQuery.parseJSON(arr.ReglaxAccion)
+            console.log("Response -------> ");
+            response = jQuery.parseJSON(response.d.listaReglasxAccion[0].ReglaxAccion);
+            $.each(response, function (i, json) {
 
-                    $.each(jsonFormula, function (j12, cam12) {
+                $.each(json[0], function (j, row) {
 
-                        $.each(cam12.ReglaNAConfig, function (j13, cam13) {
+                    if (j != 'idTransaccion') {
+                        if (j != 'nombreTransaccion') {
 
-
-                            formula += cam13.ReglaNA + "#";
-
-                        });
-
-                    });
-                    subForm = formula.substring(0, formula.length - 1);
-                    arrForm = subForm.split("#");
-                    for (var i = 0; i < arrForm.length; i++) {
-                        datosCom.push([arrForm[i], arr.NombreEtapa, arr.NombreAccion, arr.EtapaDestino, arr.idAccion, arr.idEtapa, arr.idEtapaDestino]);
+                            console.log(j);
+                            row[0].accion = j;
+                            row[0].etapa = i;
+                            cadenaAux = JSON.stringify(row[0]);
+                            arrayAux.push(cadenaAux.split(","));
+                        }
 
                     }
+
+
+
                 });
             });
+
+            for (var i = 0; i < arrayAux.length; i++) {
+                arrayAux[i][0] = arrayAux[i][0].replace('{"etapaFutura":"', '');
+                arrayAux[i][0] = arrayAux[i][0].replace('\"', '');
+
+                arrayAux[i][1] = arrayAux[i][1].replace('validacion":"', '');
+                arrayAux[i][1] = arrayAux[i][1].replace('\"', '');
+                arrayAux[i][1] = arrayAux[i][1].replace('\"', '');
+
+                arrayAux[i][2] = arrayAux[i][2].replace('alterna":"', '');
+                arrayAux[i][2] = arrayAux[i][2].replace('\"', '');
+                arrayAux[i][2] = arrayAux[i][2].replace('\"', '');
+
+                arrayAux[i][3] = arrayAux[i][3].replace('success":"', '');
+                arrayAux[i][3] = arrayAux[i][3].replace('\"', '');
+                arrayAux[i][3] = arrayAux[i][3].replace('\"', '');
+
+
+                arrayAux[i][4] = arrayAux[i][4].replace('error":"', '');
+                arrayAux[i][4] = arrayAux[i][4].replace('\"', '');
+                arrayAux[i][4] = arrayAux[i][4].replace('\"', '');
+
+                arrayAux[i][5] = arrayAux[i][5].replace('accion":"', '');
+                arrayAux[i][5] = arrayAux[i][5].replace('\"', '');
+                arrayAux[i][5] = arrayAux[i][5].replace('\"', '');
+
+                arrayAux[i][6] = arrayAux[i][6].replace('etapa":"', '');
+                arrayAux[i][6] = arrayAux[i][6].replace('\"', '');
+                arrayAux[i][6] = arrayAux[i][6].replace('\"}', '');
+
+                var idEtapa = arrayAux[i][6];
+                var idEtapaFutura = arrayAux[i][0];
+                var validacion = arrayAux[i][1];
+                var alterna = arrayAux[i][2];
+                var accion = arrayAux[i][5];
+                var success = arrayAux[i][3];
+                var error = arrayAux[i][4];
+
+
+                arrayAux[i][0] = arrayAux[i][0].replace(idEtapaFutura, idEtapa);
+                arrayAux[i][1] = arrayAux[i][1].replace(validacion, idEtapaFutura);
+                arrayAux[i][2] = arrayAux[i][2].replace(alterna, accion);
+                arrayAux[i][3] = arrayAux[i][3].replace(success, validacion);
+                arrayAux[i][4] = arrayAux[i][4].replace(error, alterna);
+                arrayAux[i][5] = arrayAux[i][5].replace(accion, success);
+                arrayAux[i][6] = arrayAux[i][6].replace(idEtapa, error);
+
+                ArregloValidarAccionesEdit.push(arrayAux[i][2]);
+            }
+
+
         }
-
     });
-
-    //$('#tablaRelasAccion tbody').removeClass('selected');
-
-
 
 
     otableRA = $('#tablaRelasAccion')
@@ -8761,34 +9003,30 @@ function InitDataTableReglaAccion() {
             "drawCallback": function (oSettings) {
                 responsiveHelper_datatable_fixed_column.respond();
             },
-            data: datosCom,
+            data: arrayAux,
             columns: [{
-                title: "Regla de Negocio por Accion"
-            },
-            {
                 title: "Etapa"
             },
             {
-                title: "Acción"
+                title: "Etapa futura"
             },
             {
-                title: "Etapa Destino"
+                title: "Accion"
+            },
+            {
+                title: "Validacion principal"
+            },
+            {
+                title: "Validacion alterna"
+            },
+            {
+                title: "Mensaje success "
+            },
+            {
+                title: "Mensaje error"
             }
             ]
         });
-
-    $('#tablaRelasAccion tbody').on('click', 'tr', function () {
-        console.log("si");
-        if ($(this).hasClass('selected')) {
-            $(this).removeClass('selected');
-        } else {
-            otableRA.$('tr.selected').removeClass('selected');
-            $(this).addClass('selected');
-        }
-    });
-
-
-
 }
 
 function initDrag(e) {
@@ -9212,9 +9450,22 @@ function InitEditstep6(row) {
 
     $("#btn_agregarAccionEF").show();
     $("#btn_agregarAccionF").hide();
+    //Aqui
+    $('#tablaRelasAccion tbody').on('click', 'tr', function () {
+        console.log("si");
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+        } else {
+            otableRA.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+    });
 
+    InitDataTableReglaAccion();
+    $('#reglaPorAccion').show();
+    $("#btnReglasNAcciones").show();
 
-
+    var countAccion = 0;
     $("#RNA_EtapaFinal").change(function () {
         idEtapaA = 0;
         idAccionA = 0;
@@ -9224,8 +9475,29 @@ function InitEditstep6(row) {
         idCampoFA = $("#RNA_EtapaFinal").val();
         $("#btnReglasNAcciones").show();
         $('#reglaPorAccion').show();
+        try {
+            //InitDataTableReglaAccion();
 
-        InitDataTableReglaAccion();
+        } catch (err) {
+        }
+
+    })
+
+    $("#RNA_accion").change(function () {
+
+        countAccion++;
+        try {
+            //var x = 0;
+            //idAccionA = 0;
+            //idAccionA = $("#RNA_accion").val();
+
+            //if (countAccion == 1) {
+            //    InitDataTableReglaAccion(x);
+            //}            
+
+        } catch (err) {
+        }
+
     })
 }
 

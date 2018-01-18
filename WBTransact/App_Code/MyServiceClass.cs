@@ -13,8 +13,7 @@ using System.Data;
 /// 
 [System.Web.Script.Services.ScriptService]
 
-public class MyServiceClass : System.Web.Services.WebService
-{
+public class MyServiceClass : System.Web.Services.WebService {
     public MyServiceClass() { }
 
     readonly Transact.Negocio.RegistrarTransaccion arma = new Transact.Negocio.RegistrarTransaccion();
@@ -34,16 +33,14 @@ public class MyServiceClass : System.Web.Services.WebService
 
     #region Armaformulario
     [WebMethod]
-    public CamposTransaccion ArmaFormulario(int idtransa)
-    {
+    public CamposTransaccion ArmaFormulario(int idtransa) {
         CamposTransaccion campos;
         campos = arma.ArmaCampos(idtransa);
         return campos;
 
     }
     [WebMethod]
-    public Combo CrearCombo(string idTransaccion, string idRef, string nomRef)
-    {
+    public Combo CrearCombo(string idTransaccion, string idRef, string nomRef) {
         Combo campos;
         if (idTransaccion.Length < 13) {
             campos = arma.ArmaSelect(idTransaccion, idRef, nomRef);
@@ -53,51 +50,45 @@ public class MyServiceClass : System.Web.Services.WebService
         return campos;
     }
     [WebMethod]
-    public bool InsertarTransaccion(string json, string idTransaccion, string Categoria, int idEtapa, int idAccion)
-    {
+    public bool InsertarTransaccion(string json, string idTransaccion, string Categoria, int idEtapa, int idAccion) {
 
-       
-            return arma.insert(json, idTransaccion, Categoria, idEtapa, idAccion);
 
-        
+        return arma.insert(json, idTransaccion, Categoria, idEtapa, idAccion);
+
+
     }
     [WebMethod]
     public bool InsertarTransaccionxEtapa(string json, string idTransaccion, string Categoria, int idEtapa, int idAccion) {
 
-       return arma.insertXetapa(json, idTransaccion, Categoria, idEtapa, idAccion); 
+        return arma.insertXetapa(json, idTransaccion, Categoria, idEtapa, idAccion);
 
     }
 
 
     [WebMethod]
-    public EntidadCategoriaTransa TiposTrans()
-    {
+    public EntidadCategoriaTransa TiposTrans() {
         EntidadCategoriaTransa campos;
         campos = arma.CategoriasTrans();
         return campos;
     }
     [WebMethod]
-    public comboTransac camposTrans(int idtipo)
-    {
+    public comboTransac camposTrans(int idtipo) {
         comboTransac campos;
         campos = arma.CatCompTrans(idtipo);
         return campos;
     }
     [WebMethod]
-    public ValoresComplemento CamposComplemento(int idTransaccion, string primarykey, string Valor, string IdRef, string CampRef)
-    {
+    public ValoresComplemento CamposComplemento(int idTransaccion, string primarykey, string Valor, string IdRef, string CampRef) {
         ValoresComplemento campos;
         campos = arma.AutoComplit(idTransaccion, primarykey, Valor, IdRef, CampRef);
         return campos;
     }
     [WebMethod]
-    public int AutoIncrementWS(int idTipoTransaccion, string CAuto)
-    {
+    public int AutoIncrementWS(int idTipoTransaccion, string CAuto) {
         return arma.AutoIncrementN(idTipoTransaccion, CAuto);
     }
     [WebMethod]
-    public DetalleTransaccionBit detalleTBWS(string idTransaccion)
-    {
+    public DetalleTransaccionBit detalleTBWS(string idTransaccion) {
         return arma.detalleTBN(idTransaccion);
     }
 
@@ -109,8 +100,7 @@ public class MyServiceClass : System.Web.Services.WebService
     //Método Insertar
     #region Insert 
     [WebMethod]
-    public int InsertDatosGenerales(int proceso, string nombre1, string clave, int categoria)
-    {
+    public int InsertDatosGenerales(int proceso, string nombre1, string clave, int categoria) {
 
 
 
@@ -124,8 +114,7 @@ public class MyServiceClass : System.Web.Services.WebService
     }
 
     [WebMethod]
-    public void InsertCampos(int idTipoTran, int idNivel, string nombreCampo, string descripcion, int idTipoDatoCampo, int idTipoOperacion, string longitudCampo)
-    {
+    public void InsertCampos(int idTipoTran, int idNivel, string nombreCampo, string descripcion, int idTipoDatoCampo, int idTipoOperacion, string longitudCampo) {
 
 
 
@@ -141,8 +130,7 @@ public class MyServiceClass : System.Web.Services.WebService
 
 
     [WebMethod]
-    public bool InsertEtapas(int idTipoTran, string descripcion, int orden)
-    {
+    public bool InsertEtapas(int idTipoTran, string descripcion, int orden) {
 
 
 
@@ -154,8 +142,7 @@ public class MyServiceClass : System.Web.Services.WebService
     }
 
     [WebMethod]
-    public bool InsertAcciones(int idTipoTran, string claveAccion, string descripcion, int orden)
-    {
+    public bool InsertAcciones(int idTipoTran, string claveAccion, string descripcion, int orden) {
 
 
 
@@ -167,8 +154,7 @@ public class MyServiceClass : System.Web.Services.WebService
     }
 
     [WebMethod]
-    public bool InsertAccEtap(int idTipoTransaccion, int idEtapa, string NomAccion)
-    {
+    public bool InsertAccEtap(int idTipoTransaccion, int idEtapa, string NomAccion) {
 
 
 
@@ -180,8 +166,7 @@ public class MyServiceClass : System.Web.Services.WebService
     }
 
     [WebMethod]
-    public bool InsertEtapasAccRol(int idTipoTransaccion, string nomEtapa, string NomAccion, string nombreRol)
-    {
+    public bool InsertEtapasAccRol(int idTipoTransaccion, string nomEtapa, string NomAccion, string nombreRol) {
 
 
 
@@ -194,85 +179,74 @@ public class MyServiceClass : System.Web.Services.WebService
 
 
     [WebMethod]
-    public bool InsertRNC(string jsonRG)
-    {
+    public bool InsertRNC(string jsonRG) {
         return AltaDatos.inInsertReglasNC(jsonRG);
 
     }
     [WebMethod]
-    public bool InsertFormulaWS(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo, string cadenaGenerada)
-    {
+    public bool InsertFormulaWS(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo, string cadenaGenerada) {
         return AltaDatos.InsertFormulaN(idTipoTransaccion, idEtapa, idAccion, idCampo, cadenaGenerada);
     }
 
 
     [WebMethod]
-    public bool InsertReglasNegocioxAWS(int idTipoTransaccion, int idEtapa, int idAccion, string cadenaGenerada, int idEtapaDestino)
-    {
+    public bool InsertReglasNegocioxAWS(int idTipoTransaccion, int idEtapa, int idAccion, string cadenaGenerada, int idEtapaDestino) {
         return AltaDatos.InsertReglasNegocioxAN(idTipoTransaccion, idEtapa, idAccion, cadenaGenerada, idEtapaDestino);
     }
     #endregion
     // metodos de consulta
     #region consultas
     [WebMethod]
-    public TiposDatosCampos tipoDatosATT()
-    {
+    public TiposDatosCampos tipoDatosATT() {
         TiposDatosCampos datosCampos = new TiposDatosCampos();
         Console.WriteLine(datosCampos);
         datosCampos = AltaDatos.CatTiposDatosCamposN();
         return datosCampos;
     }
     [WebMethod]
-    public NivelesTransacciones nivelTransATT()
-    {
+    public NivelesTransacciones nivelTransATT() {
         NivelesTransacciones nivTrans = new NivelesTransacciones();
         Console.WriteLine(nivTrans);
         nivTrans = AltaDatos.CatNivelesTransaccionesN();
         return nivTrans;
     }
     [WebMethod]
-    public TiposOperaciones operacionTransATT()
-    {
+    public TiposOperaciones operacionTransATT() {
         TiposOperaciones opeTrnas = new TiposOperaciones();
         Console.WriteLine(opeTrnas);
         opeTrnas = AltaDatos.CatTiposOperacionesN();
         return opeTrnas;
     }
     [WebMethod]
-    public RolesTransaccion rolesTransATT()
-    {
+    public RolesTransaccion rolesTransATT() {
         RolesTransaccion rolTrans = new RolesTransaccion();
         Console.WriteLine(rolTrans);
         rolTrans = AltaDatos.CatTiposRolesTransaccionN();
         return rolTrans;
     }
     [WebMethod]
-    public AreasTipoTransaccion areasTransATT()
-    {
+    public AreasTipoTransaccion areasTransATT() {
         AreasTipoTransaccion areaTrans = new AreasTipoTransaccion();
         Console.WriteLine(areaTrans);
         areaTrans = AltaDatos.CatAreasTipoTransaccionN();
         return areaTrans;
     }
     [WebMethod]
-    public ProcesosTipoTransaccion procesosTransATT(int idArea)
-    {
+    public ProcesosTipoTransaccion procesosTransATT(int idArea) {
         ProcesosTipoTransaccion procTrans = new ProcesosTipoTransaccion();
         Console.WriteLine(procTrans);
         procTrans = AltaDatos.CatProcesoTransaccionN(idArea);
         return procTrans;
     }
     [WebMethod]
-    public TiposVisualizacion visualizacionTansATT(int idTipoDatoCampo)
-    {
+    public TiposVisualizacion visualizacionTansATT(int idTipoDatoCampo) {
         TiposVisualizacion visTrans = new TiposVisualizacion();
         Console.WriteLine(visTrans);
         visTrans = AltaDatos.TiposVisualizacion(idTipoDatoCampo);
         return visTrans;
     }
     [WebMethod]
-    public EntEtapas.EtapasCombo llenaComboEtapas(int idTipoTran)
-    {
+    public EntEtapas.EtapasCombo llenaComboEtapas(int idTipoTran) {
 
 
 
@@ -281,8 +255,7 @@ public class MyServiceClass : System.Web.Services.WebService
 
     }
     [WebMethod]
-    public EntEtapas.EtapasCombo llenaComboSoloEtapas(int idTipoTran)
-    {
+    public EntEtapas.EtapasCombo llenaComboSoloEtapas(int idTipoTran) {
 
 
 
@@ -291,8 +264,7 @@ public class MyServiceClass : System.Web.Services.WebService
 
     }
     [WebMethod]
-    public AccionesEnt.AccionesCombo llenaComboAcciones(int idTipoTran, int idEtapas)
-    {
+    public AccionesEnt.AccionesCombo llenaComboAcciones(int idTipoTran, int idEtapas) {
 
 
 
@@ -302,76 +274,63 @@ public class MyServiceClass : System.Web.Services.WebService
     }
 
     [WebMethod]
-    public TipoTransaccion LlenaTipoTransaccion()
-    {
+    public TipoTransaccion LlenaTipoTransaccion() {
 
         return AltaDatos.LlenaTipoTran();
     }
     [WebMethod]
-    public EntEtapas.EtapasCombo CatETapasAcionesWS(int idTipoTransaccion, int idEtapa)
-    {
+    public EntEtapas.EtapasCombo CatETapasAcionesWS(int idTipoTransaccion, int idEtapa) {
         return AltaDatos.CatETapasAcionesN(idTipoTransaccion, idEtapa);
     }
     [WebMethod]
-    public RolesTransaccion CatRolesWS(int idTipoTransaccion, int idEtapa, string descripcion)
-    {
+    public RolesTransaccion CatRolesWS(int idTipoTransaccion, int idEtapa, string descripcion) {
         return AltaDatos.CatRolesN(idTipoTransaccion, idEtapa, descripcion);
     }
 
     [WebMethod]
-    public EnFormula CatformulasWS(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo)
-    {
+    public EnFormula CatformulasWS(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo) {
         return AltaDatos.CatformulasN(idTipoTransaccion, idEtapa, idAccion, idCampo);
     }
 
     [WebMethod]
-    public ENReglasNeg CatReglasNegocioWS(int idTipoTransaccion, int idEtapa, int idAccion)
-    {
+    public ENReglasNeg CatReglasNegocioWS(int idTipoTransaccion, int idEtapa, int idAccion) {
         return AltaDatos.CatReglasNegocioN(idTipoTransaccion, idEtapa, idAccion);
     }
     [WebMethod]
-    public CamposConbo CatCamposconboboxWS(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo)
-    {
+    public CamposConbo CatCamposconboboxWS(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo) {
         return AltaDatos.CatCamposconboboxN(idTipoTransaccion, idEtapa, idAccion, idCampo);
     }
     [WebMethod]
-    public int CountReglasWS(int idTipoTransaccion, string nombreCampo, int idEtapa, int idAccion)
-    {
+    public int CountReglasWS(int idTipoTransaccion, string nombreCampo, int idEtapa, int idAccion) {
         return AltaDatos.CountReglasN(idTipoTransaccion, nombreCampo, idEtapa, idAccion);
     }
     [WebMethod]
-    public DTCamposDinamicos DTCamposWS(int idTipoTransaccion)
-    {
+    public DTCamposDinamicos DTCamposWS(int idTipoTransaccion) {
 
         return AltaDatos.DTCamposN(idTipoTransaccion);
     }
     [WebMethod]
-    public LisFormula DTFormulaWS(int idTipoTransaccion, int idEtapa, int idAccion)
-    {
+    public LisFormula DTFormulaWS(int idTipoTransaccion, int idEtapa, int idAccion) {
 
         return AltaDatos.DTFormulasN(idTipoTransaccion, idEtapa, idAccion);
     }
     [WebMethod]
-    public DTCamposDinamicos DTDetalleNS(int idTipoTransaccion)
-    {
+    public DTCamposDinamicos DTDetalleNS(int idTipoTransaccion) {
 
         return AltaDatos.DTDetalleN(idTipoTransaccion);
     }
     [WebMethod]
-    public DTCamposDinamicos DTCabezeraNS(int idTipoTransaccion)
-    {
+    public DTCamposDinamicos DTCabezeraNS(int idTipoTransaccion) {
 
         return AltaDatos.DTCabezeraN(idTipoTransaccion);
     }
     [WebMethod]
-    public List<Transaccion> ObtenerTransaccionesN()
-    {
+    public List<Transaccion> ObtenerTransaccionesN() {
 
         DataTable dt = tran.ObtieneTransacciones();
 
         List<Transaccion> List = new List<Transaccion>();
-        foreach (DataRow row in dt.Rows)
-        {
+        foreach (DataRow row in dt.Rows) {
             Transaccion tr = new Transaccion();
             tr.idTransaccion = Convert.ToInt32(row["idTransaccion"].ToString());
             tr.idTipoTrasaccion = Convert.ToInt32(row["idTipoTransaccion"].ToString());
@@ -387,8 +346,7 @@ public class MyServiceClass : System.Web.Services.WebService
         return List;
     }
     [WebMethod]
-    public String ObtenerCampos(int idTransaccion)
-    {
+    public String ObtenerCampos(int idTransaccion) {
 
         String json = tran.ObtenerTransaccion(idTransaccion);
 
@@ -396,118 +354,96 @@ public class MyServiceClass : System.Web.Services.WebService
         return json;
     }
     [WebMethod]
-    public TransaccionGralA EtapasTransaccionN(int idTipoTransaccion)
-    {
+    public TransaccionGralA EtapasTransaccionN(int idTipoTransaccion) {
         return AltaDatos.EtapasTransaccionN(idTipoTransaccion);
     }
     [WebMethod]
-    public DTCamposDinamicos ListCamposAbiertoWS(int idTipotransaccion)
-    {
+    public DTCamposDinamicos ListCamposAbiertoWS(int idTipotransaccion) {
 
         return AltaDatos.ListCamposAbiertoN(idTipotransaccion);
     }
     [WebMethod]
-    public AltaTiposTransacciones CatTiposTransaccionesWS(int idTipoTransaccion)
-    {
+    public AltaTiposTransacciones CatTiposTransaccionesWS(int idTipoTransaccion) {
         return AltaDatos.CatTiposTransaccionesN(idTipoTransaccion);
     }
     [WebMethod]
-    public ReglasxCampo ReglasxCamposWS(int idTipoTransaccion, int idEtapa, int idAccion)
-    {
+    public ReglasxCampo ReglasxCamposWS(int idTipoTransaccion, int idEtapa, int idAccion) {
         return AltaDatos.ReglasxCamposN(idTipoTransaccion, idEtapa, idAccion);
     }
-    public CatCombobox CatComboboxWS(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo)
-    {
+    public CatCombobox CatComboboxWS(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo) {
         return AltaDatos.CatComboboxN(idTipoTransaccion, idEtapa, idAccion, idCampo);
     }
     [WebMethod]
-    public DTCamposDinamicos CamposConboboxWS(int idTipotransaccion, int idEtapa, int idAccion)
-    {
+    public DTCamposDinamicos CamposConboboxWS(int idTipotransaccion, int idEtapa, int idAccion) {
         return AltaDatos.CamposConboboxN(idTipotransaccion, idEtapa, idAccion);
 
     }
     [WebMethod]
-    public DTCamposDinamicos CamposWS(int idTipotransaccion)
-    {
+    public DTCamposDinamicos CamposWS(int idTipotransaccion) {
         return AltaDatos.CamposN(idTipotransaccion);
 
     }
     [WebMethod]
-    public camposConboboxId CatConboboxRNGWS(int idTipoTransaccion, int idEtapa, int idAccion)
-    {
+    public camposConboboxId CatConboboxRNGWS(int idTipoTransaccion, int idEtapa, int idAccion) {
         return AltaDatos.CatConboboxRNGN(idTipoTransaccion, idEtapa, idAccion);
     }
     [WebMethod]
-    public DTCamposDinamicos CamposCabeceraWS(int idTipotransaccion, int idEtapa, int idAccion)
-    {
+    public DTCamposDinamicos CamposCabeceraWS(int idTipotransaccion, int idEtapa, int idAccion) {
         return AltaDatos.CamposCabeceraN(idTipotransaccion, idEtapa, idAccion);
     }
     [WebMethod]
-    public DTCamposDinamicos CamposDetalleWS(int idTipotransaccion, int idEtapa, int idAccion)
-    {
+    public DTCamposDinamicos CamposDetalleWS(int idTipotransaccion, int idEtapa, int idAccion) {
         return AltaDatos.CamposDetalleN(idTipotransaccion, idEtapa, idAccion);
     }
 
     [WebMethod]
-    public ENReglasNeg CattooltipWS(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo)
-    {
+    public ENReglasNeg CattooltipWS(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo) {
         return AltaDatos.CattooltipN(idTipoTransaccion, idEtapa, idAccion, idCampo);
     }
 
     [WebMethod]
-    public ReglasNegocioxAccion CatReglasNegocioxAccionWS(int idTipoTransaccion, int idEtapa, int idAccion, int idEtapaF)
-    {
-        return AltaDatos.CatReglasNegocioxAccionN(idTipoTransaccion, idEtapa, idAccion, idEtapaF);
+    public ReglasNegocioxAccion CatReglasNegocioxAccionWS(int idTipoTransaccion) {
+        return AltaDatos.CatReglasNegocioxAccionN(idTipoTransaccion);
     }
     [WebMethod]
-    public DTCamposDinamicos campCombWS(int idTipotransaccion, int idEtapa, int idAccion)
-    {
+    public DTCamposDinamicos campCombWS(int idTipotransaccion, int idEtapa, int idAccion) {
         return AltaDatos.campCombN(idTipotransaccion, idEtapa, idAccion);
     }
     [WebMethod]
-    public Autocompletar campNCombWS(int idTipotransaccion, int idEtapa, int idAccion, int idCampo)
-    {
+    public Autocompletar campNCombWS(int idTipotransaccion, int idEtapa, int idAccion, int idCampo) {
         return AltaDatos.campNCombN(idTipotransaccion, idEtapa, idAccion, idCampo);
     }
     [WebMethod]
-    public DTCamposDinamicos campJsonWS(int idTipotransaccion, int idEtapa, int idAccion, string nombreCampo)
-    {
+    public DTCamposDinamicos campJsonWS(int idTipotransaccion, int idEtapa, int idAccion, string nombreCampo) {
         return AltaDatos.campJsonN(idTipotransaccion, idEtapa, idAccion, nombreCampo);
     }
 
     [WebMethod]
-    public DTCamposDinamicos selectDeleteCampoDinamicoW(int idTipotransaccion, int idCampo)
-    {
+    public DTCamposDinamicos selectDeleteCampoDinamicoW(int idTipotransaccion, int idCampo) {
         return AltaDatos.selectDeleteCampoDinamicoN(idTipotransaccion, idCampo);
     }
     [WebMethod]
-    public DTCamposDinamicos selectDeleteCampoEtapaW(int idTipotransaccion, string nombre)
-    {
+    public DTCamposDinamicos selectDeleteCampoEtapaW(int idTipotransaccion, string nombre) {
         return AltaDatos.selectDeleteEtapaN(idTipotransaccion, nombre);
     }
     [WebMethod]
-    public DTCamposDinamicos selectDeleteAccionRncW(int idTipotransaccion, int idAccion)
-    {
+    public DTCamposDinamicos selectDeleteAccionRncW(int idTipotransaccion, int idAccion) {
         return AltaDatos.selectDeleteAccionRncN(idTipotransaccion, idAccion);
     }
     [WebMethod]
-    public DTCamposDinamicos selectDeleteAccionxComboW(int idTipotransaccion, int idAccion)
-    {
+    public DTCamposDinamicos selectDeleteAccionxComboW(int idTipotransaccion, int idAccion) {
         return AltaDatos.selectDeleteAccionxComboN(idTipotransaccion, idAccion);
     }
     [WebMethod]
-    public DTCamposDinamicos selectDeleteAccionxAutoW(int idTipotransaccion, int idAccion)
-    {
+    public DTCamposDinamicos selectDeleteAccionxAutoW(int idTipotransaccion, int idAccion) {
         return AltaDatos.selectDeleteAccionxAutoN(idTipotransaccion, idAccion);
     }
     [WebMethod]
-    public DTCamposDinamicos selectDeleteAccionxFormulaW(int idTipotransaccion, int idAccion)
-    {
+    public DTCamposDinamicos selectDeleteAccionxFormulaW(int idTipotransaccion, int idAccion) {
         return AltaDatos.selectDeleteAccionxFormulaN(idTipotransaccion, idAccion);
     }
     [WebMethod]
-    public DTCamposDinamicos selectDeleteAccionxRnAW(int idTipotransaccion, int idAccion)
-    {
+    public DTCamposDinamicos selectDeleteAccionxRnAW(int idTipotransaccion, int idAccion) {
         return AltaDatos.selectDeleteAccionxRnAN(idTipotransaccion, idAccion);
     }
 
@@ -516,56 +452,46 @@ public class MyServiceClass : System.Web.Services.WebService
     // Metodos para Actualizar
     #region Actualizar
     [WebMethod]
-    public bool UpdateCamposWS(int idTipoTransaccion, string nombreUP, string nombreCampo, string descCampo, int tipoDato, string longitud, int nivel, int tipoOperacion)
-    {
+    public bool UpdateCamposWS(int idTipoTransaccion, string nombreUP, string nombreCampo, string descCampo, int tipoDato, string longitud, int nivel, int tipoOperacion) {
         return AltaDatos.UpdateCamposN(idTipoTransaccion, nombreUP, nombreCampo, descCampo, tipoDato, longitud, nivel, tipoOperacion);
     }
     [WebMethod]
-    public bool UpdateEtapasWS(int IdTipoTransaccion, String nombreUPE, String descripcionE, int ordenE)
-    {
+    public bool UpdateEtapasWS(int IdTipoTransaccion, String nombreUPE, String descripcionE, int ordenE) {
         return AltaDatos.UpdateEtapasN(IdTipoTransaccion, nombreUPE, descripcionE, ordenE);
     }
     [WebMethod]
-    public bool UpdateAccionesWS()
-    {
+    public bool UpdateAccionesWS() {
         return false;
     }
     [WebMethod]
-    public bool ActualisarComboboxWS(string JsonConbobox)
-    {
+    public bool ActualisarComboboxWS(string JsonConbobox) {
         return AltaDatos.ActualisarComboboxN(JsonConbobox);
 
     }
     [WebMethod]
-    public bool UpdateTipoTransaccionN(int IdTipoTransaccion, string descripcion, string clave, int idProceso, int idCatTipoTransac)
-    {
+    public bool UpdateTipoTransaccionN(int IdTipoTransaccion, string descripcion, string clave, int idProceso, int idCatTipoTransac) {
         return AltaDatos.UpdateTipoTransaccionN(IdTipoTransaccion, descripcion, clave, idProceso, idCatTipoTransac);
     }
     [WebMethod]
-    public bool UpdateCicloVidaWS(string descripcion, int orden, string cveAccion, string descripcionN, int ordenN, string cveAccionN)
-    {
+    public bool UpdateCicloVidaWS(string descripcion, int orden, string cveAccion, string descripcionN, int ordenN, string cveAccionN) {
         return AltaDatos.UpdateCicloVidaN(descripcion, orden, cveAccion, descripcionN, ordenN, cveAccionN);
     }
     [WebMethod]
-    public bool updateReglasNegocioCamposxTTWS(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo, string nombreReferencia, string idReferencia, int idTipoTransaccionReferencia)
-    {
+    public bool updateReglasNegocioCamposxTTWS(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo, string nombreReferencia, string idReferencia, int idTipoTransaccionReferencia) {
         return AltaDatos.updateReglasNegocioCamposxTTN(idTipoTransaccion, idEtapa, idAccion, idCampo, nombreReferencia, idReferencia, idTipoTransaccionReferencia);
     }
     [WebMethod]
-    public bool updateCOMBOBOXWS(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo, bool newnombreReferencia, bool newidReferencia, bool newidTipoTransaccionReferencia)
-    {
+    public bool updateCOMBOBOXWS(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo, bool newnombreReferencia, bool newidReferencia, bool newidTipoTransaccionReferencia) {
         return AltaDatos.updateCOMBOBOXN(idTipoTransaccion, idEtapa, idAccion, idCampo, newnombreReferencia, newidReferencia, newidTipoTransaccionReferencia);
 
     }
     [WebMethod]
-    public bool UpdateStatusWS(int IdTipoTransaccion, int estatus)
-    {
+    public bool UpdateStatusWS(int IdTipoTransaccion, int estatus) {
 
         return AltaDatos.UpdateStatusN(IdTipoTransaccion, estatus);
     }
     [WebMethod]
-    public bool UpdateJsonAutoN(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo, string CadenaJson)
-    {
+    public bool UpdateJsonAutoN(int idTipoTransaccion, int idEtapa, int idAccion, int idCampo, string CadenaJson) {
         return AltaDatos.UpdateJsonAutoN(idTipoTransaccion, idEtapa, idAccion, idCampo, CadenaJson);
 
     }
@@ -574,71 +500,58 @@ public class MyServiceClass : System.Web.Services.WebService
     // Metodos para Eliminar
     #region eliminar
     [WebMethod]
-    public bool DeleteCamposWS(string nombreCampo)
-    {
+    public bool DeleteCamposWS(string nombreCampo) {
         return AltaDatos.DeleteCamposN(nombreCampo);
     }
     [WebMethod]
-    public bool DeleteEtapasWS(string descripcion, int idTipoTransaccion)
-    {
+    public bool DeleteEtapasWS(string descripcion, int idTipoTransaccion) {
         return AltaDatos.DeleteEtapasN(descripcion, idTipoTransaccion);
     }
     [WebMethod]
-    public bool DeleteAccionesWS(string descripcion)
-    {
+    public bool DeleteAccionesWS(string descripcion) {
         return AltaDatos.DeleteAccionesN(descripcion);
     }
 
     [WebMethod]
-    public bool DeleteEtapasAccionesRolesWS(int idTipoTransaccion, int idEtapa, int idAccion)
-    {
+    public bool DeleteEtapasAccionesRolesWS(int idTipoTransaccion, int idEtapa, int idAccion) {
         return AltaDatos.DeleteEtapasAccionesRolesN(idTipoTransaccion, idEtapa, idAccion);
     }
     [WebMethod]
-    public bool DeleteEtapasAccionesTipoTransaccionesWS(int idTipoTransaccion, int idEtapa, int idAccion)
-    {
+    public bool DeleteEtapasAccionesTipoTransaccionesWS(int idTipoTransaccion, int idEtapa, int idAccion) {
         return AltaDatos.DeleteEtapasAccionesTipoTransaccionesN(idTipoTransaccion, idEtapa, idAccion);
     }
 
     [WebMethod]
-    public bool DeleteFormulaWS(int idTipoTransaccion, int idEtapa, int idAccion, int idcampo)
-    {
+    public bool DeleteFormulaWS(int idTipoTransaccion, int idEtapa, int idAccion, int idcampo) {
         return AltaDatos.DeleteFormulaN(idTipoTransaccion, idEtapa, idAccion, idcampo);
     }
     [WebMethod]
-    public bool ReglasNegocioXCampoWS(int idTipoTransaccion, int idEtapa, int idAccion, int idcampo)
-    {
+    public bool ReglasNegocioXCampoWS(int idTipoTransaccion, int idEtapa, int idAccion, int idcampo) {
         return AltaDatos.DeleteFormulaN(idTipoTransaccion, idEtapa, idAccion, idcampo);
     }
     [WebMethod]
-    public bool DeleteReglasCamposWS(int idTipoTransaccion, int idcampo)
-    {
+    public bool DeleteReglasCamposWS(int idTipoTransaccion, int idcampo) {
         return AltaDatos.DeleteReglasCamposN(idTipoTransaccion, idcampo);
     }
     [WebMethod]
-    public bool DeleteCamposDinamicosWS(int idTipoTransaccion, int idcampo)
-    {
+    public bool DeleteCamposDinamicosWS(int idTipoTransaccion, int idcampo) {
         return AltaDatos.DeleteCamposDinamicosN(idTipoTransaccion, idcampo);
     }
     #endregion
     [WebMethod]
-    public bool ActuaInsertWS(string jsonDatos)
-    {
+    public bool ActuaInsertWS(string jsonDatos) {
         return AltaDatos.ActuaInsert(jsonDatos);
     }
     [WebMethod]
-    public bool DeleteCamposConboboxWS(int idTipoTransaccion, int idcampo)
-    {
+    public bool DeleteCamposConboboxWS(int idTipoTransaccion, int idcampo) {
         return AltaDatos.DeleteCamposConboboxN(idTipoTransaccion, idcampo);
     }
     [WebMethod]
-    public bool DeleteReglasNegocioxAWS(int idTipoTransaccion, int idEtapa, int idAccion, int idEtapaF)
-    {
+    public bool DeleteReglasNegocioxAWS(int idTipoTransaccion, int idEtapa, int idAccion, int idEtapaF) {
         return AltaDatos.DeleteReglasNegocioxAN(idTipoTransaccion, idEtapa, idAccion, idEtapaF);
     }
     [WebMethod]
-    public string DeleteTransaccion(int idTipoTransaccion)
-    {
+    public string DeleteTransaccion(int idTipoTransaccion) {
         return AltaDatos.DeleteTransaccion(idTipoTransaccion);
     }
 
@@ -646,8 +559,7 @@ public class MyServiceClass : System.Web.Services.WebService
     // Metodo Para Login 
     #region Login
     [WebMethod]
-    public Usuario Login(string Usuario, string contraseña)
-    {
+    public Usuario Login(string Usuario, string contraseña) {
         Usuario SecionUser = new Usuario();
 
         Console.WriteLine(SecionUser);
@@ -661,8 +573,7 @@ public class MyServiceClass : System.Web.Services.WebService
 
     }
     [WebMethod(EnableSession = true)]
-    public string GetSessionValue(String Name)
-    {
+    public string GetSessionValue(String Name) {
 
         Session["nombre"] = Name;
 
@@ -672,23 +583,19 @@ public class MyServiceClass : System.Web.Services.WebService
     //Metodos para Bandeja
     #region Bandeja
     [WebMethod]
-    public EstatusTransacciones ObtenerStatusWS()
-    {
+    public EstatusTransacciones ObtenerStatusWS() {
         return BandejaNegocio.ObtenerStatusNeg();
     }
     [WebMethod]
-    public TransactBitacora DetalleTransaccionesWS(int idEstatus)
-    {
+    public TransactBitacora DetalleTransaccionesWS(int idEstatus) {
         return BandejaNegocio.DetalleTransaccionesN(idEstatus);
     }
     [WebMethod]
-    public CamposTransaccion ArmaFormularioxEtapa(int idTipoTransaccion, string idtransaccion)
-    {
+    public CamposTransaccion ArmaFormularioxEtapa(int idTipoTransaccion, string idtransaccion) {
         return BandejaNegocio.ArmaFormularioxEtapa(idTipoTransaccion, idtransaccion);
     }
     [WebMethod]
-    public BitacoraTransacciones DetalleBitacoraWS(int idTipoTransaccion, string idtransaccion)
-    {
+    public BitacoraTransacciones DetalleBitacoraWS(int idTipoTransaccion, string idtransaccion) {
         return BandejaNegocio.DetalleBitacoraN(idtransaccion);
     }
     #endregion
@@ -698,16 +605,14 @@ public class MyServiceClass : System.Web.Services.WebService
     readonly Transact.Negocio.NegocioAplicaciones NegocioAplicaciones = new Transact.Negocio.NegocioAplicaciones();
 
     [WebMethod]
-    public Aplicaciones llenaTablaAplicaciones()
-    {
+    public Aplicaciones llenaTablaAplicaciones() {
         Aplicaciones listaCampos;
         listaCampos = NegocioAplicaciones.llenaTablaAplicaciones();
         return listaCampos;
     }
 
     [WebMethod]
-    public bool insertaAplicaciones(string nombreAplicacion, string descripcionAplicacion, string idioma, double version)
-    {
+    public bool insertaAplicaciones(string nombreAplicacion, string descripcionAplicacion, string idioma, double version) {
         CamposAplicaciones campos = new CamposAplicaciones();
         campos.nombreAplicacion = nombreAplicacion;
         campos.descripcionAplicacion = descripcionAplicacion;
@@ -717,8 +622,7 @@ public class MyServiceClass : System.Web.Services.WebService
     }
 
     [WebMethod]
-    public bool modificarAplicaciones(string nombreAplicacion, string descripcionAplicacion, string idioma, double version, int idAplicacion)
-    {
+    public bool modificarAplicaciones(string nombreAplicacion, string descripcionAplicacion, string idioma, double version, int idAplicacion) {
         CamposAplicaciones campos = new CamposAplicaciones();
         campos.nombreAplicacion = nombreAplicacion;
         campos.descripcionAplicacion = descripcionAplicacion;
@@ -729,8 +633,7 @@ public class MyServiceClass : System.Web.Services.WebService
     }
 
     [WebMethod]
-    public bool eliminarAplicaciones(int idAplicacion)
-    {
+    public bool eliminarAplicaciones(int idAplicacion) {
         return NegocioAplicaciones.eliminarAplicaciones(idAplicacion);
     }
 
@@ -740,96 +643,84 @@ public class MyServiceClass : System.Web.Services.WebService
     readonly Transact.Negocio.NegocioPersonalUsuario NegocioPersonalUsuario = new Transact.Negocio.NegocioPersonalUsuario();
 
     [WebMethod]
-    public PersonalUsuario llenaTablaPersonalUsuario()
-    {
+    public PersonalUsuario llenaTablaPersonalUsuario() {
         PersonalUsuario listaCampos;
         listaCampos = NegocioPersonalUsuario.llenaTablaPersonalUsuario();
         return listaCampos;
     }
 
     [WebMethod]
-    public ComboPuestos LlenaComboPuesto()
-    {
+    public ComboPuestos LlenaComboPuesto() {
         ComboPuestos listaCampos;
         listaCampos = NegocioPersonalUsuario.LlenaComboPuesto();
         return listaCampos;
     }
 
     [WebMethod]
-    public Roles LlenaComboRoles()
-    {
+    public Roles LlenaComboRoles() {
         Roles listaCampos;
         listaCampos = NegocioPersonalUsuario.LlenaComboRoles();
         return listaCampos;
     }
 
     [WebMethod]
-    public ComboPrivilegios LlenaCheckBoxPrivilegios()
-    {
+    public ComboPrivilegios LlenaCheckBoxPrivilegios() {
         ComboPrivilegios listaCampos;
         listaCampos = NegocioPersonalUsuario.LlenaCheckBoxPrivilegios();
         return listaCampos;
     }
 
     [WebMethod]
-    public ComboPrivilegiosCHK LlenaCheckBoxPrivilegiosEdit(int idPersonal, int idUsuario, int idRol)
-    {
+    public ComboPrivilegiosCHK LlenaCheckBoxPrivilegiosEdit(int idPersonal, int idUsuario, int idRol) {
         ComboPrivilegiosCHK listaCampos;
         listaCampos = NegocioPersonalUsuario.LlenaCheckBoxPrivilegiosEdit(idPersonal, idUsuario, idRol);
         return listaCampos;
     }
 
     [WebMethod]
-    public ComboPersonal LlenaComboPersonal()
-    {
+    public ComboPersonal LlenaComboPersonal() {
         ComboPersonal listaCampos;
         listaCampos = NegocioPersonalUsuario.LlenaComboPersonal();
         return listaCampos;
     }
 
     [WebMethod]
-    public ComboEstados LlenaComboEstados()
-    {
+    public ComboEstados LlenaComboEstados() {
         ComboEstados listaCampos;
         listaCampos = NegocioPersonalUsuario.LlenaComboEstados();
         return listaCampos;
     }
 
     [WebMethod]
-    public ComboCP LlenaComboCP(int idEstado)
-    {
+    public ComboCP LlenaComboCP(int idEstado) {
         ComboCP listaCampos;
         listaCampos = NegocioPersonalUsuario.LlenaComboCP(idEstado);
         return listaCampos;
     }
 
     [WebMethod]
-    public bool insertaPersonal(string nombre, string apPaterno, string apMaterno, string rfc, string estadoC, string cpC, string idPuesto, string email, string idRol, string usuario, string pwd, string accesarSistema, int[] privilegios)
-    {
+    public bool insertaPersonal(string nombre, string apPaterno, string apMaterno, string rfc, string estadoC, string cpC, string idPuesto, string email, string idRol, string usuario, string pwd, string accesarSistema, int[] privilegios) {
         bool respuesta = false;
         respuesta = NegocioPersonalUsuario.insertaPersonal(nombre, apPaterno, apMaterno, rfc, estadoC, cpC, idPuesto, email, idRol, usuario, pwd, accesarSistema, privilegios);
         return respuesta;
     }
 
     [WebMethod]
-    public bool insertaUsuario(string personaC, string idRol, string usuario, string pwd, int[] privilegios)
-    {
+    public bool insertaUsuario(string personaC, string idRol, string usuario, string pwd, int[] privilegios) {
         bool respuesta = false;
         respuesta = NegocioPersonalUsuario.insertaUsuario(personaC, idRol, usuario, pwd, privilegios);
         return respuesta;
     }
 
     [WebMethod]
-    public bool modificarPersonalUsuario(string nombre, string apPaterno, string apMaterno, string rfc, string estadoC, string cpC, string idPuesto, string email, string idRol, string usuario, string pwd, string accesarSistema, int[] privilegios, int idPersonal, int idUsuario, int idRolAnterior)
-    {
+    public bool modificarPersonalUsuario(string nombre, string apPaterno, string apMaterno, string rfc, string estadoC, string cpC, string idPuesto, string email, string idRol, string usuario, string pwd, string accesarSistema, int[] privilegios, int idPersonal, int idUsuario, int idRolAnterior) {
         bool respuesta = false;
         respuesta = NegocioPersonalUsuario.modificarPersonalUsuario(nombre, apPaterno, apMaterno, rfc, estadoC, cpC, idPuesto, email, idRol, usuario, pwd, accesarSistema, privilegios, idPersonal, idUsuario, idRolAnterior);
         return respuesta;
     }
 
     [WebMethod]
-    public bool eliminarPersonalUsuario(int idPersonal, int idUsuario, int idRolAnterior)
-    {
+    public bool eliminarPersonalUsuario(int idPersonal, int idUsuario, int idRolAnterior) {
         return NegocioPersonalUsuario.eliminarPersonalUsuario(idPersonal, idUsuario, idRolAnterior);
     }
 
@@ -837,19 +728,16 @@ public class MyServiceClass : System.Web.Services.WebService
     #region Sucursales
     readonly Transact.Negocio.NegocioSucursal metodosSucursal = new Transact.Negocio.NegocioSucursal();
     [WebMethod]
-    public Sucursal LlenaTablaSucursales()
-    {
+    public Sucursal LlenaTablaSucursales() {
         Sucursal listcampos;
         listcampos = metodosSucursal.LlenaTablaSucursales();
         return listcampos;
 
     }
     [WebMethod]
-    public bool ActualizarSucursal(string nombre, int idEmpresa, string RS, int TipoPer, string RFC, string Calle, string NumExt, string NumInt, int ComboEstado, int ComboCP, int idSucursal)
-    {
+    public bool ActualizarSucursal(string nombre, int idEmpresa, string RS, int TipoPer, string RFC, string Calle, string NumExt, string NumInt, int ComboEstado, int ComboCP, int idSucursal) {
 
-        if (NumInt == null)
-        {
+        if (NumInt == null) {
             NumInt = "Sin Numero Interior";
         }
 
@@ -876,8 +764,7 @@ public class MyServiceClass : System.Web.Services.WebService
 
     }
     [WebMethod]
-    public bool EliminarSucursal(int idSucursal)
-    {
+    public bool EliminarSucursal(int idSucursal) {
         CamposSucursal campos = new CamposSucursal();
 
 
@@ -887,8 +774,7 @@ public class MyServiceClass : System.Web.Services.WebService
 
     }
     [WebMethod]
-    public bool InsertarSucursal(string nombre, int idEmpresa, string RFC, int ComboTPer, string RS, string Calle, string NumExt, string NumInt, int ComboEstado, int ComboCP)
-    {
+    public bool InsertarSucursal(string nombre, int idEmpresa, string RFC, int ComboTPer, string RS, string Calle, string NumExt, string NumInt, int ComboEstado, int ComboCP) {
         CamposSucursal campos = new CamposSucursal();
         campos.DatosFiscales = new CamposDatosFiscales();
         campos.DatosFiscales.TipoPersona = new CamposTipoPersona();
@@ -924,32 +810,28 @@ public class MyServiceClass : System.Web.Services.WebService
     }
     */
     [WebMethod]
-    public Sucursal LlenaComboEmpresa()
-    {
+    public Sucursal LlenaComboEmpresa() {
         Sucursal listaEmpresa;
         listaEmpresa = metodosSucursal.LlenaComboEmpresa();
         return listaEmpresa;
 
     }
     [WebMethod]
-    public TipoPersona LlenaComboTipoPersona()
-    {
+    public TipoPersona LlenaComboTipoPersona() {
         TipoPersona listaTipoPersona;
         listaTipoPersona = metodosSucursal.LlenaComboTipoPersona();
         return listaTipoPersona;
 
     }
     [WebMethod]
-    public Sucursal LlenaComboDatosFiscales()
-    {
+    public Sucursal LlenaComboDatosFiscales() {
         Sucursal listaDatosFiscales;
         listaDatosFiscales = metodosSucursal.LlenaComboDatosFiscales();
 
         return listaDatosFiscales;
     }
     [WebMethod]
-    public Estado LlenaComboEstado()
-    {
+    public Estado LlenaComboEstado() {
         Estado ListaRegistrosEstado;
         ListaRegistrosEstado = metodosSucursal.LlenaComboEstados();
 
@@ -961,16 +843,14 @@ public class MyServiceClass : System.Web.Services.WebService
     #region Categoria de Transaccion
 
     [WebMethod]
-    public EntidadCategoriaTransa LlenaTablaCategoriaTransaccion()
-    {
+    public EntidadCategoriaTransa LlenaTablaCategoriaTransaccion() {
         EntidadCategoriaTransa listcampos;
         listcampos = metodoNegocioCateTransaccion.LlenaTablaTransaccion();
         return listcampos;
     }
 
     [WebMethod]
-    public bool InsertarCategoriaTransaccion(string categoriaTransac, string descripcionCategoria)
-    {
+    public bool InsertarCategoriaTransaccion(string categoriaTransac, string descripcionCategoria) {
         CamposCategoriaTrans campos = new CamposCategoriaTrans();
 
         campos.categoriaTransac = categoriaTransac;
@@ -980,8 +860,7 @@ public class MyServiceClass : System.Web.Services.WebService
 
     }
     [WebMethod]
-    public bool ActualizarCategoriaTransaccion(int idCatTipoTransac, string categoriaTransac, string descripcionCategoria)
-    {
+    public bool ActualizarCategoriaTransaccion(int idCatTipoTransac, string categoriaTransac, string descripcionCategoria) {
 
         CamposCategoriaTrans campos = new CamposCategoriaTrans();
         campos.idCatTipoTransac = idCatTipoTransac;
@@ -992,8 +871,7 @@ public class MyServiceClass : System.Web.Services.WebService
     }
 
     [WebMethod]
-    public bool EliminarCategoriaTransaccion(int idCatTipoTransac)
-    {
+    public bool EliminarCategoriaTransaccion(int idCatTipoTransac) {
         CamposCategoriaTrans campos = new CamposCategoriaTrans();
         campos.idCatTipoTransac = idCatTipoTransac;
 
@@ -1006,16 +884,14 @@ public class MyServiceClass : System.Web.Services.WebService
     #region Datos empresariales
 
     [WebMethod]
-    public DatosEmpresariales LlenaTablaDE()
-    {
+    public DatosEmpresariales LlenaTablaDE() {
         DatosEmpresariales listcampos;
         listcampos = metodoNegocioEmpre.LlenaTablaDE();
         return listcampos;
     }
 
     [WebMethod]
-    public bool InsertarDatosEmpresariales(string nombre, string fechaRegistro, int idGiro, int ComboTPer, string RazonSocial, string RFC, int ComboEstado, int ComboCP, string Calle, string NumExt, string NumInt)
-    {
+    public bool InsertarDatosEmpresariales(string nombre, string fechaRegistro, int idGiro, int ComboTPer, string RazonSocial, string RFC, int ComboEstado, int ComboCP, string Calle, string NumExt, string NumInt) {
         CamposDatosEmpresariales campos = new CamposDatosEmpresariales();
         campos.DatosFiscales = new CamposDatosFiscales();
         campos.DatosFiscales.TipoPersona = new CamposTipoPersona();
@@ -1039,11 +915,9 @@ public class MyServiceClass : System.Web.Services.WebService
 
     }
     [WebMethod]
-    public bool ActualizarDatosEmpresariales(int idEmpresa, string nombre, string fechaRegistro, int idGiro, int ComboTPer, string RazonSocial, string RFC, int ComboEstado, int ComboCP, string Calle, string NumExt, string NumInt)
-    {
+    public bool ActualizarDatosEmpresariales(int idEmpresa, string nombre, string fechaRegistro, int idGiro, int ComboTPer, string RazonSocial, string RFC, int ComboEstado, int ComboCP, string Calle, string NumExt, string NumInt) {
 
-        if (NumInt == null)
-        {
+        if (NumInt == null) {
             NumInt = "Sin Numero Interior";
         }
         CamposDatosEmpresariales campos = new CamposDatosEmpresariales();
@@ -1070,8 +944,7 @@ public class MyServiceClass : System.Web.Services.WebService
     }
 
     [WebMethod]
-    public bool EliminarDatosEmpresariales(int idEmpresa)
-    {
+    public bool EliminarDatosEmpresariales(int idEmpresa) {
         CamposDatosEmpresariales campos = new CamposDatosEmpresariales();
         campos.idEmpresa = idEmpresa;
 
@@ -1080,8 +953,7 @@ public class MyServiceClass : System.Web.Services.WebService
     }
 
     [WebMethod]
-    public TipoPersona LlenaComboTipoPersonaEmpre()
-    {
+    public TipoPersona LlenaComboTipoPersonaEmpre() {
         TipoPersona listaTipoPersona;
         listaTipoPersona = metodoNegocioEmpre.LlenaComboTipoPersona();
         return listaTipoPersona;
@@ -1090,8 +962,7 @@ public class MyServiceClass : System.Web.Services.WebService
 
 
     [WebMethod]
-    public CodigoPostal LlenaComboCPEmpre(int idEstado)
-    {
+    public CodigoPostal LlenaComboCPEmpre(int idEstado) {
 
         CodigoPostal listaCP;
         listaCP = metodoNegocioEmpre.LlenaComboCP(idEstado);
@@ -1100,8 +971,7 @@ public class MyServiceClass : System.Web.Services.WebService
     }
 
     [WebMethod]
-    public Estado LlenaComboEstadoEmpre()
-    {
+    public Estado LlenaComboEstadoEmpre() {
         Estado ListaRegistrosEstado;
         ListaRegistrosEstado = metodosSucursal.LlenaComboEstados();
 
@@ -1110,8 +980,7 @@ public class MyServiceClass : System.Web.Services.WebService
 
 
     [WebMethod]
-    public bool ExisteRFC(string rfc)
-    {
+    public bool ExisteRFC(string rfc) {
         CamposDatosFiscales camposEntidad = new CamposDatosFiscales();
         camposEntidad.RFC = rfc;
 
@@ -1124,16 +993,14 @@ public class MyServiceClass : System.Web.Services.WebService
     #region Gestión de Procesos
 
     [WebMethod]
-    public EntidadProceso LlenaTablaProcesos()
-    {
+    public EntidadProceso LlenaTablaProcesos() {
         EntidadProceso listcampos;
         listcampos = metodoNegocioProceso.LlenaTablaProceso();
         return listcampos;
     }
 
     [WebMethod]
-    public bool InsertarProceso(string nombreProceso, string descripcion, int idArea)
-    {
+    public bool InsertarProceso(string nombreProceso, string descripcion, int idArea) {
         CamposProceso campos = new CamposProceso();
         campos.idArea = new CamposAreaByProceso();
 
@@ -1145,8 +1012,7 @@ public class MyServiceClass : System.Web.Services.WebService
 
     }
     [WebMethod]
-    public bool ActualizarProceso(int idProceso, string nombreProceso, string descripcion, int idArea)
-    {
+    public bool ActualizarProceso(int idProceso, string nombreProceso, string descripcion, int idArea) {
 
         CamposProceso campos = new CamposProceso();
         campos.idArea = new CamposAreaByProceso();
@@ -1160,8 +1026,7 @@ public class MyServiceClass : System.Web.Services.WebService
     }
 
     [WebMethod]
-    public bool EliminarProceso(int idProceso)
-    {
+    public bool EliminarProceso(int idProceso) {
         CamposProceso campos = new CamposProceso();
         campos.idProceso = idProceso;
 
@@ -1169,21 +1034,19 @@ public class MyServiceClass : System.Web.Services.WebService
     }
 
     [WebMethod]
-    public AreasBYProceso LlenaComboAreaByProceso()
-    {
+    public AreasBYProceso LlenaComboAreaByProceso() {
         AreasBYProceso listaArea;
         listaArea = metodoNegocioProceso.LlenaComboArea();
         return listaArea;
     }
 
-#endregion
+    #endregion
 
     //Metodos para Áreas
     #region CrudAreas
 
     [WebMethod]
-    public Area LlenaTablaArea()
-    {
+    public Area LlenaTablaArea() {
         Area listcampos;
         listcampos = negocioArea.LlenaTabla();
         return listcampos;
@@ -1222,20 +1085,16 @@ public class MyServiceClass : System.Web.Services.WebService
 
     }*/
     [WebMethod]
-    public bool insertaAreaWs(string nombreArea, string descripcion, int[] idSucursal)
-    {
+    public bool insertaAreaWs(string nombreArea, string descripcion, int[] idSucursal) {
         bool respuesta = false;
-        try
-        {
+        try {
             CamposArea campos = new CamposArea();
             campos.camposSucursal = new CamposSucursal();
             campos.nombreArea = nombreArea;
             campos.descripcion = descripcion;
 
             respuesta = negocioArea.InsertaAreaNegocio(campos, idSucursal);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             Console.WriteLine(ex);
 
         }
@@ -1245,16 +1104,14 @@ public class MyServiceClass : System.Web.Services.WebService
     }
 
     [WebMethod]
-    public Sucursal LlenaComboSucursalWS()
-    {
+    public Sucursal LlenaComboSucursalWS() {
         Sucursal listcampos;
         listcampos = negocioArea.LlenacomboSucursalNegocio();
         return listcampos;
     }
 
     [WebMethod]
-    public bool actualizarAreaWs(int idArea, string nombreArea, string descripcion, int[] idSucursal)
-    {
+    public bool actualizarAreaWs(int idArea, string nombreArea, string descripcion, int[] idSucursal) {
         CamposArea campos = new CamposArea();
         campos.camposSucursal = new CamposSucursal();
         campos.nombreArea = nombreArea;
@@ -1266,8 +1123,7 @@ public class MyServiceClass : System.Web.Services.WebService
     }
 
     [WebMethod]
-    public bool eliminarAreaWs(int idArea)
-    {
+    public bool eliminarAreaWs(int idArea) {
         CamposArea campos = new CamposArea();
         campos.idArea = idArea;
 
@@ -1275,8 +1131,7 @@ public class MyServiceClass : System.Web.Services.WebService
     }
 
     [WebMethod]
-    public Area LlenaCheckBoxAreasEdit(int idArea)
-    {
+    public Area LlenaCheckBoxAreasEdit(int idArea) {
         Area listcampos;
         CamposArea campos = new CamposArea();
         campos.camposSucursal = new CamposSucursal();
@@ -1289,9 +1144,8 @@ public class MyServiceClass : System.Web.Services.WebService
     #region CrudRoles
 
     [WebMethod]
-    public Roles LlenaTablaRoles()
-    {
-        
+    public Roles LlenaTablaRoles() {
+
         Roles listcampos;
         listcampos = negocioRoles.LlenaTabla();
         return listcampos;
@@ -1299,11 +1153,9 @@ public class MyServiceClass : System.Web.Services.WebService
     }
 
     [WebMethod]
-    public bool insertaRolWs(string nombreRol, string descripcion, int[] idMenus)
-    {
+    public bool insertaRolWs(string nombreRol, string descripcion, int[] idMenus) {
         bool respuesta = false;
-        try
-        {
+        try {
             CamposRoles campos = new CamposRoles();
             campos.camposMenus = new CamposMenus();
             campos.nombreRol = nombreRol;
@@ -1311,9 +1163,7 @@ public class MyServiceClass : System.Web.Services.WebService
 
             respuesta = negocioRoles.InsertaRolNegocio(campos, idMenus);
 
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             Console.WriteLine(ex);
 
         }
@@ -1323,16 +1173,14 @@ public class MyServiceClass : System.Web.Services.WebService
     }
 
     [WebMethod]
-    public Menus LlenaCheckMenulWS()
-    {
+    public Menus LlenaCheckMenulWS() {
         Menus listcampos;
         listcampos = negocioRoles.LlenaCheckMenul();
         return listcampos;
     }
 
     [WebMethod]
-    public bool actualizarRolWs(int idRol, string nombreRol, string descripcion, int[] idMenus)
-    {
+    public bool actualizarRolWs(int idRol, string nombreRol, string descripcion, int[] idMenus) {
         CamposRoles campos = new CamposRoles();
         campos.camposMenus = new CamposMenus();
         campos.nombreRol = nombreRol;
@@ -1343,8 +1191,7 @@ public class MyServiceClass : System.Web.Services.WebService
     }
 
     [WebMethod]
-    public bool eliminarRolWs(int idRol)
-    {
+    public bool eliminarRolWs(int idRol) {
         CamposRoles campos = new CamposRoles();
         campos.idRol = idRol;
 
@@ -1352,8 +1199,7 @@ public class MyServiceClass : System.Web.Services.WebService
     }
 
     [WebMethod]
-    public Roles LlenaCheckBoxRolEdit(int idRol)
-    {
+    public Roles LlenaCheckBoxRolEdit(int idRol) {
         Roles listcampos;
         CamposRoles campos = new CamposRoles();
         campos.camposMenus = new CamposMenus();
@@ -1366,8 +1212,7 @@ public class MyServiceClass : System.Web.Services.WebService
     #region CrudMenu
 
     [WebMethod]
-    public Menus LlenaTablaMenus()
-    {
+    public Menus LlenaTablaMenus() {
         Menus listcampos;
         listcampos = negocioMenus.LlenaTablaMenus();
         return listcampos;
@@ -1377,19 +1222,16 @@ public class MyServiceClass : System.Web.Services.WebService
     //llenaCheckAplicaciones
 
     [WebMethod]
-    public Aplicaciones LlenaCheckAplicaciones()
-    {
+    public Aplicaciones LlenaCheckAplicaciones() {
         Aplicaciones listcampos;
         listcampos = negocioMenus.LlenaCheckAplicaciones();
         return listcampos;
     }
 
     [WebMethod]
-    public bool insertaMenu(string nombreMenu, int idNivelPadre, int idPadre, string descripcion, string icono, string liga, int[] idAplicaciones)
-    {
+    public bool insertaMenu(string nombreMenu, int idNivelPadre, int idPadre, string descripcion, string icono, string liga, int[] idAplicaciones) {
         bool respuesta = false;
-        try
-        {
+        try {
             CamposMenus campos = new CamposMenus();
             campos.camposAplicaciones = new CamposAplicaciones();
             campos.nombreMenu = nombreMenu;
@@ -1401,9 +1243,7 @@ public class MyServiceClass : System.Web.Services.WebService
 
             respuesta = negocioMenus.InsertaMenuNegocio(campos, idAplicaciones);
 
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             Console.WriteLine(ex);
 
         }
@@ -1414,8 +1254,7 @@ public class MyServiceClass : System.Web.Services.WebService
 
 
     [WebMethod]
-    public bool actualizarMenu(int idMenu, string nombreMenu, int idNivelPadre, int idPadre, string descripcion, string icono, string liga, int[] idAplicaciones)
-    {
+    public bool actualizarMenu(int idMenu, string nombreMenu, int idNivelPadre, int idPadre, string descripcion, string icono, string liga, int[] idAplicaciones) {
 
         CamposMenus campos = new CamposMenus();
         campos.camposAplicaciones = new CamposAplicaciones();
@@ -1431,8 +1270,7 @@ public class MyServiceClass : System.Web.Services.WebService
     }
 
     [WebMethod]
-    public bool eliminarMenuWs(int idMenu)
-    {
+    public bool eliminarMenuWs(int idMenu) {
         CamposMenus campos = new CamposMenus();
         campos.idMenu = idMenu;
 
@@ -1441,30 +1279,18 @@ public class MyServiceClass : System.Web.Services.WebService
 
 
     [WebMethod]
-    public Menus LlenaComboMenuPadre()
-    {
+    public Menus LlenaComboMenuPadre() {
         Menus listcampos;
         listcampos = negocioMenus.LlenaComboMenuPadre();
         return listcampos;
     }
 
     [WebMethod]
-    public Menus LlenaCheckBoxMenusEdit(int idMenu)
-    {
+    public Menus LlenaCheckBoxMenusEdit(int idMenu) {
         Menus listcampos;
         CamposMenus campos = new CamposMenus();
         campos.idMenu = idMenu;
         listcampos = negocioMenus.LlenaCheckBoxMenusEdit(campos);
-        return listcampos;
-    }
-
-    [WebMethod]
-    public Menus LlenaComboMenuPadreEdit(int idMenu)
-    {
-        Menus listcampos;
-        CamposMenus campos = new CamposMenus();
-        campos.idMenu = idMenu;
-        listcampos = negocioMenus.LlenaComboMenuPadreEdit(campos);
         return listcampos;
     }
 
