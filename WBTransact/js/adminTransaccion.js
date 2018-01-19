@@ -61,6 +61,8 @@ var validacionDelete;
 var validacionDeleteF;
 var valorBtnEtp = 0;
 var valorselectEtp = 0;
+var arrayOperaciones = new Array("+", "-", "*", "/", "=", "(", ")", "%", ".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "{", "}", ";", "&", "|", "=", "(", ")", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s","t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "Ñ", "O", "P", "Q", "R", "S","T", "U", "V", "W", "X", "Y", "Z");
+
 //Funcion que se inicializan al cargarse el html
 $(function () {
     initEventos();
@@ -3701,7 +3703,7 @@ function AgregarReglaAccion() {
                 iconSmall: "fa fa-times fa-2x fadeInRight animated",
                 timeout: 4000
             });
-
+            $("#btn_agregarRNAccion").prop("disabled",false);
         } else {
             bootsVal();
             $('#RN_Accion').data('bootstrapValidator').validate();
@@ -3786,22 +3788,94 @@ function AgregarReglaAccion() {
                         mensajeSuccess.push($("#mensajeSuccess").val());
                         mensajeError.push($("#mensajeError").val());
 
+                        console.log("$('#Rn_AccionConfig'): ");
+                        console.log($('#Rn_AccionConfig'));
+                        var auxString = "";
+                        var validacionPrincipalFinal = new Array();
+                        $.each($('#Rn_AccionConfig'), function (j, item) {
+                            for (var i = 0; i < $(item).text().length; i++) {
 
-                        var unionValidacionP = "";
-                        $.each($('#Rn_AccionConfig'), function (index1, item1) {
-                            unionValidacionP += $.trim($(item1).text());
+                                char = $(item).text().charAt(i);
+
+                                //if (char == 'e') {
+
+                                //    char = $(item).text().substring(i, i + 4);
+                                //    i = i + 4;
+                                //    auxString += char;
+                                //} else if (char == 'i') {
+                                //    char = $(item).text().substring(i, i + 2);
+                                //    i = i + 2;
+                                //    auxString += char;
+                                //} else if (char == 't') {
+                                //    char = $(item).text().substring(i, i + 4);
+                                //    i = i + 4;
+                                //    auxString += char;
+                                //} else if (char == 'f') {
+                                //    char = $(item).text().substring(i, i + 5);
+                                //    i = i + 5;
+                                //    auxString += char;
+                                //}
+                                if (jQuery.inArray(char, arrayOperaciones) != -1) {
+                                    auxString += char;
+                                } 
+    
+                            }
+           
                         });
-                        validacionPrincipal.push(unionValidacionP);
+                        console.log("auxString1: ");
+                        console.log(auxString);
+                        validacionPrincipal.push(auxString);
+
+
+                        //var unionValidacionP = "";
+                        //$.each($('#Rn_AccionConfig'), function (index1, item1) {
+                        //        unionValidacionP += $.trim($(item1).text());
+                        //});
+                        //validacionPrincipal.push(unionValidacionP);
+                        //console.log(validacionPrincipal);
+
 
                         var unionValidacionA = "";
-                        $.each($('#Rn_AccionConfigAlterna'), function (index1, item1) {
-                            unionValidacionA += $.trim($(item1).text());
+                        $.each($('#Rn_AccionConfigAlterna'), function (index1, item1) {                           
+                            for (var i = 0; i < $(item1).text().length; i++) {
+                                char = $(item1).text().charAt(i);
+                              
+                                //if (char == 'e') {
+                                //    char = $(item1).text().substring(i, i + 4);
+                                //    i = i +4;
+                                //    unionValidacionA += char;
+                                //}else if (char == 'i') {
+                                //    char = $(item1).text().substring(i, i + 2);
+                                //    i = i +2;
+                                //    unionValidacionA += char;                                 
+                                //}else if (char == 't') {
+                                //    char = $(item1).text().substring(i, i + 4);
+                                //    i = i + 4;
+                                //    unionValidacionA += char;                                 
+                                //}else if (char == 'f') {
+                                //    char = $(item1).text().substring(i, i + 5);
+                                //    i = i + 5;
+                                //    unionValidacionA += char;      
+                                //}
+                                if (jQuery.inArray(char, arrayOperaciones) != -1) {
+                                    unionValidacionA += char;
+                                }
+
+                            }
                         });
                         validacionAlterna.push(unionValidacionA);
+                        
 
-
-
-
+                        //var char = '', auxString = "";
+                        //for (var i = 0; i < validacionPrincipal[0].length; i++){
+                        //    char = validacionPrincipal[0].charAt(i);
+                        //    console.log("char: " + "'"+char+"'");
+                        //      if (char != '') {
+                        //          auxString += char;
+                        //      }
+                        //}
+                        //console.log("auxString: " + auxString);
+                        //validacionPrincipal = auxString;
 
                         console.log("validacionPrincipal: " + validacionPrincipal);
                         console.log("validacionAlterna: " + validacionAlterna);
@@ -7025,7 +7099,7 @@ function initEventos() {
             var row = $('#dtTiposTransaccion').DataTable().row('.selected').data();
             console.log("Para traer el id: " + row);
             var data = otableRA.rows().data();
-
+            console.log(row);
             JSONcadena += '{"Datos": [{ ' +
                 '"idTransaccion" : "' + row[5] + '",' +
                 '"nombreTransaccion" : "' + row[0] + '"' +
@@ -7072,6 +7146,7 @@ function initEventos() {
                     var arregloAux = new Array();
                     arregloAux = etapas4[j];
                     arregloAux.push(etapas4[j]);
+                    console.log(arregloAux[3] );
                     if (arregloAux[0] == etapas2[i]) {
                         if (count >= 1) {
                             JSONcadena += ',';
@@ -7095,6 +7170,10 @@ function initEventos() {
                 var count = 0;
             }
             JSONcadena += '}';
+
+            console.log("QQQQQ");
+            console.log(JSONcadena);
+            JSONcadena
 
             $.ajax({
                 type: 'POST',
@@ -7130,11 +7209,10 @@ function initEventos() {
                                 icon: "fa fa-thumbs-up swing animated"
                             });
 
-
-                            Reset();
                             InitDataTableReglaAccion();
-                            $("#mensajeSuccess").val('');
-                            $("#mensajeError").val('');
+                            Reset();
+                           
+
                             $("#select#RNA_EtapaFinal").prop("disabled", false);
                             $("#RNA_etapa").val(0);
                             $("#RNA_accion").val(0)
@@ -7160,9 +7238,6 @@ function initEventos() {
                 icon: "fa fa-info-circle swing animated"
             });
         }
-
-
-
 
     })
 
