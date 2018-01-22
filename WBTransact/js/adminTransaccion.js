@@ -65,6 +65,8 @@ var arrayOperaciones = new Array("+", "-", "*", "/", "=", "(", ")", "%", ".", "0
 
 //Funcion que se inicializan al cargarse el html
 $(function () {
+    $("#SelEstatus").hide();
+
     initEventos();
     pageSetUp();
     ocultarDOM();

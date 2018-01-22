@@ -289,42 +289,38 @@ function GeneraFormulafrio(xml_json) {
         Transaccion = rowgral.descripcion;
         CatTransaccion = rowgral.categoriaTransac;
         idEtapa = rowgral.idEtapa;
-        idAccion = rowgral.idAccion;
+        idAccion = rowgral.idAccion;      
+        
+
+        if (rowgral.CamposCabecera.length > 0) {
+            formHtml += "<div class='col-xs-12 col-sm-7 col-md-7 col-lg-4'> ";
+            formHtml += "<h1 class='page-title txt-color-blueDark'>";
+            formHtml += "<i class='fa fa-edit fa-fw'></i> ";
+            formHtml += rowgral.descripcion;
+            formHtml += "</h1>";
+            formHtml += '</div>';
 
 
-        formHtml += "<div class='col-xs-12 col-sm-7 col-md-7 col-lg-4'> ";
-        formHtml += "<h1 class='page-title txt-color-blueDark'>";
-        formHtml += "<i class='fa fa-edit fa-fw'></i> ";
-        formHtml += rowgral.descripcion;
-        formHtml += "</h1>";
-        formHtml += '</div>';
+            formHtml += '<div class="row" id="">'
 
+            formHtml += '<section id="widget-grid">'
+            formHtml += '<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"></div>'
+            formHtml += '<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable">'
+            formHtml += '<div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false">'
 
-        formHtml += '<div class="row" id="">'
+            formHtml += '<header role="heading">'
+            formHtml += '<span class="widget-icon"> <i class="fa fa-edit"></i></span> <h2>Campos Cabecera</h2>'
+            formHtml += '<span class="jarviswidget-loader" style="display: none;"><i class="fa fa-refresh fa-spin"></i></span>'
+            formHtml += '</header>'
 
-        formHtml += '<section id="widget-grid">'
-        formHtml += '<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"></div>'
-        formHtml += '<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable">'
-        formHtml += '<div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false">'
+            formHtml += '<div role="content">'
+            formHtml += '<form id="formCabecera" method="post" novalidate="novalidate" class="bv-form"><button type="submit" class="bv-hidden-submit" style="display: none; width: 0px; height: 0px;"></button>'
 
-
-        formHtml += '<header role="heading">'
-        formHtml += '<span class="widget-icon"> <i class="fa fa-edit"></i></span> <h2>Campos Cabecera</h2>'
-        formHtml += '<span class="jarviswidget-loader" style="display: none;"><i class="fa fa-refresh fa-spin"></i></span>'
-        formHtml += '</header>'
-
-        formHtml += '<div role="content">'
-        formHtml += '<form id="formCabecera" method="post" novalidate="novalidate" class="bv-form"><button type="submit" class="bv-hidden-submit" style="display: none; width: 0px; height: 0px;"></button>'
-
-        formHtml += '<fieldset>'
-        formHtml += '<legend>'
-        //formHtml += 'ASDASDSA'
-        formHtml += '</legend>'
-        formHtml += '<div class="form-group">'
-       // console.log("aqui va");
-        //console.log(rowgral.CamposCabecera.length);
-
-        if (rowgral.CamposCabecera.length != 0  ) {
+            formHtml += '<fieldset>'
+            formHtml += '<legend>'
+            //formHtml += 'ASDASDSA'
+            formHtml += '</legend>'
+            formHtml += '<div class="form-group">'
 
             //console.log("ya entro");
             var contador = 0;
@@ -392,6 +388,16 @@ function GeneraFormulafrio(xml_json) {
             
 
 
+        } else {
+
+            $.smallBox({
+                title: "Error!",
+                content: "<i>La transacción presenta errores o esta mal configurada</i>",
+                color: "#c79121",
+                timeout: 4000,
+                icon: "fa fa-info-circle swing animated"
+            });
+
         }
 
        
@@ -400,7 +406,7 @@ function GeneraFormulafrio(xml_json) {
         formHtml += '</div >'
         formHtml += '</fieldset >'
 
-        if (rowgral.CamposDetalle.length == 0) {
+        if (rowgral.CamposDetalle.length == 0 && rowgral.CamposCabecera.length > 0 ) {
 
         
             formHtml += '<div class="form-actions">'
@@ -612,7 +618,7 @@ function GeneraFormulafrio(xml_json) {
 
 
         $.each(objeto, function(rowcom, regcom) {
-            console.log(regcom.Json);
+            //console.log(regcom.Json);
             addEventChange(regcom.IdCampo, regcom.Json);
 
         })
@@ -951,7 +957,6 @@ function bostrapvali() {
 
         });
     }
-
     if (detallevalida != "") {
 
         $('#formdetalle').bootstrapValidator({
@@ -970,9 +975,7 @@ function bostrapvali() {
 }
 function excuteformula(IdCampo, Json) {  
 
-    console.log("entro a ejecutar");
-    console.log(arregloC.length);
-    console.log(arregloD.length);
+
 
     $('#' + IdCampo).on('keyup', function () {
 

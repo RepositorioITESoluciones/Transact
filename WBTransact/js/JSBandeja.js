@@ -16,15 +16,29 @@ var idEtapa = 0;
 var idAccion = 0;
 var namesDetalle = []
 var longitudC = 0;
+var Detransacciones=[]
 
 var parametroE = "";
 
 $(function () {
+
+
+    //var ejemplo = '';
+    //ejemplo = 'if (11 < 18) {alert("msddddddddd")}';
+    //eval(ejemplo);
+
+    $("#widget-grid").hide()
+    $("#WisardTran").hide()
+    
     $("#detalleReporte").hide()
     $("#menutipo").hide();
     $("#menutransact").hide();
     $("#catalogotransc").empty();
     ObtenerStatus();
+    Propiedades();
+
+
+
 });
 
 function ObtenerStatus() {
@@ -55,6 +69,7 @@ function ObtenerStatus() {
             });
             categtransact += '</select>';
             $("#StatusTran").html(categtransact);
+
         },
         error: function (e) {
             console.log("error");
@@ -65,196 +80,24 @@ function ObtenerStatus() {
         //alert($('#SelEstatus option:selected').html());
         //alert($('#SelEstatus').val());
         CrearTabla($('#SelEstatus').val(), $('#SelEstatus option:selected').html());
+        $("#wizard-1")[0].reset();
     });
 }
 function CrearTabla(id, descripcion) {
     var tablaPrincipal = "";
     $("#idStatus").empty();
     $("#idStatus").append(descripcion);
-    $.ajax({
-        async: false,
-        type: 'POST',
-        url: 'MyWebService.asmx/DetalleTransaccionesWS',
-        data: JSON.stringify({
-            idEstatus: id
-        }),
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        success: function (response) {
 
-            console.log(response);
+    $("#Titulo").empty();
+    $("#Titulo").append(descripcion);
 
-            tablaPrincipal += '<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="rowTransacciones">'
-            tablaPrincipal += '<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false"'
-            tablaPrincipal += 'data-widget-custombutton="false">'
-            tablaPrincipal += '<header>'
-            tablaPrincipal += '<span class="widget-icon"><i class="fa fa-table"></i></span><h2>Transacciones</h2>'
-            tablaPrincipal += '</header>'
+    $("#tablaTran").show();
+    $("#WisardTran").hide();
 
-            tablaPrincipal += '<div>'
-            tablaPrincipal += '<div class="jarviswidget-editbox"></div>'
-            tablaPrincipal += '<div class="widget-body">'
-            tablaPrincipal += '<p>Estatus de las transacciones registradas en sistema.</p>'
-            tablaPrincipal += '<div class="row">'
-
-            tablaPrincipal += '<div class="col-sm-12 col-md-12 col-lg-12">'
-
-            switch (descripcion) {
-                case "Por atender":
-                    tablaPrincipal += '<p class="alert alert-warning" style="margin:0;">'
-                    tablaPrincipal += '<i class="fa fa-mail-forward"></i> Por atender'
-                    break;
-
-                case "En proceso":
-                    tablaPrincipal += '<p class="alert alert-info" style="margin:0;">'
-                    tablaPrincipal += '<i class="fa fa-retweet"></i> En proceso'
-                    break;
-
-                case "Detenido":
-                    tablaPrincipal += '<p class="alert alert-danger" style="margin:0;">'
-                    tablaPrincipal += '<i class="fa fa-minus-circle"></i> Detenido'
-                    break;
-
-                case "Atendido":
-                    tablaPrincipal += '<p class="alert alert-success" style="margin:0;">'
-                    tablaPrincipal += '<i class="fa fa-check-square"></i> Atendido'
-                    break;
-
-                case "Cancelado":
-                    tablaPrincipal += '<p class="alert alert-danger" style="margin:0;">'
-                    tablaPrincipal += '<i class="fa fa fa-times-circle"></i> Cancelado'
-                    break;
-            }
-
-
-            tablaPrincipal += '</p>'
-            tablaPrincipal += '<table id="example" class="table table-bordered table-hover table-responsive">'
-            tablaPrincipal += '<thead>'
-            tablaPrincipal += '<tr>'
-            tablaPrincipal += '<th data-hide="phone"><i class="fa fa-fw fa-key text-muted hidden-md hidden-sm hidden-xs"></i> Folio</th>'
-            tablaPrincipal += '<th data-class="expand"><i class="fa fa-fw fa-exchange text-muted hidden-md hidden-sm hidden-xs"></i> Tipo transacción</th>'
-            tablaPrincipal += '<th data-hide="phone"><i class="fa fa-fw fa-calendar text-muted hidden-md hidden-sm hidden-xs"></i> Fecha Alta</th>'
-            tablaPrincipal += '<th data-hide="phone,tablet"><i class="fa fa-fw fa-lock txt-color-blue hidden-md hidden-sm hidden-xs"></i> Clave</th>'
-            tablaPrincipal += '</tr>'
-            tablaPrincipal += '</thead>'
-            tablaPrincipal += '<tbody>'
-
-
-
-            $.each(response, function (registro, row1) {
-
-                $.each(row1.listaTranBitacora, function (i1, r1) {
-
-
-                    var idtra = "'" + r1.idTransaccion + "'";
-
-                    tablaPrincipal += '<tr onclick="Optenerdetalle(' + r1.idTipoTransaccion + ',' + idtra + ')">'
-                    tablaPrincipal += '<td>' + r1.idTransaccion + '</td>'
-                    tablaPrincipal += '<td>' + r1.descripcion + '</td>'
-                    tablaPrincipal += '<td>' + r1.fechaIniTransaccion + '</td>'
-                    tablaPrincipal += '<td>' + r1.cveTipoTransaccion + '</td>'
-                    tablaPrincipal += '</tr>'
-
-                });
-
-
-            });
-
-            tablaPrincipal += '</tbody>'
-            tablaPrincipal += '</table>'
-            tablaPrincipal += '</div>'
-            tablaPrincipal += '</div>'
-
-
-            tablaPrincipal += '</div>'
-            tablaPrincipal += '</div>'
-            tablaPrincipal += '</article>'
-            tablaPrincipal += '</div>'
-
-            $("#bodyy").html(tablaPrincipal);
-
-        },
-        error: function (e) {
-            console.log("error");
-
-        }
-    });
-
-
+    initDataTableTransacciones(id);
 }
-function Optenerdetalle(idTipoTransaccion, idtransaccion) {
-    $("#titulo").html("Transacción " + idtransaccion);
-
-    var TBLDetalle = '';
-
-    $.ajax({
-        async: false,
-        type: 'POST',
-        url: 'MyWebService.asmx/detalleTBWS',
-        data: JSON.stringify({ idtipo: idTipoTransaccion, idTransaccion: "'" + idtransaccion + "'" }),
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        success: function (response) {
-
-            TBLDetalle += '<table id="example" class="table table-bordered table-hover table-responsive">'
-            TBLDetalle += '<thead>'
-            TBLDetalle += '<tr>'
-            TBLDetalle += '<th data-hide="phone"><i class="fa fa-fw fa-key txt-color-blue hidden-md hidden-sm hidden-xs"></i> Folio</th>'
-            TBLDetalle += '<th data-class="expand"><i class="fa fa-fw fa-exchange txt-color-blue hidden-md hidden-sm hidden-xs"></i> nombreTransaccion</th>'
-            TBLDetalle += '<th data-hide="phone"><i class="fa fa-fw fa-calendar txt-color-blue hidden-md hidden-sm hidden-xs"></i> Fecha Alta</th>'
-            TBLDetalle += '<th data-hide="phone,tablet"><i class="fa fa-fw fa-lock txt-color-blue hidden-md hidden-sm hidden-xs"></i> Clave</th>'
-            TBLDetalle += '<th data-hide="phone,tablet"><i class="fa fa-fw fa-user txt-color-blue hidden-md hidden-sm hidden-xs"></i> Rol</th>'
-            TBLDetalle += '<th data-hide="phone,tablet"><i class="fa fa-fw fa-caret-square-o-down txt-color-blue hidden-md hidden-sm hidden-xs"></i> Etapa Actual</th>'
-            TBLDetalle += '<th data-hide="phone,tablet"><i class="fa fa-fw fa-paper-plane txt-color-blue hidden-md hidden-sm hidden-xs"></i> Etapa Siguiente</th>'
-            TBLDetalle += '</tr>'
-            TBLDetalle += '</thead>'
-            TBLDetalle += '<tbody>'
 
 
-
-
-            $.each(response, function (registro, row1) {
-                if (row1.lisCamposDetalleTB != null) {
-
-                    $.each(row1.lisCamposDetalleTB, function (i1, r1) {
-
-                        TBLDetalle += '<tr>'
-                        TBLDetalle += '<td>' + r1.folioTransaccion + '</td>'
-                        TBLDetalle += '<td>' + r1.nombreTransaccion + '</td>'
-                        TBLDetalle += '<td>' + r1.fechaIniTransaccion + '</td>'
-                        TBLDetalle += '<td>' + r1.Clave + '</td>'
-                        TBLDetalle += '<td>' + r1.Rol + '</td>'
-                        TBLDetalle += '<td>' + r1.EtapaAtual + '</td>'
-                        TBLDetalle += '<td>' + r1.etapaSiguiente + '</td>'
-
-                        TBLDetalle += '</tr>'
-
-                    });
-                }
-
-            });
-
-            TBLDetalle += '</tbody>'
-            TBLDetalle += '</table>'
-            $("#step1").html(TBLDetalle);
-            //ArmaFormularioxetapa(idTipoTransaccion, idtransaccion);
-
-            // bostrapvaliBND();
-
-            $("#detalleReporte").show(function () { })
-        },
-        error: function (e) {
-            console.log("error");
-
-        }
-
-
-
-
-    });
-    ArmaFormularioxetapa(idTipoTransaccion, idtransaccion);
-
-}
 function ArmaFormularioxetapa(idTipoTransaccion, idtransaccion) {
 
     parametroE = idtransaccion;
@@ -273,62 +116,13 @@ function ArmaFormularioxetapa(idTipoTransaccion, idtransaccion) {
 
         }
     });
-    Bitacora(idTipoTransaccion, idtransaccion);
 }
 
-function Bitacora(idTipoTransaccion, idtransaccion) {
-    var TBLDetalle = '';
-    $.ajax({
-        async: false,
-        type: 'POST',
-        url: 'MyWebService.asmx/DetalleBitacoraWS',
-        data: JSON.stringify({ idTipoTransaccion: idTipoTransaccion, idtransaccion: idtransaccion }),
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        success: function (response) {
-
-            TBLDetalle += '<table id="Bitacora" class="table table-bordered table-hover table-responsive">'
-            TBLDetalle += '<thead>'
-            TBLDetalle += '<tr>'
-            TBLDetalle += '<th data-hide="phone"><i class="fa fa-fw fa-key txt-color-blue hidden-md hidden-sm hidden-xs"></i> Folio</th>'
-            TBLDetalle += '<th data-hide="phone,tablet"><i class="fa fa-fw fa-lock txt-color-blue hidden-md hidden-sm hidden-xs"></i> Movimiento</th>'
-            TBLDetalle += '<th data-hide="phone,tablet"><i class="fa fa-fw fa-user txt-color-blue hidden-md hidden-sm hidden-xs"></i> Etapa</th>'
-            TBLDetalle += '<th data-hide="phone,tablet"><i class="fa fa-fw fa-caret-square-o-down txt-color-blue hidden-md hidden-sm hidden-xs"></i> Accion</th>'
-            TBLDetalle += '</tr>'
-            TBLDetalle += '</thead>'
-            TBLDetalle += '<tbody>'
-
-
-
-
-            $.each(response, function (registro, row1) {
-                if (row1.lista != null) {
-
-                    $.each(row1.lista, function (i1, r1) {
-
-                        TBLDetalle += '<tr>'
-                        TBLDetalle += '<td>' + r1.idTransaccion + '</td>'
-                        TBLDetalle += '<td>' + r1.cveMovimiento + '</td>'
-                        TBLDetalle += '<td>' + r1.idEtapa + '</td>'
-                        TBLDetalle += '<td>' + r1.idAccion + '</td>'
-                        TBLDetalle += '</tr>'
-
-                    });
-                }
-
-            });
-
-            TBLDetalle += '</tbody>'
-            TBLDetalle += '</table>'
-            $("#step3").html(TBLDetalle);
-
-
-        }
-    });
-
-}
 
 function GeneraFormularioBND(xml_json) {
+
+    console.log(xml_json);
+
     var formHtml = "";
     Valicabecera = "";
     detallevalida = '';
@@ -338,347 +132,355 @@ function GeneraFormularioBND(xml_json) {
 
         idTran = rowgral.idTipoTrasaccion;
 
-        console.log("eeeeeeeeeeeeeeeeeeeeeeeeeee" + idTran);
-        //parametroE = idreferencia;
+        //console.log("eeeeeeeeeeeeeeeeeeeeeeeeeee"+idTran);
+
         Transaccion = rowgral.descripcion;
         CatTransaccion = rowgral.categoriaTransac;
         idEtapa = rowgral.idEtapa;
         idAccion = rowgral.idAccion;
 
 
-        formHtml += "<div class='col-xs-12 col-sm-7 col-md-7 col-lg-4'> ";
-        formHtml += "<h1 class='page-title txt-color-blueDark'>";
-        formHtml += "<i class='fa fa-edit fa-fw'></i> ";
-        formHtml += rowgral.descripcion;
-        formHtml += "</h1>";
-        formHtml += '</div>';
+        if (rowgral.CamposCabecera.length != 0 && rowgral.CamposDetalle.length != 0){
 
-
-        formHtml += '<div class="row" id="">'
-
-        formHtml += '<section id="widget-grid">'
-        formHtml += '<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"></div>'
-        formHtml += '<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable">'
-        formHtml += '<div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false">'
-
-
-        formHtml += '<header role="heading">'
-        formHtml += '<span class="widget-icon"> <i class="fa fa-edit"></i></span> <h2>Campos Cabecera</h2>'
-        formHtml += '<span class="jarviswidget-loader" style="display: none;"><i class="fa fa-refresh fa-spin"></i></span>'
-        formHtml += '</header>'
-
-        formHtml += '<div role="content">'
-        formHtml += '<form id="formCabecera" method="post" novalidate="novalidate" class="bv-form"><button type="submit" class="bv-hidden-submit" style="display: none; width: 0px; height: 0px;"></button>'
-
-        formHtml += '<fieldset>'
-        formHtml += '<legend>'
-        //formHtml += 'ASDASDSA'
-        formHtml += '</legend>'
-        formHtml += '<div class="form-group">'
-        // console.log("aqui va");
-        //console.log(rowgral.CamposCabecera.length);
-
-        if (rowgral.CamposCabecera.length != 0) {
-
-            //console.log("ya entro");
-            var contador = 0;
-
-            $.each(rowgral.CamposCabecera, function (regcab, rowcab) {
-                if (contador == 4 || contador == 0) {
-                    formHtml += '<div class="row">'
-                }
-                if (rowcab.visible == true) {
-
-                    objetoFormula = [];
-                    if (regcab.formula != null) {
-                        objetoFormula.push({
-                            IdCampo: regcab.nombreCampo,
-                            Json: regcab.formula
-                        });
-                    }
-                    arregloC.push(rowcab.nombreCampo);
-                    contador++;
-                    formHtml += GeneraComposBND(rowcab.Visualisacion, rowcab.idCampo, rowcab.nombreCampo, rowcab.descripcionCampo, rowcab.logitudCampo, rowcab.obligatorio, rowcab.editable, rowcab.TransaccionReferencia, rowcab.idRef, rowcab.nomRef, rowcab.CadenaComplementos);
-                }
-                if (contador == 4 || contador == 0) {
-                    formHtml += '</div >'
-                }
-            });
+            if (rowgral.CamposCabecera.length != 0 && rowgral.CamposDetalle.length > 0) {
 
 
 
 
-            Valicabecera += '{';
-            $.each(rowgral.CamposCabecera, function (regcab, rowcab) {
-                if (rowcab.visible == true) {
-
-                    Valicabecera += '"' + rowcab.nombreCampo + '":'
-
-                    if (rowcab.Visualisacion == "checkbox") {
-                        Valicabecera += '{ "validators" : {';
-                        Valicabecera += '"choice": {';
-                        Valicabecera += '"min": 1,';
-                        Valicabecera += '"message" : "Please choose 1 - 2 languages you can speak"'
-                        Valicabecera += '}';
-                    } else {
-
-                        Valicabecera += '{"group": ".col-md-3","validators": {';
-                        Valicabecera += '"stringLength": { "max" :' + rowcab.logitudCampo + ',';
-                        Valicabecera += '"message" : "Caracteres maximos ' + rowcab.logitudCampo + '"}';
-
-                        if (rowcab.obligatorio == "required") {
+                if (rowgral.CamposCabecera.length > 0) {
+                    formHtml += "<div class='col-xs-12 col-sm-7 col-md-7 col-lg-4'> ";
+                    formHtml += "<h1 class='page-title txt-color-blueDark'>";
+                    formHtml += "<i class='fa fa-edit fa-fw'></i> ";
+                    formHtml += rowgral.descripcion;
+                    formHtml += "</h1>";
+                    formHtml += '</div>';
 
 
+                    formHtml += '<div class="row" id="">'
 
-                            Valicabecera += ',';
-                            Valicabecera += '"notEmpty": {"message": "El campo ' + rowcab.descripcionCampo + ' es obligatorio"}';
+                    formHtml += '<section id="widget-grid">'
+                    formHtml += '<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"></div>'
+                    formHtml += '<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable">'
+                    formHtml += '<div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false">'
 
+                    formHtml += '<header role="heading">'
+                    formHtml += '<span class="widget-icon"> <i class="fa fa-edit"></i></span> <h2>Campos Cabecera</h2>'
+                    formHtml += '<span class="jarviswidget-loader" style="display: none;"><i class="fa fa-refresh fa-spin"></i></span>'
+                    formHtml += '</header>'
 
+                    formHtml += '<div role="content">'
+                    formHtml += '<form id="formCabecera" method="post" novalidate="novalidate" class="bv-form"><button type="submit" class="bv-hidden-submit" style="display: none; width: 0px; height: 0px;"></button>'
+
+                    formHtml += '<fieldset>'
+                    formHtml += '<legend>'
+                    //formHtml += 'ASDASDSA'
+                    formHtml += '</legend>'
+                    formHtml += '<div class="form-group">'
+
+                    //console.log("ya entro");
+                    var contador = 0;
+
+                    $.each(rowgral.CamposCabecera, function (regcab, rowcab) {
+                        if (contador == 4 || contador == 0) {
+                            formHtml += '<div class="row">'
                         }
-                    }
-                    Valicabecera += '}},';
-                }
-            });
+                        if (rowcab.visible == true) {
 
-            Valicabecera = Valicabecera.substring(0, Valicabecera.length - 1);
-            Valicabecera += '}';
-
-
-
-
-        }
-
-
-
-
-        formHtml += '</div >'
-        formHtml += '</fieldset >'
-
-        if (rowgral.CamposDetalle.length == 0) {
-
-
-            formHtml += '<div class="form-actions">'
-            formHtml += '<div class="row">'
-            formHtml += '<div class="col-md-12">'
-            formHtml += '<button id="addDetalle" onclick="GuardarRegitrosBND()" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o"></i> Agregar</button>';
-            formHtml += '</div>'
-            formHtml += '</div>'
-            formHtml += '</div>'
-
-
-        }
-        formHtml += '</form >'
-        formHtml += '</div > <br />'
-
-        formHtml += '</div >'
-        formHtml += '</article >'
-        formHtml += '</section >'
-
-        formHtml += '</div >'
-
-        if (rowgral.CamposDetalle.length != 0) {
-            formHtml += '<div class="row" id="">'
-
-            formHtml += '<section id="widget-grid">'
-            formHtml += '<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"></div>'
-            formHtml += '<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable">'
-            formHtml += '<div class="jarviswidget jarviswidget-color-white" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="true" data-widget-sortable="false" role="widget" data-widget-attstyle="jarviswidget-color-white">'
-
-
-            formHtml += '<header role="heading">'
-            formHtml += '<span class="widget-icon"> <i class="fa fa-edit"></i></span> <h2>Campos Detalle</h2>'
-            formHtml += '<span class="jarviswidget-loader" style="display: none;"><i class="fa fa-refresh fa-spin"></i></span>'
-            formHtml += '</header>'
-
-            formHtml += '<div role="content">'
-            formHtml += '<form id="formdetalle" method="post" novalidate="novalidate" class="bv-form"><button type="submit" class="bv-hidden-submit" style="display: none; width: 0px; height: 0px;"></button>'
-
-            formHtml += '<fieldset>'
-            formHtml += '<legend>'
-            formHtml += '<button id="addDetalle" onclick="addDetallesBND()" class="btn btn-success btn-sm" type="button"><i class="fa fa-plus" type="button"></i> Agregar</button> &nbsp';
-            formHtml += '<button id="deleteRow" onclick="deleteRowwBND()"  class="btn btn-danger btn-sm" type="button"><i class="fa fa-trash"></i>  Eliminar</button> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp';
-            formHtml += '</legend>'
-            formHtml += '<div class="form-group">'
-            //formHtml += '<div class="row">'
-
-            if (rowgral.CamposDetalle.length != 0) {
-
-                var contador1 = 0;
-
-                $.each(rowgral.CamposDetalle, function (regdet, rowdet) {
-                    if (contador1 == 4 || contador1 == 0) {
-                        formHtml += '<div class="row">'
-                    }
-                    if (rowdet.visible == true) {
-
-
-                        if (rowdet.formula != null) {
-
-                            //console.log(rowdet.nombreCampo + "-----" + rowdet.formula);
-                            objetoFormula.push({
-                                IdCampo: rowdet.nombreCampo,
-                                Json: rowdet.formula
-                            });
-
-
-
-                        }
-                        arregloC.push(rowdet.nombreCampo);
-                        contador1++;
-                       
-                        formHtml += GeneraComposBND(rowdet.Visualisacion, rowdet.idCampo, rowdet.nombreCampo, rowdet.descripcionCampo, rowdet.logitudCampo, rowdet.obligatorio, rowdet.editable, rowdet.TransaccionReferencia, rowdet.idRef, rowdet.nomRef, rowdet.CadenaComplementos);
-                    }
-                    if (contador1 == 4 || contador1 == 0) {
-                        formHtml += '</div >'
-                    }
-                });
-
-
-
-
-                detallevalida += '{';
-                $.each(rowgral.CamposDetalle, function (regdet, rowdet) {
-                    if (rowdet.visible == true) {
-
-                        detallevalida += '"' + rowdet.nombreCampo + '":'
-
-                        if (rowdet.Visualisacion == "checkbox") {
-                            detallevalida += '{ "validators" : {';
-                            detallevalida += '"choice": {';
-                            detallevalida += '"min": 1,';
-                            detallevalida += '"message" : "Please choose 1 - 2 languages you can speak"'
-                            detallevalida += '}';
-                        } else {
-
-                            detallevalida += '{"group": ".col-md-3","validators": {';
-                            detallevalida += '"stringLength": { "max" :' + rowdet.logitudCampo + ',';
-                            detallevalida += '"message" : "Caracteres maximos ' + rowdet.logitudCampo + '"}';
-
-                            if (rowdet.obligatorio == "required") {
-
-
-
-                                detallevalida += ',';
-                                detallevalida += '"notEmpty": {"message": "El campo ' + rowdet.descripcionCampo + ' es obligatorio"}';
-
-
+                            objetoFormula = [];
+                            if (regcab.formula != null) {
+                                objetoFormula.push({
+                                    IdCampo: regcab.nombreCampo,
+                                    Json: regcab.formula
+                                });
                             }
+                            arregloC.push(rowcab.nombreCampo);
+                            contador++;
+                            formHtml += GeneraComposBND(rowcab.Visualisacion, rowcab.idCampo, rowcab.nombreCampo, rowcab.descripcionCampo, rowcab.logitudCampo, rowcab.obligatorio, rowcab.editable, rowcab.TransaccionReferencia, rowcab.idRef, rowcab.nomRef, rowcab.CadenaComplementos);
                         }
-                        detallevalida += '}},';
+                        if (contador == 4 || contador == 0) {
+                            formHtml += '</div >'
+                        }
+                    });
+
+
+
+
+                    Valicabecera += '{';
+                    $.each(rowgral.CamposCabecera, function (regcab, rowcab) {
+                        if (rowcab.visible == true) {
+
+                            Valicabecera += '"' + rowcab.nombreCampo + '":'
+
+                            if (rowcab.Visualisacion == "checkbox") {
+                                Valicabecera += '{ "validators" : {';
+                                Valicabecera += '"choice": {';
+                                Valicabecera += '"min": 1,';
+                                Valicabecera += '"message" : "Please choose 1 - 2 languages you can speak"'
+                                Valicabecera += '}';
+                            } else {
+
+                                Valicabecera += '{"group": ".col-md-3","validators": {';
+                                Valicabecera += '"stringLength": { "max" :' + rowcab.logitudCampo + ',';
+                                Valicabecera += '"message" : "Caracteres maximos ' + rowcab.logitudCampo + '"}';
+
+                                if (rowcab.obligatorio == "required") {
+
+
+
+                                    Valicabecera += ',';
+                                    Valicabecera += '"notEmpty": {"message": "El campo ' + rowcab.descripcionCampo + ' es obligatorio"}';
+
+
+                                }
+                            }
+                            Valicabecera += '}},';
+                        }
+                    });
+
+                    Valicabecera = Valicabecera.substring(0, Valicabecera.length - 1);
+                    Valicabecera += '}';
+
+
+
+
+                }
+                formHtml += '</div >'
+                formHtml += '</fieldset >'
+                if (rowgral.CamposDetalle.length == 0 && rowgral.CamposCabecera.length > 0) {
+
+
+                    formHtml += '<div class="form-actions">'
+                    formHtml += '<div class="row">'
+                    formHtml += '<div class="col-md-12">'
+                    formHtml += '<button id="addDetalle" onclick="GuardarRegitros()" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o"></i> Agregar</button>';
+                    formHtml += '</div>'
+                    formHtml += '</div>'
+                    formHtml += '</div>'
+
+
+                }
+                formHtml += '</form >'
+                formHtml += '</div > <br />'
+                formHtml += '</div >'
+                formHtml += '</article >'
+                formHtml += '</section >'
+                formHtml += '</div >'
+                if (rowgral.CamposDetalle.length != 0) {
+
+                    formHtml += '<div class="row" id="">'
+
+                    formHtml += '<section id="widget-grid">'
+                    formHtml += '<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"></div>'
+                    formHtml += '<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable">'
+                    formHtml += '<div class="jarviswidget jarviswidget-color-white" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="true" data-widget-sortable="false" role="widget" data-widget-attstyle="jarviswidget-color-white">'
+
+
+                    formHtml += '<header role="heading">'
+                    formHtml += '<span class="widget-icon"> <i class="fa fa-edit"></i></span> <h2>Campos Detalle</h2>'
+                    formHtml += '<span class="jarviswidget-loader" style="display: none;"><i class="fa fa-refresh fa-spin"></i></span>'
+                    formHtml += '</header>'
+
+                    formHtml += '<div role="content">'
+                    formHtml += '<form id="formdetalle" method="post" novalidate="novalidate" class="bv-form"><button type="submit" class="bv-hidden-submit" style="display: none; width: 0px; height: 0px;"></button>'
+
+                    formHtml += '<fieldset>'
+                    formHtml += '<legend>'
+                    formHtml += '<button id="addDetalle" onclick="addDetallesBND()" class="btn btn-success btn-sm" type="button"><i class="fa fa-plus" type="button"></i> Agregar</button> &nbsp';
+                    formHtml += '<button id="deleteRow" onclick="deleteRowwBND()"  class="btn btn-danger btn-sm" type="button"><i class="fa fa-trash"></i>  Eliminar</button> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp';
+                    formHtml += '</legend>'
+                    formHtml += '<div class="form-group">'
+                    //formHtml += '<div class="row">'
+
+                    if (rowgral.CamposDetalle.length != 0) {
+
+                        var contador1 = 0;
+
+                        $.each(rowgral.CamposDetalle, function (regdet, rowdet) {
+                            if (contador1 == 4 || contador1 == 0) {
+                                formHtml += '<div class="row">'
+                            }
+                            if (rowdet.visible == true) {
+
+
+                                if (rowdet.formula != null) {
+
+                                    //console.log(rowdet.nombreCampo + "-----" + rowdet.formula);
+                                    objetoFormula.push({
+                                        IdCampo: rowdet.nombreCampo,
+                                        Json: rowdet.formula
+                                    });
+
+
+
+                                }
+                                arregloC.push(rowdet.nombreCampo);
+                                contador1++;
+                                formHtml += GeneraComposBND(rowdet.Visualisacion, rowdet.idCampo, rowdet.nombreCampo, rowdet.descripcionCampo, rowdet.logitudCampo, rowdet.obligatorio, rowdet.editable, rowdet.TransaccionReferencia, rowdet.idRef, rowdet.nomRef, rowdet.CadenaComplementos);
+                            }
+                            if (contador1 == 4 || contador1 == 0) {
+                                formHtml += '</div >'
+                            }
+                        });
+
+
+
+
+                        detallevalida += '{';
+                        $.each(rowgral.CamposDetalle, function (regdet, rowdet) {
+                            if (rowdet.visible == true) {
+
+                                detallevalida += '"' + rowdet.nombreCampo + '":'
+
+                                if (rowdet.Visualisacion == "checkbox") {
+                                    detallevalida += '{ "validators" : {';
+                                    detallevalida += '"choice": {';
+                                    detallevalida += '"min": 1,';
+                                    detallevalida += '"message" : "Please choose 1 - 2 languages you can speak"'
+                                    detallevalida += '}';
+                                } else {
+
+                                    detallevalida += '{"group": ".col-md-3","validators": {';
+                                    detallevalida += '"stringLength": { "max" :' + rowdet.logitudCampo + ',';
+                                    detallevalida += '"message" : "Caracteres maximos ' + rowdet.logitudCampo + '"}';
+
+                                    if (rowdet.obligatorio == "required") {
+
+
+
+                                        detallevalida += ',';
+                                        detallevalida += '"notEmpty": {"message": "El campo ' + rowdet.descripcionCampo + ' es obligatorio"}';
+
+
+                                    }
+                                }
+                                detallevalida += '}},';
+                            }
+                        });
+
+                        detallevalida = detallevalida.substring(0, detallevalida.length - 1);
+                        detallevalida += '}';
+
+
+
+
                     }
+
+                    formHtml += '</div>'
+                    formHtml += '</fieldset>'
+
+                    formHtml += '</form>'
+                    formHtml += '<table id="dtDetalle" class="table table-striped table-bordered table-hover DTTT_selectable" cellspacing="0" width="100%" ondrop="drop(event)" cellspacing="0" width="90%">'
+                    formHtml += '<thead>'
+                    formHtml += '<tr>'
+                    var conc = 0;
+
+                    $.each(rowgral.CamposDetalle, function (regtable, rowtable) {
+                        if (conc == 0) {
+                            formHtml += '<th>' + rowtable.descripcionCampo + '</th>';
+
+                        } else if (conc == 1) {
+                            formHtml += '<th>' + rowtable.descripcionCampo + '</th>';
+                        } else if (conc <= 5) {
+                            formHtml += '<th>' + rowtable.descripcionCampo + '</th>';
+
+                        } else {
+                            formHtml += '<th>' + rowtable.descripcionCampo + '</th>';
+
+                        }
+
+                        conc++;
+
+                    });
+
+                    namesDetalle = [];
+                    $.each(rowgral.CamposDetalle, function (i1, value) {
+                        if (value.visible == true) {
+                            namesDetalle.push(value.nombreCampo);
+                        }
+
+                    });
+
+                    formHtml += '</tr>'
+                    formHtml += '</thead>'
+                    formHtml += '</table>'
+
+                    formHtml += '<div class="form-actions">'
+                    formHtml += '<div class="row">'
+                    formHtml += '<div class="col-md-12">'
+                    formHtml += '<button id="addDetalle" onclick="GuardarRegitros()" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o"></i> Agregar</button>';
+                    formHtml += '</div>'
+                    formHtml += '</div>'
+                    formHtml += '</div>'
+
+                    formHtml += '</div><br />'
+
+                    formHtml += '</div> '
+                    formHtml += '</article> '
+                    formHtml += '</section>'
+
+                    formHtml += '</div>'
+
+                }
+                $.each(objetoFormula, function (rm1, rgm1) {
+
+                    var1 = rgm1.IdCampo;
+                    var2 = rgm1.Json;
+
+
+                    excuteformulaBND(var1, var2);
                 });
+                $.each(objeto, function (rowcom, regcom) {
+                    //console.log(regcom.Json);
+                    addEventChangeBND(regcom.IdCampo, regcom.Json);
+
+                })
+                if (rowgral.CamposDetalle.length != 0) {
+
+                    $('#formdetalle').bootstrapValidator('destroy');
+
+                    bostrapvaliBND();
+                    //$('#formdetalle')[0].reset();
+
+                }
+                bostrapvaliBND();
+                loadDataTableBND();
+
+                $("#step2").html(formHtml);
 
 
 
 
 
 
-                detallevalida = detallevalida.substring(0, detallevalida.length - 1);
-                detallevalida += '}';
+            } else {
 
-
-
+                $.smallBox({
+                    title: "Error!",
+                    content: "<i>La transacción presenta errores o esta mal configurada</i>",
+                    color: "#c79121",
+                    timeout: 4000,
+                    icon: "fa fa-info-circle swing animated"
+                });
 
             }
 
 
 
-            //formHtml += '</div>'
-            formHtml += '</div>'
-            formHtml += '</fieldset>'
 
-            //<div class="form-actions">
-            // <div class="row">
-            //  <div class="col-md-12">
-            //   <button class="btn btn-primary" type="submit">
-            //    <i class="fa fa-disk"></i>
-            //    Agregar
-            //   </button>
-            //  </div>
-            // </div>
-            //</div>
-
-            formHtml += '</form>'
-            formHtml += '<table id="dtDetalle" class="table table-striped table-bordered table-hover DTTT_selectable" cellspacing="0" width="100%" ondrop="drop(event)" cellspacing="0" width="90%">'
-            formHtml += '<thead>'
-            formHtml += '<tr>'
-            var conc = 0;
-            $.each(rowgral.CamposDetalle, function (regtable, rowtable) {
-                if (conc == 0) {
-                    formHtml += '<th>' + rowtable.descripcionCampo + '</th>';
-
-                } else if (conc == 1) {
-                    formHtml += '<th>' + rowtable.descripcionCampo + '</th>';
-                } else if (conc <= 5) {
-                    formHtml += '<th>' + rowtable.descripcionCampo + '</th>';
-
-                } else {
-                    formHtml += '<th>' + rowtable.descripcionCampo + '</th>';
-
-                }
-
-                conc++;
-
+        } else {
+            $.smallBox({
+                title: "Error!",
+                content: "<i>La transaccion no cuenta con campos</i>",
+                color: "#c79121",
+                timeout: 4000,
+                icon: "fa fa-info-circle swing animated"
             });
-
-            namesDetalle = [];
-            $.each(rowgral.CamposDetalle, function (i1, value) {
-                if (value.visible == true) {
-                    namesDetalle.push(value.nombreCampo);
-                }
-
-            });
-
-            formHtml += '</tr>'
-            formHtml += '</thead>'
-            formHtml += '</table>'
-
-            formHtml += '<div class="form-actions">'
-            formHtml += '<div class="row">'
-            formHtml += '<div class="col-md-12">'
-            formHtml += '<button id="addDetalle" onclick="GuardarRegitrosBND()" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o"></i> Agregar</button>';
-            formHtml += '</div>'
-            formHtml += '</div>'
-            formHtml += '</div>'
-
-            formHtml += '</div><br />'
-
-            formHtml += '</div> '
-            formHtml += '</article> '
-            formHtml += '</section>'
-
-            formHtml += '</div>'
-
         }
 
-
-        $("#form2").html(formHtml);
-        
-        $.each(objetoFormula, function (rm1, rgm1) {
-            excuteformulaBND(rgm1.IdCampo, rgm1.Json);
-        });
-        $.each(objeto, function (rowcom, regcom) {
-            console.log(regcom.Json);
-            addEventChangeBND(regcom.IdCampo, regcom.Json);
-
-        })
-
-
-
-        if (rowgral.CamposDetalle.length != 0) {
-
-            $('#formdetalle').bootstrapValidator('destroy');
-
-            bostrapvaliBND();
-            $('#formdetalle')[0].reset();
-
-        }
-
-        loadDataTableBND();
 
 
     });
-    bostrapvaliBND();
+
 }
 function GeneraComposBND(Visualisacion, idCampo, nombreCampo, descripcionCampo, logitudCampo, obligatorio, editable, TransaccionReferencia, idRef, nomRef, CadenaComplementos) {
 
@@ -987,7 +789,7 @@ function bostrapvaliBND() {
 
         $('#formCabecera').bootstrapValidator({
             live: 'enabled',
-            //submitButtons: 'button[id="save"]',
+            submitButtons: 'button[id="save"]',
             message: 'Valor invalido',
             feedbackIcons: {
 
@@ -997,13 +799,11 @@ function bostrapvaliBND() {
         });
     }
 
-    //console.log(detallevalida);
-
     if (detallevalida != "") {
 
-        $('#form2').bootstrapValidator({
+        $('#formdetalle').bootstrapValidator({
             live: 'enabled',
-            //submitButtons: 'button[id="addDetalle"]',
+            submitButtons: 'button[id="addDetalle"]',
             message: 'Valor invalido',
             feedbackIcons: {
                 //valid: 'glyphicon glyphicon-ok',
@@ -1014,6 +814,7 @@ function bostrapvaliBND() {
 
         });
     }
+
 }
 function excuteformulaBND(IdCampo, Json) {
 
@@ -1197,7 +998,7 @@ function GuardarRegitrosBND() {
     var Datos = "";
     //console.log("///////////// " + parametroE +" ///////////");
     //var ArregloCab = $("#formCabecera").serializeArray();
-    var ArregloCab = $("#form2").serializeArray();
+    var ArregloCab = $("#formdetalle").serializeArray();
 
    // console.log(Ardedereglo);
 
@@ -1383,7 +1184,7 @@ function GuardarRegitrosBND() {
                                 icon: "fa fa-thumbs-up swing animated"
                             });
                             $('#formCabecera')[0].reset();
-                            $('#form2').bootstrapValidator('destroy');
+                            $('#formdetalle').bootstrapValidator('destroy');
                             $.ajax({
                                 async: false,
                                 type: 'POST',
@@ -1435,7 +1236,7 @@ function GuardarRegitrosBND() {
 //recupera valores del formulario para generar json
 function addEventChangeBND(idCampo, jsonComple) {
 
-    console.log("ddddddddd. "+idCampo);
+    //console.log("ddddddddd. "+idCampo);
 
 
     $('#' + idCampo).change(function (e) {
@@ -1481,9 +1282,9 @@ function addEventChangeBND(idCampo, jsonComple) {
                     bostrapvaliBND();
                     $('#formCabecera').data('bootstrapValidator').validate();
 
-                    $('#form2').bootstrapValidator('destroy');
+                    $('#formdetalle').bootstrapValidator('destroy');
                     bostrapvaliBND();
-                    $('#form2').data('bootstrapValidator').validate();
+                    $('#formdetalle').data('bootstrapValidator').validate();
 
 
                 }
@@ -1546,9 +1347,9 @@ function addDetallesBND() {
     //console.log("Entra agregar");
     //bostrapvaliBND();
 
-    $('#form2').data('bootstrapValidator').isValid();
+    $('#formdetalle').data('bootstrapValidator').isValid();
 
-    var n = $('#form2').data('bootstrapValidator').isValid();
+    var n = $('#formdetalle').data('bootstrapValidator').isValid();
     var val = [];
     if (n) {
         
@@ -1836,6 +1637,7 @@ function sinEspacios() {
         }
     });
 }
+
 function initDataTableBND() {
     $.fn.dataTable.ext.errMode = 'none';
     var responsiveHelper_datatable_fixed_column = undefined;
@@ -1878,10 +1680,554 @@ function initDataTableBND() {
 
 
 
-    console.log("Datos:" + datoss);
+    //console.log("Datos:" + datoss);
     otable.row.add(datoss).draw(false);
 }
 
+function initDataTableTransacciones(id) {
 
+    //console.log("estoy llenando la tabla");
+
+    $.fn.dataTable.ext.errMode = 'none';
+    var responsiveHelper_datatable_fixed_column = undefined;
+    var breakpointDefinition = {
+        tablet: 1024,
+        phone: 480,
+        desktop: 1260
+    };
+    var datos = [];
+
+
+    $.ajax({
+        async: false,
+        type: 'POST',
+        url: 'MyWebService.asmx/DetalleTransaccionesWS',
+        data: JSON.stringify({ idEstatus: id }),
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        beforeSend: function () {
+            $('#loadingMod').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+        },
+        success: function (response) {
+            //console.log(response);
+            $('#loadingMod').modal('hide');
+            $.each(response, function (row, index) {
+                $.each(index.listaTranBitacora, function (r, arr) {
+                    datos.push([
+                        arr.idTipoTransaccion,
+                        arr.idTransaccion,
+                        arr.descripcion,
+                        arr.fechaIniTransaccion,
+                        arr.cveTipoTransaccion
+                    ])
+
+                    //datos.push([arr.idAlmacen, arr.descripcion, arr.idTipoAlmacen, arr.nombreTipoAlmacen, arr.idSucursal, arr.nombreSucursal]);
+                });
+            });
+        }
+    });
+
+
+    //console.log(datos);
+    otable = $('#example').DataTable({
+
+        "aLengthMenu": [
+            [5, 10, 25, 50],
+            [5, 10, 25, 50]
+        ],
+        "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6 hidden-xs'l><'col-sm-6 col-xs-12 hidden-xs'<'toolbar'>>r>" +
+        "t" +
+        "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+        "oLanguage": {
+            "sUrl": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+        },
+
+        "autoWidth": true,
+        "preDrawCallback": function () {
+            if (!responsiveHelper_datatable_fixed_column) {
+                responsiveHelper_datatable_fixed_column = new ResponsiveDatatablesHelper(
+                    $('#example'), breakpointDefinition);
+            }
+        },
+        "rowCallback": function (nRow) {
+            responsiveHelper_datatable_fixed_column
+                .createExpandIcon(nRow);
+        },
+        "drawCallback": function (oSettings) {
+            responsiveHelper_datatable_fixed_column.respond();
+        },
+        data: datos,
+        columns: [{
+            title: "IdTipoTran",
+            visible: false
+        },{
+            title: "IdTran",
+            //visible: false
+        }, {
+            title: "desc"
+        }, {
+            title: "fechaIni",
+            //visible: false
+        }, {
+            title: "TipoTran"
+        }]
+    });
+
+    // Evento creado para realizar la búsqueda cuando se presione la tecla ENTER
+    $("#example thead th input[type=text]").on(
+        'keyup',
+        function (e) {
+            otable.column($(this).parent().index() + ':visible').search(
+                this.value).draw();
+        });
+
+    // Método creado para agregar el evento de selección de una fila
+    $('#example tbody').on('click', 'tr', function () {
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+        } else {
+            $('#example').DataTable().$('tr.selected').removeClass(
+                'selected');
+            $(this).addClass('selected');
+        }
+    });
+
+
+    // Evento creado para abrir la ventana de editar al dar doble click sobre un
+    // registro
+    $('#example tbody').on('dblclick', 'tr', function () {
+        $(this).addClass('selected');
+        //bootsVal();
+        //editAlmacen();
+        //edit = 1;
+        var row = $("#example").DataTable().row('.selected').data();
+        //var row = $("#example").select()
+
+        //Optenerdetalle(row[0], row[1])
+
+        initDataTableDetalle(row[0], row[1]) 
+        initDataTableBitacora(row[0], row[1]) 
+        ArmaFormularioxetapa(row[0], row[1])
+
+        $("#tablaTran").hide();
+        $("#WisardTran").show();
+        
+
+        
+
+    });
+
+
+    $("#widget-grid").show()
+
+
+
+}
+
+function initDataTableDetalle(idTipoTransaccion, idtransaccion) {
+
+    //console.log("estoy llenando la tabla");
+
+    $.fn.dataTable.ext.errMode = 'none';
+    var responsiveHelper_datatable_fixed_column = undefined;
+    var breakpointDefinition = {
+        tablet: 1024,
+        phone: 480,
+        desktop: 1260
+    };
+    var datos = [];
+
+
+    $.ajax({
+        async: false,
+        type: 'POST',
+        url: 'MyWebService.asmx/detalleTBWS',
+        data: JSON.stringify({ idtipo: idTipoTransaccion, idTransaccion: "'" + idtransaccion + "'" }),
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        beforeSend: function () {
+            $('#loadingMod').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+        },
+        success: function (response) {
+            //console.log(response);
+            $('#loadingMod').modal('hide');
+            $.each(response, function (row, index) {
+                $.each(index.lisCamposDetalleTB, function (r, arr) {
+                    datos.push([
+                        arr.folioTransaccion, 
+                        arr.nombreTransaccion, 
+                        arr.fechaIniTransaccion, 
+                        arr.Clave, 
+                        arr.Rol, 
+                        arr.EtapaAtual, 
+                        arr.etapaSiguiente 
+                    ])
+
+                    //datos.push([arr.idAlmacen, arr.descripcion, arr.idTipoAlmacen, arr.nombreTipoAlmacen, arr.idSucursal, arr.nombreSucursal]);
+                });
+            });
+        }
+    });
+
+
+    //console.log(datos);
+    otable = $('#DTDetalletran').DataTable({
+
+        "aLengthMenu": [
+            [5, 10, 25, 50],
+            [5, 10, 25, 50]
+        ],
+        "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6 hidden-xs'l><'col-sm-6 col-xs-12 hidden-xs'<'toolbar'>>r>" +
+        "t" +
+        "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+        "oLanguage": {
+            "sUrl": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+        },
+
+        "autoWidth": true,
+        "preDrawCallback": function () {
+            if (!responsiveHelper_datatable_fixed_column) {
+                responsiveHelper_datatable_fixed_column = new ResponsiveDatatablesHelper(
+                    $('#DTDetalletran'), breakpointDefinition);
+            }
+        },
+        "rowCallback": function (nRow) {
+            responsiveHelper_datatable_fixed_column
+                .createExpandIcon(nRow);
+        },
+        "drawCallback": function (oSettings) {
+            responsiveHelper_datatable_fixed_column.respond();
+        },
+        data: datos,
+        columns: [{
+            title: "folioTransaccion",
+        }, {
+            title: "nombreTransaccion",
+        }, {
+            title: "fechaIniTransaccion"
+        }, {
+            title: "Clave",
+        }, {
+            title: "Rol",
+        }, {
+            title: "EtapaAtual",
+        }, {
+            title: "etapaSiguiente"
+        }]
+    });
+
+    // Evento creado para realizar la búsqueda cuando se presione la tecla ENTER
+    $("#Detalletran thead th input[type=text]").on(
+        'keyup',
+        function (e) {
+            otable.column($(this).parent().index() + ':visible').search(
+                this.value).draw();
+        });
+
+    // Método creado para agregar el evento de selección de una fila
+    $('#DTDetalletran tbody').on('click', 'tr', function () {
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+        } else {
+            $('#Detalletran').DataTable().$('tr.selected').removeClass(
+                'selected');
+            $(this).addClass('selected');
+        }
+    });
+
+
+    // Evento creado para abrir la ventana de editar al dar doble click sobre un
+    // registro
+    $('#DTDetalletran tbody').on('dblclick', 'tr', function () {
+        $(this).addClass('selected');
+        //bootsVal();
+        //editAlmacen();
+        //edit = 1;
+        //var row = $("#Detalletran").DataTable().row('.selected').data();
+        ////var row = $("#example").select()
+
+        //Optenerdetalle(row[0], row[1])
+
+
+
+        //$("#tablaTran").hide();
+        //$("#WisardTran").show();
+
+
+
+
+    });
+
+
+    //$("#widget-grid").show()
+
+
+
+}
+
+function initDataTableBitacora(idTipoTransaccion, idtransaccion) {
+
+    //console.log("estoy llenando la tabla");
+
+    $.fn.dataTable.ext.errMode = 'none';
+    var responsiveHelper_datatable_fixed_column = undefined;
+    var breakpointDefinition = {
+        tablet: 1024,
+        phone: 480,
+        desktop: 1260
+    };
+    var datos = [];
+
+
+    $.ajax({
+        async: false,
+        type: 'POST',
+        url: 'MyWebService.asmx/DetalleBitacoraWS',
+        data: JSON.stringify({ idTipoTransaccion: idTipoTransaccion, idtransaccion: idtransaccion }),
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        beforeSend: function () {
+            $('#loadingMod').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+        },
+        success: function (response) {
+            //console.log(response);
+            $('#loadingMod').modal('hide');
+            $.each(response, function (row, index) {
+                $.each(index.lista, function (r, arr) {
+                    datos.push([
+                        arr.idTransaccion,
+                        arr.cveMovimiento,
+                        arr.idEtapa,
+                        arr.idAccion
+                    ])
+
+                    //datos.push([arr.idAlmacen, arr.descripcion, arr.idTipoAlmacen, arr.nombreTipoAlmacen, arr.idSucursal, arr.nombreSucursal]);
+                });
+            });
+        }
+    });
+
+
+    //console.log(datos);
+    otable = $('#DTBitacora').DataTable({
+
+        "aLengthMenu": [
+            [5, 10, 25, 50],
+            [5, 10, 25, 50]
+        ],
+        "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6 hidden-xs'l><'col-sm-6 col-xs-12 hidden-xs'<'toolbar'>>r>" +
+        "t" +
+        "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+        "oLanguage": {
+            "sUrl": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+        },
+
+        "autoWidth": true,
+        "preDrawCallback": function () {
+            if (!responsiveHelper_datatable_fixed_column) {
+                responsiveHelper_datatable_fixed_column = new ResponsiveDatatablesHelper(
+                    $('#DTBitacora'), breakpointDefinition);
+            }
+        },
+        "rowCallback": function (nRow) {
+            responsiveHelper_datatable_fixed_column
+                .createExpandIcon(nRow);
+        },
+        "drawCallback": function (oSettings) {
+            responsiveHelper_datatable_fixed_column.respond();
+        },
+        data: datos,
+        columns: [{
+            title: "idTransaccion",
+            //visible: false
+        }, {
+                title: "cveMovimiento",
+            //visible: false
+        }, {
+            title: "idEtapa"
+        }, {
+            title: "idAccion",
+            //visible: false
+        }]
+    });
+
+    // Evento creado para realizar la búsqueda cuando se presione la tecla ENTER
+    $("#example thead th input[type=text]").on(
+        'keyup',
+        function (e) {
+            otable.column($(this).parent().index() + ':visible').search(
+                this.value).draw();
+        });
+
+    // Método creado para agregar el evento de selección de una fila
+    $('#DTBitacora tbody').on('click', 'tr', function () {
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+        } else {
+            $('#example').DataTable().$('tr.selected').removeClass(
+                'selected');
+            $(this).addClass('selected');
+        }
+    });
+
+
+    // Evento creado para abrir la ventana de editar al dar doble click sobre un
+    // registro
+    $('#DTBitacora tbody').on('dblclick', 'tr', function () {
+        $(this).addClass('selected');
+        //bootsVal();
+        //editAlmacen();
+        //edit = 1;
+        //var row = $("#DTBitacora").DataTable().row('.selected').data();
+        ////var row = $("#example").select()
+
+        //Optenerdetalle(row[0], row[1])
+
+
+
+        //$("#tablaTran").hide();
+        //$("#WisardTran").show();
+
+
+
+
+    });
+
+
+    //$("#widget-grid").show()
+
+
+
+}
+
+
+function Propiedades() {
+
+
+    // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+    $(document).ready(function () {
+
+        pageSetUp();
+
+
+
+        //Bootstrap Wizard Validations
+
+        //var $validator = $("#wizard-1").validate({
+
+        //    rules: {
+        //        idPedido: {
+        //            required: true,
+        //            minlength: 4
+        //        },
+        //        fname: {
+        //            required: true
+        //        },
+        //        lname: {
+        //            required: true
+        //        },
+        //        country: {
+        //            required: true
+        //        },
+        //        city: {
+        //            required: true
+        //        },
+        //        postal: {
+        //            required: true,
+        //            minlength: 4
+        //        },
+        //        wphone: {
+        //            required: true,
+        //            minlength: 10
+        //        },
+        //        hphone: {
+        //            required: true,
+        //            minlength: 10
+        //        }
+        //    },
+
+        //    messages: {
+        //        fname: "Please specify your First name",
+        //        lname: "Please specify your Last name",
+        //        email: {
+        //            required: "We need your email address to contact you",
+        //            email: "Your email address must be in the format of name@domain.com"
+        //        }
+        //    },
+
+        //    highlight: function (element) {
+        //        $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+        //    },
+        //    unhighlight: function (element) {
+        //        $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+        //    },
+        //    errorElement: 'span',
+        //    errorClass: 'help-block',
+        //    errorPlacement: function (error, element) {
+        //        if (element.parent('.input-group').length) {
+        //            error.insertAfter(element.parent());
+        //        } else {
+        //            error.insertAfter(element);
+        //        }
+        //    }
+        //});
+
+        //bostrapvaliBND();
+
+
+
+        $('#bootstrap-wizard-1').bootstrapWizard({
+            'tabClass': 'form-wizard',
+            'onNext': function (tab, navigation, index) {
+                var $valid = $("#wizard-1").valid();
+                if (!$valid) {
+                    $validator.focusInvalid();
+                    return false;
+                } else {
+                    $('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(index - 1).addClass(
+                        'complete');
+                    $('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(index - 1).find('.step')
+                        .html('<i class="fa fa-check"></i>');
+                }
+            }
+        });
+
+
+        // fuelux wizard
+        var wizard = $('.wizard').wizard();
+
+        wizard.on('finished', function (e, data) {
+            //$("#fuelux-wizard").submit();
+            //console.log("submitted!");
+            $.smallBox({
+                title: "Congratulations! Your form was submitted",
+                content: "<i class='fa fa-clock-o'></i> <i>1 seconds ago...</i>",
+                color: "#5F895F",
+                iconSmall: "fa fa-check bounce animated",
+                timeout: 4000
+            });
+
+        });
+
+
+    })
+
+
+
+
+
+
+
+}
 
 
