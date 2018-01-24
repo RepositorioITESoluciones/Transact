@@ -240,7 +240,7 @@ function GeneraFormularioBND(xml_json) {
                     Valicabecera = Valicabecera.substring(0, Valicabecera.length - 1);
                     Valicabecera += '}';
 
-
+                   
 
 
                 }
@@ -252,7 +252,7 @@ function GeneraFormularioBND(xml_json) {
                     formHtml += '<div class="form-actions">'
                     formHtml += '<div class="row">'
                     formHtml += '<div class="col-md-12">'
-                    formHtml += '<button id="addDetalle" onclick="GuardarRegitros()" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o"></i> Agregar</button>';
+                    formHtml += '<button id="addDetalle" onclick="GuardarRegitrosBND()" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o"></i> Agregar</button>';
                     formHtml += '</div>'
                     formHtml += '</div>'
                     formHtml += '</div>'
@@ -407,7 +407,7 @@ function GeneraFormularioBND(xml_json) {
                     formHtml += '<div class="form-actions">'
                     formHtml += '<div class="row">'
                     formHtml += '<div class="col-md-12">'
-                    formHtml += '<button id="addDetalle" onclick="GuardarRegitros()" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o"></i> Agregar</button>';
+                    formHtml += '<button id="addDetalle" onclick="GuardarRegitrosBND()" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o"></i> Agregar</button>';
                     formHtml += '</div>'
                     formHtml += '</div>'
                     formHtml += '</div>'
@@ -434,23 +434,20 @@ function GeneraFormularioBND(xml_json) {
                     addEventChangeBND(regcom.IdCampo, regcom.Json);
 
                 })
-                if (rowgral.CamposDetalle.length != 0) {
+                //if (rowgral.CamposDetalle.length != 0) {
 
-                    $('#formdetalle').bootstrapValidator('destroy');
+                //    $('#formdetalle').bootstrapValidator('destroy');
 
-                    bostrapvaliBND();
-                    //$('#formdetalle')[0].reset();
+                //    bostrapvaliBND();
+                //    //$('#formdetalle')[0].reset();
 
-                }
+                //}
+                $("#step2").html(formHtml);
+                Propiedades()
                 bostrapvaliBND();
                 loadDataTableBND();
 
-                $("#step2").html(formHtml);
-
-
-
-
-
+                
 
             } else {
 
@@ -500,7 +497,7 @@ function GeneraComposBND(Visualisacion, idCampo, nombreCampo, descripcionCampo, 
         if (editable != true) {
             Campo += 'readonly '
         }
-        Campo += 'type = "' + Visualisacion + '" id= "' + nombreCampo + '" onkeypress= "return validarN(event,' + nombreCampo + ',' + logitudCampo + ')" class="form-control" name= "' + nombreCampo + '" min="0" maxlength="' + logitudCampo + '" />';
+        Campo += 'type = "' + Visualisacion + '" id= "' + nombreCampo + '" onkeypress= "return validarNBND(event,' + nombreCampo + ',' + logitudCampo + ')" class="form-control" name= "' + nombreCampo + '" min="0" maxlength="' + logitudCampo + '" />';
         Campo += '</div>';
 
 
@@ -518,7 +515,7 @@ function GeneraComposBND(Visualisacion, idCampo, nombreCampo, descripcionCampo, 
         if (editable != true) {
             Campo += 'readonly '
         }
-        Campo += 'type = "text" id= "' + nombreCampo + '" onkeypress= "return validarNLS(event)" class="form-control" name= "' + nombreCampo + '" maxlength="' + logitudCampo + '"/>';
+        Campo += 'type = "text" id= "' + nombreCampo + '" onkeypress= "return validarNLSBND(event)" class="form-control" name= "' + nombreCampo + '" maxlength="' + logitudCampo + '"/>';
         Campo += '</div>';
 
     }
@@ -537,7 +534,7 @@ function GeneraComposBND(Visualisacion, idCampo, nombreCampo, descripcionCampo, 
         if (editable != true) {
             Campo += 'readonly '
         }
-        Campo += 'type = "' + Visualisacion + '" id= "' + nombreCampo + '" onkeypress= "return validarNLS(event)" class="form-control" name= "' + nombreCampo + '" />';
+        Campo += 'type = "' + Visualisacion + '" id= "' + nombreCampo + '" onkeypress= "return validarNLSBND(event)" class="form-control" name= "' + nombreCampo + '" />';
         Campo += '</div>';
     }
     if (Visualisacion == "switch") {
@@ -557,7 +554,7 @@ function GeneraComposBND(Visualisacion, idCampo, nombreCampo, descripcionCampo, 
         if (editable != true) {
             Campo += 'readonly '
         }
-        Campo += 'type = "' + Visualisacion + '" id= "' + nombreCampo + '" onkeypress= "return validarNLS(event)" class="form-control" name= "' + nombreCampo + '" />';
+        Campo += 'type = "' + Visualisacion + '" id= "' + nombreCampo + '" onkeypress= "return validarNLSBND(event)" class="form-control" name= "' + nombreCampo + '" />';
         Campo += '</div>';
     }
     if (Visualisacion == 'date') {
@@ -573,7 +570,7 @@ function GeneraComposBND(Visualisacion, idCampo, nombreCampo, descripcionCampo, 
         if (editable != true) {
             Campo += 'readonly '
         }
-        Campo += 'type = "' + Visualisacion + '" id= "' + nombreCampo + '" onkeypress= "return validarNLS(event)" class="form-control" name= "' + nombreCampo + '" />';
+        Campo += 'type = "' + Visualisacion + '" id= "' + nombreCampo + '" onkeypress= "return validarNLSBND(event)" class="form-control" name= "' + nombreCampo + '" />';
         Campo += '</div>';
 
 
@@ -589,7 +586,7 @@ function GeneraComposBND(Visualisacion, idCampo, nombreCampo, descripcionCampo, 
         if (editable != true) {
             Campo += 'readonly '
         }
-        Campo += 'type = "' + Visualisacion + '" id= "' + nombreCampo + '" onkeypress= "return validarNLS(event)" class="form-control" name= "' + nombreCampo + '" />';
+        Campo += 'type = "' + Visualisacion + '" id= "' + nombreCampo + '" onkeypress= "return validarNLSBND(event)" class="form-control" name= "' + nombreCampo + '" />';
         Campo += '</div>';
     }
     if (Visualisacion == 'email') {
@@ -603,7 +600,7 @@ function GeneraComposBND(Visualisacion, idCampo, nombreCampo, descripcionCampo, 
         if (editable != true) {
             Campo += 'readonly '
         }
-        Campo += 'type = "' + Visualisacion + '" id= "' + nombreCampo + '" onkeypress= "return validarNLS(event)" class="form-control" name= "' + nombreCampo + '" />';
+        Campo += 'type = "' + Visualisacion + '" id= "' + nombreCampo + '" onkeypress= "return validarNLSBND(event)" class="form-control" name= "' + nombreCampo + '" />';
         Campo += '</div>';
     }
     if (Visualisacion == 'password') {
@@ -617,7 +614,7 @@ function GeneraComposBND(Visualisacion, idCampo, nombreCampo, descripcionCampo, 
         if (editable != true) {
             Campo += 'readonly '
         }
-        Campo += 'type = "' + Visualisacion + '" id= "' + nombreCampo + '" onkeypress= "return validarNLS(event)" class="form-control" name= "' + nombreCampo + '" />';
+        Campo += 'type = "' + Visualisacion + '" id= "' + nombreCampo + '" onkeypress= "return validarNLSBND(event)" class="form-control" name= "' + nombreCampo + '" />';
         Campo += '</div>';
     }
     if (Visualisacion == 'color') {
@@ -631,7 +628,7 @@ function GeneraComposBND(Visualisacion, idCampo, nombreCampo, descripcionCampo, 
         if (editable != true) {
             Campo += 'readonly '
         }
-        Campo += 'type = "' + Visualisacion + '" id= "' + nombreCampo + '" onkeypress= "return validarNLS(event)" class="form-control" name= "' + nombreCampo + '" />';
+        Campo += 'type = "' + Visualisacion + '" id= "' + nombreCampo + '" onkeypress= "return validarNLSBND(event)" class="form-control" name= "' + nombreCampo + '" />';
         Campo += '</div>';
     }
     if (Visualisacion == 'tel') {
@@ -645,7 +642,7 @@ function GeneraComposBND(Visualisacion, idCampo, nombreCampo, descripcionCampo, 
         if (editable != true) {
             Campo += 'readonly '
         }
-        Campo += 'type = "' + Visualisacion + '" id= "' + nombreCampo + '" onkeypress= "return validarNLS(event)" class="form-control" name= "' + nombreCampo + '" maxlength="10"/>';
+        Campo += 'type = "' + Visualisacion + '" id= "' + nombreCampo + '" onkeypress= "return validarNLSBND(event)" class="form-control" name= "' + nombreCampo + '" maxlength="10"/>';
         Campo += '</div>';
     }
     if (Visualisacion == 'url') {
@@ -659,7 +656,7 @@ function GeneraComposBND(Visualisacion, idCampo, nombreCampo, descripcionCampo, 
         if (editable != true) {
             Campo += 'readonly '
         }
-        Campo += 'type = "' + Visualisacion + '" id= "' + nombreCampo + '" onkeypress= "return validarNLS(event)" class="form-control" name= "' + nombreCampo + '" />';
+        Campo += 'type = "' + Visualisacion + '" id= "' + nombreCampo + '" onkeypress= "return validarNLSBND(event)" class="form-control" name= "' + nombreCampo + '" />';
         Campo += '</div>';
     }
     if (Visualisacion == 'range') {
@@ -673,7 +670,7 @@ function GeneraComposBND(Visualisacion, idCampo, nombreCampo, descripcionCampo, 
         if (editable != true) {
             Campo += 'readonly '
         }
-        Campo += 'type = "' + Visualisacion + '" id= "' + nombreCampo + '" onkeypress= "return validarNLS(event)" class="form-control" name= "' + nombreCampo + '" min="-' + logitudCampo + '" max="' + logitudCampo + '"/>';
+        Campo += 'type = "' + Visualisacion + '" id= "' + nombreCampo + '" onkeypress= "return validarNLSBND(event)" class="form-control" name= "' + nombreCampo + '" min="-' + logitudCampo + '" max="' + logitudCampo + '"/>';
         Campo += '</div>';
     }
     if (Visualisacion == 'week') {
@@ -714,7 +711,7 @@ function GeneraComposBND(Visualisacion, idCampo, nombreCampo, descripcionCampo, 
         if (editable != true) {
             Campo += 'readonly '
         }
-        Campo += 'type = "text" id= "' + nombreCampo + '" onkeypress= "return validarN(event)" class="form-control" name= "' + nombreCampo + '" value="' + value + '" />';
+        Campo += 'type = "text" id= "' + nombreCampo + '" onkeypress= "return validarNBND(event)" class="form-control" name= "' + nombreCampo + '" value="' + value + '" />';
         Campo += '</div>';
 
         //console.log(Campo);
@@ -785,9 +782,11 @@ function GenerarComboBND(idcampo, nomcampo, desccampo, idreferencia, idRef, nomR
 };
 function bostrapvaliBND() {
 
+    //console.log(Valicabecera + "------" + detallevalida);
+
     if (Valicabecera != "") {
 
-        $('#formCabecera').bootstrapValidator({
+        $('#wizard-1').bootstrapValidator({
             live: 'enabled',
             submitButtons: 'button[id="save"]',
             message: 'Valor invalido',
@@ -801,7 +800,7 @@ function bostrapvaliBND() {
 
     if (detallevalida != "") {
 
-        $('#formdetalle').bootstrapValidator({
+        $('#wizard-1').bootstrapValidator({
             live: 'enabled',
             submitButtons: 'button[id="addDetalle"]',
             message: 'Valor invalido',
@@ -994,16 +993,24 @@ function matchStart(params, data) {
     return null;
 }
 function GuardarRegitrosBND() {
+
+    var valisusest = "";
+    var valXAccion = "$('#CampoM1').val() == $('#CampoM3').val()";
+    var valError = "$('#CampoM6').val() > 100";
+
+
+    valisusest = 'if(' + valXAccion + '){alert("bien")}else{}if(' + valError +'){alert("error")}';
+    
+    console.log(valisusest);
+
+    eval(valisusest);
+
+
     var tablaNReg = 0;
     var Datos = "";
-    //console.log("///////////// " + parametroE +" ///////////");
-    //var ArregloCab = $("#formCabecera").serializeArray();
-    var ArregloCab = $("#formdetalle").serializeArray();
-
-   // console.log(Ardedereglo);
-
-    $('#formCabecera').data('bootstrapValidator').validate();
-    var n = $('#formCabecera').data('bootstrapValidator').isValid();
+    var ArregloCab = $("#wizard-1").serializeArray();
+    $('#wizard-1').data('bootstrapValidator').validate();
+    var n = $('#wizard-1').data('bootstrapValidator').isValid();
     console.log("el valor de n: " + n);
     if (n) {
 
@@ -1026,10 +1033,14 @@ function GuardarRegitrosBND() {
             $.each(ArregloCab, function (i, fd) {
                 var elements = document.getElementsByName('' + fd.name + '');
                 var id = elements[0].getAttribute('id');
-
+                var prueba = "";
                 if (fd.name != "dtDetalle_length") {
-                    
-                    Datos += '"' + fd.name + '":"' + fd.value + '",';
+
+                    if (fd.name == "DTDetalletran_length" || fd.name == "DTBitacora_length") {
+
+                        prueba = "hola";
+
+                    } else { Datos += '"' + fd.name + '":"' + fd.value + '",';}
                 }
             });
             Datos = Datos.substring(0, Datos.length - 1);
@@ -1089,8 +1100,6 @@ function GuardarRegitrosBND() {
     }
 
     console.log(Datos);
-
-    //console.log("n: " + n + " namesdetalle: " + namesDetalle.length + " tablaNReg: " + tablaNReg);
     if (n != false && namesDetalle.length != 0 && tablaNReg != 0) {
         console.log("primermetodo");
         $.ajax({
@@ -1118,8 +1127,8 @@ function GuardarRegitrosBND() {
                                 timeout: 2000,
                                 icon: "fa fa-thumbs-up swing animated"
                             });
-                            $('#formCabecera')[0].reset();
-                            $('#formCabecera').bootstrapValidator('destroy');
+                            $('#wizard-1')[0].reset();
+                            $('#wizard-1').bootstrapValidator('destroy');
                             $.ajax({
                                 async: false,
                                 type: 'POST',
@@ -1183,8 +1192,8 @@ function GuardarRegitrosBND() {
                                 timeout: 2000,
                                 icon: "fa fa-thumbs-up swing animated"
                             });
-                            $('#formCabecera')[0].reset();
-                            $('#formdetalle').bootstrapValidator('destroy');
+                            $('#wizard-1')[0].reset();
+                            $('#wizard-1').bootstrapValidator('destroy');
                             $.ajax({
                                 async: false,
                                 type: 'POST',
@@ -1343,13 +1352,9 @@ function recuvalorBND(idTransaccion, primarykey, Valor, IdRef, CampRef) {
 }
 //Funcuiones datatable
 function addDetallesBND() {
+    $('#wizard-1').data('bootstrapValidator').isValid();
 
-    //console.log("Entra agregar");
-    //bostrapvaliBND();
-
-    $('#formdetalle').data('bootstrapValidator').isValid();
-
-    var n = $('#formdetalle').data('bootstrapValidator').isValid();
+    var n = $('#wizard-1').data('bootstrapValidator').isValid();
     var val = [];
     if (n) {
         
@@ -1435,10 +1440,6 @@ function addDetallesBND() {
             icon: "fa fa-warning shake animated"
         });
     }
-
-
-
-
     var valores = [];
     var row = $('#tablaEtapas').DataTable().row('.selected').data();
     $("#tablaEtapas tr").find('td:eq(0)').each(function () {
@@ -1460,22 +1461,6 @@ function addDetallesBND() {
 
         mouse();
     }
-
-    
-
-    //jQuery.validator.messages.required = 'Esta campo es obligatorio.';
-    //jQuery.validator.messages.number = 'Esta campo debe ser num&eacute;rico.';
-    //var validado = $("#formdetalle").valid();
-    //console.log("VALIDACION" + validado);
-    //if (validado) {
-    //var arr = $("#formdetalle").serializeArray();
-    //var datos = [];
-    //$.each(arr, function (i, fd) {
-    //    datos.push(fd.value);
-    //});
-    //var t = $('#dtDetalle').DataTable();
-    //t.row.add(datos).draw(false);
-    //}
 
 };
 function loadDataTableBND() {
@@ -1565,11 +1550,11 @@ function deleteRowwBND() {
 };
 
 //Funciones validar
-function validarN(e, id, longg) {
-    //console.log("maxLength");
+function validarNBND(e, id, longg) {
+    console.log("maxLength");
 
 
-    $("#" + id.getAttribute("id")).attr('maxLength', longg).keypress(limitMe);
+    $("#" + id.getAttribute("id")).attr('maxLength', longg).keypress(limitMeBND);
 
     tecla = (e.keyCode ? e.keyCode : e.which);
     if (tecla == 8) return true;
@@ -1577,60 +1562,60 @@ function validarN(e, id, longg) {
     te = String.fromCharCode(tecla);
     return patron.test(te);
 }
-function limitMe(e) {
+function limitMeBND(e) {
     if (e.keyCode == 8) { return true; }
     return this.value.length < $(this).attr("maxLength");
 }
-function validarLetra(e) {
+function validarLetraBND(e) {
     tecla = (e.keyCode ? e.keyCode : e.which);
     if (tecla == 8) return true;
     patron = /[A-Za-záÁéÉíÍóÓúÚñÑ\s\t]/;
     te = String.fromCharCode(tecla);
     return patron.test(te);
 }
-function validarLetra2(e) {
+function validarLetra2BND(e) {
     tecla = (e.keyCode ? e.keyCode : e.which);
     if (tecla == 8) return true;
     patron = /[0-9A-Za-záÁéÉíÍóÓúÚñÑ\s\t]/;
     te = String.fromCharCode(tecla);
     return patron.test(te);
 }
-function validarNL(e) {
+function validarNLBND(e) {
     tecla = (e.keyCode ? e.keyCode : e.which);
     if (tecla == 8) return true;
     patron = /[A-Za-záÁéÉíÍóÓúÚñÑ\s\-\_\.\&\t\S]/;
     te = String.fromCharCode(tecla);
     return patron.test(te);
 }
-function validarRFC(e) {
+function validarRFCBND(e) {
     tecla = (e.keyCode ? e.keyCode : e.which);
     if (tecla == 8) return true;
     patron = /[0-9A-Za-z\t\&]/;
     te = String.fromCharCode(tecla);
     return patron.test(te);
 }
-function validarNLug(e) {
+function validarNLugBND(e) {
     tecla = (e.keyCode ? e.keyCode : e.which);
     if (tecla == 8) return true;
     patron = /[0-9A-Za-zñÑ\s\t]/;
     te = String.fromCharCode(tecla);
     return patron.test(te);
 }
-function validarNLS(e) {
+function validarNLSBND(e) {
     tecla = (e.keyCode ? e.keyCode : e.which);
     if (tecla == 8) return true;
     patron = /[0-9A-Za-záÁéÉíÍóÓúÚñÑ\s\t]/;
     te = String.fromCharCode(tecla);
     return patron.test(te);
 }
-function validarTodo(e) {
+function validarTodoBND(e) {
     tecla = (e.keyCode ? e.keyCode : e.which);
     if (tecla == 8) return true;
     patron = /[0-9A-Za-záÁéÉíÍóÓúÚñÑ\s\-\.\t\!\"\$\%\&\/\(\)\=\'\¿\?\¡]/;
     te = String.fromCharCode(tecla);
     return patron.test(te);
 }
-function sinEspacios() {
+function sinEspaciosBND() {
     $('body').on('keydown', function (e) {
         if (e.which === 32 && e.target.selectionStart === 0) {
             return false;
@@ -1683,7 +1668,6 @@ function initDataTableBND() {
     //console.log("Datos:" + datoss);
     otable.row.add(datoss).draw(false);
 }
-
 function initDataTableTransacciones(id) {
 
     //console.log("estoy llenando la tabla");
@@ -1826,7 +1810,6 @@ function initDataTableTransacciones(id) {
 
 
 }
-
 function initDataTableDetalle(idTipoTransaccion, idtransaccion) {
 
     //console.log("estoy llenando la tabla");
@@ -1970,7 +1953,6 @@ function initDataTableDetalle(idTipoTransaccion, idtransaccion) {
 
 
 }
-
 function initDataTableBitacora(idTipoTransaccion, idtransaccion) {
 
     //console.log("estoy llenando la tabla");
@@ -2111,82 +2093,8 @@ function initDataTableBitacora(idTipoTransaccion, idtransaccion) {
 
 
 function Propiedades() {
-
-
-    // DO NOT REMOVE : GLOBAL FUNCTIONS!
-
-    $(document).ready(function () {
-
-        pageSetUp();
-
-
-
-        //Bootstrap Wizard Validations
-
-        //var $validator = $("#wizard-1").validate({
-
-        //    rules: {
-        //        idPedido: {
-        //            required: true,
-        //            minlength: 4
-        //        },
-        //        fname: {
-        //            required: true
-        //        },
-        //        lname: {
-        //            required: true
-        //        },
-        //        country: {
-        //            required: true
-        //        },
-        //        city: {
-        //            required: true
-        //        },
-        //        postal: {
-        //            required: true,
-        //            minlength: 4
-        //        },
-        //        wphone: {
-        //            required: true,
-        //            minlength: 10
-        //        },
-        //        hphone: {
-        //            required: true,
-        //            minlength: 10
-        //        }
-        //    },
-
-        //    messages: {
-        //        fname: "Please specify your First name",
-        //        lname: "Please specify your Last name",
-        //        email: {
-        //            required: "We need your email address to contact you",
-        //            email: "Your email address must be in the format of name@domain.com"
-        //        }
-        //    },
-
-        //    highlight: function (element) {
-        //        $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-        //    },
-        //    unhighlight: function (element) {
-        //        $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
-        //    },
-        //    errorElement: 'span',
-        //    errorClass: 'help-block',
-        //    errorPlacement: function (error, element) {
-        //        if (element.parent('.input-group').length) {
-        //            error.insertAfter(element.parent());
-        //        } else {
-        //            error.insertAfter(element);
-        //        }
-        //    }
-        //});
-
-        //bostrapvaliBND();
-
-
-
-        $('#bootstrap-wizard-1').bootstrapWizard({
+    pageSetUp();
+    $('#bootstrap-wizard-1').bootstrapWizard({
             'tabClass': 'form-wizard',
             'onNext': function (tab, navigation, index) {
                 var $valid = $("#wizard-1").valid();
@@ -2201,12 +2109,8 @@ function Propiedades() {
                 }
             }
         });
-
-
-        // fuelux wizard
-        var wizard = $('.wizard').wizard();
-
-        wizard.on('finished', function (e, data) {
+    var wizard = $('.wizard').wizard();
+    wizard.on('finished', function (e, data) {
             //$("#fuelux-wizard").submit();
             //console.log("submitted!");
             $.smallBox({
@@ -2218,16 +2122,6 @@ function Propiedades() {
             });
 
         });
-
-
-    })
-
-
-
-
-
-
-
 }
 
 
