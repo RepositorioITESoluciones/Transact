@@ -3742,6 +3742,7 @@ function AgregarReglaAccion() {
 
                         $.each($('.sortable li'), function (index1, item1) {
 
+
                             val.push($.trim($(item1).text()));
 
                         });

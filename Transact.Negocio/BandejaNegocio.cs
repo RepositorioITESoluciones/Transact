@@ -31,5 +31,11 @@ namespace Transact.Negocio
         {
             return BandejaDatos.DetalleBitacoraD(idtransaccion);
         }
+
+
+        public ReglasNegocioxAccion ReglasxAccion(int idTipoTransaccion) {
+
+            return BandejaDatos.ReglasxAccion(idTipoTransaccion);
+        }
     }
 }

@@ -17,7 +17,7 @@ var idAccion = 0;
 var namesDetalle = []
 var longitudC = 0;
 var Detransacciones=[]
-
+var validacionxaccion = [];
 var parametroE = "";
 
 $(function () {
@@ -110,7 +110,7 @@ function ArmaFormularioxetapa(idTipoTransaccion, idtransaccion) {
         contentType: 'application/json; charset=utf-8',
         success: function (respuesta) {
 
-            GeneraFormularioBND(respuesta);
+            GeneraFormularioBND(respuesta, idTipoTransaccion);
 
 
 
@@ -119,7 +119,63 @@ function ArmaFormularioxetapa(idTipoTransaccion, idtransaccion) {
 }
 
 
-function GeneraFormularioBND(xml_json) {
+function GeneraFormularioBND(xml_json, idTran) {
+
+    $.ajax({
+        async: false,
+        type: 'POST',
+        url: 'MyWebService.asmx/ReglasxAccion',
+        data: '{idTipoTransaccion:"' + idTran + '"}',
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        success: function (respuesta) {
+
+
+            //console.log(respuesta);
+
+
+
+            $.each(respuesta, function (index, row) {
+                $.each(row.listaReglasxAccion, function (index1, row1) {
+                    //console.log(jQuery.parseJSON(row1.ReglaxAccion).Datos);
+                    $.each(jQuery.parseJSON(row1.ReglaxAccion).Datos, function (index2, row2) {
+
+                        console.log(row2.idTransaccion);
+
+                    })
+                    $.each(jQuery.parseJSON(row1.ReglaxAccion).EtapasTransaccion, function (index2, row2) {
+                        var nomEtapa = row2.NombreETapa
+                        var AccionEtapa = row2.AccionEtapa
+                        var etapaFutura = row2.etapaFutura
+
+
+
+                        $.each(row2.Regla, function (index2, row2) {
+
+                            validacionxaccion.push({
+                                nomEtapa: nomEtapa,
+                                AccionEtapa: AccionEtapa,
+                                etapaFutura: etapaFutura,
+                                reglaprinc: row2.validacion,
+                                reglasec: row2.alterna
+                            });
+
+                            // console.log(row2.validacion);
+
+                        })
+
+                    })
+
+                })
+            })
+
+            console.log(validacionxaccion);
+
+
+
+        }
+    });
+    
 
     console.log(xml_json);
 
@@ -129,6 +185,63 @@ function GeneraFormularioBND(xml_json) {
     namesDetalle = [];
     objetoFormula = [];
     $.each(xml_json, function (reg, rowgral) {
+
+        console.log(rowgral);
+
+        $.ajax({
+            async: false,
+            type: 'POST',
+            url: 'MyWebService.asmx/ReglasxAccion',
+            data: '{idTipoTransaccion:"' + idTran + '"}',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (respuesta) {
+
+
+                //console.log(respuesta);
+
+
+
+                $.each(respuesta, function (index, row) {
+                    $.each(row.listaReglasxAccion, function (index1, row1) {
+                        //console.log(jQuery.parseJSON(row1.ReglaxAccion).Datos);
+                        $.each(jQuery.parseJSON(row1.ReglaxAccion).Datos, function (index2, row2) {
+
+                            console.log(row2.idTransaccion);
+
+                        })
+                        $.each(jQuery.parseJSON(row1.ReglaxAccion).EtapasTransaccion, function (index2, row2) {
+                            var nomEtapa = row2.NombreETapa
+                            var AccionEtapa = row2.AccionEtapa
+                            var etapaFutura = row2.etapaFutura
+
+
+
+                            $.each(row2.Regla, function (index2, row2) {
+
+                                validacionxaccion.push({
+                                    nomEtapa: nomEtapa,
+                                    AccionEtapa: AccionEtapa,
+                                    etapaFutura: etapaFutura,
+                                    reglaprinc: row2.validacion,
+                                    reglasec: row2.alterna
+                                });
+
+                                // console.log(row2.validacion);
+
+                            })
+
+                        })
+
+                    })
+                })
+
+                console.log(validacionxaccion);
+
+
+
+            }
+        });
 
         idTran = rowgral.idTipoTrasaccion;
 
@@ -252,7 +365,7 @@ function GeneraFormularioBND(xml_json) {
                     formHtml += '<div class="form-actions">'
                     formHtml += '<div class="row">'
                     formHtml += '<div class="col-md-12">'
-                    formHtml += '<button id="addDetalle" onclick="GuardarRegitrosBND()" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o"></i> Agregar</button>';
+                    formHtml += '<button id="addDetalle" onclick="GuardarRegitrosBND(' + idTran +' )" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o"></i> Agregar</button>';
                     formHtml += '</div>'
                     formHtml += '</div>'
                     formHtml += '</div>'
@@ -407,7 +520,7 @@ function GeneraFormularioBND(xml_json) {
                     formHtml += '<div class="form-actions">'
                     formHtml += '<div class="row">'
                     formHtml += '<div class="col-md-12">'
-                    formHtml += '<button id="addDetalle" onclick="GuardarRegitrosBND()" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o"></i> Agregar</button>';
+                    formHtml += '<button id="addDetalle" onclick="GuardarRegitrosBND('+idTran+')" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o"></i> Agregar</button>';
                     formHtml += '</div>'
                     formHtml += '</div>'
                     formHtml += '</div>'
@@ -994,250 +1107,277 @@ function matchStart(params, data) {
 }
 function GuardarRegitrosBND() {
 
-    var valisusest = "";
-    var valXAccion = "$('#CampoM1').val() == $('#CampoM3').val()";
-    var valError = "$('#CampoM6').val() > 100";
-
-
-    valisusest = 'if(' + valXAccion + '){alert("bien")}else{}if(' + valError +'){alert("error")}';
+    //console.log("fffffffffff: "+idTran);
     
-    console.log(valisusest);
+    
 
-    eval(valisusest);
+    $.each(validacionxaccion, function (index2, row2) {
 
+        
 
-    var tablaNReg = 0;
-    var Datos = "";
-    var ArregloCab = $("#wizard-1").serializeArray();
-    $('#wizard-1').data('bootstrapValidator').validate();
-    var n = $('#wizard-1').data('bootstrapValidator').isValid();
-    console.log("el valor de n: " + n);
-    if (n) {
+        var valXAccion = row2.reglaprinc;
+        var valError = row2.alterna
 
-        Datos += '{';
-        Datos += '"informacionTransaccion": [{'
-        Datos += '"idTransaccion": "' + parametroE +' ",';
-        Datos += '"idTipoTransaccion": ' + idTran + ',';
-        Datos += '"idEtapa": ' + idEtapa + ',';
-        Datos += '"idAccion": ' + idAccion + ',';
-        Datos += '"nombreTransaccion": "' + Transaccion + '",';
-        Datos += '"categoriaTransaccion": "' + CatTransaccion + '"';
-        Datos += '}]'
+        valisusest = 'if(' + valXAccion + '){'+ alert("fdfdffdfdfdf")+'}else{}if(' + valError + '){alert("error")}';
+        console.log(valisusest);
+       // eval(valisusest);
 
-        //Crear nodo Cabecera
-        Datos += ',"Cabecera":';
-        if (ArregloCab.length != 0) {
-
-            Datos += "[";
-            Datos += '{';
-            $.each(ArregloCab, function (i, fd) {
-                var elements = document.getElementsByName('' + fd.name + '');
-                var id = elements[0].getAttribute('id');
-                var prueba = "";
-                if (fd.name != "dtDetalle_length") {
-
-                    if (fd.name == "DTDetalletran_length" || fd.name == "DTBitacora_length") {
-
-                        prueba = "hola";
-
-                    } else { Datos += '"' + fd.name + '":"' + fd.value + '",';}
-                }
-            });
-            Datos = Datos.substring(0, Datos.length - 1);
-            Datos += '}';
+    })
 
 
-            Datos += "]";
-        } else {
-            Datos += "[],";
-        }
-        //Crear nodo Detalle
-        console.log("valores en tabla: " + namesDetalle.length);
-        Datos += ',"Detalle":[';
-        if (namesDetalle.length != 0) {
+    try {
 
-            var table = $('#dtDetalle').DataTable();
-            tablaNReg = table.data().length;
-            if (table.data().length != 0) {
+        eval(valisusest)
+    }
+    catch (err) {
 
-                for (var i = 0; i < (table.data().length); i++) {
+        alert(err.message);
+    }
+
+
+    //var valisusest = "";
+   
+
+
+    
+    
+    //console.log(valisusest);
+
+   // eval(valisusest);
+
+
+    //var tablaNReg = 0;
+    //var Datos = "";
+    //var ArregloCab = $("#wizard-1").serializeArray();
+    //$('#wizard-1').data('bootstrapValidator').validate();
+    //var n = $('#wizard-1').data('bootstrapValidator').isValid();
+    //console.log("el valor de n: " + n);
+    //if (n) {
+
+    //    Datos += '{';
+    //    Datos += '"informacionTransaccion": [{'
+    //    Datos += '"idTransaccion": "' + parametroE +' ",';
+    //    Datos += '"idTipoTransaccion": ' + idTran + ',';
+    //    Datos += '"idEtapa": ' + idEtapa + ',';
+    //    Datos += '"idAccion": ' + idAccion + ',';
+    //    Datos += '"nombreTransaccion": "' + Transaccion + '",';
+    //    Datos += '"categoriaTransaccion": "' + CatTransaccion + '"';
+    //    Datos += '}]'
+
+    //    //Crear nodo Cabecera
+    //    Datos += ',"Cabecera":';
+    //    if (ArregloCab.length != 0) {
+
+    //        Datos += "[";
+    //        Datos += '{';
+    //        $.each(ArregloCab, function (i, fd) {
+    //            var elements = document.getElementsByName('' + fd.name + '');
+    //            var id = elements[0].getAttribute('id');
+    //            var prueba = "";
+    //            if (fd.name != "dtDetalle_length") {
+
+    //                if (fd.name == "DTDetalletran_length" || fd.name == "DTBitacora_length") {
+
+    //                    prueba = "hola";
+
+    //                } else { Datos += '"' + fd.name + '":"' + fd.value + '",';}
+    //            }
+    //        });
+    //        Datos = Datos.substring(0, Datos.length - 1);
+    //        Datos += '}';
+
+
+    //        Datos += "]";
+    //    } else {
+    //        Datos += "[],";
+    //    }
+    //    //Crear nodo Detalle
+    //    console.log("valores en tabla: " + namesDetalle.length);
+    //    Datos += ',"Detalle":[';
+    //    if (namesDetalle.length != 0) {
+
+    //        var table = $('#dtDetalle').DataTable();
+    //        tablaNReg = table.data().length;
+    //        if (table.data().length != 0) {
+
+    //            for (var i = 0; i < (table.data().length); i++) {
                     
-                    Datos += '{';
-                    $.each(namesDetalle, function (j, fd) {
-                        Datos += '"' + namesDetalle[j] + '":' + '"' + table.row(i).data()[j] + '",';
-                    });
-                    Datos = Datos.substring(0, Datos.length - 1);
-                    Datos += '},';
-                }
-                Datos = Datos.substring(0, Datos.length - 1);
+    //                Datos += '{';
+    //                $.each(namesDetalle, function (j, fd) {
+    //                    Datos += '"' + namesDetalle[j] + '":' + '"' + table.row(i).data()[j] + '",';
+    //                });
+    //                Datos = Datos.substring(0, Datos.length - 1);
+    //                Datos += '},';
+    //            }
+    //            Datos = Datos.substring(0, Datos.length - 1);
 
-            } else {
-                $.smallBox({
-                    title: "Error!",
-                    content: "<i>Debes agregar un detalle</i>",
-                    color: "#c79121",
-                    timeout: 4000,
-                    icon: "fa fa-info-circle swing animated"
-                });
-            }
-            Datos += "]";
-        } else {
-            Datos += "]";
-        }
-        Datos += '}';
-
-
-    } else {
-        bostrapvaliBND();
-
-        $.smallBox({
-            title: "Error!",
-            content: "<i>Debes llenar los campos obligatorios</i>",
-            color: "#c79121",
-            timeout: 4000,
-            icon: "fa fa-info-circle swing animated"
-        });
-    }
-
-    console.log(Datos);
-    if (n != false && namesDetalle.length != 0 && tablaNReg != 0) {
-        console.log("primermetodo");
-        $.ajax({
-            type: 'POST',
-            url: 'MyWebService.asmx/InsertarTransaccionxEtapa',
-            data: JSON.stringify({
-                json: Datos,
-                idTransaccion: parametroE,
-                Categoria: CatTransaccion,
-                idEtapa: idEtapa,
-                idAccion: idAccion
-            }),
-            contentType: 'application/json; utf-8',
-            dataType: 'json',
-            success: function (data) {
-                if (data.d != null) {
-
-                    switch (data.d) {
-
-                        case true:
-                            $.smallBox({
-                                title: "Éxito!",
-                                content: "Registro insertado correctamente",
-                                color: "#739e73",
-                                timeout: 2000,
-                                icon: "fa fa-thumbs-up swing animated"
-                            });
-                            $('#wizard-1')[0].reset();
-                            $('#wizard-1').bootstrapValidator('destroy');
-                            $.ajax({
-                                async: false,
-                                type: 'POST',
-                                url: 'MyWebService.asmx/ArmaFormularioxEtapa',
-                                data: JSON.stringify({
-                                    idtransa: idtransacccion
-                                }),
-                                dataType: 'json',
-                                contentType: 'application/json; charset=utf-8',
-                                success: function (respuesta) {
-
-                                    GeneraFormularioBND(respuesta);
-                                }
-                            });
-                            break;
-                        case false:
-                            $.smallBox({
-                                title: "Error!",
-                                content: "<i>Error al insertar</i>",
-                                color: "#C46A69",
-                                timeout: 3000,
-                                icon: "fa fa-warning shake animated"
-                            });
-                            break;
-
-                    }
+    //        } else {
+    //            $.smallBox({
+    //                title: "Error!",
+    //                content: "<i>Debes agregar un detalle</i>",
+    //                color: "#c79121",
+    //                timeout: 4000,
+    //                icon: "fa fa-info-circle swing animated"
+    //            });
+    //        }
+    //        Datos += "]";
+    //    } else {
+    //        Datos += "]";
+    //    }
+    //    Datos += '}';
 
 
-                }
-            },
-            error: function (jqXHR, textStatus, errorThrown) { }
+    //} else {
+    //    bostrapvaliBND();
 
-        });
-    }
+    //    $.smallBox({
+    //        title: "Error!",
+    //        content: "<i>Debes llenar los campos obligatorios</i>",
+    //        color: "#c79121",
+    //        timeout: 4000,
+    //        icon: "fa fa-info-circle swing animated"
+    //    });
+    //}
 
-    if (n == true && namesDetalle.length == 0 && tablaNReg == 0) {
+    //console.log(Datos);
+    //if (n != false && namesDetalle.length != 0 && tablaNReg != 0) {
+    //    console.log("primermetodo");
+    //    $.ajax({
+    //        type: 'POST',
+    //        url: 'MyWebService.asmx/InsertarTransaccionxEtapa',
+    //        data: JSON.stringify({
+    //            json: Datos,
+    //            idTransaccion: parametroE,
+    //            Categoria: CatTransaccion,
+    //            idEtapa: idEtapa,
+    //            idAccion: idAccion
+    //        }),
+    //        contentType: 'application/json; utf-8',
+    //        dataType: 'json',
+    //        success: function (data) {
+    //            if (data.d != null) {
 
-        console.log("segundometodo");
-        $.ajax({
-            type: 'POST',
-            url: 'MyWebService.asmx/InsertarTransaccionxEtapa',
-            data: JSON.stringify({
-                json: Datos,
-                idTransaccion: parametroE,
-                Categoria: CatTransaccion,
-                idEtapa: idEtapa,
-                idAccion: idAccion
-            }),
-            contentType: 'application/json; utf-8',
-            dataType: 'json',
-            success: function (data) {
-                if (data.d != null) {
+    //                switch (data.d) {
 
-                    switch (data.d) {
+    //                    case true:
+    //                        $.smallBox({
+    //                            title: "Éxito!",
+    //                            content: "Registro insertado correctamente",
+    //                            color: "#739e73",
+    //                            timeout: 2000,
+    //                            icon: "fa fa-thumbs-up swing animated"
+    //                        });
+    //                        $('#wizard-1')[0].reset();
+    //                        $('#wizard-1').bootstrapValidator('destroy');
+    //                        $.ajax({
+    //                            async: false,
+    //                            type: 'POST',
+    //                            url: 'MyWebService.asmx/ArmaFormularioxEtapa',
+    //                            data: JSON.stringify({
+    //                                idtransa: idtransacccion
+    //                            }),
+    //                            dataType: 'json',
+    //                            contentType: 'application/json; charset=utf-8',
+    //                            success: function (respuesta) {
 
-                        case true:
-                            $.smallBox({
-                                title: "Éxito!",
-                                content: "Registro insertado correctamente",
-                                color: "#739e73",
-                                timeout: 2000,
-                                icon: "fa fa-thumbs-up swing animated"
-                            });
-                            $('#wizard-1')[0].reset();
-                            $('#wizard-1').bootstrapValidator('destroy');
-                            $.ajax({
-                                async: false,
-                                type: 'POST',
-                                url: 'MyWebService.asmx/ArmaFormularioxEtapa',
-                                data: JSON.stringify({
-                                    idtransa: idtransacccion
-                                }),
-                                dataType: 'json',
-                                contentType: 'application/json; charset=utf-8',
-                                success: function (respuesta) {
+    //                                GeneraFormularioBND(respuesta);
+    //                            }
+    //                        });
+    //                        break;
+    //                    case false:
+    //                        $.smallBox({
+    //                            title: "Error!",
+    //                            content: "<i>Error al insertar</i>",
+    //                            color: "#C46A69",
+    //                            timeout: 3000,
+    //                            icon: "fa fa-warning shake animated"
+    //                        });
+    //                        break;
 
-                                    GeneraFormularioBND(respuesta);
-                                }
-                            });
-                            break;
-                        case false:
-                            $.smallBox({
-                                title: "Error!",
-                                content: "<i>Error al insertar</i>",
-                                color: "#C46A69",
-                                timeout: 3000,
-                                icon: "fa fa-warning shake animated"
-                            });
-                            break;
-
-                    }
+    //                }
 
 
-                }
-            },
-            error: function (jqXHR, textStatus, errorThrown) { }
+    //            }
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrown) { }
 
-        });
-    }
-    else {
+    //    });
+    //}
 
-        //$.smallBox({
-        //    title: "Error!",
-        //    content: "<i>Error al completar el formulario</i>",
-        //    color: "#C46A69",
-        //    timeout: 3000,
-        //    icon: "fa fa-warning shake animated"
-        //});
-    }
+    //if (n == true && namesDetalle.length == 0 && tablaNReg == 0) {
+
+    //    console.log("segundometodo");
+    //    $.ajax({
+    //        type: 'POST',
+    //        url: 'MyWebService.asmx/InsertarTransaccionxEtapa',
+    //        data: JSON.stringify({
+    //            json: Datos,
+    //            idTransaccion: parametroE,
+    //            Categoria: CatTransaccion,
+    //            idEtapa: idEtapa,
+    //            idAccion: idAccion
+    //        }),
+    //        contentType: 'application/json; utf-8',
+    //        dataType: 'json',
+    //        success: function (data) {
+    //            if (data.d != null) {
+
+    //                switch (data.d) {
+
+    //                    case true:
+    //                        $.smallBox({
+    //                            title: "Éxito!",
+    //                            content: "Registro insertado correctamente",
+    //                            color: "#739e73",
+    //                            timeout: 2000,
+    //                            icon: "fa fa-thumbs-up swing animated"
+    //                        });
+    //                        $('#wizard-1')[0].reset();
+    //                        $('#wizard-1').bootstrapValidator('destroy');
+    //                        $.ajax({
+    //                            async: false,
+    //                            type: 'POST',
+    //                            url: 'MyWebService.asmx/ArmaFormularioxEtapa',
+    //                            data: JSON.stringify({
+    //                                idtransa: idtransacccion
+    //                            }),
+    //                            dataType: 'json',
+    //                            contentType: 'application/json; charset=utf-8',
+    //                            success: function (respuesta) {
+
+    //                                GeneraFormularioBND(respuesta);
+    //                            }
+    //                        });
+    //                        break;
+    //                    case false:
+    //                        $.smallBox({
+    //                            title: "Error!",
+    //                            content: "<i>Error al insertar</i>",
+    //                            color: "#C46A69",
+    //                            timeout: 3000,
+    //                            icon: "fa fa-warning shake animated"
+    //                        });
+    //                        break;
+
+    //                }
+
+
+    //            }
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrown) { }
+
+    //    });
+    //}
+    //else {
+
+    //    //$.smallBox({
+    //    //    title: "Error!",
+    //    //    content: "<i>Error al completar el formulario</i>",
+    //    //    color: "#C46A69",
+    //    //    timeout: 3000,
+    //    //    icon: "fa fa-warning shake animated"
+    //    //});
+    //}
 
 
 
@@ -1551,7 +1691,7 @@ function deleteRowwBND() {
 
 //Funciones validar
 function validarNBND(e, id, longg) {
-    console.log("maxLength");
+    //console.log("maxLength");
 
 
     $("#" + id.getAttribute("id")).attr('maxLength', longg).keypress(limitMeBND);

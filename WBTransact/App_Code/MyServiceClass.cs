@@ -591,6 +591,11 @@ public class MyServiceClass : System.Web.Services.WebService {
         return BandejaNegocio.DetalleTransaccionesN(idEstatus);
     }
     [WebMethod]
+    public ReglasNegocioxAccion ReglasxAccion(int idTipoTransaccion) {
+
+        return BandejaNegocio.ReglasxAccion(idTipoTransaccion);
+    }
+    [WebMethod]
     public CamposTransaccion ArmaFormularioxEtapa(int idTipoTransaccion, string idtransaccion) {
         return BandejaNegocio.ArmaFormularioxEtapa(idTipoTransaccion, idtransaccion);
     }

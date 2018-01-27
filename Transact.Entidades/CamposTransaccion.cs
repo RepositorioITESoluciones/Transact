@@ -14,7 +14,11 @@ namespace Transact.Entidades
         public string cveTipoTransaccion { get; set; }
         public string categoriaTransac { get; set; }
         public int idEtapa { get; set; }
+        public string NombreEtapa { get; set; }
         public int idAccion { get; set; }
+        public string NombreDes { get; set; }
+        public int idEtapaFutura { get; set; }
+        public string nomEtaFut { get; set; }
 
 
         public bool activo { get; set; }

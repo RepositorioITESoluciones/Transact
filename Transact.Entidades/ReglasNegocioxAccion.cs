@@ -12,6 +12,8 @@ namespace Transact.Entidades
     }
     public class camposReglasNegocioxAccion
     {
+        public int idReglaxAccion { get; set; }
+        public int idTipoTransaccion { get; set; }        
         public int idEtapa { get; set; }
         public string NombreEtapa { get; set; }
         public int idAccion { get; set; }
