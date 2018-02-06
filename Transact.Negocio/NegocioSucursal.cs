@@ -45,6 +45,15 @@ namespace Transact.Negocio
 
             return listadatos;
         }
+
+        public NegocioGiros LlenaComboGiros()
+        {
+
+            return clasedatos.LlenaComboGiros();
+
+        }
+
+
         public Sucursal LlenaTablaSucursales()
         {
             Sucursal listadatos;

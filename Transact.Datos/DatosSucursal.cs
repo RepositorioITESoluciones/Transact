@@ -94,6 +94,50 @@ namespace Transact.Datos
             return campos;
 
         }
+
+        public NegocioGiros LlenaComboGiros()
+        {
+            NegocioGiros campos = new NegocioGiros();
+            DataTable dt = new DataTable();
+            List<CamposGiros> ListaCamposGiros = new List<CamposGiros>();
+
+
+            SqlConnection connection = null;
+            try
+            {
+                using (connection = Conexion.ObtieneConexion("ConexionBD"))
+                {
+                    SqlDataReader consulta;
+                    connection.Open();
+                    consulta = Ejecuta.ConsultaConRetorno(connection, "[Usp_ComboGiros] ");
+                    dt.Load(consulta);
+                    connection.Close();
+                }
+
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    CamposGiros reg = new CamposGiros();
+                    reg.idGiro = Convert.ToInt32(row["idGiro"].ToString());
+                    reg.nombre = row["nombre"].ToString();
+                    reg.activo = Convert.ToBoolean(row["activo"].ToString());
+                    ListaCamposGiros.Add(reg);
+                }
+                campos.listGiros = ListaCamposGiros.ToArray();
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+
+
+            }
+
+            return campos;
+
+        }
+
         public TipoPersona LlenaComboTipoPersona()
         {
             TipoPersona campos = new TipoPersona();

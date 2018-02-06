@@ -75,6 +75,7 @@ namespace Transact.Negocio
         {
             Menus listadatos;
 
+
             listadatos = clasedatos.LlenaComboMenuPadreEdit(camposMenus);
 
             return listadatos;

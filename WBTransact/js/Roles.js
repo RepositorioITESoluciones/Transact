@@ -67,7 +67,7 @@ function initEventos() {
                                 timeout: 2000,
                                 icon: "fa fa-thumbs-up swing animated"
                             });
-                            llenaDataTable();
+                            initDataTable();
                         } else {
                             rolDuplicado = 1;
                             $.smallBox({
@@ -78,7 +78,7 @@ function initEventos() {
                                 icon: "fa fa-warning shake animated"
                             });
                         }
-                        console.log(response);
+                        //console.log(response);
                         
                     }
                 });
@@ -124,6 +124,7 @@ function initEventos() {
                     buttons: '[No][Si]'
                 }, function (ButtonPressed) {
                     if (ButtonPressed === "Si") {
+                        $(".MessageBoxButtonSection").hide();
                         $.ajax({
                             async: false,
                             type: "POST",
@@ -134,7 +135,7 @@ function initEventos() {
                             success: function (output) {
                                 $.each(output, function (j, cam) {
                                     showOkMessage('Rol Eliminado', 'Se ha Eliminado el Rol <b>' + row[1] + '<b>');
-                                    llenaDataTable();
+                                    initDataTable();
                                 });
                             },
                             error: function (e) {
@@ -374,7 +375,7 @@ function editRol() {
                         timeout: 2000,
                         icon: "fa fa-thumbs-up swing animated"
                     });
-                    llenaDataTable();
+                    initDataTable();
                 } else {
                     rolDuplicadoEdit = 1;
                     $.smallBox({

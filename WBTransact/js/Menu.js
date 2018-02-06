@@ -85,8 +85,17 @@ function initEventos() {
                                 timeout: 2000,
                                 icon: "fa fa-thumbs-up swing animated"
                             });
-                            $("#combomenuPadre").html('');
-                            llenaDataTable();
+                            
+                            //$('#FormMenu').bootstrapValidator('destroy');
+                            $('#FormMenu')[0].reset();
+                            $("#combomenuPadre").html('');                    
+                            //$("#combomenuPadre").hide();
+                            //validateForm();
+                            //llenaComboMenuPadre()
+                            //bostrapvaliBND();
+
+                            //llenaDataTable();
+
                         } else {
                             menuDuplicado = 1;
                             $.smallBox({
@@ -97,16 +106,23 @@ function initEventos() {
                                 icon: "fa fa-warning shake animated"
                             });
                         }
-                        console.log(response);
+                        //console.log(response);
                         
                     }
                 });
 
                 if (menuDuplicado == 0) {
-                    $('#FormularioAlta').bootstrapValidator('destroy');
-                    $('#FormMenu').data('bootstrapValidator').resetForm();
+                    //$('#FormularioAlta').bootstrapValidator('destroy');
+                    //$('#FormMenu').data('bootstrapValidator').resetForm();
+                    //llenaDataTable();
+                    ////var otable = $('#detalleMenus').DataTable();
+                    ////otable.ajax.reload();
+
                     $('#divTiposTransaccion').show();
                     $('#FormularioAlta').hide();
+
+
+                    initDataTable();
                 } else {
                     $('#divTiposTransaccion').hide();
                     $('#FormularioAlta').show();
@@ -125,6 +141,9 @@ function initEventos() {
 
         var row = $("#detalleMenus").DataTable().row('.selected').data();
         if (row) {
+
+            console.log(row[0]);
+
             llenaComboMenuPadreEdit(row[0]);
             LlenaCheckBoxMenusEdit(row[0]);
             $("#idMenu").val(row[0]);
@@ -152,6 +171,7 @@ function initEventos() {
                 buttons: '[No][Si]'
             }, function (ButtonPressed) {
                 if (ButtonPressed === "Si") {
+                    $(".MessageBoxButtonSection").hide();
                     $.ajax({
                         async: false,
                         type: "POST",
@@ -162,7 +182,8 @@ function initEventos() {
                         success: function (output) {
                             $.each(output, function (j, cam) {
                                 showOkMessage('Menú Eliminado', 'Se ha Eliminado el Menú <b>' + row[1] + '<b>');
-                                llenaDataTable();
+                                //llenaDataTable();
+                                initDataTable();
                             });
                         },
                         error: function (e) {
@@ -326,6 +347,7 @@ function llenaDataTable() {
             });
         }
     });
+
     otable.clear().draw();
     otable.rows.add(datos);
     otable.draw();
@@ -361,7 +383,7 @@ function llenaComboMenuPadre() {
             $("#combomenuPadre").html('');
         } else {
             html = ' <div class="required">' +
-                ' <label class="control-label negritas"> Menú Padre </label >' +
+                ' <label class="control-label negritas"> Menú padre </label >' +
                 ' </div >';
             html += ' <div class="form-group">';
             html += ' <select type = "text" id = "combomenuPadre1" onkeypress="" class = "form-control" name = "combomenuPadre1" >';
@@ -382,7 +404,7 @@ function llenaComboMenuPadre() {
             contentType: 'application/json; charset=utf-8',
             success: function (dataList) {
                 html = ' <div class="required">' +
-                    ' <label class="control-label negritas"> Menú Padre </label >' +
+                    ' <label class="control-label negritas"> Menú hijo </label >' +
                     ' </div >';
                 html += ' <div class="form-group">';
                 html += ' <select type = "text" id = "combomenuPadre1" onkeypress="" class = "form-control" name = "combomenuPadre1" >';
@@ -422,7 +444,7 @@ function llenaComboMenuPadreEdit(idMenu) {
             dataType: "json",
             success: function (dataList) {
                 html = ' <div class="required">' +
-                    ' <label class="control-label negritas"> Menú Padre </label >' +
+                    ' <label class="control-label negritas"> Menú padre </label >' +
                     ' </div >';
                 html += ' <div class="form-group">';
                 html += ' <select type = "text" id = "combomenuPadre1" onkeypress="" class = "form-control" name = "combomenuPadre1" >';
@@ -529,7 +551,7 @@ function editMenu() {
                         icon: "fa fa-thumbs-up swing animated"
                     }
                     );
-                    llenaDataTable();
+                    initDataTable();
                 } else {
                     menuDuplicadoEdit = 1;
                     $.smallBox({

@@ -116,103 +116,105 @@
                                     <i class="fa fa-arrow-left"></i> Atrás
                                 </button>
                             </div>
-                            <div class="row" style="margin-top: 2%; margin-bottom: 2%;">
+                            <div class="row" style="margin-top: 2%; margin-bottom: 2%; margin-left:2%;margin-right:2%;">
 
-                                <section class="col col-6">
-                                    <div class=" required">
-                                        <label class="control-label">* Nombre</label>
-                                    </div>
-                                    <div class=" form-group">
-                                        <input type="text" ondrop="return false" id="Nombre" onkeypress="return validarCaracteresN(event)" class="form-control" name="nombre" />
-                                    </div>
-                                </section>
+                                <div class="row">
+                                    <section class="col col-6">
+                                        <div class=" required">
+                                            <label class="control-label">* Nombre</label>
+                                        </div>
+                                        <div class=" form-group">
+                                            <input type="text" ondrop="return false" id="Nombre" onkeypress="return validarCaracteresN(event)" class="form-control" name="nombre" />
+                                        </div>
+                                    </section>
 
-                                <section class="col col-6">
-                                    <div class=" required">
-                                        <label class="control-label">* Empresa</label>
-                                    </div>
-                                    <div class=" form-group">
-                                        <select type="text" id="ComboEmpresa" onkeypress="" class="form-control" name="idEmpresa"></select>
-                                    </div>
-                                </section>
+                                    <section class="col col-6">
+                                        <div class=" required">
+                                            <label class="control-label">* Empresa</label>
+                                        </div>
+                                        <div class=" form-group">
+                                            <select type="text" id="ComboEmpresa" onkeypress="" class="form-control" name="idEmpresa"></select>
+                                        </div>
+                                    </section>
+                                </div>
+                                <div class="row">
+                                    <section class="col col-6">
+                                        <div class=" required">
+                                            <label class="control-label">* Tipo de Persona</label>
+                                        </div>
+                                        <div class=" form-group">
+                                            <select type="text" id="ComboTPer" onkeypress="" onchange="validaTamanio()" class="form-control" name="ComboTPer"></select>
+                                            <input type="hidden" id="Tamanio" name="Tamanio" />
+                                        </div>
+                                    </section>
+                                    <section class="col col-6">
+                                        <div class=" required">
+                                            <label class="control-label">* RFC</label>
+                                        </div>
+                                        <div class=" form-group">
+                                            <input type="text" ondrop="return false" id="RFC" onkeypress="return validarCaracteresN(event)" class="form-control" name="RFC" />
+                                        </div>
+                                    </section>
+                                </div>
+                                <div class="row">
+                                    <section class="col col-6">
+                                        <div class=" required">
+                                            <label class="control-label">* Razon Social</label>
+                                        </div>
+                                        <div class=" form-group">
+                                            <input type="text" ondrop="return false" id="RS" class="form-control" name="RS" />
+                                        </div>
+                                    </section>
+                                    <section class="col col-6">
+                                        <div class=" required">
+                                            <label class="control-label">* Calle</label>
+                                        </div>
+                                        <div class=" form-group">
+                                            <input type="text" ondrop="return false" id="Calle" class="form-control" name="Calle" />
+                                        </div>
+                                    </section>
+                                </div>
+                                    <div class="row">
+                                        <section class="col col-6">
+                                            <div class=" required">
+                                                <label class="control-label">* Numero Ext.</label>
+                                            </div>
+                                            <div class=" form-group">
+                                                <input type="text" ondrop="return false" id="NumExt" class="form-control" name="NumExt" />
+                                            </div>
+                                        </section>
 
-                                <section class="col col-6">
-                                    <div class=" required">
-                                        <label class="control-label">* Tipo de Persona</label>
-                                    </div>
-                                    <div class=" form-group">
-                                        <select type="text" id="ComboTPer" onkeypress="" onchange="validaTamanio()" class="form-control" name="ComboTPer"></select>
-                                        <input type="hidden" id="Tamanio" name="Tamanio" />
-                                    </div>
-                                </section>
-
-                                <section class="col col-6">
-                                    <div class=" required">
-                                        <label class="control-label">* RFC</label>
-                                    </div>
-                                    <div class=" form-group">
-                                        <input type="text" ondrop="return false" id="RFC" onkeypress="return validarCaracteresN(event)" class="form-control" name="RFC" />
-                                    </div>
-                                </section>
-
-                                <section class="col col-6">
-                                    <div class=" required">
-                                        <label class="control-label">* Razon Social</label>
-                                    </div>
-                                    <div class=" form-group">
-                                        <input type="text" ondrop="return false" id="RS" onkeypress="return validarCaracteresN(event)" class="form-control" name="RS" />
-                                    </div>
-                                </section>
-
-                                <section class="col col-6">
-                                    <div class=" required">
-                                        <label class="control-label">* Calle</label>
-                                    </div>
-                                    <div class=" form-group">
-                                        <input type="text" ondrop="return false" id="Calle" onkeypress="return validarCaracteresN(event)" class="form-control" name="Calle" />
-                                    </div>
-                                </section>
-
-                                <section class="col col-6">
-                                    <div class=" required">
-                                        <label class="control-label">* Numero Ext.</label>
-                                    </div>
-                                    <div class=" form-group">
-                                        <input type="text" ondrop="return false" id="NumExt" onkeypress="return validarCaracteresN(event)" class="form-control" name="NumExt" />
-                                    </div>
-                                </section>
-
-                                <section class="col col-6">
-                                    <div class=" required">
-                                        <label class="control-label">Numero Int.</label>
-                                    </div>
-                                    <div class=" form-group">
-                                        <input type="text" ondrop="return false" id="NumInt" onkeypress="return validarCaracteresN(event)" class="form-control" name="NumInt" />
-                                    </div>
-                                </section>
-
-                                <section class="col col-6">
-                                    <div class=" required">
-                                        <label class="control-label">* Estado</label>
-                                    </div>
-                                    <div class=" form-group">
-                                        <select type="text" id="ComboEstado" onchange="actualizaCP()" class="form-control" name="ComboEstado"></select>
-                                    </div>
-                                </section>
-
-                                <section class="col col-6">
-                                    <div class=" required">
-                                        <label class="control-label">* Codigo Postal</label>
-                                    </div>
-                                    <div class=" form-group">
-                                        <select type="text" id="ComboCP" onkeypress="" class="form-control" name="ComboCP">
-                                            <option value="0">Seleccione</option>
-                                        </select>
-                                    </div>
-                                </section>
-
+                                    <section class="col col-6">
+                                        <div class=" required">
+                                            <label class="control-label">Numero Int.</label>
+                                        </div>
+                                        <div class=" form-group">
+                                            <input type="text" ondrop="return false" id="NumInt" class="form-control" name="NumInt" />
+                                        </div>
+                                    </section>
+                                </div>
+                                <div class="row">
+                                    <section class="col col-6">
+                                        <div class=" required">
+                                            <label class="control-label">* Estado</label>
+                                        </div>
+                                        <div class=" form-group">
+                                            <select type="text" id="ComboEstado" onchange="actualizaCP()" class="form-control" name="ComboEstado"></select>
+                                        </div>
+                                    </section>
+                                    <section class="col col-6">
+                                        <div class=" required">
+                                            <label class="control-label">* Codigo Postal</label>
+                                        </div>
+                                        <div class=" form-group">
+                                            <select type="text" id="ComboCP" onkeypress="" class="form-control" name="ComboCP">
+                                                <option value="0">Seleccione</option>
+                                            </select>
+                                        </div>
+                                    </section>
+                                </div>
                             </div>
-                        </form>
+</form>
 
                         <div id="botones" class="widget-body-toolbar">
                             <button id="btnguardar" type="button" class="btn btn-primary btn-sm">

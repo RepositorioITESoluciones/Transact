@@ -1154,7 +1154,7 @@ namespace Transact.Datos
                 {
                     SqlDataReader consulta;
                     connection.Open();
-                    consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT  MAE.idTransaccion folioTransaccion,  TT.descripcion nombreTransaccion, " +
+                    consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT Distinct MAE.idTransaccion folioTransaccion,  TT.descripcion nombreTransaccion, " +
                         "MAE.fechaIniTransaccion, TT.cveTipoTransaccion Clave, R.nombreRol Rol, TT.idTipoTransaccion,ETT.descripcion EtapaAtual, " +
                         "(SELECT descripcion FROM Configuracion.EtapasTipoTransaccion WHERE idEtapa = (SELECT MAX(idEtapa) " +
                         "FROM Configuracion.EtapasTipoTransaccion WHERE idTipoTransaccion = ETT.idTipoTransaccion)) as EtapaSiguiente FROM Configuracion.MAETransacciones MAE, " +

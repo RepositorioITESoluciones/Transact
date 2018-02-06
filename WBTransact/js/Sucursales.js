@@ -5,6 +5,7 @@
     llenaComboEmpresa();
     llenaComboEstado();
     llenaComboTP();
+    validateForm();
 });
 
 function initEventos() {
@@ -66,7 +67,7 @@ function initEventos() {
             var duplicado = 0;
             valido = validateForm();
             if (valido) {
-           //     console.log(JSON.stringify($('#FormSucursal').serializeArray()));
+
                 $.ajax({
                     async: false,
                     type: 'POST',
@@ -76,7 +77,6 @@ function initEventos() {
                     success: function (response) {
                         //console.log(response);
                         var resultadoXML = response.substring(77, response.indexOf('</boolean>'));
-                        console.log(resultadoXML);
                         if (resultadoXML == "true") {
                         $.smallBox({
                             title: "Éxito!",
@@ -97,10 +97,10 @@ function initEventos() {
                         }
                         //console.log(response);
                         //initDataTable();
-                        llenaDataTable();
+
+                        initDataTable();
                     }
                 });
-                console.log(duplicado);
                 if (duplicado == 0) {
                     $('#FormSucursal').data('bootstrapValidator').resetForm();
                     $('#divTiposTransaccion').show();
@@ -128,6 +128,7 @@ function initEventos() {
                 buttons: '[No][Si]'
             }, function (ButtonPressed) {
                 if (ButtonPressed === "Si") {
+                    $(".MessageBoxButtonSection").hide();
                     $.ajax({
                         async: false,
                         type: "POST",
@@ -138,8 +139,8 @@ function initEventos() {
                         success: function (output) {
                             $.each(output, function (j, cam) {
                                 showOkMessage('Transaccion Eliminada', 'Se ha Eliminado la Transaccion <b>' + row[1] + '<b>');
-                                //initDataTable();
-                                llenaDataTable();
+                                initDataTable();
+                                //llenaDataTable();
                             });
                         },
                         error: function (e) {
@@ -195,8 +196,8 @@ function editSucursal() {
                 timeout: 2000,
                 icon: "fa fa-thumbs-up swing animated"
             });
-            llenaDataTable();
-            //initDataTable();
+            //llenaDataTable();
+            initDataTable();
         }
     });
     $('#FormSucursal').bootstrapValidator('destroy');
@@ -220,7 +221,8 @@ function validaTamanio() {
         document.getElementById("RFC").value = null;
         document.getElementById("RFC").disabled = true;
     }
-    validateForm();
+    //validateForm();
+    validaRFC();
 }
 
 function validateForm() {
@@ -384,8 +386,49 @@ function validateForm() {
 
     $('#FormSucursal').data('bootstrapValidator').validate();
     var valido = $('#FormSucursal').data('bootstrapValidator').isValid();
-    console.log("llega " + valido);
+    //console.log("llega " + valido);
     return valido;
+}
+
+function validaRFC() {
+
+    //$('#FormSucursal').bootstrapValidator('destroy');
+    //var tamanio = $("#Tamanio").val();
+    //console.log('tamanio: ' + tamanio);
+
+    $("#FormSucursal").bootstrapValidator({
+        excluded: [':disabled'],
+        live: 'enabled',
+        submitButtons: 'button[id="btnguardar"]',
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        fields: {
+            RFC: {
+                selector: '#RFC',
+                group: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'El RFC de la Persona es requerido'
+                    },
+                    stringLength: {
+                        min: tamanio,
+                        max: tamanio,
+                        message: 'El RFC debe tener ' + tamanio + ' caracteres'
+                    },
+                    regexp: {
+                        regexp: /^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))((-)?([A-Z\d]{3}))?$/,
+                        message: 'El RFC no es valido'
+                    }
+                }
+            }
+        }
+    });
+
+    $('#FormSucursal').data('bootstrapValidator').validate();
+    var valido = $('#FormSucursal').data('bootstrapValidator').isValid();
+    //console.log("llega " + valido);
+    return valido;
+
 }
 
 //Iniciar la tabla

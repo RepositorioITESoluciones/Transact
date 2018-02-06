@@ -7,6 +7,9 @@ var cadena = "";
 var cadenaCombo = "";
 var cadenacomboSucursal = "";
 var banderaRFC = "";
+var banderita = 0;
+
+
 
 $(function () {
     initEventos();
@@ -43,14 +46,19 @@ function initEventos() {
     $.ajax({
         async: false,
         type: 'POST',
-        url: 'MyWebService.asmx/LlenaTablaDE',
+        url: 'MyWebService.asmx/LlenaComboGiro',
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
+
+            //console.log("fghjklkjhgfdfghjkl");
+            //console.log(response);
+
+
             cadena = "";
             $.each(response, function (row, index) {
                 cadena += '<option value="' + 0 + '"> Seleccione una opción </option>'
-                $.each(index.ListaRegistros, function (r, arr) {
+                $.each(index.listGiros, function (r, arr) {
                     cadena += '<option value="' + arr.idGiro + '">' + arr.nombre + '</option>';
                 });
             });
@@ -76,7 +84,7 @@ function initEventos() {
         }
     });
 
-   
+
     var f = new Date();
 
     $("#fecha").val(f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear());
@@ -152,7 +160,7 @@ function initEventos() {
             $("#errorCp").show();
         }
         var rfc = "";
-        console.log("banderaRFC:: " + banderaRFC);
+
         if (banderaRFC == "Fisico") {
             rfc = $("#rfcFisico").val();
         } else {
@@ -162,8 +170,10 @@ function initEventos() {
         bootsVal();
         $('#FormEmpresa').data('bootstrapValidator').validate();
         var n = $('#FormEmpresa').data('bootstrapValidator').isValid();
+
         if (n) {
-            if ($("#ComboCP").val() != 0 && $("#ComboEstado").val() != 0) {
+            if ($("#ComboCP").val() != 0 && $("#ComboEstado").val() != 0 && banderita == 0) {
+
                 $('#divDatosEmpresariales').show();
                 $('#FormularioDatosEmpresariales').hide();
                 $.ajax({
@@ -201,9 +211,6 @@ function initEventos() {
 
                         $("#errorCp").hide();
                         $("#errorEstado").hide();
-                        //cargarTabla();
-                        //$('#FormEmpresa')[0].reset();
-                        //$('#FormEmpresa').bootstrapValidator('destroy');
                     }
 
                 });
@@ -221,7 +228,10 @@ function initEventos() {
 
     $('#btnguardar2').click(function () {
         var rfc = "";
-        console.log("banderaRFC:: " + banderaRFC);
+
+
+
+
         if (banderaRFC == "Fisico") {
             rfc = $("#rfcFisico").val();
         } else {
@@ -285,7 +295,9 @@ function initEventos() {
                 content: "Una vez eliminada la empresa no podras volver acceder a ella.",
                 buttons: '[No][Si]'
             }, function (ButtonPressed) {
+                
                 if (ButtonPressed === "Si") {
+                    $(".MessageBoxButtonSection").hide();
                     $.ajax({
                         async: false,
                         type: 'POST',
@@ -294,6 +306,7 @@ function initEventos() {
                             idEmpresa: idEmpresa
                         },
                         success: function (data) {
+                            //$("#bot2-Msg1").prop("disabled", false);
                             $.smallBox({
                                 title: "Éxito!",
                                 content: "Empresa <b>" + row[0] + "</b> eliminada",
@@ -301,10 +314,14 @@ function initEventos() {
                                 timeout: 2000,
                                 icon: "fa fa-thumbs-up swing animated"
                             });
+                            
                             cargarTabla();
                             $('#FormEmpresa')[0].reset();
                             $('#FormEmpresa').bootstrapValidator('destroy');
+                            
+
                         }
+                        
                     })
                 } else {
                     $('#bot1-Msg1').prop('disabled', true);
@@ -700,7 +717,7 @@ function bootsVal(rfc) {
                     //    message: 'El RFC FISICO debe ser menor que 13 caracteres'
                     //},
                     regexp: {
-                        regexp: /^([aA-zZñÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[aA-zZ|\&\d]{3})$/,
+                        regexp: /^([A-ZÑ&]{4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/,
                         message: 'RFC fisico no tiene el formato adecuado.',
                     }
                 }
@@ -718,7 +735,7 @@ function bootsVal(rfc) {
                     //    message: 'El RFC MORAL debe ser menor que 12 caracteres'
                     //},
                     regexp: {
-                        regexp: /^([aA-zZñÑ\x26]{3}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[aA-zZ|\&\d]{3})$/,
+                        regexp: /^([A-ZÑ&]{3}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/,
                         message: 'RFC moral no tiene el formato adecuado.'
                     }
 
@@ -726,6 +743,10 @@ function bootsVal(rfc) {
             }
         }
     });
+    $("#errorFisico").hide();
+    $("#errorMoral").hide();
+    //$(".rfcMoral").addClass('has-success');
+    //$(".rfcFisico").addClass('has-success');
 }
 
 
@@ -780,7 +801,7 @@ $("#tipoPer").change(function () {
         $(".rfcMoral").hide();
     } else if ($("#tipoPer").val() == 2) {
         banderaRFC = "Moral";
-        console.log(">>>>>>>>: " + banderaRFC);
+        //console.log(">>>>>>>>: " + banderaRFC);
         bootsVal();
         $(".rfcMoral").removeClass('has-success');
         $(".rfcMoral").removeClass('has-error');
@@ -795,6 +816,7 @@ $("#tipoPer").change(function () {
         $(".rfcFisico").hide();
     }
 })
+
 function validaRFCs(banderaRFC) {
     var rfc = "";
     if (banderaRFC == "Fisico") {
@@ -823,11 +845,16 @@ function validaRFCs(banderaRFC) {
                         $(".rfcFisico").addClass('has-error');
                         $("#errorFisico").show();
                         $("#errorMoral").show();
+                        banderita = 1;
+                        console.log("si existe");
+
                     } else if (index == true) {
                         $("#errorFisico").hide();
                         $("#errorMoral").hide();
                         $(".rfcMoral").addClass('has-success');
                         $(".rfcFisico").addClass('has-success');
+                        banderita = 0;
+                        console.log("no existe");
                     }
                 })
             }

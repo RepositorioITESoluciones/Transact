@@ -66,7 +66,8 @@ namespace Transact.Datos
                 {
                     connection.Open();
                     var parametros = new[]{
-                        ParametroAcceso.CrearParametro("@nombreRol", SqlDbType.VarChar, roles.nombreRol.ToUpper() , ParameterDirection.Input)
+                        ParametroAcceso.CrearParametro("@nombreRol", SqlDbType.VarChar, roles.nombreRol.ToUpper() , ParameterDirection.Input),
+                        ParametroAcceso.CrearParametro("@idRol", SqlDbType.Int, roles.idRol , ParameterDirection.Input)
                     };
                     dt = Ejecuta.EjecutarConsulta(connection, parametros, "Usp_CatRolesValidaNombre");
 

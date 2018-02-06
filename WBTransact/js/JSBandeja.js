@@ -19,6 +19,7 @@ var longitudC = 0;
 var Detransacciones=[]
 var validacionxaccion = [];
 var parametroE = "";
+var etapaActual = "";
 
 $(function () {
 
@@ -121,64 +122,7 @@ function ArmaFormularioxetapa(idTipoTransaccion, idtransaccion) {
 
 function GeneraFormularioBND(xml_json, idTran) {
 
-    $.ajax({
-        async: false,
-        type: 'POST',
-        url: 'MyWebService.asmx/ReglasxAccion',
-        data: '{idTipoTransaccion:"' + idTran + '"}',
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        success: function (respuesta) {
-
-
-            //console.log(respuesta);
-
-
-
-            $.each(respuesta, function (index, row) {
-                $.each(row.listaReglasxAccion, function (index1, row1) {
-                    //console.log(jQuery.parseJSON(row1.ReglaxAccion).Datos);
-                    $.each(jQuery.parseJSON(row1.ReglaxAccion).Datos, function (index2, row2) {
-
-                        console.log(row2.idTransaccion);
-
-                    })
-                    $.each(jQuery.parseJSON(row1.ReglaxAccion).EtapasTransaccion, function (index2, row2) {
-                        var nomEtapa = row2.NombreETapa
-                        var AccionEtapa = row2.AccionEtapa
-                        var etapaFutura = row2.etapaFutura
-
-
-
-                        $.each(row2.Regla, function (index2, row2) {
-
-                            validacionxaccion.push({
-                                nomEtapa: nomEtapa,
-                                AccionEtapa: AccionEtapa,
-                                etapaFutura: etapaFutura,
-                                reglaprinc: row2.validacion,
-                                reglasec: row2.alterna
-                            });
-
-                            // console.log(row2.validacion);
-
-                        })
-
-                    })
-
-                })
-            })
-
-            console.log(validacionxaccion);
-
-
-
-        }
-    });
     
-
-    console.log(xml_json);
-
     var formHtml = "";
     Valicabecera = "";
     detallevalida = '';
@@ -186,7 +130,9 @@ function GeneraFormularioBND(xml_json, idTran) {
     objetoFormula = [];
     $.each(xml_json, function (reg, rowgral) {
 
-        console.log(rowgral);
+        etapaActual = rowgral.NombreEtapa
+
+        //console.log(etapaActual);
 
         $.ajax({
             async: false,
@@ -196,12 +142,6 @@ function GeneraFormularioBND(xml_json, idTran) {
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             success: function (respuesta) {
-
-
-                //console.log(respuesta);
-
-
-
                 $.each(respuesta, function (index, row) {
                     $.each(row.listaReglasxAccion, function (index1, row1) {
                         //console.log(jQuery.parseJSON(row1.ReglaxAccion).Datos);
@@ -224,7 +164,9 @@ function GeneraFormularioBND(xml_json, idTran) {
                                     AccionEtapa: AccionEtapa,
                                     etapaFutura: etapaFutura,
                                     reglaprinc: row2.validacion,
-                                    reglasec: row2.alterna
+                                    reglasec: row2.alterna,
+                                    mssuses: row2.success,
+                                    mserror: row2.error
                                 });
 
                                 // console.log(row2.validacion);
@@ -236,10 +178,8 @@ function GeneraFormularioBND(xml_json, idTran) {
                     })
                 })
 
-                console.log(validacionxaccion);
-
-
-
+                //console.log("aqui ando");
+                //console.log(validacionxaccion);
             }
         });
 
@@ -1112,27 +1052,43 @@ function GuardarRegitrosBND() {
     
 
     $.each(validacionxaccion, function (index2, row2) {
-
         
 
         var valXAccion = row2.reglaprinc;
         var valError = row2.alterna
 
-        valisusest = 'if(' + valXAccion + '){'+ alert("fdfdffdfdfdf")+'}else{}if(' + valError + '){alert("error")}';
+        console.log(row2);
+
+        valisusest = 'if(' + valXAccion + '){alert("' + row2.mssuses + '")}else{}if(' + valError + '){alert("' + row2.mserror + '")}';
+        //valisusest = 'hhdfhfh';
+        //console.log(row2.nomEtapa);
+        console.log("fernando:" + etapaActual + " = " + row2.nomEtapa);
+
+
         console.log(valisusest);
+        try {
+
+            if (etapaActual == row2.nomEtapa) {
+
+                
+                eval(valisusest)
+            }
+
+        }
+        catch (err) {
+
+            alert(err.message);
+        }
+        
+
+        
+        
        // eval(valisusest);
 
     })
 
 
-    try {
 
-        eval(valisusest)
-    }
-    catch (err) {
-
-        alert(err.message);
-    }
 
 
     //var valisusest = "";

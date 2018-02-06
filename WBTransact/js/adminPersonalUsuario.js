@@ -184,8 +184,8 @@ function initEventos() {
                                 });
                             }
                             console.log(response);
-                            //initDataTable();
-                            llenaDataTable();
+                            initDataTable();
+                            //llenaDataTable();
                         }
                     });
                     //$('#FormAltaPersonal').data('bootstrapValidator').resetForm();
@@ -204,6 +204,8 @@ function initEventos() {
                 }
 
             } else {
+                console.log(valido);
+
                 //inserta Usuario
                 if (valido) {
                     $("input[name='privilegio']").each(function (index, item) {
@@ -250,8 +252,8 @@ function initEventos() {
                                 });
                             }
                             console.log(response);
-                            //initDataTable();
-                            llenaDataTable();
+                            initDataTable();
+                            //llenaDataTable();
 
                         }
                     });
@@ -285,13 +287,13 @@ function initEventos() {
                 buttons: '[No][Si]'
             }, function (ButtonPressed) {
                 if (ButtonPressed === "Si") {
-
+                    $(".MessageBoxButtonSection").hide();
                     var parameters = {
                         idPersonal: row[8],
                         idUsuario: row[9],
                         idRolAnterior: row[10]
                     };
-                    console.log(parameters);
+                    //console.log(parameters);
 
                     $.ajax({
                         async: false,
@@ -303,8 +305,8 @@ function initEventos() {
                         success: function (output) {
                             $.each(output, function (j, cam) {
                                 showOkMessage('Usuario Eliminadp', 'Se ha Eliminado el Usuario <b>' + row[6] + '<b>');
-                                llenaDataTable();
-                                //initDataTable();
+                                //llenaDataTable();
+                                initDataTable();
                             });
                         },
                         error: function (e) {

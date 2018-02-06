@@ -86,10 +86,11 @@ function initEventos() {
                             });
                         }
                         //console.log(response);   
-                        llenaDataTable();
+                        //llenaDataTable();
+                        initDataTable();
                     }
                 });
-                console.log(duplicado);
+                //console.log(duplicado);
                 if (duplicado == 0) {
                     $('#FormAltaAplicacion').data('bootstrapValidator').resetForm();
                     $('#divTiposTransaccion').show();
@@ -118,6 +119,7 @@ function initEventos() {
                 buttons: '[No][Si]'
             }, function (ButtonPressed) {
                 if (ButtonPressed === "Si") {
+                    $(".MessageBoxButtonSection").hide();
                     $.ajax({
                         async: false,
                         type: "POST",
@@ -128,7 +130,7 @@ function initEventos() {
                         success: function (output) {
                             $.each(output, function (j, cam) {
                                 showOkMessage('Aplicación Eliminada', 'Se ha Eliminado la Aplicación <b>' + row[0] + '<b>');
-                                llenaDataTable();
+                                //llenaDataTable();
                                 initDataTable();
                             });
                         },

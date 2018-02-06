@@ -104,7 +104,7 @@ namespace Transact.Datos
         }
         public CamposTransaccion ArmaFormularioxEtapa(int idTipoTransaccion, string idtransaccion)
         {
-            Entidades.CamposTransaccion comptran = new Entidades.CamposTransaccion();
+            CamposTransaccion comptran = new CamposTransaccion();
             SqlConnection connection = null;
             DataTable Transacciones = new DataTable();
             SqlDataReader consulta;
@@ -116,16 +116,20 @@ namespace Transact.Datos
 
                     connection.Open();
 
-                    consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT tt.[idTipoTransaccion], MAE.idTransaccion,[descripcion],"
-                                                                    + " [cveTipoTransaccion], CTT.categoriaTransac, idFormula,"
-                                                                    + " cadenaGenerada, TT.activo, EATT.idEtapa FROM Configuracion.TiposTransacciones TT"
-                                                                    + " INNER JOIN Configuracion.CategoriaTipoTransaccion CTT on TT.idCatTipoTransac = CTT.idCatTipoTransac"
-                                                                    + " LEFT JOIN Configuracion.Formulas F on TT.idTipoTransaccion = F.idTipoTransaccion"
-                                                                    + " INNER JOIN Configuracion.EtapasAccionesTipoTransacciones EATT ON"
-                                                                    + " TT.idTipoTransaccion = EATT.idTipoTransaccion INNER JOIN"
-                                                                    + " Configuracion.MAETransacciones MAE ON MAE.idTipoTransaccion = TT.idTipoTransaccion"
-                                                                    + " where MAE.idTransaccion = '"+ idtransaccion + "' AND EATT.idEtapa<>"
-                                                                    + " (SELECT idEtapa FROM Configuracion.MAETransacciones WHERE idTransaccion = '" + idtransaccion + "')");
+                    consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT tt.[idTipoTransaccion], MAE.idTransaccion,TT.[descripcion], "
+                                                                    + " [cveTipoTransaccion], CTT.categoriaTransac, TT.activo, MAE.idEtapa as etapaAct,"
+                                                                    + " (SELECT descripcion FROM Configuracion.EtapasTipoTransaccion ETT WHERE ETT.idEtapa = MAE.idEtapa) etapaActual,"
+                                                                    + " MIN(EATT.idEtapa) etapaDes, (SELECT descripcion FROM Configuracion.EtapasTipoTransaccion ETT WHERE ETT.idEtapa = MIN(EATT.idEtapa)) etapaDestino"
+                                                                    + " FROM Configuracion.TiposTransacciones TT INNER JOIN Configuracion.CategoriaTipoTransaccion CTT"
+                                                                    + " on TT.idCatTipoTransac = CTT.idCatTipoTransac  INNER JOIN Configuracion.EtapasAccionesTipoTransacciones EATT"
+                                                                    + " ON TT.idTipoTransaccion = EATT.idTipoTransaccion INNER JOIN Configuracion.MAETransacciones MAE"
+                                                                    + " ON MAE.idTipoTransaccion = TT.idTipoTransaccion"
+                                                                    + " INNER JOIN Configuracion.EtapasTipoTransaccion ETT"
+                                                                    + " ON ETT.idEtapa = MAE.idEtapa"
+                                                                    + " WHERE MAE.idTransaccion = '"+ idtransaccion + "'"
+                                                                    + " AND EATT.idEtapa<>(SELECT min(idEtapa) FROM Configuracion.MAETransacciones WHERE idTransaccion = '"+ idtransaccion + "')"
+                                                                    + " GROUP BY tt.[idTipoTransaccion], MAE.idTransaccion,TT.[descripcion],"
+                                                                    + " [cveTipoTransaccion], CTT.categoriaTransac, TT.activo, MAE.idEtapa");
 
                     Transacciones.Load(consulta);
 
@@ -141,7 +145,10 @@ namespace Transact.Datos
                         comptran.descripcion = Transaccion["descripcion"].ToString();
                         comptran.cveTipoTransaccion = Transaccion["cveTipoTransaccion"].ToString();
                         comptran.categoriaTransac = Transaccion["categoriaTransac"].ToString();
-                        comptran.idEtapa = Convert.ToInt32(Transaccion["idEtapa"].ToString());
+                        comptran.idEtapa = Convert.ToInt32(Transaccion["etapaAct"].ToString());
+                        comptran.NombreEtapa = Transaccion["etapaActual"].ToString();
+                        comptran.idEtapaFutura = Convert.ToInt32(Transaccion["etapaDes"].ToString());
+                        comptran.nomEtaFut = Transaccion["etapaDestino"].ToString();            
                         comptran.activo = Convert.ToBoolean(Transaccion["activo"].ToString());
                         CamposTransaccionxEtapa(ref comptran);
 
@@ -450,6 +457,51 @@ namespace Transact.Datos
 
             return detalle;
         }
+        public ReglasNegocioxAccion ReglasxAccion(int idTipoTransaccion) {
+            ReglasNegocioxAccion detalle = new ReglasNegocioxAccion();
+            DataTable dt = new DataTable();
+            SqlConnection connection = null;
+            List<camposReglasNegocioxAccion> Campos = new List<camposReglasNegocioxAccion>();
+
+
+            try {
+
+                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
+                    SqlDataReader consulta;
+                    connection.Open();
+                    consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT idReglaxAccion,idTipoTransaccion,idEtapa,idAccion,idEtapaDestino," +
+                                                                        "jsonReglas,descripcionRegla,mensajeError " +
+                                                                        "FROM Configuracion.ReglasNegocioxAccion " +
+                                                                        "where idTipoTransaccion = "+ idTipoTransaccion);
+                    dt.Load(consulta);
+                    connection.Close();
+
+                }
+
+                foreach (DataRow rowDet in dt.Rows) {
+                    camposReglasNegocioxAccion valores = new camposReglasNegocioxAccion();
+                    valores.idReglaxAccion = Convert.ToInt32(rowDet["idReglaxAccion"].ToString());
+                    valores.idTipoTransaccion = Convert.ToInt32(rowDet["idTipoTransaccion"].ToString());
+                    valores.idEtapa = Convert.ToInt32(rowDet["idEtapa"].ToString());
+                    valores.idEtapaDestino = Convert.ToInt32(rowDet["idEtapaDestino"].ToString());
+                    valores.ReglaxAccion = rowDet["jsonReglas"].ToString();
+                    //valores.idAccion = Convert.ToInt32(rowDet["idAccion"].ToString());
+                    //if (rowDet["estatus"].ToString() == "null") { valores.estatus = Convert.ToBoolean(rowDet["estatus"].ToString()); } else { valores.estatus = false; }
+                    Campos.Add(valores);
+
+                }
+
+                detalle.listaReglasxAccion = Campos.ToArray();
+
+            } catch (Exception ex) {
+                Console.WriteLine("" + ex.Message, ex);
+                throw;
+            }
+
+
+            return detalle;
+        }
+
 
 
 

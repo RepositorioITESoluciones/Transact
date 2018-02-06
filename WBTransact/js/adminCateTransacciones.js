@@ -117,6 +117,7 @@ function initEventos() {
                 buttons: '[No][Si]'
             }, function (ButtonPressed) {
                 if (ButtonPressed === "Si") {
+                    $(".MessageBoxButtonSection").hide();
                     $.ajax({
                         async: false,
                         type: "POST",

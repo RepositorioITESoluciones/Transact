@@ -81,7 +81,8 @@ function initEventos() {
                             });
                         }
                         console.log(response);
-                        llenaDataTable();
+                        //llenaDataTable();
+                        initDataTable();
                     }
                 });
                 if (areaDuplicada == 0) {
@@ -128,6 +129,7 @@ function initEventos() {
                     buttons: '[No][Si]'
                 }, function (ButtonPressed) {
                     if (ButtonPressed === "Si") {
+                        $(".MessageBoxButtonSection").hide();
                         $.ajax({
                             async: false,
                             type: "POST",
@@ -138,7 +140,8 @@ function initEventos() {
                             success: function (output) {
                                 $.each(output, function (j, cam) {
                                     showOkMessage('Área Eliminada', 'Se ha Eliminado el Área <b>' + row[1] + '<b>');
-                                    llenaDataTable();
+                                    //llenaDataTable();
+                                    initDataTable();
                                 });
                             },
                             error: function (e) {
