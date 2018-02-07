@@ -94,11 +94,6 @@ function bootsVal() {
         fields: {
             user: {
                 validators: {
-
-                    regexp: {
-                        regexp: /^[a-z\s]+$/i,
-                        message: 'Sólo se permiten letras'
-                    },
                     notEmpty: {
                         message: 'El usuario es obligatorio'
                     }

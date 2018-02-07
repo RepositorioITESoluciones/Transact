@@ -2810,7 +2810,7 @@ function SelectCatTT() {
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
-            console.log(JSON.stringify(response));
+            //console.log(JSON.stringify(response));
             var cadena = "";
             $.each(response, function (row, index) {
                 cadena += '<option value="' + 0 + '"> Seleccione una categoria </option>'
@@ -3559,129 +3559,153 @@ function AgregarFormula() {
                 var unionN = '';
                 var unionF = '';
                 var tamaño = 0;
-
+                var contadorf = 0;
+                var bandera1 = false;
+                var bandera2 = false;
+                var bandera3 = false;
 
 
                 $.each($('.sortable li'), function (index1, item1) {
+                    contadorf++
 
+                    var p1 = $.trim($(item1).text());
+
+                    if (contadorf == 1 && /ab*/.test(p1) == true) {bandera1 = true;}               
+                    if (contadorf == 2 && p1 == "=") { bandera2 = true; }
+                    console.log(contadorf);
+                    if (contadorf == 3 && p1 != "=" && p1 != "+" && p1 != "-" && p1 != "*" && p1 != "%" && p1 != ".") { bandera3 = true; }
+                    
                     val.push($.trim($(item1).text()));
-
                 });
 
-                for (var i = 0; i < val.length; i++) {
-                    union += val[i] + '|';
-                    unionF += val[i] + '|';
-                }
+                if (bandera1 == true && bandera2 == true && bandera3 == true) {
 
 
-
-                union += '}]';
-
-
-                formulaA = union;
-
-                $.fn.dataTable.ext.errMode = 'none';
-                var responsiveHelper_datatable_fixed_column = undefined;
-                var breakpointDefinition = {
-                    tablet: 1024,
-                    phone: 480,
-                    desktop: 1260
-                };
-                var datosCom = [];
-                var valorF = "";
-                var varF = '';
-                var resultadoF = "";
-                var formulas = [];
-
-                formulaArr = [];
-                etapaArr = [];
-                accionesArr = [];
-                formulaArr.push(unionF);
-                etapaArr.push($('select#formula_etapa option:selected').text());
-                accionesArr.push($('select#fomula_accion option:selected').text());
-
-                for (var i = 0; i < formulaArr.length; i++) {
-                    datosCom.push(formulaArr, etapaArr, accionesArr);
-                }
-
-
-
-                otableF = $('#tablaFormulas')
-                    .DataTable({
-
-                        "scrollY": "200px",
-                        "scrollCollapse": true,
-                        "paging": false,
-
-                        "sPaginationType": "bootstrap", // full_numbers
-                        "iDisplayStart ": 10,
-                        "iDisplayLength": 10,
-                        "bPaginate": false, //hide pagination
-                        "bFilter": false, //hide Search bar
-                        "bInfo": false, // hide showing entries
-                        "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6 hidden-xs'l><'col-sm-6 col-xs-12 hidden-xs'<'toolbar'>>r>" +
-                        "t" +
-                        "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
-                        "oLanguage": {
-                            "sUrl": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-                        },
-
-                        "autoWidth": true,
-                        "preDrawCallback": function () {
-                            if (!responsiveHelper_datatable_fixed_column) {
-                                responsiveHelper_datatable_fixed_column = new ResponsiveDatatablesHelper(
-                                    $('#tablaFormulas'), breakpointDefinition);
-                            }
-                        },
-                        "rowCallback": function (nRow) {
-                            responsiveHelper_datatable_fixed_column
-                                .createExpandIcon(nRow);
-                        },
-                        "drawCallback": function (oSettings) {
-                            responsiveHelper_datatable_fixed_column.respond();
-                        },
-
-                        columns: [{
-                            title: "Fórmula"
-                        },
-                        {
-                            title: "Etapa"
-                        },
-                        {
-                            title: "Acción"
-                        }
-                        ]
-                    });
-                otableF.row.add(datosCom).draw(false);
-
-                $('#tablaFormulas tbody').on('click', 'tr', function () {
-                    if ($(this).hasClass('selected')) {
-                        $(this).removeClass('selected');
-                    } else {
-                        otable2.$('tr.selected').removeClass('selected');
-                        $(this).addClass('selected');
-                    }
-                });
-
-                $(".sortable").empty();
-                $("#btnFormulas").show();
-
-
-            } else {
-                $.smallBox({
-                    title: "Error",
-                    content: "<i class='fa fa-clock-o'></i> <i>No ha configurado ninguna fórmula</i>",
-                    color: "#C46A69",
-                    iconSmall: "fa fa-times fa-2x fadeInRight animated",
-                    timeout: 4000
-                });
+            for (var i = 0; i < val.length; i++) {
+                union += val[i] + '|';
+                unionF += val[i] + '|';
             }
 
 
-            $('#form_reglas').bootstrapValidator('destroy');
+
+            union += '}]';
+
+
+            formulaA = union;
+
+            $.fn.dataTable.ext.errMode = 'none';
+            var responsiveHelper_datatable_fixed_column = undefined;
+            var breakpointDefinition = {
+                tablet: 1024,
+                phone: 480,
+                desktop: 1260
+            };
+            var datosCom = [];
+            var valorF = "";
+            var varF = '';
+            var resultadoF = "";
+            var formulas = [];
+
+            formulaArr = [];
+            etapaArr = [];
+            accionesArr = [];
+            formulaArr.push(unionF);
+            etapaArr.push($('select#formula_etapa option:selected').text());
+            accionesArr.push($('select#fomula_accion option:selected').text());
+
+            for (var i = 0; i < formulaArr.length; i++) {
+                datosCom.push(formulaArr, etapaArr, accionesArr);
+            }
+
+
+
+            otableF = $('#tablaFormulas')
+                .DataTable({
+
+                    "scrollY": "200px",
+                    "scrollCollapse": true,
+                    "paging": false,
+
+                    "sPaginationType": "bootstrap", // full_numbers
+                    "iDisplayStart ": 10,
+                    "iDisplayLength": 10,
+                    "bPaginate": false, //hide pagination
+                    "bFilter": false, //hide Search bar
+                    "bInfo": false, // hide showing entries
+                    "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6 hidden-xs'l><'col-sm-6 col-xs-12 hidden-xs'<'toolbar'>>r>" +
+                    "t" +
+                    "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+                    "oLanguage": {
+                        "sUrl": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+                    },
+
+                    "autoWidth": true,
+                    "preDrawCallback": function () {
+                        if (!responsiveHelper_datatable_fixed_column) {
+                            responsiveHelper_datatable_fixed_column = new ResponsiveDatatablesHelper(
+                                $('#tablaFormulas'), breakpointDefinition);
+                        }
+                    },
+                    "rowCallback": function (nRow) {
+                        responsiveHelper_datatable_fixed_column
+                            .createExpandIcon(nRow);
+                    },
+                    "drawCallback": function (oSettings) {
+                        responsiveHelper_datatable_fixed_column.respond();
+                    },
+
+                    columns: [{
+                        title: "Fórmula"
+                    },
+                    {
+                        title: "Etapa"
+                    },
+                    {
+                        title: "Acción"
+                    }
+                    ]
+                });
+            otableF.row.add(datosCom).draw(false);
+
+            $('#tablaFormulas tbody').on('click', 'tr', function () {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    otable2.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+
+            $(".sortable").empty();
+            $("#btnFormulas").show();
+
 
         } else {
-            // bootsVal();
+
+
+            $.smallBox({
+                title: "Error",
+                content: "<i class='fa fa-clock-o'></i> <i>La estructura de la formula es inadecuada</i>",
+                color: "#C46A69",
+                iconSmall: "fa fa-times fa-2x fadeInRight animated",
+                timeout: 4000
+            });
+            contadorf = 0;
+        }
+
+    }else{
+
+    $.smallBox({
+    title: "Error",
+    content: "<i class='fa fa-clock-o'></i> <i> No ha configurado ninguna fórmula</i>",
+    color: "#C46A69",
+    iconSmall: "fa fa-times fa-2x fadeInRight animated",
+    timeout: 4000
+});
+
+
+}
+            $('#form_reglas').bootstrapValidator('destroy');
 
         }
 
@@ -7880,7 +7904,7 @@ function initDataTable() {
                 $.each(index.ListaTipoTran, function (r, arr) {
 
                     datos.push([arr.nombre, arr.clave, arr.categoria, arr.estatus, arr.fecha, arr.idTipoTransaccion, arr.area, arr.proceso, arr.idCategoria]);
-                    console.log("ssssss: " + JSON.stringify(datos));
+                    //console.log("ssssss: " + JSON.stringify(datos));
                 });
             });
 
