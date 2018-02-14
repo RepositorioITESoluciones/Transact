@@ -8,11 +8,11 @@ var cadenaCombo = "";
 var area = "";
 
 $(function () {
-    $('#TablaProcesos').empty();
+    
     initEventos();
     initDataTable();
+    
 });
-
 
 function initEventos() {
     ComboArea();
@@ -31,7 +31,9 @@ function initEventos() {
         $('#divProcesos').show();
         $('#divFormulario').hide();
         $('#FormProcesos')[0].reset();
-        $('#FormProcesos').bootstrapValidator('destroy');
+        $('#TablaProcesos').empty();
+        initDataTable();
+        //$('#FormProcesos').bootstrapValidator('destroy');
     });
 
     $('#btnguardar').click(function () {
@@ -163,7 +165,6 @@ function initEventos() {
         edit = 1;
     })
 }
-
 function initDataTable() {
     $.fn.dataTable.ext.errMode = 'none';
     var responsiveHelper_datatable_fixed_column = undefined;
@@ -188,8 +189,8 @@ function initDataTable() {
         success: function (response) {
             $('#loadingMod').modal('hide');
             $.each(response, function (row, index) {
-                $.each(index.ListaProcesos, function (r, arr) {
-                    //console.log("RRRRR: " + JSON.stringify(arr));
+                //console.log(index.ListaProcesos);
+                $.each(index.ListaProcesos, function (r, arr) {          
                     datos.push([arr.nombreProceso, arr.descripcion, arr.idArea.nombreArea, arr.idProceso, arr.idArea.idArea]);
                 });
             });
@@ -226,19 +227,20 @@ function initDataTable() {
             },
             data: datos,
             columns: [{
-                name: 'nombreProceso',
                 title: "Nombre"
             },
             {
-                name: 'descripcion',
-                title: "Descripcion"
+                title: "Descripción"
             },
             {
-                name: 'idArea.idArea',
                 title: "Área"
             },
             {
-                name: "activo",
+                title: "idProceso",
+                visible: false
+            },
+            {
+                title: "idArea",
                 visible: false
             }
 
@@ -277,6 +279,8 @@ function initDataTable() {
     });
 }
 
+
+
 function editProceso() {
     var row = $("#TablaProcesos").DataTable().row('.selected').data();
     rows = $("#TablaProcesos").DataTable().row('.selected').data();
@@ -297,7 +301,8 @@ function editProceso() {
         $('#btnguardar2').show();
         $('#btnguardar').hide();
 
-        cargarTabla();
+        initDataTable()
+        //cargarTabla();
         //area();
     } else {
         showWarningMessage('Información </b>', '<i>Debe seleccionar por lo menos un elemento</i>');

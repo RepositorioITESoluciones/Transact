@@ -1,4 +1,5 @@
 ﻿$(function () {
+    $('#detalleMenus').DataTable().destroy();
     initEventos();
     initDataTable();
     llenaCheckAplicaciones();
@@ -9,7 +10,7 @@ function initEventos() {
    
 
     $('#btnPlus').click(function () {
-
+        $('#menususti').show();
         var menuPadre = ' <select type="text" id="menuPadre" onkeypress="" onchange="llenaComboMenuPadre()" class="form-control" name="menuPadre">';
         menuPadre += ' <option value=""> Selecciona nivel de menú </option>';
         menuPadre += ' <option value = 1 > Hijo </option>';
@@ -34,9 +35,9 @@ function initEventos() {
     });
 
     $('#btnAtras').click(function () {
-       
+        $('#menususti').hide();
         $("#combomenuPadre").html('');
-        $('#FormularioAlta').bootstrapValidator('destroy');
+        //$('#FormularioAlta').bootstrapValidator('destroy');
         $('#divTiposTransaccion').show();
         $('#FormularioAlta').hide();
     });
@@ -88,7 +89,9 @@ function initEventos() {
                             
                             //$('#FormMenu').bootstrapValidator('destroy');
                             $('#FormMenu')[0].reset();
-                            $("#combomenuPadre").html('');                    
+                            $('#menususti').show();
+                            $("#combomenuPadre").html('');
+                            $('#menususti').hide();
                             //$("#combomenuPadre").hide();
                             //validateForm();
                             //llenaComboMenuPadre()
@@ -136,7 +139,7 @@ function initEventos() {
     });
 
     $("#btnEdit").click(function () {
-
+        $('#menususti').hide();
         limpiaDivs();
 
         var row = $("#detalleMenus").DataTable().row('.selected').data();
@@ -302,6 +305,7 @@ function initDataTable() {
     });
     // Evento creado para abrir la ventana de editar al dar doble click sobre un registro
     $('#detalleMenus tbody').on('dblclick', 'tr', function () {
+        $('#menususti').hide();
         $(this).addClass('selected');
         var row = $("#detalleMenus").DataTable().row('.selected').data();
 
@@ -375,9 +379,17 @@ function llenaCheckAplicaciones() {
 }
 
 function llenaComboMenuPadre() {
+    $('#menususti').hide();
+
+
+    if ($("#menuPadre").val()=='') {
+        $('#menususti').show();
+    }
+    
+
     var html = '';
     if ($("#menuPadre").val() == 0) {
-
+        
         if ($("#menuPadre").val() == ''  ) {
 
             $("#combomenuPadre").html('');
@@ -631,7 +643,7 @@ function validateForm() {
 
     $('#FormMenu').data('bootstrapValidator').validate();
     var valido = $('#FormMenu').data('bootstrapValidator').isValid();
-    console.log("llega " + valido);
+    //console.log("llega " + valido);
     return valido;
 }
 

@@ -1,6 +1,6 @@
 ﻿
 $(function () {
-
+    $('#TablaDetalle').DataTable().destroy();
     initEventos();
     initDataTable();
 

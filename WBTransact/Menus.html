@@ -40,10 +40,10 @@
                                             <input type="text" class="form-control" placeholder="id" />
                                         </th>
                                         <th class="hasinput" style="width:5%">
-                                            <input type="text" class="form-control" placehold er="Menú" />
+                                            <input type="text" class="form-control" placeholder="Menú" />
                                         </th>
                                         <th class="hasinput" style="width:5%">
-                                            <input type="text" class="form-control" placehold er="Menú Padre" />
+                                            <input type="text" class="form-control" placeholder="Menú Padre" />
                                         </th>
                                         <th class="hasinput" style="width:5%">
                                             <input type="text" class="form-control" placeholder="Descripción" />
@@ -101,7 +101,7 @@
                                             <!--<input type="text" id="nombreMenuPadre" onkeypress="" class="form-control" name="nombreMenuPadre" />
                                                 -->
                                             <select type="text" id="menuPadre" onkeypress="" onchange="llenaComboMenuPadre()" class="form-control" name="menuPadre">
-                                                <option value="">Selecciona nivel de menú</option>
+                                                <option value="n">Selecciona nivel de menú</option>
                                                 <option value=0>Padre</option>
                                                 <option value=1>Hijo</option>
                                             </select>
@@ -112,9 +112,22 @@
                                     </div>
                                 </section>
                                 <section class="col col-6">
-                                   
-                                    <div id="combomenuPadre" ></div>
-                                </section>
+                                    <div id="menususti">
+                                        <div class="required">
+                                            <label class="control-label negritas">*Menú</label>
+                                        </div>
+
+                                        <input type="text" id="ejemplo" onkeypress="" class="form-control" readonly placeholder="Selecciona.."/>
+                                        <!--<select  id="ejemplo" type="text" onkeypress="" class="form-control" readonly>
+                                            <option value="">Selecciona..</option>
+                                        </select>-->
+                                    </div>
+                                        <div id="combomenuPadre">
+
+
+
+                                        </div>
+                                    </section>
                             </div>
                             <div class="row" style="margin-top: -2%; margin-bottom: 3%;">
                                 <section class="col col-6">
@@ -122,7 +135,7 @@
                                         <label class="control-label negritas">* Nombre</label>
                                     </div>
                                     <div class="form-group">
-                                        <input ondrop="return false;" maxlength="50" type="text" id="nombreMenu" onkeypress="return validarCaracteresN(event)" class="form-control" name="nombreMenu" />
+                                        <input ondrop="return false;" maxlength="50" type="text" id="nombreMenu" onkeypress="return validarCaracteresN(event)" class="form-control" name="nombreMenu" placeholder=" Ingresa nombre"/>
                                     </div>
                                 </section>
 
@@ -131,7 +144,7 @@
                                         <label class="control-label negritas">* Descripción</label>
                                     </div>
                                     <div class="form-group">
-                                        <input ondrop="return false;" maxlength="50" type="text" id="descripcion" onkeypress="return validarCaracteresN(event)" class="form-control" name="descripcion" />
+                                        <input ondrop="return false;" maxlength="50" type="text" id="descripcion" onkeypress="return validarCaracteresN(event)" class="form-control" name="descripcion" placeholder=" Ingresa descripción"/>
                                     </div>
                                 </section>
                             </div>
@@ -141,7 +154,7 @@
                                         <label class="control-label negritas">Icono</label>
                                     </div>
                                     <div class="form-group">
-                                        <input ondrop="return false;" maxlength="50" type="text" id="icono" onkeypress="return validarCaracteresN(event)" class="form-control" name="icono" />
+                                        <input ondrop="return false;" maxlength="50" type="text" id="icono" onkeypress="return validarCaracteresN(event)" class="form-control" name="icono" placeholder=" Ingresa icono"/>
                                     </div>
                                 </section>
                                 <section class="col col-6">
@@ -149,7 +162,7 @@
                                         <label class="control-label negritas">Liga</label>
                                     </div>
                                     <div class="form-group">
-                                        <input ondrop="return false;" maxlength="500" type="text" id="liga"  class="form-control" name="liga" />
+                                        <input ondrop="return false;" maxlength="500" type="text" id="liga"  class="form-control" name="liga" placeholder=" Ingresa liga"/>
                                     </div>
                                 </section>
 

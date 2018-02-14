@@ -1,5 +1,6 @@
 ﻿var row;
 $(function () {
+    $('#detalleArea').DataTable().destroy();
     initEventos();
     initDataTable();
     llenaComboSucursal();
@@ -220,10 +221,10 @@ function initDataTable() {
             visible: false
         },
             {
-                title: "Area"
+                title: "Área"
             },
             {
-                title: "Descripcion"
+                title: "Descripción"
             },
         {
             title: "Sucursal"

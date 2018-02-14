@@ -1,6 +1,6 @@
 ﻿
 $(function () {
-
+    $('#TablaDetalle').DataTable().destroy();
     initEventos();
     initDataTable();
     llenaComboPuestos();
@@ -14,6 +14,7 @@ function initEventos() {
     //boton plus q invoca el evento de insertar
     $('#btnPlus').click(function () {
         //Deja el formulario de alta de personal y usuario visible
+        $("#titulo").html('<i class="icon-prepend  icon-edit"></i><strong>Agregar Personal<label id="Title"></label></strong>');
         $("#radioPersonal").show();
         llenaComboPersonal();
         $("#personaS").hide();
@@ -54,7 +55,7 @@ function initEventos() {
 
     //boton editar
     $("#btnEdit").click(function () {
-
+        $("#titulo").html('<i class="icon-prepend  icon-edit"></i><strong>Editar Personal<label id="Title"></label></strong>');
         var row = $("#TablaDetalle").DataTable().row('.selected').data();
         if (row) {
             $("#radioPersonal").hide();
@@ -510,7 +511,7 @@ function validateFormAlta() {
                             message: 'El RFC no puede tener mas de 13 caracteres'
                         },
                         regexp: {
-                            regexp: /^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))((-)?([A-Z\d]{3}))?$/,
+                            regexp: /^([a-zA-Z]{4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([a-zA-Z]{2})([A\d])$/,
                             message: 'El RFC no es valido'
                         }
                     }
@@ -1340,3 +1341,6 @@ function validaAlta() {
     //document.getElementById("FormAltaPersonal").reset();
 }
 
+function mayus(e) {
+    e.value = e.value.toUpperCase();
+}

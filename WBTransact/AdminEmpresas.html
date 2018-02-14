@@ -61,7 +61,7 @@
                                             <input type="text" class="form-control" placeholder="RFC" />
                                         </th>
                                         <th class="hasinput" style="width:5%">
-                                            <input type="text" class="form-control" placeholder="Razon social" />
+                                            <input type="text" class="form-control" placeholder="Razón Social" />
                                         </th>
                                         <th class="hasinput" style="width:5%">
                                             <input type="text" class="form-control" placeholder="Tipo de persona" />
@@ -71,7 +71,7 @@
                                         <th data-class="expand">Nombre</th>
                                         <th>Fecha de registro</th>
                                         <th>RFC</th>
-                                        <th data-hide="phone,tablet,desktop">Razon social</th>
+                                        <th data-hide="phone,tablet,desktop">Razón Social</th>
                                         <th data-hide="phone,tablet,desktop">Tipo de persona</th>
                                         <th data-hide="phone,tablet,desktop">Tipo de persona</th>
                                         <th data-hide="phone,tablet,desktop">Tipo de persona</th>
@@ -129,18 +129,19 @@
 
                             <div class="row" style="margin-top: 10px">
                                 <section class="col col-6">
-                                    <label class="control-label">* Razon social</label>
+                                    <label class="control-label">* Razón social</label>
                                     <input placeholder="Ingresa la razon social" maxlength="100" type="text" id="razonSocial" ondrop="return false"  class="form-control" name="razonSocial" />
                                 </section>
                                 <section class="col col-6 rfcFisico">
                                     <label class="control-label rfcFisico">* RFC</label>
-                                    <input placeholder="Ingresa el RFC Fisico" maxlength="13" type="text" id="rfcFisico" onkeypress="return validarCaracteresN(event)" class="form-control" name="rfcFisico" />
+                                    <input placeholder="Ingresa el RFC Físico" maxlength="13" type="text" id="rfcFisico" onkeypress="return validarCaracteresN(event)" onkeyup="mayus(this)" class="form-control" name="rfcFisico" />
                                     <label id="errorFisico" class="error" style="color: #a94442">El RFC solicitado ya existe</label>
                                 </section>
+                                
                                 <section class="col col-6 rfcMoral ">
 
-                                    <label class="control-label ">* RFC</label>
-                                    <input placeholder="Ingresa el RFC Moral" maxlength="12" type="text" id="rfcMoral" ondrop="return false" onkeypress="return validarCaracteresN(event)" class="form-control" name="rfcMoral" />
+                                    <label class="control-label rfcMoral">* RFC</label>
+                                    <input placeholder="Ingresa el RFC Moral" maxlength="12" type="text" id="rfcMoral" onkeypress="return validarCaracteresN(event)" onkeyup="mayus(this)" class="form-control" name="rfcMoral" />
                                     <label id="errorMoral" class="error" style="color: #a94442">El RFC solicitado ya existe</label>
 
 
@@ -159,9 +160,12 @@
                                     <label id="errorEstado" class="error" style="color: #a94442">Debe seleccionar un estado</label>
                                 </div>
                                 <div class="col col-6 form-group codigo">
-                                    <label class="control-label">* Codigo Postal</label>
-                                    <select type="text" id="ComboCP" onkeypress="" class="form-control " style="width: 100%;" name="ComboCP"></select>
-                                    <label id="errorCp" class="error" style="color: #a94442">Debe seleccionar un codigo postal</label>
+                                    
+                                        <label class="control-label">* Código Postal</label>
+                                        <!--<select type="text" id="ComboCP"class="form-control " style="width: 100%;" name="ComboCP"></select>-->
+                                        <select style="width:100%; visibility:hidden" class="select2" id="ComboCP" name="ComboCP"></select>
+                                        <label id="errorCp" class="error" style="color: #a94442">Debe seleccionar un codigo postal</label>
+
                                 </div>
                             </div>
 

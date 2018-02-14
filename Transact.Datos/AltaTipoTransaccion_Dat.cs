@@ -940,7 +940,7 @@ namespace Transact.Datos {
 
                         if (resultado6 > 0) {
                             connection.Open();
-                            bool result6 = Ejecuta.ConsultaSinRetorno1(connection, "DELETE FROM EtapasTipoTransaccion WHERE idTipoTransaccion = " + idTipoTransaccion);
+                            bool result6 = Ejecuta.ConsultaSinRetorno1(connection, "DELETE FROM Configuracion.EtapasTipoTransaccion WHERE idTipoTransaccion = " + idTipoTransaccion);
                             connection.Close();
                             Console.WriteLine(result6);
 

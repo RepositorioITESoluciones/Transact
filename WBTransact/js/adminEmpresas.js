@@ -12,6 +12,7 @@ var banderita = 0;
 
 
 $(function () {
+    $('#TablaDatosEmpresariales').DataTable().destroy();
     initEventos();
     initDataTable();
     llenaComboEstado();
@@ -40,7 +41,7 @@ function initEventos() {
     $(".rfcMoral").hide();
     $("#ComboCP").prop("disabled", true);
     $('#rfc').prop("disabled", true);
-    validaRFCs();
+    //validaRFCs();
     bootsVal();
 
     $.ajax({
@@ -91,6 +92,10 @@ function initEventos() {
     $('#fecha').prop('readonly', true);
 
     $('#btnPlus').click(function () {
+        $("#FormEmpresa")[0].reset();
+        $(".select2-selection__arrow").hide()
+        $("#errorFisico").hide();
+        $("#errorMoral").hide();
         $("#rfcFisico").hide();
         $("#ComboCP").prop("disabled", true);
         $("#rfcMoral").hide();
@@ -120,6 +125,10 @@ function initEventos() {
     });
 
     $('#btnAtras').click(function () {
+        $("#FormEmpresa")[0].reset();
+        $(".select2-selection__arrow").hide()
+        $("#errorFisico").hide(); 
+        $("#errorMoral").hide();
         $('#divDatosEmpresariales').show();
         $('#FormularioDatosEmpresariales').hide();
         $('#FormEmpresa')[0].reset();
@@ -135,10 +144,12 @@ function initEventos() {
         $("#errorEstado").hide();
 
 
+
         $('#FormEmpresa').bootstrapValidator('destroy');
     });
 
     $('#btnguardar').click(function () {
+
         if ($("#ComboEstado").val() != 0) {
             $("#errorEstado").hide();
             $(".estado").removeClass("has-error");
@@ -336,7 +347,7 @@ function initEventos() {
     })
 
     $("#btnEdit").click(function () {
-
+        $(".select2-selection__arrow").hide()
         bootsVal();
         editUsuario();
         $('#btnguardar2').show();
@@ -428,7 +439,7 @@ function initDataTable() {
                 title: "RFC"
             },
             {
-                title: "Razon social"
+                title: "Razón Social"
             },
             {
                 title: "Tipo de persona"
@@ -717,7 +728,7 @@ function bootsVal(rfc) {
                     //    message: 'El RFC FISICO debe ser menor que 13 caracteres'
                     //},
                     regexp: {
-                        regexp: /^([A-ZÑ&]{4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/,
+                        regexp: /^([a-zA-Z]{4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([a-zA-Z-1-9]{3})$/,
                         message: 'RFC fisico no tiene el formato adecuado.',
                     }
                 }
@@ -735,7 +746,7 @@ function bootsVal(rfc) {
                     //    message: 'El RFC MORAL debe ser menor que 12 caracteres'
                     //},
                     regexp: {
-                        regexp: /^([A-ZÑ&]{3}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/,
+                        regexp: /^([a-zA-Z]{3}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([a-zA-Z-1-9]{3})$/,
                         message: 'RFC moral no tiene el formato adecuado.'
                     }
 
@@ -743,12 +754,11 @@ function bootsVal(rfc) {
             }
         }
     });
-    $("#errorFisico").hide();
-    $("#errorMoral").hide();
+    //$("#errorFisico").hide();
+    //$("#errorMoral").hide();
     //$(".rfcMoral").addClass('has-success');
     //$(".rfcFisico").addClass('has-success');
 }
-
 
 //Funcion encargada de refrescar la tabla despues de haber creado, editado o eliminado un registro
 function cargarTabla() {
@@ -785,8 +795,10 @@ function fechaHoyDefault() {
     $('#fecha').prop('readonly', true);
 }
 $("#tipoPer").change(function () {
+
     if ($("#tipoPer").val() == 1) {
         banderaRFC = "Fisico";
+        $('#FormEmpresa').bootstrapValidator('destroy');
         bootsVal();
         $(".rfcMoral").removeClass('has-success');
         $(".rfcMoral").removeClass('has-error');
@@ -799,9 +811,14 @@ $("#tipoPer").change(function () {
         $(".rfcNormal").hide();
         $("#rfcMoral").hide();
         $(".rfcMoral").hide();
+        $('#errorFisico').hide();
+        $('#errorMoral').hide();
+        console.log("<<<<<<<<<<<<<<: " + banderaRFC);
     } else if ($("#tipoPer").val() == 2) {
         banderaRFC = "Moral";
-        //console.log(">>>>>>>>: " + banderaRFC);
+        console.log(">>>>>>>>: " + banderaRFC);
+        
+        $('#FormEmpresa').bootstrapValidator('destroy');
         bootsVal();
         $(".rfcMoral").removeClass('has-success');
         $(".rfcMoral").removeClass('has-error');
@@ -814,19 +831,38 @@ $("#tipoPer").change(function () {
         $(".rfcNormal").hide();
         $("#rfcFisico").hide();
         $(".rfcFisico").hide();
+        $('#errorFisico').hide();
+        $('#errorMoral').hide();
+
+
+
     }
 })
 
-function validaRFCs(banderaRFC) {
-    var rfc = "";
-    if (banderaRFC == "Fisico") {
-        rfc = "rfcMoral";
-    } else {
-        rfc = "rfcFisico";
-    }
-    $('#' + rfc).blur(function () {
-        var upper = $('#' + rfc).val();
 
+//$('#rfcMoral').change(function () {
+//    alert('entra moralll');
+//    validaRFCs(banderaRFC)
+//})
+
+function validaRFCs(TipoRfc) {
+
+    
+
+    var rfc = TipoRfc;
+
+    //if (banderaRFC == "Fisico") {
+
+    //    rfc = "rfcFisico";
+    //} else {
+        
+    //    rfc = "rfcMoral";
+    //}
+
+    console.log("mnbmnnmbmnbmnb : " + rfc);
+    $('#' + rfc).blur(function () {
+        
+        var upper = $('#' + rfc).val();
         upper = upper.toUpperCase();
         $('#' + rfc).val(upper);
         var comboTipoPer = $("#tipoPer").val();
@@ -847,9 +883,9 @@ function validaRFCs(banderaRFC) {
                         $("#errorMoral").show();
                         banderita = 1;
                         console.log("si existe");
-
                     } else if (index == true) {
-                        $("#errorFisico").hide();
+                        console.log($('#' + rfc).val());
+                        $("#errorFisico").hide();   
                         $("#errorMoral").hide();
                         $(".rfcMoral").addClass('has-success');
                         $(".rfcFisico").addClass('has-success');
@@ -862,6 +898,7 @@ function validaRFCs(banderaRFC) {
     });
 
 }
+
 $("#ComboEstado").change(function () {
     console.log($("#ComboEstado").val());
     if ($("#ComboEstado").val() != 0) {
@@ -889,3 +926,22 @@ $("#ComboCP").change(function () {
         $("#errorCp").show();
     }
 })
+
+
+function mayus(e) {
+    e.value = e.value.toUpperCase();
+}
+
+$("#rfcMoral").on('keyup', function () {
+    var resultado = $("#rfcMoral").val();
+    var total = resultado.length;
+
+    if (total == 12) { validaRFCs("rfcMoral");}
+});
+$("#rfcFisico").on('keyup', function () {
+
+    var resultado = $("#rfcFisico").val();
+    var total = resultado.length;
+
+    if (total == 13) {validaRFCs("rfcFisico");}
+});

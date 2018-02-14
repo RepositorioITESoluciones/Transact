@@ -97,7 +97,7 @@
             <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="jarviswidget" id="wid-id-2" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-sortable="false">
                     <header>
-                        <h2><i class="icon-prepend  icon-edit"></i><strong>Alta<label id="Title"></label></strong></h2>
+                        <h2 id="titulo"></h2>
                     </header>
 
                     <div class="widget-body" style="padding-bottom: 0px">
@@ -109,7 +109,7 @@
                             </div>
 
                             <div id="radioPersonal">
-                                <input type="radio" name="personaUsuario" value="personal" checked="checked" onclick="validaAlta()" /> <b>Alta de Personal y Usuario</b><br />
+                                <input type="radio" name="personaUsuario" value="personal" checked="checked" onclick="validaAlta()"/> <b>Alta de Personal y Usuario</b><br />
                                 <input type="radio" name="personaUsuario" value="usuario" onclick="validaAlta()" /> <b> Alta de Usuario </b><br />
                             </div>
 
@@ -126,7 +126,7 @@
                                             <label class="control-label negritas">* Nombre</label>
                                         </div>
                                         <div class=" form-group">
-                                            <input type="text" ondrop="return false" id="nombre" onkeypress="return validarCaracteresN(event)" class="form-control" name="nombre" />
+                                            <input type="text" ondrop="return false" id="nombre" onkeypress="return validarCaracteresN(event)" class="form-control" name="nombre" placeholder=" Ingresa nombre" />
                                         </div>
                                     </section>
 
@@ -135,7 +135,7 @@
                                             <label class="control-label">* Apellido Paterno</label>
                                         </div>
                                         <div class=" form-group">
-                                            <input type="text" ondrop="return false" id="apPaterno" onkeypress="return validarCaracteresN(event)" class="form-control" name="apPaterno" />
+                                            <input type="text" ondrop="return false" id="apPaterno" onkeypress="return validarCaracteresN(event)" class="form-control" name="apPaterno" placeholder=" Ingresa apellido paterno"/>
                                         </div>
                                     </section>
 
@@ -144,7 +144,7 @@
                                             <label class="control-label">* Apellido Materno</label>
                                         </div>
                                         <div class=" form-group">
-                                            <input type="text" ondrop="return false" id="apMaterno" onkeypress="return validarCaracteresN(event)" class="form-control" name="apMaterno" />
+                                            <input type="text" ondrop="return false" id="apMaterno" onkeypress="return validarCaracteresN(event)" class="form-control" name="apMaterno" placeholder=" Ingresa apellido materno"/>
                                         </div>
                                     </section>
 
@@ -153,7 +153,7 @@
                                             <label class="control-label">* RFC</label>
                                         </div>
                                         <div class=" form-group">
-                                            <input type="text" ondrop="return false" id="rfc" onkeypress="return validarCaracteresN(event)" class="form-control" name="rfc" />
+                                            <input type="text" ondrop="return false" id="rfc" onkeypress="return validarCaracteresN(event)" onkeyup="mayus(this)" class="form-control" name="RFC" placeholder=" Ingresa RFC"/>
                                         </div>
                                     </section>
 
@@ -191,7 +191,7 @@
                                             <label class="control-label">* Email</label>
                                         </div>
                                         <div class=" form-group">
-                                            <input type="text" ondrop="return false" id="email" onkeypress="" class="form-control" name="email" />
+                                            <input type="text" ondrop="return false" id="email" onkeypress="" class="form-control" name="email" placeholder=" Ingresa email"/>
                                         </div>
                                     </section>
 
@@ -236,7 +236,7 @@
                                             <label class="control-label">* Usuario</label>
                                         </div>
                                         <div class=" form-group">
-                                            <input type="text" ondrop="return false" id="usuario" onkeypress="" class="form-control" name="usuario" />
+                                            <input type="text" ondrop="return false" id="usuario" onkeypress="" class="form-control" name="usuario" placeholder=" Ingresa usuario"/>
                                         </div>
                                     </section>
 
@@ -245,7 +245,7 @@
                                             <label class="control-label">* Contraseña</label>
                                         </div>
                                         <div class=" form-group">
-                                            <input type="password" ondrop="return false" id="pwd" onkeypress="" class="form-control" name="pwd" />
+                                            <input type="password" ondrop="return false" id="pwd" onkeypress="" class="form-control" name="pwd" placeholder=" Ingresa contraseña"/>
                                         </div>
                                     </section>
 

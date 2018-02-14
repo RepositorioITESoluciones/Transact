@@ -1,4 +1,5 @@
 ﻿$(function () {
+    $('#detalleRoles').DataTable().destroy();
     initEventos();
     initDataTable();
     llenaCheckMenu();
@@ -59,6 +60,7 @@ function initEventos() {
                     success: function (response) {
                         var tmp = JSON.stringify(response).split("}");
                         var ban = tmp[0].split(":");
+
                         if (ban[1] == "true") {
                             $.smallBox({
                                 title: "Éxito!",
@@ -114,7 +116,7 @@ function initEventos() {
         }
         })
 
-        $("#btnDelete").click(function () {
+    $("#btnDelete").click(function () {
             var row = $('#detalleRoles').DataTable().row('.selected').data();
             if (row) {
                 var idRol = row[0];

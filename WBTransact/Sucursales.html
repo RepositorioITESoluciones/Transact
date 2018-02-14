@@ -83,7 +83,7 @@
                                         <th data-hide="phone,tablet">IdEmpresa</th>
                                         <th data-hide="phone,tablet">IdDatosFiscales</th>
                                         <th data-hide="phone,tablet,desktop">RFC</th>
-                                        <th data-hide="phone,tablet">Razon Social</th>
+                                        <th data-hide="phone,tablet">Razón Social</th>
                                         <th data-hide="phone,tablet">Calle</th>
                                         <th data-hide="phone,tablet">NumExt</th>
                                         <th data-hide="phone,tablet">NumInt</th>
@@ -124,7 +124,7 @@
                                             <label class="control-label">* Nombre</label>
                                         </div>
                                         <div class=" form-group">
-                                            <input type="text" ondrop="return false" id="Nombre" onkeypress="return validarCaracteresN(event)" class="form-control" name="nombre" />
+                                            <input type="text" ondrop="return false" id="Nombre" onkeypress="return validarCaracteresN(event)" class="form-control" name="nombre" placeholder=" Ingresa nombre"/>
                                         </div>
                                     </section>
 
@@ -152,17 +152,17 @@
                                             <label class="control-label">* RFC</label>
                                         </div>
                                         <div class=" form-group">
-                                            <input type="text" ondrop="return false" id="RFC" onkeypress="return validarCaracteresN(event)" class="form-control" name="RFC" />
+                                            <input type="text" ondrop="return false" id="RFC" onkeypress="return validarCaracteresN(event)"  onkeyup="mayus(this)" class="form-control" name="RFC" placeholder=" Ingresa RFC"/>
                                         </div>
                                     </section>
                                 </div>
                                 <div class="row">
                                     <section class="col col-6">
                                         <div class=" required">
-                                            <label class="control-label">* Razon Social</label>
+                                            <label class="control-label">* Razón Social</label>
                                         </div>
                                         <div class=" form-group">
-                                            <input type="text" ondrop="return false" id="RS" class="form-control" name="RS" />
+                                            <input type="text" ondrop="return false" id="RS" class="form-control" name="RS" placeholder=" Ingresa razón social"/>
                                         </div>
                                     </section>
                                     <section class="col col-6">
@@ -170,7 +170,7 @@
                                             <label class="control-label">* Calle</label>
                                         </div>
                                         <div class=" form-group">
-                                            <input type="text" ondrop="return false" id="Calle" class="form-control" name="Calle" />
+                                            <input type="text" ondrop="return false" id="Calle" class="form-control" name="Calle"  placeholder=" Ingresa calle"/>
                                         </div>
                                     </section>
                                 </div>
@@ -180,7 +180,7 @@
                                                 <label class="control-label">* Numero Ext.</label>
                                             </div>
                                             <div class=" form-group">
-                                                <input type="text" ondrop="return false" id="NumExt" class="form-control" name="NumExt" />
+                                                <input type="text" ondrop="return false" id="NumExt" class="form-control" name="NumExt" placeholder=" Ingresa numero ext"/>
                                             </div>
                                         </section>
 
@@ -189,7 +189,7 @@
                                             <label class="control-label">Numero Int.</label>
                                         </div>
                                         <div class=" form-group">
-                                            <input type="text" ondrop="return false" id="NumInt" class="form-control" name="NumInt" />
+                                            <input type="text" ondrop="return false" id="NumInt" class="form-control" name="NumInt" placeholder=" Ingresa numero int"/>
                                         </div>
                                     </section>
                                 </div>
@@ -204,7 +204,7 @@
                                     </section>
                                     <section class="col col-6">
                                         <div class=" required">
-                                            <label class="control-label">* Codigo Postal</label>
+                                            <label class="control-label">* Código Postal</label>
                                         </div>
                                         <div class=" form-group">
                                             <select type="text" id="ComboCP" onkeypress="" class="form-control" name="ComboCP">

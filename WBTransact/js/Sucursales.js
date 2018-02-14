@@ -1,4 +1,7 @@
-﻿$(function () {
+﻿var tamanio = 0;
+
+$(function () {
+    $('#TablaProcesos').empty();
 
     initEventos();
     initDataTable();
@@ -55,6 +58,7 @@ function initEventos() {
         } else {
             showWarningMessage('Información </b>', '<i>Debe seleccionar por lo menos un elemento</i>');
         }
+        validateForm();
     });
 
     //boton guardar y editar
@@ -222,13 +226,13 @@ function validaTamanio() {
         document.getElementById("RFC").disabled = true;
     }
     //validateForm();
-    validaRFC();
+    //validaRFC();
 }
 
 function validateForm() {
+
     $('#FormSucursal').bootstrapValidator('destroy');
-    var tamanio = $("#Tamanio").val();
-    console.log('tamanio: ' + tamanio);
+   tamanio = $("#Tamanio").val();
 
     $("#FormSucursal").bootstrapValidator({
         excluded: [':disabled'],
@@ -263,7 +267,7 @@ function validateForm() {
                         message: 'El RFC debe tener ' + tamanio + ' caracteres'
                     },
                     regexp: {
-                        regexp: /^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))((-)?([A-Z\d]{3}))?$/,
+                        regexp: /^([a-zA-Z]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([a-zA-Z]{2})([A\d])$/,
                         message: 'El RFC no es valido'
                     }
                 }
@@ -416,7 +420,7 @@ function validaRFC() {
                         message: 'El RFC debe tener ' + tamanio + ' caracteres'
                     },
                     regexp: {
-                        regexp: /^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))((-)?([A-Z\d]{3}))?$/,
+                        regexp: /^([a-zA-Z]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([a-zA-Z]{2})([A\d])$/,
                         message: 'El RFC no es valido'
                     }
                 }
@@ -510,7 +514,7 @@ function initDataTable() {
             title: "RFC"
         },
         {
-            title: "Razon Social"
+            title: "Razón Social"
         },
         {
             title: "Calle"
@@ -556,6 +560,11 @@ function initDataTable() {
 
     // Evento creado para abrir la ventana de editar al dar doble click sobre un registro
     $('#detalleSucursal tbody').on('dblclick', 'tr', function () {
+        //$('#FormSucursal').bootstrapValidator('destroy');
+        
+        limpiaDivs();
+        actualizaCP();
+
         $(this).addClass('selected');
         actualizaCP();
         var row = $("#detalleSucursal").DataTable().row('.selected').data();
@@ -573,6 +582,7 @@ function initDataTable() {
         $("#ComboCP").val(row[11]).trigger('change');
         $('#divTiposTransaccion').hide();
         $('#FormularioAlta').show();
+        validateForm()
     });
 }
 
@@ -697,4 +707,8 @@ function actualizaCP() {
         }
     });
 
+}
+
+function mayus(e) {
+    e.value = e.value.toUpperCase();
 }
