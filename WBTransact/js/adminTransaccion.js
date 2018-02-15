@@ -101,7 +101,7 @@ function iniciarWizard() {
 
     $('#smartWizard').on('actionclicked.fu.wizard', function (e, data) {
 
-        console.log(data);
+        //console.log(data);
 
         if (data.step === 2 && data.direction === 'next' && document.getElementById("tablaRoles").rows.length != 1) {
             $(".btn-next").prop("disabled", false);
@@ -295,7 +295,7 @@ function iniciarWizard() {
                 valorOption = $(this).text();
 
             });
-            console.log("valor:" + valorOption);
+            //console.log("valor:" + valorOption);
             if (valorOption == ' Seleccione una etapa ' || valorBtnEtp == 1) {
                 valorselectEtp = $('#rn2_etapa').val();
 
@@ -332,7 +332,7 @@ function iniciarWizard() {
 
             if ($('#rn2_etapa').val() !== 0 && $('#rn2_accion').val() !== 0) {
                 $(".btn-next").prop("disabled", false);
-                console.log($('#rn2_etapa').val(), $('#rn2_accion').val());
+                //console.log($('#rn2_etapa').val(), $('#rn2_accion').val());
             } else {
 
                 $(".btn-next").prop("disabled", true);
@@ -362,7 +362,7 @@ function iniciarWizard() {
                 $(".btn-next").prop("disabled", false);
 
             } else if (step4 >= step2 && step3 <= step4 && step4 >= step1 && step5 <= step4 && step4 >= step7 && step6 <= step4 && step4 >= step8) {
-                console.log("Actualiza a estep --- " + step4);
+                //console.log("Actualiza a estep --- " + step4);
 
                 $.ajax({
                     type: 'POST',
@@ -432,7 +432,7 @@ function iniciarWizard() {
                     },
                     success: function (response) { }
                 });
-                console.log("Actualiza a estep --- " + step5);
+                //console.log("Actualiza a estep --- " + step5);
 
             }
 
@@ -461,7 +461,7 @@ function iniciarWizard() {
                     },
                     success: function (response) { }
                 });
-                console.log("Actualiza a estep --- " + step6);
+                //console.log("Actualiza a estep --- " + step6);
 
             }
             $.ajax({
@@ -473,7 +473,7 @@ function iniciarWizard() {
                 },
                 success: function (response) { }
             });
-            console.log("Actualiza a estep --- " + step6);
+            //console.log("Actualiza a estep --- " + step6);
 
             $(".sortable").sortable({
                 stop: function (event, ui) {
@@ -518,7 +518,7 @@ function iniciarWizard() {
                     },
                     success: function (response) { }
                 });
-                console.log("Actualiza a estep --- " + step6);
+                //console.log("Actualiza a estep --- " + step6);
 
             }
             InitEditstep6();
@@ -546,7 +546,7 @@ function iniciarWizard() {
                         estatus: step8
                     },
                     success: function (response) {
-                        console.log("Step " + step5);
+                        //console.log("Step " + step5);
                     }
                 });
             }
@@ -3739,6 +3739,9 @@ function AgregarReglaAccion() {
             if (n) {
 
                 if ($('#Rn_AccionConfig').text() != "" || $('#Rn_AccionConfig').text() != '') {
+
+                    console.log($('#Rn_AccionConfig').text());
+
                     if ($('#Rn_AccionConfigAlterna').text() != "" || $('#Rn_AccionConfigAlterna').text() != '') {
 
                         $("#select#RNA_EtapaFinal").prop("disabled", true);
@@ -8967,7 +8970,7 @@ function InitDataTableAutocomplete() {
 
 function InitDataTableReglaAccion(x) {
 
-    console.log("******: " + IdTipoTran);
+    //console.log("******: " + IdTipoTran);
 
     ArregloValidarAccionesEdit = new Array();
     var arrayAux = new Array();
@@ -8994,7 +8997,7 @@ function InitDataTableReglaAccion(x) {
         success: function (response) {
             var cadenaAux;
 
-            console.log("Response -------> ");
+            //console.log("Response -------> ");
             response = jQuery.parseJSON(response.d.listaReglasxAccion[0].ReglaxAccion);
             $.each(response, function (i, json) {
 
@@ -9003,7 +9006,7 @@ function InitDataTableReglaAccion(x) {
                     if (j != 'idTransaccion') {
                         if (j != 'nombreTransaccion') {
 
-                            console.log(j);
+                            //console.log(j);
                             row[0].accion = j;
                             row[0].etapa = i;
                             cadenaAux = JSON.stringify(row[0]);
@@ -9017,35 +9020,47 @@ function InitDataTableReglaAccion(x) {
                 });
             });
 
+            
+
             for (var i = 0; i < arrayAux.length; i++) {
+
+
                 arrayAux[i][0] = arrayAux[i][0].replace('{"etapaFutura":"', '');
                 arrayAux[i][0] = arrayAux[i][0].replace('\"', '');
 
-                arrayAux[i][1] = arrayAux[i][1].replace('validacion":"', '');
-                arrayAux[i][1] = arrayAux[i][1].replace('\"', '');
-                arrayAux[i][1] = arrayAux[i][1].replace('\"', '');
-
-                arrayAux[i][2] = arrayAux[i][2].replace('alterna":"', '');
-                arrayAux[i][2] = arrayAux[i][2].replace('\"', '');
-                arrayAux[i][2] = arrayAux[i][2].replace('\"', '');
-
-                arrayAux[i][3] = arrayAux[i][3].replace('success":"', '');
-                arrayAux[i][3] = arrayAux[i][3].replace('\"', '');
-                arrayAux[i][3] = arrayAux[i][3].replace('\"', '');
+                if (arrayAux[i][1] != undefined) {
 
 
-                arrayAux[i][4] = arrayAux[i][4].replace('error":"', '');
-                arrayAux[i][4] = arrayAux[i][4].replace('\"', '');
-                arrayAux[i][4] = arrayAux[i][4].replace('\"', '');
+                    arrayAux[i][1] = arrayAux[i][1].replace('validacion":"', '');
+                    arrayAux[i][1] = arrayAux[i][1].replace('\"', '');
+                    arrayAux[i][1] = arrayAux[i][1].replace('\"', '');
+                }
+                if (arrayAux[i][2] != undefined) {
+                    arrayAux[i][2] = arrayAux[i][2].replace('alterna":"', '');
+                    arrayAux[i][2] = arrayAux[i][2].replace('\"', '');
+                    arrayAux[i][2] = arrayAux[i][2].replace('\"', '');
+                }
+                if (arrayAux[i][3] != undefined) {
+                    arrayAux[i][3] = arrayAux[i][3].replace('success":"', '');
+                    arrayAux[i][3] = arrayAux[i][3].replace('\"', '');
+                    arrayAux[i][3] = arrayAux[i][3].replace('\"', '');
+                }
+                if (arrayAux[i][4] != undefined) {
 
-                arrayAux[i][5] = arrayAux[i][5].replace('accion":"', '');
-                arrayAux[i][5] = arrayAux[i][5].replace('\"', '');
-                arrayAux[i][5] = arrayAux[i][5].replace('\"', '');
-
-                arrayAux[i][6] = arrayAux[i][6].replace('etapa":"', '');
-                arrayAux[i][6] = arrayAux[i][6].replace('\"', '');
-                arrayAux[i][6] = arrayAux[i][6].replace('\"}', '');
-
+                    arrayAux[i][4] = arrayAux[i][4].replace('error":"', '');
+                    arrayAux[i][4] = arrayAux[i][4].replace('\"', '');
+                    arrayAux[i][4] = arrayAux[i][4].replace('\"', '');
+                }
+                if (arrayAux[i][5] != undefined) {
+                    arrayAux[i][5] = arrayAux[i][5].replace('accion":"', '');
+                    arrayAux[i][5] = arrayAux[i][5].replace('\"', '');
+                    arrayAux[i][5] = arrayAux[i][5].replace('\"', '');
+                }
+                if (arrayAux[i][6] != undefined) {
+                    arrayAux[i][6] = arrayAux[i][6].replace('etapa":"', '');
+                    arrayAux[i][6] = arrayAux[i][6].replace('\"', '');
+                    arrayAux[i][6] = arrayAux[i][6].replace('\"}', '');
+                }
                 var idEtapa = arrayAux[i][6];
                 var idEtapaFutura = arrayAux[i][0];
                 var validacion = arrayAux[i][1];
@@ -9056,14 +9071,30 @@ function InitDataTableReglaAccion(x) {
 
 
                 arrayAux[i][0] = arrayAux[i][0].replace(idEtapaFutura, idEtapa);
-                arrayAux[i][1] = arrayAux[i][1].replace(validacion, idEtapaFutura);
-                arrayAux[i][2] = arrayAux[i][2].replace(alterna, accion);
-                arrayAux[i][3] = arrayAux[i][3].replace(success, validacion);
-                arrayAux[i][4] = arrayAux[i][4].replace(error, alterna);
-                arrayAux[i][5] = arrayAux[i][5].replace(accion, success);
-                arrayAux[i][6] = arrayAux[i][6].replace(idEtapa, error);
+                if (arrayAux[i][1] != undefined) {
+                    arrayAux[i][1] = arrayAux[i][1].replace(validacion, idEtapaFutura);
+                }
+                if (arrayAux[i][2] != undefined) {
+                    arrayAux[i][2] = arrayAux[i][2].replace(alterna, accion);
+                }
+                if (arrayAux[i][3] != undefined) {
+                    arrayAux[i][3] = arrayAux[i][3].replace(success, validacion);
+                }
+                if (arrayAux[i][4] != undefined) {
+                    arrayAux[i][4] = arrayAux[i][4].replace(error, alterna);
+                }
+                if (arrayAux[i][5] != undefined) {
+                    arrayAux[i][5] = arrayAux[i][5].replace(accion, success);
+                }
+                if (arrayAux[i][6] != undefined) {
+                    arrayAux[i][6] = arrayAux[i][6].replace(idEtapa, error);
+                }
+
 
                 ArregloValidarAccionesEdit.push(arrayAux[i][2]);
+
+
+
             }
 
 
