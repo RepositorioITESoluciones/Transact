@@ -197,7 +197,7 @@ namespace Transact.Datos
                 dt.Columns.Add("TipoTransaccion").DataType = typeof(string);
                 dt.Columns.Add("IdReferencia");
                 dt.Columns.Add("NombreReferencia");
-//                dt.Columns["TipoTransaccion"].DataType = typeof(Int64);
+//              dt.Columns["TipoTransaccion"].DataType = typeof(Int64);
                 using (connection = Conexion.ObtieneConexion("ConexionBD"))
                 {
 
@@ -423,9 +423,13 @@ namespace Transact.Datos
                 {
                     SqlDataReader consulta;
                     connection.Open();
-                    consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT idBitacora,idTransaccion,cveMovimiento,camposTransacciones,idEtapa,idAccion,estatus"
-                                                                      + " FROM Configuracion.BitacoraTransacciones"
-                                                                      + " where idTransaccion = '" + idtransaccion+"'");
+                    consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT idBitacora, B.idTransaccion, B.cveMovimiento, camposTransacciones, ET.descripcion Etapa, AC.descripcion Accion, B.estatus"
+                                                                    + " FROM[Configuracion].[BitacoraTransacciones] B, [Configuracion].[EtapasTipoTransaccion] ET,"
+                                                                    + " [Configuracion].[MAETransacciones] MAE, [Configuracion].[AccionesTipoTransaccion] AC"
+                                                                    + " WHERE B.idEtapa = ET.idEtapa"
+                                                                    + " and MAE.idTransaccion = B.idTransaccion"
+                                                                    + " and B.idAccion = AC.idAccion"
+                                                                    + " and B.idTransaccion = '" + idtransaccion+"'");
                     dt.Load(consulta);
                     connection.Close();
 
@@ -438,8 +442,10 @@ namespace Transact.Datos
                     valores.idTransaccion = rowDet["idTransaccion"].ToString();
                     valores.cveMovimiento = rowDet["cveMovimiento"].ToString();
                     valores.camposTransacciones = rowDet["camposTransacciones"].ToString();
-                    valores.idEtapa = Convert.ToInt32(rowDet["idEtapa"].ToString());
-                    valores.idAccion = Convert.ToInt32(rowDet["idAccion"].ToString());
+                    valores.Etapa = rowDet["Etapa"].ToString();
+                    valores.Accion = rowDet["Accion"].ToString();
+                    //valores.idEtapa = Convert.ToInt32(rowDet["idEtapa"].ToString());
+                    //valores.idAccion = Convert.ToInt32(rowDet["idAccion"].ToString());
                     if (rowDet["estatus"].ToString()=="null") { valores.estatus = Convert.ToBoolean(rowDet["estatus"].ToString()); } else { valores.estatus = false; }
                     Campos.Add(valores);
 

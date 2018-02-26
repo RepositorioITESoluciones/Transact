@@ -448,7 +448,7 @@ namespace Transact.Datos
                 throw new ArgumentException(ex.Message);
             }
         }
-        public bool inserta(string json, string idTransaccion, int idEtapa, int idAccion)
+        public bool inserta(int idUser,string json, string idTransaccion, int idEtapa, int idAccion)
         {
             bool Respuesta = false;
             Int32 idbitacora = 0;
@@ -458,6 +458,10 @@ namespace Transact.Datos
 
                 using (connection = Conexion.ObtieneConexion("ConexionBD"))
                 {
+
+                    
+
+
                     Int64 substring = 0;
                     Int64 resultadoid = 0;
                     StringBuilder folio = new StringBuilder();
@@ -517,8 +521,10 @@ namespace Transact.Datos
                     command.Transaction = sqlTran;
                     try
                     {
-                        command.CommandText = "INSERT INTO Configuracion.MAETransacciones VALUES(@folio,@idTransaccion,@fecha,null,1,1,@idEtapa,1)";
+                        command.CommandText = "INSERT INTO Configuracion.MAETransacciones VALUES(@folio,@idTransaccion,@fecha,null,@idUser,1,@idEtapa,1)";
 
+                        
+                        command.Parameters.AddWithValue("@idUser", idUser);
                         command.Parameters.AddWithValue("@folio", folio.ToString());
                         command.Parameters.AddWithValue("@idTransaccion", idTransaccion);
                         command.Parameters.AddWithValue("@fecha", DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"));
@@ -537,6 +543,8 @@ namespace Transact.Datos
                         command.Parameters.AddWithValue("@idEtapa1", idEtapa);
                         command.Parameters.AddWithValue("@idEtapa2", idEtapa);
                         command.ExecuteNonQuery();
+
+                        
 
                         sqlTran.Commit();
 
@@ -567,7 +575,7 @@ namespace Transact.Datos
 
         }
 
-        public bool insertaxEtapa(string json, string idTransaccion, int idEtapa, int idAccion) {
+        public bool insertaxEtapa(int idFutura, string json, string idTransaccion, int idEtapa, int idAccion) {
             DataTable dt = new DataTable();
             DataSet datosBD = new DataSet();
             DataSet datosNew = new DataSet();
@@ -696,16 +704,61 @@ namespace Transact.Datos
                 string cadena = JsonConvert.SerializeObject(datosBD);
                 using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     connection.Open();
+
+                    Int64 resul = 0;
+                    DataTable p = new DataTable();
+                    p = Ejecuta.EjecutarConsulta(connection, null, "SELECT count(1)"
+                                                            + " FROM configuracion.EtapasAccionesTipoTransacciones ETT inner join Configuracion.MAETransacciones MT"
+                                                            + " on ETT.idTipoTransaccion = MT.idTipoTransaccion"
+                                                            + " where MT.idTransaccion = '" + idTransaccion + "'"
+                                                            + " and " + idFutura + " < (SELECT max(idEtapa)"
+                                                            + " FROM configuracion.EtapasAccionesTipoTransacciones"
+                                                            + " where idTipoTransaccion = ETT.idTipoTransaccion)"
+                                                            + " and ETT.idEtapa > " + idFutura, false);
+                    if (p != null)
+                    {
+                        resul = (long)Convert.ToDouble(p.Rows[0][0].ToString());
+                    }
+
                     SqlTransaction sqlTran = connection.BeginTransaction();
                     SqlCommand command = connection.CreateCommand();
 
                     command.Transaction = sqlTran;
 
                     try {
-                        command.CommandText = "UPDATE Configuracion.ValoresCamposTransacciones SET camposTransaccion = @jsonUpdate WHERE idTransaccion = @idTransaccion1";
+
+                        //connection.Open();
+                        
+
+
+
+                        //connection.Close();
+                        
+
+
+                        if (resul == 0)
+                        {
+                            command.CommandText = "UPDATE Configuracion.MAETransacciones SET idEstatus = 3 WHERE idTransaccion=@idTransaccion1";
+
+                            //command.Parameters.AddWithValue("@jsonUpdate", cadena);
+                            command.Parameters.AddWithValue("@idTransaccion1", idTransaccion);
+                            command.ExecuteNonQuery();
+
+                        }
+                        if (resul > 0) {
+
+                            command.CommandText = "UPDATE Configuracion.MAETransacciones SET idEstatus = 2 WHERE idTransaccion=@idTransaccion1";
+
+                            //command.Parameters.AddWithValue("@jsonUpdate", cadena);
+                            command.Parameters.AddWithValue("@idTransaccion1", idTransaccion);
+                            command.ExecuteNonQuery();
+
+                        }
+
+                        command.CommandText = "UPDATE Configuracion.ValoresCamposTransacciones SET camposTransaccion = @jsonUpdate WHERE idTransaccion = @idTransaccion2";
 
                         command.Parameters.AddWithValue("@jsonUpdate", cadena);
-                        command.Parameters.AddWithValue("@idTransaccion1", idTransaccion);
+                        command.Parameters.AddWithValue("@idTransaccion2", idTransaccion);
                         command.ExecuteNonQuery();
 
 
@@ -716,9 +769,19 @@ namespace Transact.Datos
                         command.Parameters.AddWithValue("@idEtapa", idEtapa);
                         command.Parameters.AddWithValue("@idEtapa1", idEtapa);
                         command.ExecuteNonQuery();
-                        sqlTran.Commit();
 
+                        command.CommandText = "UPDATE Configuracion.MAETransacciones SET idEtapa = @idFutura ,statusEtapa = 1 WHERE idTransaccion=@idTransaccionupd";
+                        command.Parameters.AddWithValue("@idFutura", idFutura);
+                        command.Parameters.AddWithValue("@idTransaccionupd", idTransaccion);
+                        command.ExecuteNonQuery();  
+                        sqlTran.Commit();
                         Respuesta = true;
+                        connection.Close();
+
+
+                        
+
+
 
                     } catch (Exception ex) {
                         Console.WriteLine(ex);
@@ -727,7 +790,7 @@ namespace Transact.Datos
                     }
 
 
-                    connection.Close();
+                    
                 }
             } catch (Exception ex) {
 
@@ -905,7 +968,7 @@ namespace Transact.Datos
 
             return complemento;
         }
-        public bool InsertarCatalogos(string json, string idTransaccion, int idEtapa, int idAccion)
+        public bool InsertarCatalogos(int idUser,string json, string idTransaccion, int idEtapa, int idAccion)
         {
             SqlConnection connection = null;
             DataTable dt = new DataTable();
@@ -1014,7 +1077,7 @@ namespace Transact.Datos
                     else
                     {
 
-                        respuesta = inserta(json, idTransaccion, idEtapa, idAccion);
+                        respuesta = inserta(idUser,json, idTransaccion, idEtapa, idAccion);
 
 
 
@@ -1154,13 +1217,8 @@ namespace Transact.Datos
                 {
                     SqlDataReader consulta;
                     connection.Open();
-                    consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT Distinct MAE.idTransaccion folioTransaccion,  TT.descripcion nombreTransaccion, " +
-                        "MAE.fechaIniTransaccion, TT.cveTipoTransaccion Clave, R.nombreRol Rol, TT.idTipoTransaccion,ETT.descripcion EtapaAtual, " +
-                        "(SELECT descripcion FROM Configuracion.EtapasTipoTransaccion WHERE idEtapa = (SELECT MAX(idEtapa) " +
-                        "FROM Configuracion.EtapasTipoTransaccion WHERE idTipoTransaccion = ETT.idTipoTransaccion)) as EtapaSiguiente FROM Configuracion.MAETransacciones MAE, " +
-                        "Configuracion.TiposTransacciones TT, Configuracion.EtapasAccionesRoles EAT, Seguridad.Roles R, Configuracion.EtapasTipoTransaccion ETT " +
-                        "WHERE MAE.idTipoTransaccion = TT.idTipoTransaccion AND EAT.idRol = R.idRol AND EAT.idTipoTransaccion = TT.idTipoTransaccion AND ETT.idTipoTransaccion = TT.idTipoTransaccion " +
-                        "AND MAE.idTransaccion = " + idTransaccion);
+                    consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT idTransaccion Folio, TT.descripcion TipoTransaccion, fechaIniTransaccion FechaInicio,  U.nombreUsuario Encargado, ET.descripcion EtapaActual,  (select ETT.descripcion from[Configuracion].[EtapasTipoTransaccion] ETT  where idTipoTransaccion = MAE.idTipoTransaccion  and ETT.idEtapa = (SELECT(min(idEtapa) + 1)  from[Configuracion].[EtapasTipoTransaccion] ETT  where idTipoTransaccion = MAE.idTipoTransaccion)) EtapaFutura,  (select ETT.idEtapa from[Configuracion].[EtapasTipoTransaccion]         ETT where idTipoTransaccion = MAE.idTipoTransaccion and ETT.idEtapa = (SELECT(min(idEtapa)+1)  from[Configuracion].[EtapasTipoTransaccion]         ETT where idTipoTransaccion = MAE.idTipoTransaccion)) idEtapaFutura FROM[Configuracion].[MAETransacciones]         MAE, [Configuracion].[TiposTransacciones]         TT,  [Configuracion].[Usuarios]         U, [Configuracion].[EtapasTipoTransaccion]         ET WHERE MAE.idTipoTransaccion = TT.idTipoTransaccion and U.idUsuario = MAE.idUsuario and ET.idEtapa = MAE.idEtapa and MAE.idTransaccion =" + idTransaccion);
+
                     Datos.Load(consulta);
                     connection.Close();
 
@@ -1169,13 +1227,14 @@ namespace Transact.Datos
                     {
                         camposDetalleTB valores = new camposDetalleTB();
 
-                        valores.folioTransaccion = Convert.ToInt64(rowD["folioTransaccion"].ToString());
-                        valores.nombreTransaccion = rowD["nombreTransaccion"].ToString();
-                        valores.fechaIniTransaccion = rowD["fechaIniTransaccion"].ToString();
-                        valores.Clave = rowD["Clave"].ToString();
-                        valores.Rol = rowD["Rol"].ToString();
-                        valores.EtapaAtual = rowD["EtapaAtual"].ToString();
-                        valores.etapaSiguiente = rowD["etapaSiguiente"].ToString();
+                        valores.folioTransaccion = Convert.ToInt64(rowD["Folio"].ToString());
+                        valores.nombreTransaccion = rowD["TipoTransaccion"].ToString();
+                        valores.fechaIniTransaccion = rowD["FechaInicio"].ToString();
+                        //valores.Clave = rowD["Clave"].ToString();
+                        valores.Rol = rowD["Encargado"].ToString();
+                        valores.EtapaAtual = rowD["EtapaActual"].ToString();
+                        valores.etapaSiguiente = rowD["EtapaFutura"].ToString();
+                        valores.idEtapaFut = rowD["idEtapaFutura"].ToString();
                         campos.Add(valores);
                     }
                     lista.lisCamposDetalleTB = campos.ToArray();

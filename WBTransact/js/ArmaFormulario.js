@@ -19,11 +19,16 @@ var namesDetalle = []
 var longitudC = 0;
 var XmlJson = '';
 
+var jsonFormulario = '';
+
 var var1 = 0;
 var var2 = '';
 
 //funcion principal
-$(function() {
+$(function () {
+    jsonFormulario = '';
+
+    select2Agrupado();
     $("#StatusTran").empty();
     $("#menu").val(0);
     $("#menu").trigger("change");
@@ -34,14 +39,29 @@ $(function() {
     var Transaccion = "";
     var CatTransaccion = "";
     var Formula = "";
-    //loadScript("js/bootstrap/bootstrap.min.js");
-    select2Agrupado();
-    //SeleccionaTransaccion();
     bostrapvali();
-    //$('#menu').empty();
+
 
 
 });
+
+
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
 
 function select2Agrupado() {
     var getObjetivosByProyecto;
@@ -96,6 +116,9 @@ function select2Agrupado() {
             url: 'MyWebService.asmx/camposTrans',
             data: JSON.stringify({
                 idtipo: $('#menu option:selected').val()
+
+                
+
             }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -129,6 +152,8 @@ function select2Agrupado() {
                         value: 0,
                         text: 'No hay Transacciones'
                     }));
+
+                    jsonFormulario = '';
                 }
 
             }
@@ -261,9 +286,9 @@ function seleccionaFormulario(id, descrip) {
         contentType: 'application/json; charset=utf-8',
         success: function(respuesta) {
 
-
+            //console.log(respuesta.activo)
             XmlJson = respuesta;
-            GeneraFormulafrio(respuesta);
+            GeneraFormulafrio(XmlJson);
             //console.log(respuesta);
 
         }
@@ -275,371 +300,370 @@ function seleccionaFormulario(id, descrip) {
 }
 //Generar formulario
 function GeneraFormulafrio(xml_json) {
+
+    jsonFormulario = xml_json;
+
+    if (jsonFormulario != '') {
+
+        
+
     var formHtml = "";
     Valicabecera = "";
     detallevalida = '';
     namesDetalle = [];
     objetoFormula = [];
-    $.each(xml_json, function(reg, rowgral) {
+    $.each(xml_json, function (reg, rowgral) {
 
-        idTran = rowgral.idTipoTrasaccion;
+        //console.log(rowgral.CamposCabecera);
+        if (rowgral.activo != false) {
+            if (rowgral.CamposCabecera != '') {
 
-        //console.log("eeeeeeeeeeeeeeeeeeeeeeeeeee"+idTran);
+                idTran = rowgral.idTipoTrasaccion;
 
-        Transaccion = rowgral.descripcion;
-        CatTransaccion = rowgral.categoriaTransac;
-        idEtapa = rowgral.idEtapa;
-        idAccion = rowgral.idAccion;      
-        
+                //console.log("eeeeeeeeeeeeeeeeeeeeeeeeeee"+idTran);
 
-        if (rowgral.CamposCabecera.length > 0) {
-            formHtml += "<div class='col-xs-12 col-sm-7 col-md-7 col-lg-4'> ";
-            formHtml += "<h1 class='page-title txt-color-blueDark'>";
-            formHtml += "<i class='fa fa-edit fa-fw'></i> ";
-            formHtml += rowgral.descripcion;
-            formHtml += "</h1>";
-            formHtml += '</div>';
+                Transaccion = rowgral.descripcion;
+                CatTransaccion = rowgral.categoriaTransac;
+                idEtapa = rowgral.idEtapa;
+                idAccion = rowgral.idAccion;
 
 
-            formHtml += '<div class="row" id="">'
-
-            formHtml += '<section id="widget-grid">'
-            formHtml += '<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"></div>'
-            formHtml += '<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable">'
-            formHtml += '<div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false">'
-
-            formHtml += '<header role="heading">'
-            formHtml += '<span class="widget-icon"> <i class="fa fa-edit"></i></span> <h2>Campos Cabecera</h2>'
-            formHtml += '<span class="jarviswidget-loader" style="display: none;"><i class="fa fa-refresh fa-spin"></i></span>'
-            formHtml += '</header>'
-
-            formHtml += '<div role="content">'
-            formHtml += '<form id="formCabecera" method="post" novalidate="novalidate" class="bv-form"><button type="submit" class="bv-hidden-submit" style="display: none; width: 0px; height: 0px;"></button>'
-
-            formHtml += '<fieldset>'
-            formHtml += '<legend>'
-            //formHtml += 'ASDASDSA'
-            formHtml += '</legend>'
-            formHtml += '<div class="form-group">'
-
-            //console.log("ya entro");
-            var contador = 0;
-            
-            $.each(rowgral.CamposCabecera, function (regcab, rowcab) {
-                if (contador == 4 || contador==0) {
-                    formHtml += '<div class="row">'
-                }
-                if (rowcab.visible == true) {
-
-                    objetoFormula = [];
-                    if (regcab.formula != null) {
-                        objetoFormula.push({
-                            IdCampo: regcab.nombreCampo,
-                            Json: regcab.formula
-                        });
-                    }
-                    arregloC.push(rowcab.nombreCampo);
-                    contador++;
-                    formHtml += GeneraCompos(rowcab.Visualisacion, rowcab.idCampo, rowcab.nombreCampo, rowcab.descripcionCampo, rowcab.logitudCampo, rowcab.obligatorio, rowcab.editable, rowcab.TransaccionReferencia, rowcab.idRef, rowcab.nomRef, rowcab.CadenaComplementos);
-                }
-                if (contador == 4 || contador==0) {
-                    formHtml += '</div >'
-                }
-            });
+                if (rowgral.CamposCabecera.length > 0) {
+                    formHtml += "<div class='col-xs-12 col-sm-7 col-md-7 col-lg-4'> ";
+                    formHtml += "<h1 class='page-title txt-color-blueDark'>";
+                    formHtml += "<i class='fa fa-edit fa-fw'></i> ";
+                    formHtml += rowgral.descripcion;
+                    formHtml += "</h1>";
+                    formHtml += '</div>';
 
 
+                    formHtml += '<div class="row" id="">'
 
+                    formHtml += '<section id="widget-grid">'
+                    formHtml += '<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"></div>'
+                    formHtml += '<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable">'
+                    formHtml += '<div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false">'
 
-            Valicabecera += '{';
-            $.each(rowgral.CamposCabecera, function (regcab, rowcab) {
-                if (rowcab.visible == true) {
+                    formHtml += '<header role="heading">'
+                    formHtml += '<span class="widget-icon"> <i class="fa fa-edit"></i></span> <h2>Campos Cabecera</h2>'
+                    formHtml += '<span class="jarviswidget-loader" style="display: none;"><i class="fa fa-refresh fa-spin"></i></span>'
+                    formHtml += '</header>'
 
-                    Valicabecera += '"' + rowcab.nombreCampo + '":'
+                    formHtml += '<div role="content">'
+                    formHtml += '<form id="formCabecera" method="post" novalidate="novalidate" class="bv-form"><button type="submit" class="bv-hidden-submit" style="display: none; width: 0px; height: 0px;"></button>'
 
-                    if (rowcab.Visualisacion == "checkbox") {
-                        Valicabecera += '{ "validators" : {';
-                        Valicabecera += '"choice": {';
-                        Valicabecera += '"min": 1,';
-                        Valicabecera += '"message" : "Please choose 1 - 2 languages you can speak"'
-                        Valicabecera += '}';
-                    } else {
+                    formHtml += '<fieldset>'
+                    formHtml += '<legend>'
+                    //formHtml += 'ASDASDSA'
+                    formHtml += '</legend>'
+                    formHtml += '<div class="form-group">'
 
-                        Valicabecera += '{"group": ".col-md-3","validators": {';
-                        Valicabecera += '"stringLength": { "max" :' + rowcab.logitudCampo + ',';
-                        Valicabecera += '"message" : "Caracteres maximos ' + rowcab.logitudCampo + '"}';
+                    //console.log("ya entro");
+                    var contador = 0;
 
-                        if (rowcab.obligatorio == "required") {
-
-
-
-                            Valicabecera += ',';
-                            Valicabecera += '"notEmpty": {"message": "El campo ' + rowcab.descripcionCampo + ' es obligatorio"}';
-
-
+                    $.each(rowgral.CamposCabecera, function (regcab, rowcab) {
+                        if (contador == 4 || contador == 0) {
+                            formHtml += '<div class="row">'
                         }
-                    }
-                    Valicabecera += '}},';
-                }
-            });
+                        if (rowcab.visible == true) {
 
-            Valicabecera = Valicabecera.substring(0, Valicabecera.length - 1);
-            Valicabecera += '}';
-
-            
-
-
-        } else {
-
-            $.smallBox({
-                title: "Error!",
-                content: "<i>La transacción presenta errores o esta mal configurada</i>",
-                color: "#c79121",
-                timeout: 4000,
-                icon: "fa fa-info-circle swing animated"
-            });
-
-        }
-
-       
-
-        
-        formHtml += '</div >'
-        formHtml += '</fieldset >'
-
-        if (rowgral.CamposDetalle.length == 0 && rowgral.CamposCabecera.length > 0 ) {
-
-        
-            formHtml += '<div class="form-actions">'
-            formHtml += '<div class="row">'
-            formHtml += '<div class="col-md-12">'
-            formHtml += '<button id="addDetalle" onclick="GuardarRegitros()" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o"></i> Agregar</button>';
-            formHtml += '</div>'
-            formHtml += '</div>'
-            formHtml += '</div>'
-        
-            
-        }
-        formHtml += '</form >'
-        formHtml += '</div > <br />'
-
-        formHtml += '</div >'
-        formHtml += '</article >'    
-        formHtml += '</section >'
-
-        formHtml += '</div >'
-
-        if (rowgral.CamposDetalle.length != 0) {
-            formHtml += '<div class="row" id="">'
-
-            formHtml += '<section id="widget-grid">'
-            formHtml += '<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"></div>'
-            formHtml += '<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable">'
-            formHtml += '<div class="jarviswidget jarviswidget-color-white" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="true" data-widget-sortable="false" role="widget" data-widget-attstyle="jarviswidget-color-white">'
-
-
-            formHtml += '<header role="heading">'
-            formHtml += '<span class="widget-icon"> <i class="fa fa-edit"></i></span> <h2>Campos Detalle</h2>'
-            formHtml += '<span class="jarviswidget-loader" style="display: none;"><i class="fa fa-refresh fa-spin"></i></span>'
-            formHtml += '</header>'
-
-            formHtml += '<div role="content">'
-            formHtml += '<form id="formdetalle" method="post" novalidate="novalidate" class="bv-form"><button type="submit" class="bv-hidden-submit" style="display: none; width: 0px; height: 0px;"></button>'
-
-            formHtml += '<fieldset>'
-            formHtml += '<legend>'
-            formHtml += '<button id="addDetalle" onclick="addDetalles()" class="btn btn-success btn-sm" type="button"><i class="fa fa-plus" type="button"></i> Agregar</button> &nbsp';
-            formHtml += '<button id="deleteRow" onclick="deleteRoww()"  class="btn btn-danger btn-sm" type="button"><i class="fa fa-trash"></i>  Eliminar</button> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp';
-            formHtml += '</legend>'
-            formHtml += '<div class="form-group">'
-            //formHtml += '<div class="row">'
-
-            if (rowgral.CamposDetalle.length != 0) {
-
-                var contador1 = 0;
-
-                $.each(rowgral.CamposDetalle, function (regdet, rowdet) {
-                    if (contador1 == 4 || contador1 == 0) {
-                        formHtml += '<div class="row">'
-                    }
-                    if (rowdet.visible == true) {
-
-                        
-                        if (rowdet.formula != null) {
-                            
-                            //console.log(rowdet.nombreCampo + "-----" + rowdet.formula);
-                            objetoFormula.push({
-                                IdCampo: rowdet.nombreCampo,
-                                Json: rowdet.formula
-                            });
-
-
-                            
-                        }
-                        arregloC.push(rowdet.nombreCampo);
-                        contador1++;
-                        formHtml += GeneraCompos(rowdet.Visualisacion, rowdet.idCampo, rowdet.nombreCampo, rowdet.descripcionCampo, rowdet.logitudCampo, rowdet.obligatorio, rowdet.editable, rowdet.TransaccionReferencia, rowdet.idRef, rowdet.nomRef, rowdet.CadenaComplementos);
-                    }
-                    if (contador1 == 4 || contador1 == 0) {
-                        formHtml += '</div >'
-                    }
-                });
-
-
-
-
-                detallevalida += '{';
-                $.each(rowgral.CamposDetalle, function (regdet, rowdet) {
-                    if (rowdet.visible == true) {
-
-                        detallevalida += '"' + rowdet.nombreCampo + '":'
-
-                        if (rowdet.Visualisacion == "checkbox") {
-                            detallevalida += '{ "validators" : {';
-                            detallevalida += '"choice": {';
-                            detallevalida += '"min": 1,';
-                            detallevalida += '"message" : "Please choose 1 - 2 languages you can speak"'
-                            detallevalida += '}';
-                        } else {
-
-                            detallevalida += '{"group": ".col-md-3","validators": {';
-                            detallevalida += '"stringLength": { "max" :' + rowdet.logitudCampo + ',';
-                            detallevalida += '"message" : "Caracteres maximos ' + rowdet.logitudCampo + '"}';
-
-                            if (rowdet.obligatorio == "required") {
-
-
-
-                                detallevalida += ',';
-                                detallevalida += '"notEmpty": {"message": "El campo ' + rowdet.descripcionCampo + ' es obligatorio"}';
-
-
+                            objetoFormula = [];
+                            if (regcab.formula != null) {
+                                objetoFormula.push({
+                                    IdCampo: regcab.nombreCampo,
+                                    Json: regcab.formula
+                                });
                             }
+                            arregloC.push(rowcab.nombreCampo);
+                            contador++;
+                            formHtml += GeneraCompos(rowcab.Visualisacion, rowcab.idCampo, rowcab.nombreCampo, rowcab.descripcionCampo, rowcab.logitudCampo, rowcab.obligatorio, rowcab.editable, rowcab.TransaccionReferencia, rowcab.idRef, rowcab.nomRef, rowcab.CadenaComplementos);
                         }
-                        detallevalida += '}},';
+                        if (contador == 4 || contador == 0) {
+                            formHtml += '</div >'
+                        }
+                    });
+
+
+
+
+                    Valicabecera += '{';
+                    $.each(rowgral.CamposCabecera, function (regcab, rowcab) {
+                        if (rowcab.visible == true) {
+
+                            Valicabecera += '"' + rowcab.nombreCampo + '":'
+
+                            if (rowcab.Visualisacion == "checkbox") {
+                                Valicabecera += '{ "validators" : {';
+                                Valicabecera += '"choice": {';
+                                Valicabecera += '"min": 1,';
+                                Valicabecera += '"message" : "Please choose 1 - 2 languages you can speak"'
+                                Valicabecera += '}';
+                            } else {
+
+                                Valicabecera += '{"group": ".col-md-3","validators": {';
+                                Valicabecera += '"stringLength": { "max" :' + rowcab.logitudCampo + ',';
+                                Valicabecera += '"message" : "Caracteres maximos ' + rowcab.logitudCampo + '"}';
+
+                                if (rowcab.obligatorio == "required") {
+
+
+
+                                    Valicabecera += ',';
+                                    Valicabecera += '"notEmpty": {"message": "El campo ' + rowcab.descripcionCampo + ' es obligatorio"}';
+
+
+                                }
+                            }
+                            Valicabecera += '}},';
+                        }
+                    });
+
+                    Valicabecera = Valicabecera.substring(0, Valicabecera.length - 1);
+                    Valicabecera += '}';
+
+
+
+
+                }
+
+                formHtml += '</div >'
+                formHtml += '</fieldset >'
+
+                if (rowgral.CamposDetalle.length == 0 && rowgral.CamposCabecera.length > 0) {
+
+
+                    formHtml += '<div class="form-actions">'
+                    formHtml += '<div class="row">'
+                    formHtml += '<div class="col-md-12">'
+                    formHtml += '<button id="addDetalle" onclick="GuardarRegitros()" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o"></i> Agregar</button>';
+                    formHtml += '</div>'
+                    formHtml += '</div>'
+                    formHtml += '</div>'
+
+
+                }
+                formHtml += '</form >'
+                formHtml += '</div > <br />'
+
+                formHtml += '</div >'
+                formHtml += '</article >'
+                formHtml += '</section >'
+
+                formHtml += '</div >'
+
+                if (rowgral.CamposDetalle.length != 0) {
+                    formHtml += '<div class="row" id="">'
+
+                    formHtml += '<section id="widget-grid">'
+                    formHtml += '<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"></div>'
+                    formHtml += '<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable">'
+                    formHtml += '<div class="jarviswidget jarviswidget-color-white" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="true" data-widget-sortable="false" role="widget" data-widget-attstyle="jarviswidget-color-white">'
+
+
+                    formHtml += '<header role="heading">'
+                    formHtml += '<span class="widget-icon"> <i class="fa fa-edit"></i></span> <h2>Campos Detalle</h2>'
+                    formHtml += '<span class="jarviswidget-loader" style="display: none;"><i class="fa fa-refresh fa-spin"></i></span>'
+                    formHtml += '</header>'
+
+                    formHtml += '<div role="content">'
+                    formHtml += '<form id="formdetalle" method="post" novalidate="novalidate" class="bv-form"><button type="submit" class="bv-hidden-submit" style="display: none; width: 0px; height: 0px;"></button>'
+
+                    formHtml += '<fieldset>'
+                    formHtml += '<legend>'
+                    formHtml += '<button id="addDetalle" onclick="addDetalles()" class="btn btn-success btn-sm" type="button"><i class="fa fa-plus" type="button"></i> Agregar</button> &nbsp';
+                    formHtml += '<button id="deleteRow" onclick="deleteRoww()"  class="btn btn-danger btn-sm" type="button"><i class="fa fa-trash"></i>  Eliminar</button> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp';
+                    formHtml += '</legend>'
+                    formHtml += '<div class="form-group">'
+                    //formHtml += '<div class="row">'
+
+                    if (rowgral.CamposDetalle.length != 0) {
+
+                        var contador1 = 0;
+
+                        $.each(rowgral.CamposDetalle, function (regdet, rowdet) {
+                            if (contador1 == 4 || contador1 == 0) {
+                                formHtml += '<div class="row">'
+                            }
+                            if (rowdet.visible == true) {
+
+
+                                if (rowdet.formula != null) {
+
+                                    //console.log(rowdet.nombreCampo + "-----" + rowdet.formula);
+                                    objetoFormula.push({
+                                        IdCampo: rowdet.nombreCampo,
+                                        Json: rowdet.formula
+                                    });
+
+
+
+                                }
+                                arregloC.push(rowdet.nombreCampo);
+                                contador1++;
+                                formHtml += GeneraCompos(rowdet.Visualisacion, rowdet.idCampo, rowdet.nombreCampo, rowdet.descripcionCampo, rowdet.logitudCampo, rowdet.obligatorio, rowdet.editable, rowdet.TransaccionReferencia, rowdet.idRef, rowdet.nomRef, rowdet.CadenaComplementos);
+                            }
+                            if (contador1 == 4 || contador1 == 0) {
+                                formHtml += '</div >'
+                            }
+                        });
+
+
+
+
+                        detallevalida += '{';
+                        $.each(rowgral.CamposDetalle, function (regdet, rowdet) {
+                            if (rowdet.visible == true) {
+
+                                detallevalida += '"' + rowdet.nombreCampo + '":'
+
+                                if (rowdet.Visualisacion == "checkbox") {
+                                    detallevalida += '{ "validators" : {';
+                                    detallevalida += '"choice": {';
+                                    detallevalida += '"min": 1,';
+                                    detallevalida += '"message" : "Please choose 1 - 2 languages you can speak"'
+                                    detallevalida += '}';
+                                } else {
+
+                                    detallevalida += '{"group": ".col-md-3","validators": {';
+                                    detallevalida += '"stringLength": { "max" :' + rowdet.logitudCampo + ',';
+                                    detallevalida += '"message" : "Caracteres maximos ' + rowdet.logitudCampo + '"}';
+
+                                    if (rowdet.obligatorio == "required") {
+
+
+
+                                        detallevalida += ',';
+                                        detallevalida += '"notEmpty": {"message": "El campo ' + rowdet.descripcionCampo + ' es obligatorio"}';
+
+
+                                    }
+                                }
+                                detallevalida += '}},';
+                            }
+                        });
+
+                        detallevalida = detallevalida.substring(0, detallevalida.length - 1);
+                        detallevalida += '}';
+
+
+
+
                     }
+
+
+
+                    //formHtml += '</div>'
+                    formHtml += '</div>'
+                    formHtml += '</fieldset>'
+
+                    //<div class="form-actions">
+                    // <div class="row">
+                    //  <div class="col-md-12">
+                    //   <button class="btn btn-primary" type="submit">
+                    //    <i class="fa fa-disk"></i>
+                    //    Agregar
+                    //   </button>
+                    //  </div>
+                    // </div>
+                    //</div>
+
+                    formHtml += '</form>'
+                    formHtml += '<table id="dtDetalle" class="table table-striped table-bordered table-hover DTTT_selectable" cellspacing="0" width="100%" ondrop="drop(event)" cellspacing="0" width="90%">'
+                    formHtml += '<thead>'
+                    formHtml += '<tr>'
+                    var conc = 0;
+                    $.each(rowgral.CamposDetalle, function (regtable, rowtable) {
+                        if (conc == 0) {
+                            formHtml += '<th>' + rowtable.descripcionCampo + '</th>';
+
+                        } else if (conc == 1) {
+                            formHtml += '<th>' + rowtable.descripcionCampo + '</th>';
+                        } else if (conc <= 5) {
+                            formHtml += '<th>' + rowtable.descripcionCampo + '</th>';
+
+                        } else {
+                            formHtml += '<th>' + rowtable.descripcionCampo + '</th>';
+
+                        }
+
+                        conc++;
+
+                    });
+
+                    namesDetalle = [];
+                    $.each(rowgral.CamposDetalle, function (i1, value) {
+                        if (value.visible == true) {
+                            namesDetalle.push(value.nombreCampo);
+                        }
+
+                    });
+
+                    formHtml += '</tr>'
+                    formHtml += '</thead>'
+                    formHtml += '</table>'
+
+                    formHtml += '<div class="form-actions">'
+                    formHtml += '<div class="row">'
+                    formHtml += '<div class="col-md-12">'
+                    formHtml += '<button id="addDetalle" onclick="GuardarRegitros()" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o"></i> Agregar</button>';
+                    formHtml += '</div>'
+                    formHtml += '</div>'
+                    formHtml += '</div>'
+
+                    formHtml += '</div><br />'
+
+                    formHtml += '</div> '
+                    formHtml += '</article> '
+                    formHtml += '</section>'
+
+                    formHtml += '</div>'
+
+                }
+
+
+                $.each(objetoFormula, function (rm1, rgm1) {
+
+                    var1 = rgm1.IdCampo;
+                    var2 = rgm1.Json;
+
+
+                    excuteformula(var1, var2);
                 });
+                $.each(objeto, function (rowcom, regcom) {
+                    //console.log(regcom.Json);
+                    addEventChange(regcom.IdCampo, regcom.Json);
 
-                detallevalida = detallevalida.substring(0, detallevalida.length - 1);
-                detallevalida += '}';
+                })
+
+                if (rowgral.CamposDetalle.length != 0) {
+
+                    $('#formdetalle').bootstrapValidator('destroy');
+
+                    bostrapvali();
+                    //$('#formdetalle')[0].reset();
+
+                }
+
+                $("#bodyy").html(formHtml);
 
 
 
+                bostrapvali();
+                loadDataTable();
+            } else {
 
+                $.smallBox({
+                    title: "Error!",
+                    content: "<i>La transacción presenta errores o esta mal configurada</i>",
+                    color: "#c79121",
+                    timeout: 4000,
+                    icon: "fa fa-info-circle swing animated"
+                });
             }
-
-
-
-            //formHtml += '</div>'
-            formHtml += '</div>'
-            formHtml += '</fieldset>'
-
-            //<div class="form-actions">
-            // <div class="row">
-            //  <div class="col-md-12">
-            //   <button class="btn btn-primary" type="submit">
-            //    <i class="fa fa-disk"></i>
-            //    Agregar
-            //   </button>
-            //  </div>
-            // </div>
-            //</div>
-
-            formHtml += '</form>'
-            formHtml += '<table id="dtDetalle" class="table table-striped table-bordered table-hover DTTT_selectable" cellspacing="0" width="100%" ondrop="drop(event)" cellspacing="0" width="90%">'
-            formHtml += '<thead>'
-            formHtml += '<tr>'
-            var conc = 0;
-            $.each(rowgral.CamposDetalle, function (regtable, rowtable) {
-                if (conc == 0) {
-                    formHtml += '<th>' + rowtable.descripcionCampo + '</th>';
-
-                } else if (conc == 1) {
-                    formHtml += '<th>' + rowtable.descripcionCampo + '</th>';
-                } else if (conc <= 5) {
-                    formHtml += '<th>' + rowtable.descripcionCampo + '</th>';
-
-                } else {
-                    formHtml += '<th>' + rowtable.descripcionCampo + '</th>';
-
-                }
-
-                conc++;
-
-            });
-
-            namesDetalle = [];
-            $.each(rowgral.CamposDetalle, function (i1, value) {
-                if (value.visible == true) {
-                    namesDetalle.push(value.nombreCampo);
-                }
-
-            });
-
-            formHtml += '</tr>'
-            formHtml += '</thead>'
-            formHtml += '</table>'
-
-            formHtml += '<div class="form-actions">'
-            formHtml += '<div class="row">'
-            formHtml += '<div class="col-md-12">'
-            formHtml += '<button id="addDetalle" onclick="GuardarRegitros()" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o"></i> Agregar</button>';
-            formHtml += '</div>'
-            formHtml += '</div>'
-            formHtml += '</div>'
-
-            formHtml += '</div><br />'
-
-            formHtml += '</div> '
-            formHtml += '</article> '
-            formHtml += '</section>'
-
-            formHtml += '</div>'
-
         }
-
-
-        $("#bodyy").html(formHtml);
-        
-
-        
-
-
-
-        $.each(objetoFormula, function (rm1, rgm1) {
-
-            var1 = rgm1.IdCampo;
-            var2 = rgm1.Json;
-
-                
-            excuteformula(var1, var2);
-        });
-
-
-
-
-        $.each(objeto, function(rowcom, regcom) {
-            //console.log(regcom.Json);
-            addEventChange(regcom.IdCampo, regcom.Json);
-
-        })
-
-       
-
-        if (rowgral.CamposDetalle.length != 0) {
-
-            $('#formdetalle').bootstrapValidator('destroy');
-
-            bostrapvali();
-            $('#formdetalle')[0].reset();
-
-        }
-
-        bostrapvali();
-        loadDataTable();
-
-
     });
-
+    
+    }
 }
 function GeneraCompos(Visualisacion, idCampo, nombreCampo, descripcionCampo, logitudCampo, obligatorio, editable, TransaccionReferencia, idRef, nomRef, CadenaComplementos) {
 
@@ -762,7 +786,7 @@ function GeneraCompos(Visualisacion, idCampo, nombreCampo, descripcionCampo, log
         if (editable != true) {
             Campo += 'readonly '
         }
-        Campo +='type = "' + Visualisacion + '" id= "' + nombreCampo + '" onkeypress= "return validarNLS(event)" class="form-control" name= "' + nombreCampo + '" />';
+        Campo +='type = "' + Visualisacion + '" id= "' + nombreCampo + '"  class="form-control" name= "' + nombreCampo + '" />';
         Campo += '</div>';
     }
     if (Visualisacion == 'password') {
@@ -1161,6 +1185,7 @@ function matchStart(params, data) {
     // Return `null` if the term should not be displayed
     return null;
 }
+
 function GuardarRegitros() {
     var tablaNReg = 0;
     var Datos = "";
@@ -1252,13 +1277,14 @@ function GuardarRegitros() {
 
     //console.log(Datos);
 
-    console.log("n: " + n + " namesdetalle: " + namesDetalle.length + " tablaNReg: " + tablaNReg);
+    //console.log("n: " + n + " namesdetalle: " + namesDetalle.length + " tablaNReg: " + tablaNReg);
     if (n != false && namesDetalle.length != 0 && tablaNReg != 0) {
         console.log("primermetodo");
         $.ajax({
             type: 'POST',
             url: 'MyWebService.asmx/InsertarTransaccion',
             data: JSON.stringify({
+                idUser: getCookie("IdUsuario"),
                 json: Datos,
                 idTransaccion: idTran,
                 Categoria: CatTransaccion,
@@ -1331,6 +1357,7 @@ function GuardarRegitros() {
             type: 'POST',
             url: 'MyWebService.asmx/InsertarTransaccion',
             data: JSON.stringify({
+                idUser: getCookie("IdUsuario"),
                 json: Datos,
                 idTransaccion: idTran,
                 Categoria: CatTransaccion,

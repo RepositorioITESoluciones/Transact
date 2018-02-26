@@ -13,62 +13,39 @@ namespace Transact.Negocio
 
         public Entidades.CamposTransaccion ArmaCampos(int idtransa)
         {
-            Entidades.CamposTransaccion campos = new Entidades.CamposTransaccion();
-
-            Console.WriteLine(campos);
-
-            campos = arma.ArmaFormulario(idtransa);
-
-
-
-            return campos;
+            return arma.ArmaFormulario(idtransa);
         }
 
         public Entidades.Combo ArmaSelect(string idtransact, string idRef, string nomref)
         {
-            Entidades.Combo campos = new Entidades.Combo();
-            Datos.RegistrarTransaccion armar = new Datos.RegistrarTransaccion();
-            Console.WriteLine(campos);
-
-            campos = armar.LlenaCombo(idtransact, idRef, nomref);
-
-
-            return campos;
+            return arma.LlenaCombo(idtransact, idRef, nomref);
         }
 
         public Entidades.Combo ArmaSelectDetalle(string idtransact, string idRef, string nomref) {
-            Entidades.Combo campos = new Entidades.Combo();
-            Datos.RegistrarTransaccion armar = new Datos.RegistrarTransaccion();
-
-
-            campos = armar.LlenaComboDetalle(idtransact, idRef, nomref);
-
-
-            return campos;
+            return arma.LlenaComboDetalle(idtransact, idRef, nomref);
         }
 
-        public bool insert(string json, string idTransaccion, string Categoria, int idEtapa, int idAccion)
+        public bool insert(int idUser,string json, string idTransaccion, string Categoria, int idEtapa, int idAccion)
         {
             bool respuesta = false;
 
             if (Categoria == "Catálogo")
             {
 
-                respuesta = arma.InsertarCatalogos(json, idTransaccion, idEtapa, idAccion);
+                respuesta = arma.InsertarCatalogos(idUser,json, idTransaccion, idEtapa, idAccion);
             }
             else
             {
-                respuesta = arma.inserta(json, idTransaccion, idEtapa, idAccion);
+                respuesta = arma.inserta(idUser,json, idTransaccion, idEtapa, idAccion);
 
             }
 
             return respuesta;
         }
 
-        public bool insertXetapa(string json, string idTransaccion, string Categoria, int idEtapa, int idAccion) {
-            bool respuesta = false;
-                respuesta = arma.insertaxEtapa(json, idTransaccion, idEtapa, idAccion);
-            return respuesta;
+        public bool insertXetapa(int idFutura, string json, string idTransaccion, string Categoria, int idEtapa, int idAccion) {
+
+            return arma.insertaxEtapa(idFutura,json, idTransaccion, idEtapa, idAccion);
         }
 
         public Entidades.EntidadCategoriaTransa CategoriasTrans()

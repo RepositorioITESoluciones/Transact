@@ -30,6 +30,7 @@ function initLogin() {
 function AccederLogin() {
     var user = $('#user').val();
     var passwords = $('#password').val();
+    var idUsuario = '';
     var nombre = '';
     var apellidoP = '';
     var apellidoM = '';
@@ -48,17 +49,20 @@ function AccederLogin() {
             });
         },
         success: function (data) {
+
             $('#loadingMod').modal('hide');
             $.each(data, function (j, val) {
                 if (val != null) {
 
-
+                    idUsuario = val.idPersonal
                     nombre = val.nombre;
                     nombreRol = val.nombreRol;
                     apellidoM = val.apMaterno;
                     apellidoP = val.apPaterno;
                     activo = val.activo;
 
+                    
+                    setCookie("IdUsuario", idUsuario, 30);
                     setCookie("Nombre", nombre, 30);
                     setCookie("ApellidoP", apellidoM, 30);
                     setCookie("ApellidoM", apellidoP, 30);

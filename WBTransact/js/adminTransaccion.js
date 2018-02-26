@@ -3718,9 +3718,12 @@ function AgregarReglaAccion() {
     $('#btn_agregarRNAccion').click(function () {
 
 
+
         var data = otableRA.rows().data();
         $('#RN_Accion').bootstrapValidator('destroy');
-        console.log(ArregloValidarAccionesEdit);
+
+        console.log(jQuery.inArray($('select#RNA_accion option:selected').text(), ArregloValidarAccionesEdit))
+        
         if (jQuery.inArray($('select#RNA_accion option:selected').text(), ArregloValidarAccionesEdit) !== -1) {
             $.smallBox({
                 title: "Error",
@@ -8997,28 +9000,31 @@ function InitDataTableReglaAccion(x) {
         success: function (response) {
             var cadenaAux;
 
-            //console.log("Response -------> ");
-            response = jQuery.parseJSON(response.d.listaReglasxAccion[0].ReglaxAccion);
-            $.each(response, function (i, json) {
+            if (response.d.listaReglasxAccion[0] != undefined) {
 
-                $.each(json[0], function (j, row) {
+                console.log(response.d.listaReglasxAccion[0]);
 
-                    if (j != 'idTransaccion') {
-                        if (j != 'nombreTransaccion') {
+                response = jQuery.parseJSON(response.d.listaReglasxAccion[0].ReglaxAccion);
+                $.each(response, function (i, json) {
 
-                            //console.log(j);
-                            row[0].accion = j;
-                            row[0].etapa = i;
-                            cadenaAux = JSON.stringify(row[0]);
-                            arrayAux.push(cadenaAux.split(","));
+                    $.each(json[0], function (j, row) {
+
+                        if (j != 'idTransaccion') {
+                            if (j != 'nombreTransaccion') {
+
+                                //console.log(j);
+                                row[0].accion = j;
+                                row[0].etapa = i;
+                                cadenaAux = JSON.stringify(row[0]);
+                                arrayAux.push(cadenaAux.split(","));
+                            }
+
                         }
 
-                    }
 
 
-
+                    });
                 });
-            });
 
             
 
@@ -9028,39 +9034,36 @@ function InitDataTableReglaAccion(x) {
                 arrayAux[i][0] = arrayAux[i][0].replace('{"etapaFutura":"', '');
                 arrayAux[i][0] = arrayAux[i][0].replace('\"', '');
 
-                if (arrayAux[i][1] != undefined) {
+                
 
 
                     arrayAux[i][1] = arrayAux[i][1].replace('validacion":"', '');
                     arrayAux[i][1] = arrayAux[i][1].replace('\"', '');
                     arrayAux[i][1] = arrayAux[i][1].replace('\"', '');
-                }
-                if (arrayAux[i][2] != undefined) {
+                
+                
                     arrayAux[i][2] = arrayAux[i][2].replace('alterna":"', '');
                     arrayAux[i][2] = arrayAux[i][2].replace('\"', '');
                     arrayAux[i][2] = arrayAux[i][2].replace('\"', '');
-                }
-                if (arrayAux[i][3] != undefined) {
+                
+                
                     arrayAux[i][3] = arrayAux[i][3].replace('success":"', '');
                     arrayAux[i][3] = arrayAux[i][3].replace('\"', '');
                     arrayAux[i][3] = arrayAux[i][3].replace('\"', '');
-                }
-                if (arrayAux[i][4] != undefined) {
+                
 
                     arrayAux[i][4] = arrayAux[i][4].replace('error":"', '');
                     arrayAux[i][4] = arrayAux[i][4].replace('\"', '');
                     arrayAux[i][4] = arrayAux[i][4].replace('\"', '');
-                }
-                if (arrayAux[i][5] != undefined) {
+                
                     arrayAux[i][5] = arrayAux[i][5].replace('accion":"', '');
                     arrayAux[i][5] = arrayAux[i][5].replace('\"', '');
                     arrayAux[i][5] = arrayAux[i][5].replace('\"', '');
-                }
-                if (arrayAux[i][6] != undefined) {
+                
                     arrayAux[i][6] = arrayAux[i][6].replace('etapa":"', '');
                     arrayAux[i][6] = arrayAux[i][6].replace('\"', '');
                     arrayAux[i][6] = arrayAux[i][6].replace('\"}', '');
-                }
+                
                 var idEtapa = arrayAux[i][6];
                 var idEtapaFutura = arrayAux[i][0];
                 var validacion = arrayAux[i][1];
@@ -9071,24 +9074,20 @@ function InitDataTableReglaAccion(x) {
 
 
                 arrayAux[i][0] = arrayAux[i][0].replace(idEtapaFutura, idEtapa);
-                if (arrayAux[i][1] != undefined) {
+                
                     arrayAux[i][1] = arrayAux[i][1].replace(validacion, idEtapaFutura);
-                }
-                if (arrayAux[i][2] != undefined) {
+                
+                
                     arrayAux[i][2] = arrayAux[i][2].replace(alterna, accion);
-                }
-                if (arrayAux[i][3] != undefined) {
+               
                     arrayAux[i][3] = arrayAux[i][3].replace(success, validacion);
-                }
-                if (arrayAux[i][4] != undefined) {
+                
                     arrayAux[i][4] = arrayAux[i][4].replace(error, alterna);
-                }
-                if (arrayAux[i][5] != undefined) {
+                
                     arrayAux[i][5] = arrayAux[i][5].replace(accion, success);
-                }
-                if (arrayAux[i][6] != undefined) {
+                
                     arrayAux[i][6] = arrayAux[i][6].replace(idEtapa, error);
-                }
+              
 
 
                 ArregloValidarAccionesEdit.push(arrayAux[i][2]);
@@ -9097,7 +9096,7 @@ function InitDataTableReglaAccion(x) {
 
             }
 
-
+            }
         }
     });
 

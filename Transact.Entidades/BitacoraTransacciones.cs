@@ -18,7 +18,9 @@ namespace Transact.Entidades
       public string cveMovimiento{ get; set; }
       public string camposTransacciones { get; set; }
       public int idEtapa{ get; set; }
+      public string Etapa { get; set; }
       public int idAccion{ get; set; }
+      public string Accion { get; set; }
       public bool estatus{ get; set; }
     }
 

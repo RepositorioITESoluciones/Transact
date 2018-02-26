@@ -34,9 +34,7 @@ public class MyServiceClass : System.Web.Services.WebService {
     #region Armaformulario
     [WebMethod]
     public CamposTransaccion ArmaFormulario(int idtransa) {
-        CamposTransaccion campos;
-        campos = arma.ArmaCampos(idtransa);
-        return campos;
+        return arma.ArmaCampos(idtransa);
 
     }
     [WebMethod]
@@ -50,17 +48,17 @@ public class MyServiceClass : System.Web.Services.WebService {
         return campos;
     }
     [WebMethod]
-    public bool InsertarTransaccion(string json, string idTransaccion, string Categoria, int idEtapa, int idAccion) {
+    public bool InsertarTransaccion(int idUser, string json, string idTransaccion, string Categoria, int idEtapa, int idAccion) {
 
 
-        return arma.insert(json, idTransaccion, Categoria, idEtapa, idAccion);
+        return arma.insert(idUser,json, idTransaccion, Categoria, idEtapa, idAccion);
 
 
     }
     [WebMethod]
-    public bool InsertarTransaccionxEtapa(string json, string idTransaccion, string Categoria, int idEtapa, int idAccion) {
+    public bool InsertarTransaccionxEtapa(int idFutura,string json, string idTransaccion, string Categoria, int idEtapa, int idAccion) {
 
-        return arma.insertXetapa(json, idTransaccion, Categoria, idEtapa, idAccion);
+        return arma.insertXetapa(idFutura, json, idTransaccion, Categoria, idEtapa, idAccion);
 
     }
 

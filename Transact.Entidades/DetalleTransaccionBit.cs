@@ -19,6 +19,11 @@ namespace Transact.Entidades
         public string Clave { get; set; }
         public string Rol { get; set; }
         public string EtapaAtual { get; set; }
+
+        public string idEtapa { get; set; }
+        public string idAccion { get; set; }
+
         public string etapaSiguiente { get; set; }
+        public string idEtapaFut { get; set; }
     }
 }
