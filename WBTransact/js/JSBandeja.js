@@ -144,12 +144,13 @@ function GeneraFormularioBND(xml_json, idTran) {
     objetoFormula = [];
     $.each(xml_json, function (reg, rowgral) {
 
-        console.log(xml_json);
+
+        var resultado = rowgral.idEtapaFutura+"--"+rowgral.NombreDes;
         
 
         if (rowgral.CamposCabecera != "") {
 
-            idTran = rowgral.idTipoTrasaccion;
+            idTrann = rowgral.idTipoTrasaccion;
 
             //console.log("eeeeeeeeeeeeeeeeeeeeeeeeeee"+idTran);
 
@@ -479,14 +480,34 @@ function GeneraFormularioBND(xml_json, idTran) {
             loadDataTableBND();
         } else {
 
-            console.log("mario");
+            var mensaje = '';
+            if(resultado != "0--null"){
 
-            var mensaje='';
-            mensaje += '<div class="alert alert-block alert-warning">'
-            mensaje += '<a class="close" data-dismiss="alert" href="#">×</a>'
-            mensaje += '<h4 class="alert-heading">Alerta!</h4>'
-            mensaje += 'No se ha configurado una etapa con campos, notificar al administrador'
-            mensaje += '</div>'
+                
+                mensaje += '<div class="alert alert-block alert-warning">'
+                mensaje += '<a class="close" data-dismiss="alert" href="#">×</a>'
+                mensaje += '<h4 class="alert-heading">Alerta!</h4>'
+                mensaje += 'No se ha configurado una etapa con campos, notificar al administrador'
+                mensaje += '</div>'
+
+            } else {
+
+                mensaje += '<div class="alert alert-success fade in">'
+                mensaje += '<a class="close" data-dismiss="alert" href="#">×</a>'
+                mensaje += '<h4 class="alert-heading">Finalizado</h4>'
+                mensaje += 'La transacción se completo exitosamente'
+                mensaje += '</div>'
+
+                //<div class="alert alert-success fade in">
+				//				<button class="close" data-dismiss="alert">
+				//					×
+				//				</button>
+				//				<i class="fa-fw fa fa-check"></i>
+				//				<strong>Success</strong> The page has been added.
+				//			</div>
+            }
+
+            
 
 			$("#step2").html(mensaje);
 
@@ -728,7 +749,7 @@ function GeneraComposBND(Visualisacion, idCampo, nombreCampo, descripcionCampo, 
 
 
 
-        var value = autoincrementBND(idTran, nombreCampo);
+        var value = autoincrementBND(idTrann, nombreCampo);
         Campo += '<div class="col-md-3 form-group">';
         Campo += '<label class="control-label">' + descripcionCampo + '</label>';
         Campo += '<input '
