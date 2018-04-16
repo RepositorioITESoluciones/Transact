@@ -9,14 +9,24 @@
     <link href="css/fontello/css/iconset.css" rel="stylesheet" />
     <link href="css/font-awesome.min.css" rel="stylesheet" />
 
-    <script src="js/adminTransaccion.js"></script>
+    <script src="js/AdminTransaccion/AdminTranGlobal.js"></script>
+    <script src="js/AdminTransaccion/DatosGral.js"></script>
+    <script src="js/AdminTransaccion/CamposDinam.js"></script>
+    <script src="js/AdminTransaccion/EtapasAcciones.js"></script>
+    <script src="js/AdminTransaccion/Reglas_x_Campo.js"></script>
+
     <script>
         $("#menutipo").hide();
         $("#menutransact").hide();
     </script>
-
+    <style>
+        input[type="text"] {
+            padding-left: 4px;
+        }
+    </style>
 
 </head>
+
 
 <body>
 
@@ -28,10 +38,6 @@
                         <h2><i class="icon-prepend  icon-edit"></i><strong>Administración de Transacciones<label id="Title"></label></strong></h2>
                     </header>
                     <div>
-                        <!--<div class="jarviswidget-editbox">
-                            <input class="form-control" type="text">
-                            <span class="note"><i class="fa fa-check text-success"></i> Puede cambiar el titulo de este control</span>
-                        </div>-->
                         <div class="widget-body-toolbar">
                             <button id="btnPlus" type="button" class="btn btn-primary btn-sm">
                                 <i class="fa fa-user-plus"></i> Agregar
@@ -86,1181 +92,567 @@
                 </div>
             </article>
         </div>
+    </section>
 
-
-
-
-
-
-
-
-        <div id="divCrearTransaccion" class="row" style="display: none">
+    <section id="sectDatosGral">
+        <div id="divTiposTransaccion" class="row">
             <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="jarviswidget" id="wid-id-2" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-sortable="false">
+                <div class="jarviswidget" id="AdminTransaccion" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-sortable="false">
                     <header>
-                        <h2><i class="icon-prepend  icon-edit"></i><strong>Alta de Tipo de Transacción<label id="Title"></label></strong></h2>
+                        <h2><i class="icon-prepend  icon-edit"></i><strong>Administración de Transacciones<label id="Title"></label></strong></h2>
                     </header>
                     <div>
-
                         <div class="widget-body-toolbar">
+
                             <button id="btnAtras" type="button" class="btn btn-danger btn-sm">
                                 <i class="fa fa-arrow-left"></i> Atrás
                             </button>
+
                         </div>
-                        <div class="widget-body fuelux">
 
-                            <div class="wizard" data-initialize="wizard" id="smartWizard">
-                                <div class="steps-container">
-                                    <ul class="steps">
-                                        <li data-step="1" data-name="datosGenerales" class="active"><span class="badge">1</span>Datos Generales<span class="chevron"></span></li>
-                                        <li data-step="2" data-name="camposComplementarios"><span class="badge">2</span>Campos Dinámicos<span class="chevron"></span></li>
-                                        <li data-step="3" data-name="cicloDeVida"><span class="badge">3</span>Ciclo de Vida<span class="chevron"></span></li>
-                                        <li data-step="4" data-name="reglasDeNegocioI"><span class="badge">4</span>Reglas por Campo<span class="chevron"></span></li>
-                                        <li data-step="5" data-name="Conbobox"><span class="badge">5</span>Combobox<span class="chevron"></span></li>
-                                        <li data-step="6" data-name="AutoComplete"><span class="badge">6</span>Autocompletar<span class="chevron"></span></li>
-                                        <li data-step="7" data-name="formulasAccionEtapa"><span class="badge">7</span>Fórmulas<span class="chevron"></span></li>
-                                        <li data-step="8" data-name="reglasDeNegocioII"><span class="badge">8</span>Reglas por Acción<span class="chevron"></span></li>
+                        <div class="widget-body">
+                            <form class="smart-form" id="frmDatosGral">
+                                <header>
+                                    Datos Generales
+                                </header>
+                                <fieldset>
+                                    <div class="row">
+                                        <section class="col col-3">
+                                            <label class="control-label">* Área</label>
+                                            <select class="form-control" id="area" name="area" data-bv-field="area"><option value="0"> Seleccione un área </option><option value="9">Almacen</option><option value="8">AlmacenPrueba</option><option value="3025">Área que se encarga de la operativa de telepeaje</option><option value="10">Artículos</option><option value="1">Encargada del pago de recursadfadfos</option><option value="3027">fdsddf</option><option value="3">Finanzas</option><option value="11">Gestion Proyectos </option><option value="6">Ingenieria </option><option value="4025">marioooo</option><option value="2">Mercadotecnia 1</option><option value="7">PMO</option><option value="4">Talento Humano</option><option value="5">Tecnologia</option><option value="3026">test</option></select>
+                                            <small class="help-block" data-bv-validator="notEmpty" data-bv-for="area" data-bv-result="NOT_VALIDATED" style="display: none;"> </small><small class="help-block" data-bv-validator="callback" data-bv-for="area" data-bv-result="NOT_VALIDATED" style="display: none;">Please enter a valid value</small>
+                                        </section>
+                                        <section class="col col-3">
+                                            <label class="control-label">* Proceso</label>
+                                            <select class="form-control" id="proceso" name="proceso" disabled="" data-bv-field="proceso">
+                                                <option value="0" disabled="" selected="" hidden=""> Seleccione un proceso </option>
 
-                                    </ul>
-                                </div>
+                                            </select>
+                                            <small class="help-block" data-bv-validator="notEmpty" data-bv-for="proceso" data-bv-result="NOT_VALIDATED" style="display: none;"> </small><small class="help-block" data-bv-validator="callback" data-bv-for="proceso" data-bv-result="NOT_VALIDATED" style="display: none;">Please enter a valid value</small>
+                                        </section>
 
-                                <div class="actions">
-                                    <button type="button" class="btn btn-sm btn-primary btn-prev" data-name="Anterior">
-                                        <i class="fa fa-arrow-left"></i>Anterior
+                                    </div>
+
+                                    <div class="row">
+                                        <section class="col col-3">
+                                            <label class="control-label">* Nombre</label>
+                                            <input class="form-control" type="text" name="nombre" id="nombre" placeholder="Ingrese el nombre de la transacción" onkeypress="return validarCaracteresN(event)" data-bv-field="nombre">
+                                            <small class="help-block" data-bv-validator="notEmpty" data-bv-for="nombre" data-bv-result="NOT_VALIDATED" style="display: none;">El nombre es obligatorio</small>
+                                        </section>
+                                        <section class="col col-3">
+                                            <label class="control-label">* Clave  </label>
+                                            <input type="text" name="clave" id="clave" class="form-control" placeholder="Ingrese la clave de la transacción" onkeypress="return validarCaracteresN(event)" data-bv-field="clave">
+                                            <small class="help-block" data-bv-validator="notEmpty" data-bv-for="clave" data-bv-result="NOT_VALIDATED" style="display: none;">La clave es obligatoria</small>
+                                        </section>
+                                        <section class="col col-3">
+                                            <label class="control-label">* Categoría</label>
+                                            <select class="form-control" id="categoria" name="categoria" data-bv-field="categoria"><option value="0"> Seleccione una categoria </option><option value="1">Catálogo</option><option value="4">controL</option><option value="7">Control</option><option value="5">Operación</option><option value="1028">relaciON</option><option value="2">Relación</option><option value="6">Reportes</option><option value="3">Seguridad</option><option value="1026">Test</option><option value="1027">Test 2</option></select>
+                                            <small class="help-block" data-bv-validator="notEmpty" data-bv-for="categoria" data-bv-result="NOT_VALIDATED" style="display: none;"> </small><small class="help-block" data-bv-validator="callback" data-bv-for="categoria" data-bv-result="NOT_VALIDATED" style="display: none;">Please enter a valid value</small>
+                                        </section>
+                                        <section class="col col-3">
+                                            <button type="button" id="btn_agregarTransaccion" class="btn btn-sm btn-primary" style="margin-top: 7%;">Crear Transacción</button>
+                                        </section>
+                                        <section class="col col-3">
+                                            <button type="button" id="btn_EditTransaccion" class="btn btn-warning btn-sm" style="margin-top: 7%; display: none;">Editar Transacción</button>
+                                        </section>
+                                    </div>
+                                </fieldset>
+                                <br /><br />
+
+                                <footer id="footerDatosGral">
+                                    <button id="btnNextDatosGral" type="button" class="btn btn-primary pull-right">
+                                        Siguiente <i class="fa fa-arrow-circle-right"></i>
                                     </button>
-                                    <button type="button" class="btn btn-sm btn-success btn-next" data-last="Finalizar" id="btn-next">
-                                        Siguiente<i class="fa fa-arrow-right"></i>
-                                    </button>
-                                </div>
-
-                                <div class="step-content" style="padding-top: 0px; padding-bottom: 0px;">
-                                    <!-- PASO Datos Generales-->
-                                    <div class="step-pane active" data-step="1">
-                                        <div class="row">
-                                            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-
-                                                <div class="jarviswidget" id="wid-step-1" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-sortable="false" data-widget-fullscreenbutton="false">
-
-                                                    <header>
-                                                        <h2>Nueva Transacción </h2>
-                                                    </header>
-
-                                                    <div>
-                                                        <div class="widget-body" style="padding-bottom: 0px">
-
-                                                            <form class="smart-form" id="form_transaccion" name="form_CamposGenerales">
-                                                                <header>
-                                                                    Alta Tipo de Transacción
-                                                                </header>
-                                                                <div class="row" style="margin-top: 10px">
-                                                                    <section class="col col-3">
-                                                                        <label class="control-label">* Área</label>
-                                                                        <select class="form-control" id="area" name="area">
-                                                                            <option value="0" disabled selected hidden> Seleccione un area </option>
-                                                                        </select>
-                                                                    </section>
-                                                                    <section class="col col-3">
-                                                                        <label class="control-label">* Proceso</label>
-                                                                        <select class="form-control" id="proceso" name="proceso">
-                                                                            <option value="0" disabled selected hidden> Seleccione un proceso </option>
-
-                                                                        </select>
-                                                                    </section>
-                                                                </div>
-
-                                                                <div class="row" style="margin-top: 10px">
-                                                                    <section class="col col-3">
-                                                                        <label class="control-label">* Nombre</label>
-                                                                        <input class="form-control" type="text" name="nombre" id="nombre"
-                                                                               placeholder="Ingrese el nombre de la transacción" onkeypress="return validarCaracteresN(event)">
-                                                                    </section>
-                                                                    <section class="col col-3">
-                                                                        <label class="control-label">* Clave  </label>
-                                                                        <input type="text" name="clave" id="clave" class="form-control"
-                                                                               placeholder="Ingrese la clave de la transacción" onkeypress="return validarCaracteresN(event)">
-                                                                    </section>
-                                                                    <section class="col col-3">
-                                                                        <label class="control-label">* Categoría</label>
-                                                                        <select class="form-control" id="categoria" name="categoria">
-                                                                            <option value="0" disabled selected hidden> Seleccione una categoría </option>
-                                                                        </select>
-                                                                    </section>
-                                                                    <section class="col col-3">
-                                                                        <button type="button" id="btn_agregarTransaccion" class="btn btn-sm btn-primary" style="margin-top: 7%;">Crear Transacción</button>
-                                                                    </section>
-                                                                    <section class="col col-3">
-                                                                        <button type="button" id="btn_EditTransaccion" class="btn btn-warning btn-sm" style="margin-top: 7%;">Editar Transacción</button>
-                                                                    </section>
-                                                                </div>
-                                                            </form>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </article>
-                                        </div>
-                                    </div>
-                                    <!-- PASO Campos Dinamicos -->
-                                    <div class="step-pane active" data-step="2">
-                                        <div class="row">
-                                            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-
-                                                <div class="jarviswidget" id="wid-step-1" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-sortable="false" data-widget-fullscreenbutton="false">
-
-                                                    <header>
-                                                        <h2>Campos Complementarios</h2>
-
-                                                    </header>
-
-                                                    <div>
-                                                        <div class="widget-body" style="padding-bottom: 0px">
-                                                            <form class="smart-form form_campos" id="form_campos" name="form_CamposComplementarios">
-
-                                                                <div id="CamposComp">
-
-                                                                    <div class="row" style="margin-top: 15px">
-                                                                        <section class="col col-3">
-                                                                            <label class="control-label">* Nombre del campo</label>
-                                                                            <input ondrop="return false;" type="text" name="nombreCampo" id="nombreCampo" class="form-control "
-                                                                                   placeholder="Nombre del campo" onkeypress="return validarRFC(event)">
-                                                                        </section>
-                                                                        <section class="col col-3">
-                                                                            <label class="control-label">* Descripción</label>
-                                                                            <input ondrop="return false;" type="text" name="descCampo" id="descCampo" class="form-control"
-                                                                                   placeholder="Descripción" onkeypress="return validarCaracteres(event)">
-                                                                        </section>
-
-                                                                        <section class=" col col-3 ">
-                                                                            <label class=" control-label">* Tipo de dato</label>
-                                                                            <select class="form-control" id="tipoDato" name="tipoDato"></select>
-                                                                        </section>
-                                                                    </div>
-
-                                                                    <div class="row" style="margin-top: 15px">
-                                                                        <section class="col col-3" id="longi">
-                                                                            <label class="control-label">* Longitud</label>
-                                                                            <input ondrop="return false;" type="text" name="longitud" class="form-control"
-                                                                                   id="longitud" placeholder="Longitud" onkeypress="return validarNumeros(event)" data-bv-excluded="false">
-                                                                        </section>
-                                                                        <section class="col col-3">
-                                                                            <label class="control-label">* Nivel</label>
-
-                                                                            <select class="form-control" id="nivel" name="nivel"></select>
-                                                                        </section>
-                                                                        <section class="col col-3">
-                                                                            <label class="control-label">* Operación</label>
-                                                                            <select class="form-control" id="tipoOperacion" name="tipoOperacion"></select>
-                                                                        </section>
-
-                                                                        <section class="col col-2">
-                                                                            <button type="button" id="btn_agregar" class="btn btn-sm btn-primary btn-block">Agregar</button>
-                                                                        </section>
-                                                                    </div>
-                                                                    <div class="row" style="padding:30px; margin-top: 50px" id="tabla_Comp">
-                                                                        <section class="col-sm-12">
-                                                                            <div>
-
-
-                                                                                <button id="btnEditComplement" type="button" class="btn btn-warning btn-sm">
-                                                                                    <i class="fa fa-pencil"></i> Editar
-                                                                                </button>
-                                                                                <button id="btnDeleteComplement" type="button" class="btn btn-danger btn-sm">
-                                                                                    <i class="fa fa-trash"></i> Eliminar
-                                                                                </button>
-
-                                                                            </div>
-                                                                            <br />
-                                                                            <div class="widget-body tc ">
-                                                                                <table id="tablaComplementarios" class="table table-striped table-bordered table-hover DTTT_selectable" cellspacing="0" width="100%" ondrop="drop(event)"></table>
-                                                                            </div>
-
-
-                                                                        </section>
-                                                                        <!--LISTAS CABECERA-DETALLE-->
-
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-
-                                                            <form id="dialog" class="smart-form widget-body dialog" style="padding-bottom: 0px">
-                                                                <div>
-                                                                    <div class="row" style="margin-top: 15px">
-                                                                        <section class="col col-3 des" id="campoUp">
-                                                                            <legend id="campoUps">
-                                                                                Nombre del campo :
-                                                                                <input type="text" name="nombreUP" id="nombreCampoDP" class="form-control " placeholder="Nombre del campo">
-
-                                                                        </section>
-
-                                                                        <section class="col col-4">
-                                                                            <label class="control-label">* Nombre del campo :</label>
-
-                                                                            <label class="input">
-                                                                                <input type="text" name="nombreCampo" id="nombreCampoD" class="form-control "
-                                                                                       placeholder="Nombre del campo" onkeypress="return validarRFC(event)">
-                                                                            </label>
-
-                                                                        </section>
-                                                                        <section class="col col-4">
-                                                                            <label class="control-label">* Descripción :</label>
-                                                                            <label class="input">
-                                                                                <input type="text" name="descCampo" id="descCampoD" class="form-control"
-                                                                                       placeholder="Descripción" onkeypress="return validarCaracteres(event)">
-                                                                            </label>
-                                                                        </section>
-                                                                        <section class="col col-4">
-                                                                            <label class="control-label">* Tipo de dato:</label>
-                                                                            <label class="select">
-                                                                                <select id="tipoDatoD" name="tipoDatoD" class="form-control"></select>
-                                                                            </label>
-                                                                        </section>
-                                                                    </div>
-                                                                    <div class="row" style="margin-top: 15px">
-                                                                        <section class="col col-4" id="longiD">
-                                                                            <label class="control-label">* Longitud :</label>
-                                                                            <label class="input">
-                                                                                <input type="text" name="longitudD" class="form-control"
-                                                                                       id="longitudD" placeholder="Longitud" onkeypress="return validarNumeros(event)" data-bv-excluded="false">
-                                                                            </label>
-                                                                        </section>
-                                                                        <section class="col col-4">
-                                                                            <label class="control-label">* Nivel:</label>
-                                                                            <label class="select">
-                                                                                <select id="nivelD" name="nivelD" class="form-control"></select>
-                                                                            </label>
-                                                                        </section>
-                                                                        <section class="col col-4">
-                                                                            <label class="control-label">* Operación</label>
-                                                                            <label class="select">
-                                                                                <select id="tipoOperacionD" name="tipoOperacionD" class="form-control"></select>
-                                                                            </label>
-                                                                        </section>
-
-                                                                    </div>
-                                                                    <div class="widget-toolbar" align="right">
-                                                                        <button id="btnEditComplementD" type="button" class="btn btn-sm btn-primary">
-                                                                            Guardar
-                                                                        </button>
-
-                                                                        <!-- /////////////////////////////////////////////////////////////////							 -->
-
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </article>
-                                        </div>
-                                    </div>
-
-                                    <!-- PASO 3 -->
-                                    <div class="step-pane" data-step="3">
-                                        <div class="row">
-                                            <article class="col-sm-12 col-md-12 col-lg-12 no-padding">
-                                                <div class="jarviswidget" id="wid-step-2" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
-                                                    <div>
-                                                        <div class="widget-body">
-
-                                                            <form class="smart-form" id="form_ciclo">
-                                                                <header>
-                                                                    Crear Etapas
-                                                                </header>
-
-                                                                <div class="row" style="margin-top: 5px">
-                                                                    <section class="col col-4">
-                                                                        <label class="control-label">* Nombre de la etapa</label>
-                                                                        <label class="input">
-                                                                            <input ondrop="return false;" type="text" name="nombreEtapa" id="nombreEtapa" class="form-control"
-                                                                                   placeholder="Ingrese el nombre de la etapa" onkeypress="return validarCaracteres(event)">
-                                                                        </label>
-                                                                    </section>
-                                                                    <section class="col col-2">
-                                                                        <label class="control-label">* Orden de la etapa</label>
-                                                                        <label class="input">
-                                                                            <input ondrop="return false;" type="text" name="orden" id="orden" class="form-control"
-                                                                                   placeholder="Ingrese el orden" onkeypress="return validarNumeros(event)">
-                                                                        </label>
-                                                                    </section>
-                                                                    <br />
-
-                                                                    <section class="col col-2">
-                                                                        <button type="button" id="btn_agregarOrden" class="btn btn-sm btn-primary btn-block">Agregar</button>
-                                                                    </section>
-
-
-                                                                </div>
-                                                                <div class="row" style="padding:30px;" id="TDEtapas">
-                                                                    <section class="col-sm-6">
-                                                                        <div>
-
-
-                                                                            <button id="btnEditEtapa" type="button" class="btn btn-warning btn-sm">
-                                                                                <i class="fa fa-pencil"></i> Editar
-                                                                            </button>
-                                                                            <button id="btnDeleteEtapa" type="button" class="btn btn-danger btn-sm">
-                                                                                <i class="fa fa-trash"></i> Eliminar
-                                                                            </button>
-
-                                                                        </div>
-                                                                        <br />
-                                                                        <div class="tableCenter te">
-                                                                            <table id="tablaEtapas" class="table table-striped table-bordered table-hover DTTT_selectable" cellspacing="0" width="100%" ondrop="drop(event)"></table>
-                                                                        </div>
-                                                                    </section>
-                                                                </div>
-                                                            </form>
-                                                            <!-- //////////////////////////////////////////////////////////////////////////////////////////////////////-->
-
-                                                            <form id="dialog2" class="smart-form widget-body" style="padding-bottom: 0px">
-                                                                <div class="row" style="margin-top: 5px">
-                                                                    <section class="col col-4 des2" id="campoUp">
-                                                                        <legend id="campoUps">
-                                                                            Nombre del campo :
-                                                                            <input type="text" name="nombreUPE" id="nombreEtapaDE" class="form-control " placeholder="Nombre del campo">
-                                                                        </legend>
-                                                                    </section>
-                                                                    <section class="col col-5">
-                                                                        <label class="control-label">
-                                                                            * Nombre de la etapa:
-                                                                        </label>
-                                                                        <label class="input">
-                                                                            <input type="text" name="descripcionE" id="nombreEtapaD" class="form-control"
-                                                                                   placeholder="Ingrese el nombre de la etapa" onkeypress="return validarCaracteres(event)">
-                                                                        </label>
-                                                                    </section>
-                                                                    <section class="col col-5">
-                                                                        <label class="control-label">
-                                                                            * Orden de etapa :
-                                                                        </label>
-                                                                        <label class="input">
-
-                                                                            <input type="text" name="ordenE" id="ordenD" class="form-control"
-                                                                                   placeholder="Ingrese el orden" onkeypress="return validarNumeros(event)">
-                                                                        </label>
-                                                                    </section>
-
-                                                                </div>
-
-                                                                <div class="widget-toolbar" align="left">
-
-                                                                    <button id="btnEditEtapaD" type="button" class="btn btn-sm btn-primary">
-                                                                        Guardar
-                                                                    </button>
-
-
-                                                                </div>
-                                                            </form>
-                                                            <!-- //////////////////////////////////////////////////////////////////////////////////////////////////////-->
-
-                                                            <form class="smart-form" id="form_acciones">
-                                                                <header>
-                                                                    Crear Acciones
-                                                                </header>
-
-                                                                <div class="row" style="margin-top: 15px">
-                                                                    <section class="col col-3">
-                                                                        <label class="control-label">* Nombre de la etapa</label>
-                                                                        <label class="select">
-                                                                            <select class="select" id="selectEtapa" name="selectEtapa"></select>
-                                                                        </label>
-                                                                    </section>
-                                                                    <section class="col col-3">
-                                                                        <label class="control-label">* Nombre de la acción</label>
-                                                                        <label class="input">
-                                                                            <input ondrop="return false;" type="text" name="nombreAccion" class="form-control"
-                                                                                   id="nombreAccion" placeholder="Ingrese el nombre de la acción" onkeypress="return validarCaracteres(event)">
-                                                                        </label>
-                                                                    </section>
-                                                                    <section class="col col-3">
-                                                                        <label class="control-label">* Clave de la acción</label>
-                                                                        <label class="input">
-                                                                            <input ondrop="return false;" type="text" name="claveAccion" class="form-control"
-                                                                                   id="claveAccion" placeholder="Ingrese la clave acción" onkeypress="return validarCaracteresN(event)">
-                                                                        </label>
-                                                                    </section>
-                                                                    <section class="col col-2">
-                                                                        <label class="control-label">* Orden de la acción</label>
-                                                                        <label class="input">
-                                                                            <input ondrop="return false;" type="text" name="ordenAccion" class="form-control"
-                                                                                   id="ordenAccion" placeholder="Ingrese el orden" onkeypress="return validarNumeros(event)">
-                                                                        </label>
-                                                                    </section>
-
-                                                                    <!--LISTAS ROLES-PERMITIDOS-->
-                                                                    <div class="row" style="padding-left:150px; width:80%;" id="perfiles">
-
-                                                                        <div class="dual-list list-left-B col-md-5 table-hover">
-                                                                            <h3 style="text-align: center;">Todos los Roles</h3>
-                                                                            <div class="well">
-
-                                                                                <ul class="list-group-B" id="t_roles"></ul>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="list-arrows-B col-md-1 text-center" style="padding-top:30px">
-
-                                                                            <p>
-                                                                                <button class="btn btn-default btn-sm move-left-B" type="button">
-                                                                                    <span class="glyphicon glyphicon-chevron-left"></span>
-                                                                                </button>
-                                                                            </p>
-                                                                            <p>
-                                                                                <button class="btn btn-default btn-sm move-right-B" type="button">
-                                                                                    <span class="glyphicon glyphicon-chevron-right"></span>
-                                                                                </button>
-                                                                            </p>
-                                                                        </div>
-
-                                                                        <div class="dual-list list-right-B col-md-5 table-hover">
-                                                                            <h3 style="text-align:center">Roles Permitidos</h3>
-                                                                            <div class="well">
-
-                                                                                <ul class="list-group-B" id="p_roles"></ul>
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>
-                                                                <br />
-                                                                <br />
-                                                                <div class="row">
-
-                                                                    <div class="col col-2">
-                                                                        <button type="button" id="btn_agregarAccion" class="btn btn-sm btn-primary btn-block" style="align-items:center">Agregar</button>
-                                                                    </div>
-                                                                </div>
-                                                                <br />
-                                                                <br />
-                                                                <div class="row" style="padding:30px;" id="Tabla_Rol">
-                                                                    <section class="col-sm-12">
-                                                                        <div id="BotonesRol">
-
-
-                                                                            <button id="btnEditRol" type="button" class="btn btn-warning btn-sm">
-                                                                                <i class="fa fa-pencil"></i> Editar
-                                                                            </button>
-                                                                            <button id="btnDeleteRol" type="button" class="btn btn-danger btn-sm">
-                                                                                <i class="fa fa-trash"></i> Eliminar
-                                                                            </button>
-
-                                                                        </div>
-                                                                        <br />
-                                                                        <div class="tableCenter tr">
-
-                                                                            <table id="tablaRoles" class="table table-striped table-bordered table-hover DTTT_selectable" cellspacing="0" width="100%" ondrop="drop(event)" cellspacing="0" width="90%"></table>
-
-
-
-                                                                        </div>
-                                                                    </section>
-                                                                </div>
-                                                                <br />
-                                                            </form>
-                                                            <!-- //////////////////////////////////////////////////////////////////////////////////////////////////////-->
-                                                            <form id="dialog3" class="smart-form widget-body" style="padding-bottom: 0px">
-                                                                <div class="row" style="margin-top: 15px">
-                                                                    <section class="col col-4">
-                                                                        <label class="control-label">
-                                                                            * Nombre de la acción:
-                                                                        </label>
-                                                                        <label class="input">
-                                                                            <input type="text" name="nombreAccionD" class="form-control"
-                                                                                   id="nombreAccionD" placeholder="Ingrese el nombre de la acción" onkeypress="return validarCaracteres(event)">
-                                                                        </label>
-                                                                    </section>
-                                                                    <section class="col col-4">
-                                                                        <label class="control-label">
-                                                                            * Clave de la acción:
-                                                                        </label>
-                                                                        <label class="input">
-                                                                            <input type="text" name="claveAccionD" class="form-control"
-                                                                                   id="claveAccionD" placeholder="Ingrese la clave de la acción" onkeypress="return validarCaracteresN(event)">
-                                                                        </label>
-                                                                    </section>
-                                                                    <section class="col col-4">
-                                                                        <label class="control-label">
-                                                                            * Orden de la acción:
-                                                                        </label>
-                                                                        <label class="input">
-                                                                            <input type="text" name="ordenAccionD" class="form-control"
-                                                                                   id="ordenAccionD" placeholder="Ingrese el orden" onkeypress="return validarNumeros(event)">
-                                                                        </label>
-                                                                    </section>
-                                                                </div>
-
-                                                                <div class="widget-body" id="form2">
-
-                                                                    <div class="tree smart-form">
-                                                                        <ul id="menusforRolTree" role="tree"></ul>
-                                                                    </div>
-                                                                </div>
-
-
-                                                                <div class="widget-toolbar" align="right">
-
-                                                                    <button id="btnEditRolD3" type="button" class="btn btn-sm btn-primary">
-                                                                        Guardar
-                                                                    </button>
-
-
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </article>
-                                        </div>
-                                    </div>
-                                    <!--PASO 7-->
-                                    <div class="step-pane" data-step="7">
-                                        <div class="row">
-                                            <article class="col-sm-12 col-md-12 col-lg-12 no-padding">
-                                                <div class="jarviswidget" id="wid-step-3" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
-                                                    <div class="widget-body">
-                                                        <form class="smart-form" id="form_reglas">
-                                                            <header>
-                                                                Comportamiento de Campos
-                                                            </header>
-                                                            <div class="row" style="margin-top: 10px">
-                                                                <section class="col col-4" style="margin-bottom:0px;">
-                                                                    <label class="control-label">* Etapa</label>
-                                                                    <label class="select">
-                                                                        <select class="select form-control" id="formula_etapa" name="formula_etapa">
-                                                                            <option value="" disabled selected hidden> Seleccione una etapa </option>
-
-                                                                        </select>
-                                                                    </label>
-                                                                </section>
-                                                                <section class="col col-4" style="margin-bottom:0px;">
-                                                                    <label class="control-label">* Acción</label>
-                                                                    <label class="select">
-                                                                        <select class="select form-control" id="fomula_accion" name="fomula_accion">
-                                                                            <option value="" disabled selected hidden> Seleccione una acción </option>
-
-                                                                        </select>
-                                                                    </label>
-                                                                </section>
-                                                                <section class="col col-4" style="margin-bottom:0px;">
-                                                                    <label class="control-label">* Campo Inicializador</label>
-                                                                    <label class="select">
-                                                                        <select class="select form-control" id="fomula_Init" name="fomula_Init">
-                                                                            <option value="" disabled selected hidden> Seleccione una campo </option>
-
-                                                                        </select>
-                                                                    </label>
-                                                                </section>
-
-                                                            </div>
-                                                            <br />
-                                                            <div class="container ListasAcciones trash">
-                                                                <div class="row">
-                                                                    <section class="col">
-                                                                        <h3 style="margin-left:20px;">Cabecera</h3>
-                                                                        <ul id="formulaCabecera"></ul>
-                                                                    </section>
-                                                                    <section class="col">
-                                                                        <h3 style="margin-left:20px;">Detalle</h3>
-                                                                        <ul id="formulaDetalle"></ul>
-                                                                    </section>
-                                                                    <section class="col">
-                                                                        <h3 style="margin-left:20px;">Operaciones</h3>
-                                                                        <ul id="operaciones" class="list-inline" style="width: 450px;">
-
-                                                                            <li class="ui-state-highlight draggable" id="mas" style="width:30px">
-                                                                                <i class="f icon-plus"><strong id="Icono1">+</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="menos" style="width:30px">
-                                                                                <i class="f icon-minus"><strong id="Icono2">-</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="por" style="width:30px">
-                                                                                <i class="f icon-multiplication"><strong id="Icono3">*</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="entre" style="width:30px">
-                                                                                <i class="f icon-division"><strong id="Icono4">/</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="igual" style="width:30px">
-                                                                                <i class="f icon-equals"><strong id="Icono5">=</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="par1" style="width:30px">
-                                                                                <i class="f icon-parenthese1"><strong id="Icono6">(</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="par2" style="width:30px">
-                                                                                <i class="f icon-parenthese2"><strong id="Icono7">)</strong></i>
-                                                                            </li>
-
-                                                                            <li class="ui-state-highlight draggable" id="porciento" style="width:30px">
-                                                                                <i class="f icon-percent"><strong id="Icono8">%</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="punto" style="width:30px">
-                                                                                <i class="f"><strong>.</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="cero" style="width:30px">
-                                                                                <i class="f"><strong>0</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="uno" style="width:30px">
-                                                                                <i class="f"><strong>1</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="dos" style="width:30px">
-                                                                                <i class="f"><strong>2</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="tres" style="width:30px">
-                                                                                <i class="f"><strong>3</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="cuatro" style="width:30px">
-                                                                                <i class="f"><strong>4</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="cinco" style="width:30px">
-                                                                                <i class="f"><strong>5</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="seis" style="width:30px">
-                                                                                <i class="f"><strong>6</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="siete" style="width:30px">
-                                                                                <i class="f"><strong>7</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="ocho" style="width:30px">
-                                                                                <i class="f"><strong>8</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="nueve" style="width:30px">
-                                                                                <i class="f"><strong>9</strong></i>
-                                                                            </li>
-                                                                        </ul>
-                                                                    </section>
-                                                                </div>
-                                                                <div class="row col-xs-12 col-md-12 col-lg-12 col-sm-12">
-                                                                    <header>
-                                                                        Configuración de Fórmula
-                                                                    </header>
-                                                                    <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12">
-                                                                        <h6 style="margin: 5px 0 0 20px">* Fórmula Aplicada</h6>
-                                                                        <br />
-                                                                        <section class="" style="margin-top: 1%">
-                                                                            <ul class="list-inline sortable " style="border: blue 1px solid; margin-left: 20px !important; margin-right: 250px !important; "></ul>
-                                                                        </section>
-
-                                                                        <section class="col col-2" style="margin-top: 1%">
-                                                                            <button type="button" id="btn_agregarFormula" class="btn btn-sm btn-primary btn-block">Agregar</button>
-                                                                        </section>
-                                                                    </div>
-
-                                                                </div>
-                                                            </div>
-                                                            <div class="widget-body" id="Tabla_formula">
-
-                                                                <br />
-                                                                <div class="tableCenter tf">
-                                                                    <table id="tablaFormulas" class="table table-striped table-bordered table-hover DTTT_selectable" cellspacing="0" width="100%" ondrop="drop(event)"></table>
-                                                                </div>
-                                                                <br />
-                                                                <div align="right" id="btnFormulas">
-                                                                    <button id="btnEditFormula" type="button" class="btn btn-warning btn-sm">
-                                                                        <i class="fa fa-pencil"></i> Editar
-                                                                    </button>
-                                                                    <button id="btnDeleteFormula" type="button" class="btn btn-danger btn-sm">
-                                                                        <i class="fa fa-trash"></i> Eliminar
-                                                                    </button>
-                                                                    <button id="btn_agregarFormulaF" type="button" class="btn btn-success btn-sm">
-                                                                        <i class="fa fa-save"></i> Guardar
-                                                                    </button>
-                                                                    <button id="btn_agregarFormulaEF" type="button" class="btn btn-success btn-sm">
-                                                                        <i class="fa fa-save"></i> Guardar
-                                                                    </button>
-
-                                                                </div>
-
-                                                            </div>
-
-                                                        </form>
-                                                        <br />
-                                                    </div>
-                                                </div>
-                                            </article>
-                                        </div>
-                                    </div>
-
-                                    <!--PASO 8-->
-                                    <div class="step-pane" data-step="8">
-                                        <div class="row">
-                                            <article class="col-sm-12 col-md-12 col-lg-12 no-padding">
-                                                <div class="jarviswidget" id="wid-step-3" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
-                                                    <div class="widget-body">
-                                                        <form class="smart-form formularioX" id="RN_Accion">
-                                                            <header>
-                                                                Comportamiento de Campos
-                                                            </header>
-                                                            <div class="row" style="margin-top: 10px">
-                                                                <section class="col col-3 destruidValidate" id="sectionEstapa" style="margin-bottom:0px;">
-                                                                    <label class="control-label">* Etapa</label>
-                                                                    <label class="select">
-                                                                        <select class="select form-control" id="RNA_etapa" name="RNA_etapa">
-                                                                            <option value="" disabled selected hidden> Seleccione una etapa </option>
-
-                                                                        </select>
-                                                                    </label>
-                                                                </section>
-                                                                <section class="col col-3 destruidValidate" id="sectionAccion" style="margin-bottom:0px;">
-                                                                    <label class="control-label">* Acción</label>
-                                                                    <label class="select">
-                                                                        <select class="select form-control" id="RNA_accion" name="RNA_accion">
-                                                                            <option value="" disabled selected hidden> Seleccione una acción </option>
-
-                                                                        </select>
-                                                                    </label>
-                                                                </section>
-                                                                <section class="col col-3 destruidValidate" id="sectionEstapaF" style="margin-bottom:0px;">
-                                                                    <label class="control-label">* Etapa Futura</label>
-                                                                    <label class="select">
-                                                                        <select class="select form-control" id="RNA_EtapaFinal" name="RNA_EtapaFinal">
-                                                                            <option value="" disabled selected hidden> Seleccione una etapa futura</option>
-
-                                                                        </select>
-                                                                    </label>
-                                                                </section>
-                                                                <section class="col col-3" style="margin-bottom:0px;">
-                                                                    <label class="control-label">Operador</label>
-                                                                    <label class="select">
-                                                                        <select class="select form-control" id="Opeador_opcion" name="Opeador_opcion">
-                                                                            <option value="0" disabled selected hidden> Seleccione un operador </option>
-                                                                            <option value="1"> Operadores Lógicos </option>
-                                                                            <option value="2"> Operadores Matemáticos </option>
-
-                                                                        </select>
-                                                                    </label>
-                                                                </section>
-                                                                <br><br><br>
-                                                                <section class="col col-6" style="margin-bottom:0px;">
-                                                                    <label class="control-label">Mensaje para validacion correcta</label>
-                                                                    <label class="input">
-                                                                        <input class="select form-control" id="mensajeSuccess" name="mensajeSuccess" />
-                                                                    </label>
-                                                                </section>
-
-                                                                <section class="col col-6" style="margin-bottom:0px;">
-                                                                    <label class="control-label">Mensaje para validacion incorrecta</label>
-                                                                    <label class="input">
-                                                                        <input class="select form-control" id="mensajeError" name="mensajeError" />
-                                                                    </label>
-                                                                </section>
-
-                                                            </div>
-                                                            <br />
-                                                            <div class="container ListasAcciones" id="trash">
-                                                                <div class="row">
-
-                                                                    <section class="col">
-                                                                        <h3 style="margin-left:20px;">Cabecera</h3>
-                                                                        <ul id="AccionCabecera"></ul>
-                                                                    </section>
-                                                                    <section class="col">
-                                                                        <h3 style="margin-left:20px;">Detalle</h3>
-                                                                        <ul id="AccionDetalle"></ul>
-                                                                    </section>
-
-
-
-                                                                    <section class="col" id="operadorMatematico">
-
-                                                                        <h4 style="margin-left:20px;">Operaciones matemáticas</h4>
-                                                                        <ul id="operaciones" class="list-inline" style="width: 450px;">
-
-                                                                            <li class="ui-state-highlight draggable" id="mas" style="width:30px">
-                                                                                <i class="f icon-plus"><strong id="Icon1">+</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="menos" style="width:30px">
-                                                                                <i class="f icon-minus"><strong id="Icon2">-</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="por" style="width:30px">
-                                                                                <i class="f icon-multiplication"><strong id="Icon3">*</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="entre" style="width:30px">
-                                                                                <i class="f icon-division"><strong id="Icon4">/</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="igual" style="width:30px">
-                                                                                <i class="f icon-equals"><strong id="Icon5">=</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="par1" style="width:30px">
-                                                                                <i class="f icon-parenthese1"><strong id="Icon6">(</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="par2" style="width:30px">
-                                                                                <i class="f icon-parenthese2"><strong id="Icon7">)</strong></i>
-                                                                            </li>
-
-                                                                            <li class="ui-state-highlight draggable" id="porciento" style="width:30px">
-                                                                                <i class="f icon-percent"><strong id="Icon8">%</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="punto" style="width:30px">
-                                                                                <i class="f"><strong>.</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="cero" style="width:30px">
-                                                                                <i class="f"><strong>0</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="uno" style="width:30px">
-                                                                                <i class="f"><strong>1</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="dos" style="width:30px">
-                                                                                <i class="f"><strong>2</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="tres" style="width:30px">
-                                                                                <i class="f"><strong>3</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="cuatro" style="width:30px">
-                                                                                <i class="f"><strong>4</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="cinco" style="width:30px">
-                                                                                <i class="f"><strong>5</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="seis" style="width:30px">
-                                                                                <i class="f"><strong>6</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="siete" style="width:30px">
-                                                                                <i class="f"><strong>7</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="ocho" style="width:30px">
-                                                                                <i class="f"><strong>8</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="nueve" style="width:30px">
-                                                                                <i class="f"><strong>9</strong></i>
-                                                                            </li>
-                                                                        </ul>
-                                                                    </section>
-
-                                                                    <section class="col" id="operadorLogicas">
-
-                                                                        <h4 style="margin-left:20px;">Operaciones Logicas</h4>
-                                                                        <ul id="operaciones" class="list-inline" style="width: 450px;">
-
-
-
-                                                                            <li class="ui-state-highlight draggable" id="porciento" style="width:30px">
-                                                                                <i class="f"><strong>if</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="punto" style="width:30px">
-                                                                                <i class="f"><strong>else</strong></i>
-                                                                            </li>
-
-                                                                            <li class="ui-state-highlight draggable" id="uno" style="width:30px">
-                                                                                <i class="f"><strong>{</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="dos" style="width:30px">
-                                                                                <i class="f"><strong>}</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="tres" style="width:30px">
-                                                                                <i class="f"><strong>;</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="cuatro" style="width:30px">
-                                                                                <i class="f"><strong>&</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="cinco" style="width:30px">
-                                                                                <i class="f"><strong>|</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="seis" style="width:30px">
-                                                                                <i class="f"><strong>=</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="siete" style="width:30px">
-                                                                                <i class="f"><strong>(</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="ocho" style="width:30px">
-                                                                                <i class="f"><strong>)</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="nueve" style="width:30px">
-                                                                                <i class="f"><strong><</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="nueve" style="width:30px">
-                                                                                <i class="f"><strong>></strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="nueve" style="width:30px">
-                                                                                <i class="f"><strong>true</strong></i>
-                                                                            </li>
-                                                                            <li class="ui-state-highlight draggable" id="nueve" style="width:30px">
-                                                                                <i class="f"><strong>false</strong></i>
-                                                                            </li>
-                                                                        </ul>
-                                                                    </section>
-
-
-                                                                </div>
-                                                                <div class="row  col-4 trash">
-
-                                                                    <!--<div class="trash">
-                                                                        <h6 style="margin: 5px 0 0 20px"> Etapas Futuras</h6>
-                                                                        <br />
-                                                                        <ul class="list-inline sortable" id="Rn_AccionConfig" style="border: blue 1px solid; margin-left: 20px !important; "></ul>
-
-                                                                    </div>-->
-
-                                                                </div>
-
-                                                                <div class="row trash">
-                                                                    <header>
-                                                                        Configuración de Regla por Acción
-                                                                    </header>
-
-                                                                    <div class="trash col col-6">
-                                                                        <h6 style="margin: 5px 0 0 20px">Regla aplicada principal</h6>
-
-
-                                                                        <!--<div class="inline-group" style="margin-left: 20px !important">
-                                                                            <label class="radio" >
-                                                                                <input type="radio" id="principal" name="radio-inline">
-                                                                                <i></i>Validacion principal
-                                                                            </label>
-                                                                            <label class="radio">
-                                                                                <input type="radio"  id="alterna" name="radio-inline">
-                                                                                <i></i>Validacion alterna
-                                                                            </label>
-                                                                        </div>-->
-
-                                                                        <section class="" style="margin-top: 1%">
-                                                                            <ul class="list-inline sortable principal" id="Rn_AccionConfig" style="border: blue 1px solid;"></ul>
-                                                                            <section class="col col-md-3" style="margin-top: 1%">
-                                                                                <br>
-                                                                                <button type="button" return false; id="btn_agregarRNAccion" class="btn btn-sm btn-primary btn-block">Agregar</button>
-                                                                            </section>
-                                                                        </section>
-                                                                        <br /><br /><br />
-
-                                                                    </div>
-                                                                    <div class="trash col col-6">
-                                                                        <h6 style="margin: 5px 0 0 20px">Regla aplicada secundaria</h6>
-
-                                                                        <!--<section class="col col-6" style="margin-top: 1%">
-                                                                            <ul class="list-inline sortable" id="Rn_AccionConfig" style="border: blue 1px solid;"></ul>
-                                                                            <section class="col col-2" style="margin-top: 1%">
-                                                                                <button type="button" id="btn_agregarRNAccion" class="btn btn-sm btn-primary btn-block">Agregar</button>
-                                                                            </section>
-                                                                        </section>
-                                                                        <br /><br /><br />-->
-
-                                                                        <section class="" style="margin-top: 1%">
-                                                                            <ul class="list-inline sortable alterno" id="Rn_AccionConfigAlterna" style="border: blue 1px solid;"></ul>
-
-                                                                        </section>
-                                                                    </div>
-
-
-
-                                                                </div>
-                                                            </div>
-                                                            <div class="widget-body" id="reglaPorAccion">
-
-                                                                <br />
-                                                                <div class="tableCenter trn">
-                                                                    <table id="tablaRelasAccion" class="table table-striped table-bordered table-hover DTTT_selectable" cellspacing="0" width="100%" ondrop="drop(event)"></table>
-                                                                </div>
-                                                                <br />
-                                                                <div align="right" id="btnReglasNAcciones">
-                                                                    <!--<button id="btnEditFormula" type="button" class="btn btn-warning btn-sm">
-                                                                        <i class="fa fa-pencil"></i> Editar
-                                                                    </button>-->
-                                                                    <button id="btnDeleteAccionN" type="button" class="btn btn-danger btn-sm">
-                                                                        <i class="fa fa-trash"></i> Eliminar
-                                                                    </button>
-                                                                    <button id="btn_agregarAccionF" type="button" class="btn btn-success btn-sm">
-                                                                        <i class="fa fa-save"></i> Guardar
-                                                                    </button>
-                                                                    <button id="btn_agregarAccionEF" type="button" class="btn btn-success btn-sm">
-                                                                        <i class="fa fa-save"></i> Guardar
-                                                                    </button>
-
-                                                                </div>
-
-                                                            </div>
-
-                                                        </form>
-                                                        <form id="dialogReglaNA">
-                                                            <div class="widget-body" id="form2">
-
-                                                                <div class="tree smart-form">
-                                                                    <ul id="menusforReglaTree" role="tree"></ul>
-                                                                </div>
-                                                            </div>
-
-                                                        </form>
-                                                        <br />
-                                                    </div>
-                                                </div>
-                                            </article>
-                                        </div>
-
-                                    </div>
-                                    <!--PASO 4-->
-                                    <div class="step-pane" data-step="4">
-                                        <div class="row">
-                                            <article class="col-sm-12 col-md-12 col-lg-12 no-padding">
-                                                <div class="jarviswidget" id="wid-step-5" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
-                                                    <div class="widget-body">
-                                                        <form class="smart-form form-inline" id="form_RN2">
-                                                            <header>
-                                                                Reglas por Campo
-                                                            </header>
-                                                            <div class="row" style="margin-top: 10px">
-                                                                <section class="col col-4" style="margin-bottom:0px;">
-                                                                    <label class="control-label">* Etapa</label>
-                                                                    <label class="select">
-                                                                        <select class="select form-control" id="rn2_etapa" name="rn2_etapa"></select>
-                                                                    </label>
-                                                                </section>
-                                                                <section class="col col-4" style="margin-bottom:0px;">
-                                                                    <label class="control-label">* Acción</label>
-                                                                    <label class="select">
-                                                                        <select class="select form-control" id="rn2_accion" name="rn2_accion"></select>
-                                                                    </label>
-                                                                </section>
-
-                                                            </div>
-
-                                                            <header>
-                                                                Configuración
-                                                            </header>
-                                                            <fieldset>
-                                                                <div class="row">
-                                                                    <section class="col-sm-12">
-                                                                        <div class="tableCenter trnc">
-                                                                            <table id="example" class="tablaa table table-striped table-bordered table-hover DTTT_selectable" cellspacing="0" width="100%"></table>
-                                                                        </div>
-                                                                    </section>
-                                                                </div>
-                                                            </fieldset>
-                                                            <div class="row">
-                                                                <section class="col col-2" style="margin-top: 1%">
-                                                                    <button type="button" id="btn_agregarRN2" class="btn btn-sm btn-primary btn-block">Agregar</button>
-                                                                </section>
-                                                            </div>
-
-
-
-                                                        </form>
-                                                        <br />
-
-                                                    </div>
-                                                </div>
-                                            </article>
-                                        </div>
-                                    </div>
-                                    <!--PASO 5-->
-                                    <div class="step-pane" data-step="5">
-                                        <div class="row">
-                                            <article class="col-sm-12 col-md-12 col-lg-12 no-padding">
-                                                <div class="jarviswidget" id="wid-step-5" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
-                                                    <div class="widget-body">
-                                                        <form class="smart-form form-inline" id="form_Combo">
-                                                            <header>
-                                                                Combo Box
-                                                            </header>
-                                                            <div class="row" style="margin-top: 10px">
-                                                                <section class="col col-4" style="margin-bottom:0px;">
-                                                                    <label class="control-label">* Etapa</label>
-                                                                    <label class="select">
-                                                                        <select class="select form-control" id="Combo_etapa" name="Combo_etapa"></select>
-                                                                    </label>
-                                                                </section>
-                                                                <section class="col col-4" style="margin-bottom:0px;">
-                                                                    <label class="control-label">* Acción</label>
-                                                                    <label class="select">
-                                                                        <select class="select form-control" id="Combo_accion" name="Combo_accion"></select>
-                                                                    </label>
-                                                                </section>
-
-                                                            </div>
-                                                            <header>
-                                                                Configuración Combobox
-                                                            </header>
-                                                            <fieldset>
-                                                                <div class="row">
-                                                                    <section class="col-sm-12">
-                                                                        <div class="tableCenter tcombo">
-                                                                            <table id="examples" class="table table-striped table-bordered table-hover DTTT_selectable Camp" cellspacing="0" width="100%"></table>
-                                                                        </div>
-                                                                    </section>
-                                                                </div>
-                                                            </fieldset>
-                                                            <div class="row">
-                                                                <section class="col col-2" style="margin-top: 1%">
-                                                                    <button type="button" id="btn_agregarCombo" class="btn btn-sm btn-primary btn-block">Agregar</button>
-                                                                </section>
-                                                            </div>
-
-
-
-                                                        </form>
-                                                        <br />
-
-                                                    </div>
-                                                </div>
-                                            </article>
-                                        </div>
-                                    </div>
-                                    <!--PASO 6-->
-                                    <div class="step-pane" data-step="6">
-                                        <div class="row">
-                                            <article class="col-sm-12 col-md-12 col-lg-12 no-padding">
-                                                <div class="jarviswidget" id="wid-step-5" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
-                                                    <div class="widget-body">
-                                                        <form class="smart-form form-inline" id="form_Autocompletar">
-                                                            <header>
-                                                                Autocompletar
-                                                            </header>
-                                                            <div class="row" style="margin-top: 10px">
-                                                                <section class="col col-4" style="margin-bottom:0px;">
-                                                                    <label class="control-label">* Etapa</label>
-                                                                    <label class="select">
-                                                                        <select class="select form-control" id="Autocompletar_etapa" name="Autocompletar_etapa"></select>
-                                                                    </label>
-                                                                </section>
-                                                                <section class="col col-4" style="margin-bottom:0px;">
-                                                                    <label class="control-label">* Acción</label>
-                                                                    <label class="select">
-                                                                        <select class="select form-control" id="Autocompletar_accion" name="Autocompletar_accion"></select>
-                                                                    </label>
-                                                                </section>
-                                                                <section class="col col-4" style="margin-bottom:0px;">
-                                                                    <label class="control-label">* Seleccione Campo Combo</label>
-                                                                    <label class="select">
-                                                                        <select class="select form-control" id="Autocompletar_Combo" name="Autocompletar_Combo"></select>
-                                                                    </label>
-                                                                </section>
-
-                                                            </div>
-                                                            <header>
-                                                                Configuración Autocompletar
-                                                            </header>
-                                                            <fieldset>
-                                                                <div class="row">
-                                                                    <section class="col-sm-12">
-                                                                        <div class="tableCenter tauto">
-                                                                            <table id="DTAutocompletar" class="table table-striped table-bordered table-hover DTTT_selectable Camp" cellspacing="0" width="100%" ondrop="drop(event)" cellspacing="0" width="90%"></table>
-                                                                        </div>
-                                                                    </section>
-                                                                </div>
-                                                            </fieldset>
-                                                            <div class="row">
-                                                                <section class="col col-2" style="margin-top: 1%">
-                                                                    <button type="button" id="btn_agregarAutocompletar" class="btn btn-sm btn-primary btn-block">Agregar</button>
-                                                                </section>
-                                                            </div>
-
-
-
-                                                        </form>
-                                                        <br />
-
-                                                    </div>
-                                                </div>
-                                            </article>
-                                        </div>
-                                    </div>
-
-
-                                </div>
-                            </div>
+                                    <!--<button type="button" class="btn btn-danger pull-left">
+                                        <i class="fa fa-arrow-circle-left"></i> Regresar
+                                    </button>-->
+                                </footer>                            
+                            </form>
                         </div>
                     </div>
                 </div>
             </article>
         </div>
+    </section>
+    <section id="sectCamposDin">
+        <div id="divTiposTransaccion" class="row">
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget" id="AdminTransaccion" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-sortable="false">
+                    <header>
+                        <h2><i class="icon-prepend  icon-edit"></i><strong>Administración de Transacciones<label id="Title"></label></strong></h2>
+                    </header>
+                    <div>
+                        <div class="widget-body-toolbar">
+                            <button id="btnAtras" type="button" class="btn btn-danger btn-sm">
+                                <i class="fa fa-arrow-left"></i> Atrás
+                            </button>
+                        </div>
+
+                        <div class="widget-body">
+                            <form class="smart-form" id="frmCamposDin">
+                                <header>
+                                    Campos Dinámicos
+                                </header>
+
+                                <fieldset>
+
+                                    <div class="row">
+                                        <section class="col col-3">
+                                            <label class="control-label">* Nombre del campo</label>
+                                            <input ondrop="return false;" type="text" name="nombreCampo" id="nombreCampo" class="form-control " placeholder="Nombre del campo" onkeypress="return validarRFC(event)">
+                                        </section>
+                                        <section class="col col-3">
+                                            <label class="control-label">* Descripción</label>
+                                            <input ondrop="return false;" type="text" name="descCampo" id="descCampo" class="form-control" placeholder="Descripción" onkeypress="return validarCaracteres(event)">
+                                        </section>
+
+                                        <section class="col col-3">
+                                            <label class=" control-label">* Tipo de dato</label>
+                                            <select class="form-control" id="tipoDato" name="tipoDato"><option value="0"> Seleccione un tipo de dato </option><option value="7">Boleano</option><option value="2">Date</option><option value="6">DateTime</option><option value="8">Decimal</option><option value="4">Double</option><option value="5">Float</option><option value="1">Number</option><option value="3">Text</option><option value="9">Tiempo</option></select>
+                                        </section>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <section class="col col-3" id="longi">
+                                            <label class="control-label">* Longitud</label>
+                                            <input ondrop="return false;" type="text" name="longitud" class="form-control" id="longitud" placeholder="Longitud" onkeypress="return validarNumeros(event)" data-bv-excluded="false">
+                                        </section>
+                                        <section class="col col-3">
+                                            <label class="control-label">* Nivel</label>
+
+                                            <select class="form-control" id="nivel" name="nivel"><option value="0"> Seleccione un nivel </option><option value="1">Cabecera</option><option value="2">Detalle</option></select>
+                                        </section>
+                                        <section class="col col-3">
+                                            <label class="control-label">* Operación</label>
+                                            <select class="form-control" id="tipoOperacion" name="tipoOperacion"><option value="0"> Seleccione un tipo de operación </option><option value="1">Campo Abierto</option><option value="2">Campo Calculado</option></select>
+                                        </section>
+
+                                        <section class="col col-3">
+                                            <button type="button" id="btn_agregar" class="btn btn-sm btn-primary btn-block">Agregar</button>
+                                        </section>
+                                    </div>
+                                </fieldset>
+
+                                <div id="DetalleCamposDin">
+                                    <header></header>
+                                    <br />
+                                    <div>
+                                        <button id="btnEditComplement1" type="button" class="btn btn-warning btn-sm">
+                                            <i class="fa fa-pencil"></i> Editar
+                                        </button>
+                                        <button id="btnDeleteComplement1" type="button" class="btn btn-danger btn-sm">
+                                            <i class="fa fa-trash"></i> Eliminar
+                                        </button>
+
+                                    </div>
+                                    <br />
+                                    <table id="tablaComplementarios" class="table table-striped table-bordered table-hover DTTT_selectable" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th data-class="expand">Nombre del campo</th>
+                                                <th>Descripción</th>
+                                                <th>Tipo de dato</th>
+                                                <th data-hide="phone,tablet,desktop">Longitud</th>
+                                                <th data-hide="phone,tablet,desktop">Nivel</th>
+                                                <th data-hide="phone,tablet,desktop">Tipo de operación</th>
+                                                <th data-hide="phone,tablet,desktop">idTipoDato</th>
+                                                <th data-hide="phone,tablet,desktop">idNivel</th>
+                                                <th data-hide="phone,tablet,desktop">idOperacion</th>
+                                                <th data-hide="phone,tablet,desktop">idCampo</th>
+
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <br />
+                                <br />
+                                <footer id="footerCamposDin">
+                                    <button id="btnNextCamposDin" type="button" class="btn btn-primary pull-right">
+                                        Siguiente <i class="fa fa-arrow-circle-right"></i>
+                                    </button>
+                                    <button id="btnBackCamposDin" type="button" class="btn btn-danger pull-left">
+                                        <i class="fa fa-arrow-circle-left"></i> Regresar
+                                    </button>
+                                </footer>
+                            </form>
+
+                        </div>
+                        
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section id="sectEtapAcci">
+        <div id="divTiposTransaccion" class="row">
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget" id="AdminTransaccion" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-sortable="false">
+                    <header>
+                        <h2><i class="icon-prepend  icon-edit"></i><strong>Administración de Transacciones<label id="Title"></label></strong></h2>
+                    </header>
+                    <div>
+                        <div class="widget-body-toolbar">
+                            <button id="btnAtras" type="button" class="btn btn-danger btn-sm">
+                                <i class="fa fa-arrow-left"></i> Atrás
+                            </button>
+                        </div>
+
+                        <div class="widget-body">
+                            <form class="smart-form" id="form_ciclo">
+                                <header>
+                                    Crear Etapas
+                                </header>
+
+                                <fieldset>
+
+                                    <div class="row">
+                                        <section class="col col-3">
+                                            <label class="control-label">* Nombre de la etapa</label>
+                                            <label class="input">
+                                                <input ondrop="return false;" type="text" name="nombreEtapa" id="nombreEtapa" class="form-control"
+                                                       placeholder="Ingrese el nombre de la etapa" onkeypress="return validarCaracteres(event)">
+                                            </label>
+                                        </section>
+                                        <section class="col col-3">
+                                            <label class="control-label">* Orden de la etapa</label>
+                                            <label class="input">
+                                                <input ondrop="return false;" type="text" name="orden" id="orden" class="form-control"
+                                                       placeholder="Ingrese el orden" onkeypress="return validarNumeros(event)">
+                                            </label>
+                                        </section>
+                                        <section class="col col-2">
+                                            <label class="control-label"></label>
+                                            <button type="button" id="btnAddEtapa" class="btn btn-sm btn-primary btn-block">Agregar</button>
+                                        </section>
+                                    </div>
+                                </fieldset>
+
+                                <div id="DetalleEtapas">
+                                    <header></header>
+                                    <br />
+                                    <div>
+                                        <button id="btnEditComplement1" type="button" class="btn btn-warning btn-sm">
+                                            <i class="fa fa-pencil"></i> Editar
+                                        </button>
+                                        <button id="btnDeleteComplement1" type="button" class="btn btn-danger btn-sm">
+                                            <i class="fa fa-trash"></i> Eliminar
+                                        </button>
+
+                                    </div>
+                                    <br />
+                                    <table id="tablaEtapa" class="table table-striped table-bordered table-hover DTTT_selectable" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th data-class="expand">Nombre del la etapa</th>
+                                                <th>Orden</th>
+                                                <th>idEtapa</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+
+                                <footer id="footerEta">
+                                    <button id="btnBackEta" type="button" class="btn btn-danger pull-left">
+                                        <i class="fa fa-arrow-circle-left"></i> Regresar
+                                    </button>
+                                </footer>
+
+                            </form>
+                            <br />
+                            <br />
+
+                            <form class="smart-form" id="form_acciones">
+                                <header>
+                                    Crear Acciones
+                                </header>
+                                <fieldset>
+                                    <div class="row">
+                                        <section class="col col-3">
+                                            <label class="control-label">* Nombre de la etapa</label>
+                                            <label class="select">
+                                                <select class="select" id="selectEtapa" name="selectEtapa"></select>
+                                            </label>
+                                        </section>
+                                        <section class="col col-3">
+                                            <label class="control-label">* Nombre de la acción</label>
+                                            <label class="input">
+                                                <input ondrop="return false;" type="text" name="nombreAccion" class="form-control"
+                                                       id="nombreAccion" placeholder="Ingrese el nombre de la acción" onkeypress="return validarCaracteres(event)">
+                                            </label>
+                                        </section>
+                                        <section class="col col-3">
+                                            <label class="control-label">* Clave de la acción</label>
+                                            <label class="input">
+                                                <input ondrop="return false;" type="text" name="claveAccion" class="form-control"
+                                                       id="claveAccion" placeholder="Ingrese la clave acción" onkeypress="return validarCaracteresN(event)">
+                                            </label>
+                                        </section>
+                                        <section class="col col-3">
+                                            <label class="control-label">* Orden de la acción</label>
+                                            <label class="input">
+                                                <input ondrop="return false;" type="text" name="ordenAccion" class="form-control"
+                                                       id="ordenAccion" placeholder="Ingrese el orden" onkeypress="return validarNumeros(event)">
+                                            </label>
+                                        </section>
+                                        
+                                        </div>
+                                        <div class="row">
+                                            <section class="col col-3">
+                                                <div class="tree smart-form">
+                                                    <ul>
+                                                        <li>
+                                                            <span><i class="fa fa-lg fa-plus-circle"></i> Roles Permitidos</span>
+                                                            <ul id="_Roles">
+
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </section>
+                                        </div>
+                                </fieldset>
+                                        <br />
+                                        <br />
+                                <fieldset>
+                                    <div class="row">
+
+                                        <div class="col col-2 pull-right">
+                                            <button type="button" id="btnAddEtapaAccion" class="btn btn-sm btn-primary btn-block " style="align-items:center">Agregar</button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                        <br />
+                                        <br />
+                                <div id="DetalleAcciones">
+                                    <header></header>
+                                    <br />
+                                    <div>
+                                        <button id="btnEditComplement1" type="button" class="btn btn-warning btn-sm">
+                                            <i class="fa fa-pencil"></i> Editar
+                                        </button>
+                                        <button id="btnDeleteComplement1" type="button" class="btn btn-danger btn-sm">
+                                            <i class="fa fa-trash"></i> Eliminar
+                                        </button>
+
+                                    </div>
+                                    <br />
+                                    <table id="tablaAciones" class="table table-striped table-bordered table-hover DTTT_selectable" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th data-class="expand">Nombre etapa</th>
+                                                <th data-class="expand">Nombre accion</th>
+                                                <th data-class="expand">Clave accion</th>
+                                                <th>Orden</th>
+                                                <th>idEtapa</th>
+                                                <th>idaccion</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                        <br />
+                                        <br />
+
+                                <footer id="footerEta">
+                                    <button id="btnNextEtaAcc" type="button" class="btn btn-primary pull-right">
+                                        Siguiente <i class="fa fa-arrow-circle-right"></i>
+                                    </button>
+                                    <button id="btnBackEtaAcc" type="button" class="btn btn-danger pull-left">
+                                        <i class="fa fa-arrow-circle-left"></i> Regresar
+                                    </button>
+                                </footer>
+
+                                <footer id="footerAcc">
+                                    <button id="btnNextAcc" type="button" class="btn btn-primary pull-right">
+                                        Siguiente <i class="fa fa-arrow-circle-right"></i>
+                                    </button>
+                                    <button id="btnBackAcc" type="button" class="btn btn-danger pull-left">
+                                        <i class="fa fa-arrow-circle-left"></i> Regresar
+                                    </button>
+                                </footer>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+
+    
+
+
+    <section id="sectRxCampo">
+        <div id="divTiposTransaccion" class="row">
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget" id="AdminTransaccion" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-sortable="false">
+                    <header>
+                        <h2><i class="icon-prepend  icon-edit"></i><strong>Administración de Transacciones<label id="Title"></label></strong></h2>
+                    </header>
+                    <div>
+                        <div class="widget-body-toolbar">
+                            <button id="btnAtras" type="button" class="btn btn-danger btn-sm">
+                                <i class="fa fa-arrow-left"></i> Atrás
+                            </button>
+                        </div>
+
+                        <div class="widget-body">
+                            <form class="smart-form form-inline" id="form_RN2">
+                                <header>
+                                    Reglas por Campo
+                                </header>
+                                <div class="row" style="margin-top: 10px">
+                                    <section class="col col-4" style="margin-bottom:0px;">
+                                        <label class="control-label">* Etapa</label>
+                                        <label class="select">
+                                            <select class="select form-control" id="EtapaRegaCampo" name="EtapaRegaCampo"></select>
+                                        </label>
+                                    </section>
+                                    <section class="col col-4" style="margin-bottom:0px;">
+                                        <label class="control-label">* Acción</label>
+                                        <label class="select">
+                                            <select class="select form-control" id="AccionRegaCampo" name="AccionRegaCampo"></select>
+                                        </label>
+                                    </section>
+
+                                </div>
+
+                                <header>
+                                    Configuración
+                                </header>
+                                <fieldset>
+                                    <div class="row">
+                                        <section class="col-sm-12">
+                                            <div class="tableCenter trnc">
+                                                <table id="example" class="tablaa table table-striped table-bordered table-hover DTTT_selectable" cellspacing="0" width="100%"></table>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </fieldset>
+                                <div class="row">
+                                    <section class="col col-2 pull-right" style="margin-top: 1%">
+                                        <button type="button" id="btnRxCampo" class="btn btn-sm btn-primary btn-block">Agregar</button>
+                                    </section>
+                                </div>
+
+                                <br />
+                                <br />
+
+                                <footer id="footerRxCampo">
+                                    <button id="btnNextRxCampo" type="button" class="btn btn-primary pull-right">
+                                        Siguiente <i class="fa fa-arrow-circle-right"></i>
+                                    </button>
+                                    <button id="btnBackRxCampo" type="button" class="btn btn-danger pull-left">
+                                        <i class="fa fa-arrow-circle-left"></i> Regresar
+                                    </button>
+                                </footer>
+
+
+
+                            </form>
+                            
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+
+
+
+
+    <section id="frmConbobox" class="">
+        <!-- START ROW -->
+        <div class="row">
+
+            <!-- NEW COL START -->
+            <article class="col-sm-12 col-md-12 col-lg-12">
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
+
+                    <header>
+                        <h2 id="nuevaTransaccion"><span class="widget-icon"> <i class="fa fa-edit"></i> <b>Alta de Tipo de Transacción</b> </span></h2>
+                    </header>
+                    <div>
+                        <!-- Boton Atras :D -->
+                        <div class="widget-body-toolbar">
+                            <button id="btnAtras" type="button" class="btn btn-danger btn-sm">
+                                <i class="fa fa-arrow-left"></i> Atrás
+                            </button>
+                        </div>
+                        <div class="widget-body no-padding">
+
+                            <form class="smart-form">
+                                <header id="titulo">
+                                    ComboBox
+                                </header>
+                                <fieldset>
+                                    <div class="row">
+                                        <section class="col col-4" style="margin-bottom:0px;">
+                                            <label class="control-label">* Etapa</label>
+                                            <label class="select">
+                                                <select class="select form-control" id="Combo_etapa" name="Combo_etapa"></select>
+                                            </label>
+                                        </section>
+                                        <section class="col col-4" style="margin-bottom:0px;">
+                                            <label class="control-label">* Acción</label>
+                                            <label class="select">
+                                                <select class="select form-control" id="Combo_accion" name="Combo_accion"></select>
+                                            </label>
+                                        </section>
+
+                                    </div>
+                                    <header>
+                                        Configuración Combobox
+                                    </header>
+                                    <fieldset>
+                                        <div class="row">
+                                            <section class="col-sm-12">
+                                                <div class="tableCenter tcombo">
+                                                    <table id="examples" class="table table-striped table-bordered table-hover DTTT_selectable Camp" cellspacing="0" width="100%"></table>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </fieldset>
+                                    <div class="row">
+                                        <section class="col col-2" style="margin-top: 1%">
+                                            <button type="button" id="btn_agregarCombo" class="btn btn-sm btn-primary btn-block">Agregar</button>
+                                        </section>
+                                    </div>
+
+                                </fieldset>
+
+                                <footer id="footerCampoDin">
+                                    <button type="button" class="btn btn-primary pull-right">
+                                        Siguiente <i class="fa fa-arrow-circle-right"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger pull-left">
+                                        <i class="fa fa-arrow-circle-left"></i> Regresar
+                                    </button>
+                                </footer>
+                            </form>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+
+            </article>
+            <!-- END COL -->
+
+        </div>
+
     </section>
 
 </body>

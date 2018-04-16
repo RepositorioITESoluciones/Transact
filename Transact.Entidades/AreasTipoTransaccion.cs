@@ -16,5 +16,7 @@ namespace Transact.Entidades
         public int idArea { get; set; }
         public string descripcion { get; set; }
         public bool activo { get; set; }
+
+        public string msmError { get; set; }
     }
 }

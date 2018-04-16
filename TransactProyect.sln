@@ -33,6 +33,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WBTransact", "WBTransact\",
 		SlnRelativePath = "WBTransact\"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PruebasUnitarias", "PruebasUnitarias\PruebasUnitarias.csproj", "{9C259A10-0E19-4C37-BE3E-384B49000CE7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{DB49DA61-7667-4778-923F-82D47B1A0816}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB49DA61-7667-4778-923F-82D47B1A0816}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{DB49DA61-7667-4778-923F-82D47B1A0816}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{9C259A10-0E19-4C37-BE3E-384B49000CE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C259A10-0E19-4C37-BE3E-384B49000CE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C259A10-0E19-4C37-BE3E-384B49000CE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C259A10-0E19-4C37-BE3E-384B49000CE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

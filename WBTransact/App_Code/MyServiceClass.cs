@@ -112,11 +112,11 @@ public class MyServiceClass : System.Web.Services.WebService {
     }
 
     [WebMethod]
-    public void InsertCampos(int idTipoTran, int idNivel, string nombreCampo, string descripcion, int idTipoDatoCampo, int idTipoOperacion, string longitudCampo) {
+    public int InsertCampos(int idTipoTran, int idNivel, string nombreCampo, string descripcion, int idTipoDatoCampo, int idTipoOperacion, string longitudCampo) {
 
 
 
-        AltaDatos.InDCampo(idTipoTran, idNivel, nombreCampo, descripcion, idTipoDatoCampo, idTipoOperacion, longitudCampo);
+        return AltaDatos.InDCampo(idTipoTran, idNivel, nombreCampo, descripcion, idTipoDatoCampo, idTipoOperacion, longitudCampo);
 
 
 
@@ -128,7 +128,7 @@ public class MyServiceClass : System.Web.Services.WebService {
 
 
     [WebMethod]
-    public bool InsertEtapas(int idTipoTran, string descripcion, int orden) {
+    public int InsertEtapas(int idTipoTran, string descripcion, int orden) {
 
 
 
@@ -140,15 +140,9 @@ public class MyServiceClass : System.Web.Services.WebService {
     }
 
     [WebMethod]
-    public bool InsertAcciones(int idTipoTran, string claveAccion, string descripcion, int orden) {
+    public int InsertAcciones(int idEtapa,int idTipoTran, string claveAccion, string descripcion, int orden, int[] values) {
 
-
-
-        return AltaDatos.InAcciones(idTipoTran, claveAccion, descripcion, orden);
-
-
-
-
+        return AltaDatos.InAcciones(idEtapa, idTipoTran, claveAccion, descripcion, orden, values);
     }
 
     [WebMethod]

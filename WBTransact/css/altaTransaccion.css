@@ -15,7 +15,9 @@ form .error {
 */
 table.dataTable tbody tr.selected {
     color: white;
-    background-color: rgba(96, 134, 250, 0.76);
+    background-color: #07a95f;
+    transition: .4s;
+
 }
 .fuelux .wizard ul li {
     position: relative;

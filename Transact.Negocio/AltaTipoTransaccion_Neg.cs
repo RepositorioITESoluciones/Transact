@@ -81,9 +81,9 @@ namespace Transact.Negocio {
 
 
         }
-        public bool InDCampo(int idTipoTran, int idNivel, string nombreCampo, string descripcion, int idTipoDatoCampo, int idTipoOperacion, string longitudCampo) {
+        public int InDCampo(int idTipoTran, int idNivel, string nombreCampo, string descripcion, int idTipoDatoCampo, int idTipoOperacion, string longitudCampo) {
 
-            try {
+            
 
                 campos.idNivel = idNivel;
                 campos.nombreCampo = nombreCampo;
@@ -92,18 +92,15 @@ namespace Transact.Negocio {
                 campos.idTipoOperacion = idTipoOperacion;
                 campos.longitud = Convert.ToInt32(longitudCampo);
 
-                bool res = AltaDatos.InsertCamp(idTipoTran, campos);
+                //bool res = AltaDatos.InsertCamp(idTipoTran, campos);
 
-                return res;
-            } catch {
-                return false; ;
-
-            }
+                return AltaDatos.InsertCamp(idTipoTran, campos);
+        
 
 
 
         }
-        public bool InEtapas(int idTipoTran, string descripcion, int orden) {
+        public int InEtapas(int idTipoTran, string descripcion, int orden) {
 
 
             return AltaDatos.InsertEtapas(idTipoTran, descripcion, orden);
@@ -112,10 +109,10 @@ namespace Transact.Negocio {
 
 
         }
-        public bool InAcciones(int idTipoTran, string claveAccion, string descripcion, int orden) {
+        public int InAcciones(int idEtapa, int idTipoTran, string claveAccion, string descripcion, int orden, int[] values) {
 
 
-            return AltaDatos.InsertAcciones(idTipoTran, claveAccion, descripcion, orden);
+            return AltaDatos.InsertAcciones(idEtapa,idTipoTran, claveAccion, descripcion, orden, values);
 
 
 
@@ -440,10 +437,10 @@ namespace Transact.Negocio {
                 countReglas = CountReglasN(idTransaccion, row["Campos"].ToString(), idetapa, idaccion);
 
                 if (countReglas == 1) {
-                    respuesta = AltaDatos.updateReglasNegocioXCampoD(idTransaccion, idetapa, idaccion, row["Campos"].ToString(), Convert.ToInt32(Convert.ToBoolean(row["Visible"])), Convert.ToInt32(Convert.ToBoolean(row["Editable"])), Convert.ToInt32(Convert.ToBoolean(row["Obligatorio"])), Convert.ToInt32(row["Visualización"]));
+                    respuesta = AltaDatos.updateReglasNegocioXCampoD(idTransaccion, idetapa, idaccion, row["Campos"].ToString(), Convert.ToInt32(row["Visible"]), Convert.ToInt32(row["Editable"]), Convert.ToInt32(row["Obligatorio"]), Convert.ToInt32(row["Visualización"]));
                 } else {
 
-                    respuesta = AltaDatos.InsertRNC(row["Campos"].ToString(), idTransaccion, idetapa, idaccion, Convert.ToInt32(Convert.ToBoolean(row["Visible"])), Convert.ToInt32(Convert.ToBoolean(row["Editable"])), Convert.ToInt32(Convert.ToBoolean(row["Obligatorio"])), Convert.ToInt32(row["Visualización"]));
+                    respuesta = AltaDatos.InsertRNC(row["Campos"].ToString(), idTransaccion, idetapa, idaccion, Convert.ToInt32(row["Visible"]), Convert.ToInt32(row["Editable"]), Convert.ToInt32(row["Obligatorio"]), Convert.ToInt32(row["Visualización"]));
 
                 }
             }

@@ -116,20 +116,16 @@ namespace Transact.Datos
 
                     connection.Open();
 
-                    consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT tt.[idTipoTransaccion], MAE.idTransaccion,TT.[descripcion], "
-                                                                    + " [cveTipoTransaccion], CTT.categoriaTransac, TT.activo, MAE.idEtapa as etapaAct,"
-                                                                    + " (SELECT descripcion FROM Configuracion.EtapasTipoTransaccion ETT WHERE ETT.idEtapa = MAE.idEtapa) etapaActual,"
-                                                                    + " MIN(EATT.idEtapa) etapaDes, (SELECT descripcion FROM Configuracion.EtapasTipoTransaccion ETT WHERE ETT.idEtapa = MIN(EATT.idEtapa)) etapaDestino"
-                                                                    + " FROM Configuracion.TiposTransacciones TT INNER JOIN Configuracion.CategoriaTipoTransaccion CTT"
-                                                                    + " on TT.idCatTipoTransac = CTT.idCatTipoTransac  INNER JOIN Configuracion.EtapasAccionesTipoTransacciones EATT"
-                                                                    + " ON TT.idTipoTransaccion = EATT.idTipoTransaccion INNER JOIN Configuracion.MAETransacciones MAE"
-                                                                    + " ON MAE.idTipoTransaccion = TT.idTipoTransaccion"
-                                                                    + " INNER JOIN Configuracion.EtapasTipoTransaccion ETT"
-                                                                    + " ON ETT.idEtapa = MAE.idEtapa"
-                                                                    + " WHERE MAE.idTransaccion = '"+ idtransaccion + "'"
-                                                                    + " AND EATT.idEtapa<>(SELECT min(idEtapa) FROM Configuracion.MAETransacciones WHERE idTransaccion = '"+ idtransaccion + "')"
-                                                                    + " GROUP BY tt.[idTipoTransaccion], MAE.idTransaccion,TT.[descripcion],"
-                                                                    + " [cveTipoTransaccion], CTT.categoriaTransac, TT.activo, MAE.idEtapa");
+                    consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT MT.idTipoTransaccion,MT.idTransaccion,MT.idEtapa,CT.descripcion,CT.cveTipoTransaccion,"
+                                                                    + " CT.activo, CC.categoriaTransac, MT.idEtapa, CET.descripcion desEtapa,"
+                                                                    + " (SELECT MIN(idEtapa) FROM Configuracion.EtapasTipoTransaccion where idTipoTransaccion = MT.idTipoTransaccion AND  idEtapa > MT.idEtapa) idFutura,"
+                                                                    + " (SELECT descripcion FROM Configuracion.EtapasTipoTransaccion where idTipoTransaccion = MT.idTipoTransaccion AND"
+                                                                    + " idEtapa = (SELECT MIN(idEtapa) FROM Configuracion.EtapasTipoTransaccion where idTipoTransaccion = MT.idTipoTransaccion AND idEtapa > MT.idEtapa)) DesFutura"
+                                                                    + " FROM Configuracion.MAETransacciones MT inner join Configuracion.TiposTransacciones CT"
+                                                                    + " on MT.idTipoTransaccion = CT.idTipoTransaccion inner join Configuracion.CategoriaTipoTransaccion CC"
+                                                                    + " on CT.idCatTipoTransac = CC.idCatTipoTransac inner join Configuracion.EtapasTipoTransaccion CET"
+                                                                    + " on MT.idEtapa = CET.idEtapa"
+                                                                    + " where MT.idTransaccion = '" + idtransaccion + "'");
 
                     Transacciones.Load(consulta);
 
@@ -145,10 +141,12 @@ namespace Transact.Datos
                         comptran.descripcion = Transaccion["descripcion"].ToString();
                         comptran.cveTipoTransaccion = Transaccion["cveTipoTransaccion"].ToString();
                         comptran.categoriaTransac = Transaccion["categoriaTransac"].ToString();
-                        comptran.idEtapa = Convert.ToInt32(Transaccion["etapaAct"].ToString());
-                        comptran.NombreEtapa = Transaccion["etapaActual"].ToString();
-                        comptran.idEtapaFutura = Convert.ToInt32(Transaccion["etapaDes"].ToString());
-                        comptran.nomEtaFut = Transaccion["etapaDestino"].ToString();            
+                        comptran.idEtapa = Convert.ToInt32(Transaccion["idEtapa"].ToString());
+                        comptran.NombreEtapa = Transaccion["desEtapa"].ToString();
+                        if (Transaccion["idFutura"].ToString() != "") { comptran.idEtapaFutura = Convert.ToInt32(Transaccion["idFutura"].ToString()); }
+                        else { comptran.idEtapaFutura = 0; }
+                        if (Transaccion["idFutura"].ToString() != "") { comptran.nomEtaFut = Transaccion["DesFutura"].ToString(); }
+                        else { comptran.nomEtaFut = null; }                                       
                         comptran.activo = Convert.ToBoolean(Transaccion["activo"].ToString());
                         CamposTransaccionxEtapa(ref comptran);
 
@@ -256,7 +254,7 @@ namespace Transact.Datos
                                                                         + " INNER JOIN Configuracion.MAETransacciones MAE"
                                                                         + " ON MAE.idTipoTransaccion = TT.idTipoTransaccion"
                                                                         + " WHERE MAE.idTransaccion = '" + campos.idTrasaccion + "'"
-                                                                        + " AND RNCT.visible = 1 AND EATT.idEtapa <> (SELECT idEtapa FROM Configuracion.MAETransacciones WHERE idTransaccion = '" + campos.idTrasaccion + "')");
+                                                                        + " AND RNCT.visible = 1 AND EATT.idEtapa = "+ campos.idEtapaFutura);
                     CamposComplemento.Load(consulta);
                     connection.Close();
 

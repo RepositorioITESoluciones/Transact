@@ -20,85 +20,163 @@ namespace Transact.Datos {
             Int32 idTran;
             SqlConnection connection = null;
             try {
-                using (connection = Conexion.ObtieneConexion("ConexionBD")) {
+                using (connection = Conexion.ObtieneConexion("ConexionBD"))
+                {
 
                     connection.Open();
-
-                    SqlDataReader Resul = Ejecuta.ConsultaConRetorno(connection, "SELECT Max(idTipoTransaccion)  FROM Configuracion.TiposTransacciones");
-                    Resul.Read();
-                    int resultadoid = Resul.GetInt32(0);
-                    idTran = resultadoid + 1;
-
-                    AltaTipoTrans.idTipoTransaccion = idTran;
-
+                    SqlDataReader Dupli = Ejecuta.ConsultaConRetorno(connection, " select count(*)"
+                                                                                + " from Configuracion.TiposTransacciones"
+                                                                                + " where UPPER(descripcion) = '"+AltaTipoTrans.nombre
+                                                                                + "' and UPPER(cveTipoTransaccion) = '"+AltaTipoTrans.cveTipoTransaccion+"'");
+                    Dupli.Read();
+                    int resultadoDupli = Dupli.GetInt32(0);
                     connection.Close();
 
+                    if (resultadoDupli == 0)
+                    {
 
-                    connection.Open();
-                    Ejecuta.ConsultaSinRetorno1(connection, "INSERT INTO Configuracion.TiposTransacciones VALUES(" + AltaTipoTrans.idTipoTransaccion + ",'" + AltaTipoTrans.nombre + "','" + AltaTipoTrans.cveTipoTransaccion + "',1," + AltaTipoTrans.idProceso + "," + AltaTipoTrans.idCatTipoTransaccion + ",1,'" + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss") + "')");
-                    connection.Close();
+                        connection.Open();
+
+                        SqlDataReader Resul = Ejecuta.ConsultaConRetorno(connection, "SELECT Max(idTipoTransaccion)  FROM Configuracion.TiposTransacciones");
+                        Resul.Read();
+                        int resultadoid = Resul.GetInt32(0);
+                        idTran = resultadoid + 1;
+
+                        AltaTipoTrans.idTipoTransaccion = idTran;
+
+                        connection.Close();
+
+
+                        connection.Open();
+                        Ejecuta.ConsultaSinRetorno1(connection, "INSERT INTO Configuracion.TiposTransacciones VALUES(" + AltaTipoTrans.idTipoTransaccion + ",'" + AltaTipoTrans.nombre + "','" + AltaTipoTrans.cveTipoTransaccion + "',1," + AltaTipoTrans.idProceso + "," + AltaTipoTrans.idCatTipoTransaccion + ",1,'" + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss") + "')");
+                        connection.Close();
+                    }
+                    else
+                    {
+                        idTran = 100001;
+                    }
                 }
 
-                return idTran;
+                
             } catch (Exception ex) {
                 Console.WriteLine(ex);
                 return 0;
 
             }
 
-
+            return idTran;
 
         }
-        public bool InsertCamp(int idTipoTran, Entidades.CamposDinamicos campos) {
+        public int InsertCamp(int idTipoTran, Entidades.CamposDinamicos campos) {
 
             SqlConnection connection = null;
-            bool ins;
+            int  resul=0;
             try {
                 using (connection = Conexion.ObtieneConexion("ConexionBD")) {
 
-                    connection.Open();
-
-                    SqlDataReader Resul = Ejecuta.ConsultaConRetorno(connection, "SELECT Max(idCampo)  FROM Configuracion.CamposDinamicosTransacciones");
-                    Resul.Read();
-                    int resultadoid = Resul.GetInt32(0);
-                    Int32 idcampo = resultadoid + 1;
-
-                    connection.Close();
-
 
                     connection.Open();
-                    ins = Ejecuta.ConsultaSinRetorno1(connection, "INSERT INTO Configuracion.CamposDinamicosTransacciones VALUES(" + idcampo + "," + idTipoTran + "," + campos.idNivel + ",'" + campos.nombreCampo + "','" + campos.descCampo + "'," + campos.idTipoDato + "," + campos.idTipoOperacion + ",1,'" + campos.longitud + "',1,'" + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss") + "')");
+                    SqlDataReader Dupli = Ejecuta.ConsultaConRetorno(connection, " SELECT count(*)"
+                                                                                 + " FROM Configuracion.CamposDinamicosTransacciones"
+                                                                                 + " where idTipoTransaccion = " + idTipoTran
+                                                                                 + " and nombreCampo = '" + campos.nombreCampo + "'");
+                    Dupli.Read();
+                    int resultadoDupli = Dupli.GetInt32(0);
                     connection.Close();
+
+                    if (resultadoDupli == 0)
+                    {
+
+
+                        connection.Open();
+
+                        SqlDataReader Resul = Ejecuta.ConsultaConRetorno(connection, "SELECT Max(idCampo)  FROM Configuracion.CamposDinamicosTransacciones");
+                        Resul.Read();
+                        int resultadoid = Resul.GetInt32(0);
+                        Int32 idcampo = resultadoid + 1;
+
+                        connection.Close();
+
+
+                        connection.Open();
+                        bool ins = Ejecuta.ConsultaSinRetorno1(connection, "INSERT INTO Configuracion.CamposDinamicosTransacciones VALUES(" + idcampo + "," + idTipoTran + "," + campos.idNivel + ",'" + campos.nombreCampo + "','" + campos.descCampo + "'," + campos.idTipoDato + "," + campos.idTipoOperacion + ",1,'" + campos.longitud + "',1,'" + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss") + "')");
+                        connection.Close();
+
+                        if (ins)
+                        {
+                            resul = 1;
+                        }
+                    }
+                    else {
+
+                        resul = 100001;
+
+                    }
                 }
 
             } catch (Exception ex) {
+
+
                 Console.WriteLine(ex);
                 throw;
             }
 
 
-            return ins;
+            return resul;
         }
-        public bool InsertEtapas(int idTipoTran, string descripcion, int orden) {
+        public int InsertEtapas(int idTipoTran, string descripcion, int orden) {
 
             SqlConnection connection = null;
-            bool ins;
+            int ret=0;
             try {
                 using (connection = Conexion.ObtieneConexion("ConexionBD")) {
 
                     connection.Open();
-
-                    SqlDataReader Resul = Ejecuta.ConsultaConRetorno(connection, "SELECT Max(idEtapa)  FROM Configuracion.EtapasTipoTransaccion");
-                    Resul.Read();
-                    int resultadoid = Resul.GetInt32(0);
-                    Int32 idetapa = resultadoid + 1;
-
+                    SqlDataReader dupliDes = Ejecuta.ConsultaConRetorno(connection, "Select Count(*) FROM Configuracion.EtapasTipoTransaccion where idTipoTransaccion = "+ idTipoTran + "  and UPPER(descripcion) ='"+ descripcion + "'");
+                    dupliDes.Read();
+                    Int32 dupDes = dupliDes.GetInt32(0);
                     connection.Close();
-
 
                     connection.Open();
-                    ins = Ejecuta.ConsultaSinRetorno1(connection, "INSERT INTO Configuracion.EtapasTipoTransaccion VALUES(" + idetapa + ",'" + descripcion + "'," + orden + ",null," + idTipoTran + ",0)");
+                    SqlDataReader dupliOrd = Ejecuta.ConsultaConRetorno(connection, "Select Count(*) FROM Configuracion.EtapasTipoTransaccion where idTipoTransaccion = " + idTipoTran + "  and orden = "+ orden);
+                    dupliOrd.Read();
+                    Int32 dupOrd = dupliOrd.GetInt32(0);
                     connection.Close();
+
+                    if(dupDes == 0 && dupOrd == 0)
+                    {
+                        connection.Open();
+                        SqlDataReader Resul = Ejecuta.ConsultaConRetorno(connection, "SELECT Max(idEtapa)  FROM Configuracion.EtapasTipoTransaccion");
+                        Resul.Read();
+                        int resultadoid = Resul.GetInt32(0);
+                        Int32 idetapa = resultadoid + 1;
+                        connection.Close();
+
+                        connection.Open();
+                        Ejecuta.ConsultaSinRetorno1(connection, "INSERT INTO Configuracion.EtapasTipoTransaccion VALUES(" + idetapa + ",'" + descripcion + "'," + orden + ",null," + idTipoTran + ",0)");
+                        connection.Close();
+
+                        ret = 1;
+
+                    }
+                    else
+                    {
+                        if (dupDes != 0 && dupOrd != 0)
+                        {
+                            ret = 100001;
+                        }
+                        if (dupDes != 0 && dupOrd == 0)
+                        {
+                            ret = 100002;
+                        }
+                        if (dupOrd != 0 && dupDes == 0)
+                        {
+                            ret = 100003;
+                        }
+
+                    }
+
+                    
                 }
 
             } catch (Exception ex) {
@@ -109,27 +187,100 @@ namespace Transact.Datos {
             }
 
 
-            return ins;
+            return ret;
         }
-        public bool InsertAcciones(int idTipoTran, string claveAccion, string descripcion, int orden) {
+        public int InsertAcciones(int idEtapa,int idTipoTran, string claveAccion, string descripcion, int orden, int[] values) {
 
             SqlConnection connection = null;
-            bool ins;
+            int ret=0;
             try {
                 using (connection = Conexion.ObtieneConexion("ConexionBD")) {
 
                     connection.Open();
-
-                    SqlDataReader Resul = Ejecuta.ConsultaConRetorno(connection, "SELECT Max(idAccion)  FROM Configuracion.AccionesTipoTransaccion");
-                    Resul.Read();
-                    int resultadoid = Resul.GetInt32(0);
-                    Int32 idaccion = resultadoid + 1;
+                    SqlDataReader dupliDes = Ejecuta.ConsultaConRetorno(connection, "Select Count(*) FROM Configuracion.AccionesTipoTransaccion where idTipoTransaccion = " + idTipoTran + "  and UPPER(descripcion) ='" + descripcion + "'");
+                    dupliDes.Read();
+                    Int32 dupDes = dupliDes.GetInt32(0);
                     connection.Close();
-
 
                     connection.Open();
-                    ins = Ejecuta.ConsultaSinRetorno1(connection, "INSERT INTO Configuracion.AccionesTipoTransaccion VALUES(" + idaccion + ",'" + claveAccion + "','" + descripcion + "'," + "1," + orden + ",2,'" + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss") + "'," + idTipoTran + ",NULL)");
+                    SqlDataReader dupliOrd = Ejecuta.ConsultaConRetorno(connection, "Select Count(*) FROM Configuracion.AccionesTipoTransaccion where idTipoTransaccion = " + idTipoTran + "  and orden = " + orden);
+                    dupliOrd.Read();
+                    Int32 dupOrd = dupliOrd.GetInt32(0);
                     connection.Close();
+
+
+
+                    if (dupDes == 0 && dupOrd == 0)
+                    {
+                        bool respuesta = false;
+                        int IdAccion = 0;
+                        connection.Open();
+
+                        SqlDataReader Resul = Ejecuta.ConsultaConRetorno(connection, "SELECT Max(idAccion)  FROM Configuracion.AccionesTipoTransaccion");
+                        Resul.Read();
+                        IdAccion = Resul.GetInt32(0)+1;
+                        //Int32 idaccion = resultadoid + 1;
+                        connection.Close();
+
+
+                        connection.Open();
+                        respuesta=Ejecuta.ConsultaSinRetorno1(connection, "INSERT INTO Configuracion.AccionesTipoTransaccion VALUES(" + IdAccion + ",'" + claveAccion + "','" + descripcion + "'," + "1," + orden + ",2,'" + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss") + "'," + idTipoTran + ",NULL)");
+                        connection.Close();
+
+                        if (respuesta == true)
+                        {
+                            bool respuesta2 = false;
+
+                            connection.Open();
+                            respuesta2=Ejecuta.ConsultaSinRetorno1(connection, "INSERT INTO Configuracion.EtapasAccionesTipoTransacciones VALUES(" + idTipoTran + "," + idEtapa + "," + IdAccion + ")");
+                            connection.Close();
+
+                            if (respuesta == true)
+                            {
+
+                                foreach (int i in values)
+                                {
+
+                                    connection.Open();
+                                    Ejecuta.ConsultaSinRetorno1(connection, "INSERT INTO Configuracion.EtapasAccionesRoles VALUES(" + idTipoTran + "," + idEtapa + "," + IdAccion + "," + i + ",2,'" + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss") + "')");
+                                    connection.Close();
+
+
+                                }
+
+                                ret = 1;
+
+
+                            } /*else { ret = 100005; }*/
+
+
+                        }/*else { ret = 1; }*/
+
+
+
+                        
+
+
+
+
+                    }
+                    else
+                    {
+                        if (dupDes != 0 && dupOrd != 0)
+                        {
+                            ret = 100001;
+                        }
+                        if (dupDes != 0 && dupOrd == 0)
+                        {
+                            ret = 100002;
+                        }
+                        if (dupOrd != 0 && dupDes == 0)
+                        {
+                            ret = 100003;
+                        }
+
+                    }
+
                 }
 
             } catch (Exception ex) {
@@ -139,7 +290,7 @@ namespace Transact.Datos {
             }
 
 
-            return ins;
+            return ret;
         }
         public bool InsertAccEtap(int idTipoTransaccion, int idEtapa, string NomAccion) {
 
@@ -1060,6 +1211,7 @@ namespace Transact.Datos {
                 }
                 foreach (DataRow rowDet in dt.Rows) {
                     Entidades.EtapasTransaccion compos = new Entidades.EtapasTransaccion();
+                    compos.idEtapa = Convert.ToInt32(rowDet["idEtapa"].ToString());
                     compos.descripcion = rowDet["descripcion"].ToString();
                     compos.Orden = Convert.ToInt32(rowDet["orden"].ToString());
                     composCon.Add(compos);
@@ -2369,27 +2521,26 @@ namespace Transact.Datos {
                 using (connection = Conexion.ObtieneConexion("ConexionBD")) {
                     SqlDataReader consulta;
                     connection.Open();
-                    consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT  distinct EATT.idEtapa, ATT.descripcion, ATT.cveAccion, att.orden,ATT.idAccion"
-                                                                      + "  FROM Configuracion.EtapasAccionesTipoTransacciones EATT,"
-                                                                      + "  Configuracion.EtapasTipoTransaccion ETT, Configuracion.AccionesTipoTransaccion ATT,"
-                                                                      + "  Configuracion.EtapasAccionesRoles EAR, Configuracion.TiposTransacciones TT, Seguridad.Roles R"
-                                                                      + "  WHERE EATT.idAccion = ATT.idAccion"
-                                                                      + "  AND EATT.idEtapa = ETT.idEtapa"
-                                                                      + "  AND EAR.idAccion = ATT.idAccion"
-                                                                      + "  AND EAR.idEtapa = ETT.idEtapa"
-                                                                      + "  AND EATT.idTipoTransaccion = TT.idTipoTransaccion"
-                                                                      + "  AND EAR.idTipoTransaccion = TT.idTipoTransaccion"
-                                                                      + "  AND EAR.idRol = R.idRol"
-                                                                      + "  AND TT.idTipoTransaccion = " + idTipoTransaccion
-                                                                      + "  AND EATT.idEtapa = " + idEtapa);
+                    consulta = Ejecuta.ConsultaConRetorno(connection, "SELECT DISTINCT EAR.idEtapa, ETT.descripcion Etapa, EAR.idAccion, ATT.descripcion Accion,ATT.cveAccion, ATT.orden"
+                                                                    + " FROM Configuracion.EtapasAccionesRoles EAR,"
+                                                                    + " Configuracion.EtapasTipoTransaccion ETT, Configuracion.AccionesTipoTransaccion ATT,"
+                                                                    + " Configuracion.TiposTransacciones TT, Seguridad.Roles R"
+                                                                    + " WHERE EAR.idEtapa = ETT.idEtapa"
+                                                                    + " AND EAR.idAccion = ATT.idAccion"
+                                                                    + " AND EAR.idTipoTransaccion = TT.idTipoTransaccion"
+                                                                    + " AND EAR.idRol = R.idRol"
+                                                                    + " AND EAR.idTipoTransaccion = "+ idTipoTransaccion
+                                                                    + " AND EAR.idEtapa = "+ idEtapa);
                     dtEtapas.Load(consulta);
                     connection.Close();
                 }
 
                 foreach (DataRow rowDet in dtEtapas.Rows) {
                     Entidades.EntEtapas.Etapacombo valores1 = new Entidades.EntEtapas.Etapacombo();
+                    
                     valores1.idEtapa = Convert.ToInt32(rowDet["idEtapa"]);
-                    valores1.descripcion = rowDet["descripcion"].ToString();
+                    valores1.nombreEtapa = rowDet["Etapa"].ToString();
+                    valores1.descripcion = rowDet["Accion"].ToString();
                     valores1.ClaveEtapa = rowDet["cveAccion"].ToString();
                     valores1.orden = Convert.ToInt32(rowDet["orden"]);
                     valores1.idAccion = Convert.ToInt32(rowDet["idAccion"]);

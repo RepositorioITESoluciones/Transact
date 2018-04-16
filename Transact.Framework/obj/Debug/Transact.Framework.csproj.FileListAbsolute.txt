@@ -26,3 +26,8 @@ C:\Users\Mario\Documents\Visual Studio 2017\Projects\TransactV1\Transact.Framewo
 C:\Users\Mario\Documents\Visual Studio 2017\Projects\TransactV1\Transact.Framework\obj\Debug\Transact.Framework.dll
 C:\Users\Mario\Documents\Visual Studio 2017\Projects\TransactV1\Transact.Framework\obj\Debug\Transact.Framework.pdb
 C:\Users\Mario\Documents\Visual Studio 2017\Projects\TransactV1\Transact.Framework\obj\Debug\Transact.Framework.csprojResolveAssemblyReference.cache
+C:\Users\Mario\Documents\GitHub\Transact\Transact.Framework\bin\Debug\Transact.Framework.dll
+C:\Users\Mario\Documents\GitHub\Transact\Transact.Framework\bin\Debug\Transact.Framework.pdb
+C:\Users\Mario\Documents\GitHub\Transact\Transact.Framework\obj\Debug\Transact.Framework.csprojResolveAssemblyReference.cache
+C:\Users\Mario\Documents\GitHub\Transact\Transact.Framework\obj\Debug\Transact.Framework.dll
+C:\Users\Mario\Documents\GitHub\Transact\Transact.Framework\obj\Debug\Transact.Framework.pdb

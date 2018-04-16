@@ -8,7 +8,9 @@ var ArregloValidarAccionesEdit = [];
 var arrayAux = new Array();
 var accionesEtapas = '';
 var formulaA = '';
-var IdTipoTran = 0;
+
+
+
 var roooll = [];
 var check = 0;
 var table;
@@ -67,6 +69,13 @@ var arrayOperaciones = new Array("+", "-", "*", "/", "=", "(", ")", "%", ".", "0
 $(function () {
     $("#SelEstatus").hide();
 
+    
+    $('#sectDatosGral').hide();
+    $('#sectCamposDin').hide();
+    $('#sectEtapAcci').hide();
+    $('#frmConbobox').hide();
+
+    
     initEventos();
     pageSetUp();
     ocultarDOM();
@@ -76,17 +85,35 @@ $(function () {
     AgregarReglaAccion();
     Seleccion();
     SelectCatTT();
-    SelectTipoDatTT();
-    SelectNivelTT();
-    SelectOperacionTT();
-    SelectRolesTT();
-    SelectAreasTT();
-    AreaProceso();
     iniciarWizard();
-    bootsVal();
+    //bootsVal();
     initDataTable();
     SelectVisualizacion();
     SelectEtapas();
+
+
+
+
+    $(document).ready(function () {
+
+        pageSetUp();
+
+        // PAGE RELATED SCRIPTS
+
+        $('.tree > ul').attr('role', 'tree').find('ul').attr('role', 'group');
+        $('.tree').find('li:has(ul)').addClass('parent_li').attr('role', 'treeitem').find(' > span').attr('title', 'Collapse this branch').on('click', function (e) {
+            var children = $(this).parent('li.parent_li').find(' > ul > li');
+            if (children.is(':visible')) {
+                children.hide('fast');
+                $(this).attr('title', 'Expand this branch').find(' > i').removeClass().addClass('fa fa-lg fa-plus-circle');
+            } else {
+                children.show('fast');
+                $(this).attr('title', 'Collapse this branch').find(' > i').removeClass().addClass('fa fa-lg fa-minus-circle');
+            }
+            e.stopPropagation();
+        });
+
+    })
 
 });
 //Funcion para la inicializar el Wizard
@@ -95,9 +122,9 @@ function iniciarWizard() {
         $('#smartWizard').find('ul.steps li').toggleClass('complete', false);
     });
 
-    if (document.getElementById("tablaComplementarios").rows.length != 1) {
-        $(".btn-next").prop("disabled", false);
-    }
+    //if (document.getElementById("tablaComplementarios").rows.length != 1) {
+    //    $(".btn-next").prop("disabled", false);
+    //}
 
     $('#smartWizard').on('actionclicked.fu.wizard', function (e, data) {
 
@@ -644,7 +671,7 @@ function iniciarWizard() {
         $('#form_reglas').bootstrapValidator('destroy');
         $('#form_transaccion').bootstrapValidator('destroy');
 
-        $('#tabla_Comp').hide();
+        //$('#tabla_Comp').hide();
         $('#TDEtapas').hide();
         $('#Tabla_Rol').hide();
         $('#Tabla_formula').hide();
@@ -690,7 +717,7 @@ function iniciarWizard() {
 function ocultarDOM() {
 
     $('#CamposComp').hide();
-    $('#tablaComplementarios').hide();
+    //$('#tablaComplementarios').hide();
     $('#listas').hide();
     $('#tablaEtapas').hide();
     $('#tablaRoles').hide();
@@ -791,31 +818,7 @@ function AgregarCampos() {
     });
 
 
-    $.ajax({
-        async: false,
-        type: 'POST',
-        url: 'MyWebService.asmx/InsertCampos',
-        data: JSON.stringify({
-            idTipoTran: IdTipoTran,
-            idNivel: $('#nivel').val(),
-            nombreCampo: $('#nombreCampo').val(),
-            descripcion: $('#descCampo').val(),
-            idTipoDatoCampo: $('#tipoDato').val(),
-            idTipoOperacion: $('#tipoOperacion').val(),
-            longitudCampo: $('#longitud').val()
-        }),
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        success: function (response) {
-            $.smallBox({
-                title: "Éxito!",
-                content: "Campo <b>" + campos2[0] + "</b> agregado",
-                color: "#739e73",
-                timeout: 2000,
-                icon: "fa fa-thumbs-up swing animated"
-            });
-        }
-    });
+    
     check++;
 
 }
@@ -908,28 +911,7 @@ function AgregarEtapa() {
     etapas = unionN;
     //console.log(etapas);
 
-    $.ajax({
-        async: false,
-        type: 'POST',
-        url: 'MyWebService.asmx/InsertEtapas',
-        data: JSON.stringify({
-            idTipoTran: IdTipoTran,
-            descripcion: $('#nombreEtapa').val(),
-            orden: $('#orden').val()
-
-        }),
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        success: function (response) {
-            $.smallBox({
-                title: "Éxito!",
-                content: "Categoría <b>" + $('input#nombreEtapa').val() + "</b> agregada",
-                color: "#739e73",
-                timeout: 2000,
-                icon: "fa fa-thumbs-up swing animated"
-            });
-        }
-    });
+    
 
 
 }
@@ -2765,39 +2747,7 @@ function selectEtapasStep7() {
 
 }
 // Funcion que llena los select de etapa del step ciclo de vida 
-function SelectEtapasC() {
-    $.ajax({
-        async: false,
-        type: 'POST',
-        url: 'MyWebService.asmx/llenaComboSoloEtapas',
-        dataType: 'json',
-        data: JSON.stringify({
-            idTipoTran: IdTipoTran
-        }),
-        contentType: 'application/json; charset=utf-8',
-        success: function (response) {
-            var nivtransact = "";
-            $.each(response, function (registro, row1) {
 
-                nivtransact += '<option value="0" > Seleccione una etapa </option>';
-                $.each(row1.listEtapas, function (i1, r1) {
-
-                    nivtransact += '<option value="' + r1.idEtapa + '">' + r1.descripcion + '</option>';
-
-                });
-
-
-            });
-
-            $("select#selectEtapa").html(nivtransact);
-        },
-        error: function (e) {
-            console.log("Error en Etapa");
-
-        }
-    });
-
-}
 // Funcion que llena los select de categoria de los DataTable con select's dinamicos 
 function SelectCatTT() {
     var categtransact = "";
@@ -3038,133 +2988,8 @@ function SelectCatTTSAuto(i) {
         });
     });
 }
-// Funcion que llena los select de tipo de dato  del step campos dinamicos
-function SelectTipoDatTT() {
-    $.ajax({
-        async: false,
-        type: 'POST',
-        url: 'MyWebService.asmx/tipoDatosATT',
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        success: function (response) {
-            var tipoDatosCampo = "";
-            $.each(response, function (registro, row1) {
-
-                tipoDatosCampo += '<option value="0" > Seleccione un tipo de dato </option>';
-                $.each(row1.camposTiposDatCampos, function (i1, r1) {
-
-                    tipoDatosCampo += '<option value="' + r1.idTipoDatoCampo + '">' + r1.descripcion + '</option>';
-                });
-
-
-            });
-
-            $("select#tipoDato").html(tipoDatosCampo);
-            $("select#tipoDatoD").html(tipoDatosCampo);
-        },
-        error: function (e) {
-            console.log("Error en TipoDatos");
-
-        }
-    });
-}
-// Funcion que llena los select de nivel  del step campos dinamicos
-function SelectNivelTT() {
-    $.ajax({
-        async: false,
-        type: 'POST',
-        url: 'MyWebService.asmx/nivelTransATT',
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        success: function (response) {
-            var nivtransact = "";
-            $.each(response, function (registro, row1) {
-
-
-                nivtransact += '<option value="0" > Seleccione un nivel </option>';
-                $.each(row1.CamposNivelTransaccion, function (i1, r1) {
-                    nivtransact += '<option value="' + r1.idNivel + '">' + r1.descripcion + '</option>';
-                });
-
-
-            });
-
-            $("select#nivel").html(nivtransact);
-            $("select#nivelD").html(nivtransact);
-        },
-        error: function (e) {
-            console.log("Error en Nivel");
-
-        }
-    });
-}
-// Funcion que llena los select de operacion  del step campos dinamicos
-function SelectOperacionTT() {
-    $.ajax({
-        async: false,
-        type: 'POST',
-        url: 'MyWebService.asmx/operacionTransATT',
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        success: function (response) {
-            var opetransact = "";
-            $.each(response, function (registro, row1) {
-
-
-                opetransact += '<option value="0"> Seleccione un tipo de operación </option>';
-                $.each(row1.CamposOperaciones, function (i1, r1) {
-
-                    opetransact += '<option value="' + r1.idTipoOperacion + '">' + r1.descripcion + '</option>';
-                });
-
-
-            });
-
-            $("select#tipoOperacion").html(opetransact);
-            $("select#tipoOperacionD").html(opetransact);
-        },
-        error: function (e) {
-            console.log("Error en Operaciones");
-
-        }
-    });
-}
 // Funcion que llena los select de rol  del step ciclo de vida
-function SelectRolesTT() {
-    $.ajax({
-        async: false,
-        type: 'POST',
-        url: 'MyWebService.asmx/rolesTransATT',
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        success: function (response) {
-            var roltransact = "";
-            var roltransactList = "";
-            $.each(response, function (registro, row1) {
 
-
-                roltransact += '<option value="0" > Seleccione Rol </option>';
-                $.each(row1.CamposRoles, function (i1, r1) {
-
-                    roltransact += '<option value="' + r1.idRol + '">' + r1.nombreRol + '</option>';
-                    roltransactList += '<li class="list-group-item-B">' + r1.nombreRol + '</li>';
-                    arrayRol.push(r1.nombreRol);
-                });
-
-
-            });
-
-            $("select#rn_perfil").html(roltransact);
-            //$("select#rn2_perfil").html(roltransact);
-            $("#t_roles").html(roltransactList);
-
-        },
-        error: function (e) {
-            console.log("Error en Roles");
-
-        }
-    });
-}
 // Funcion que llena los select de rol  del step ciclo de vida
 function SelectRolesEdit() {
     $.ajax({
@@ -3201,39 +3026,9 @@ function SelectRolesEdit() {
     });
 }
 // Funcion que llena los select de areas  del step ciclo de vida
-function SelectAreasTT() {
-    $.ajax({
-        async: false,
-        type: 'POST',
-        url: 'MyWebService.asmx/areasTransATT',
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        success: function (response) {
-            var areatransact = "";
-
-            $.each(response, function (registro, row1) {
 
 
-                areatransact += '<option value="0"> Seleccione un área </option>';
-                $.each(row1.datAreasTransac, function (i1, r1) {
 
-                    areatransact += '<option value="' + r1.idArea + '">' + r1.descripcion + '</option>';
-
-                });
-
-
-            });
-
-            $("select#area").html(areatransact);
-
-
-        },
-        error: function (e) {
-            console.log("Error en Áreas");
-
-        }
-    });
-}
 // Funcion que llena los select de visualizacion dinamicamente en step de reglas de negocion por campo
 function SelectVisualizacion() {
     var conId = 0;
@@ -3322,50 +3117,9 @@ function SelectVisualizacionEdit(id) {
     }
 }
 
-function SelectProcesosTT(idArea) {
-
-    $.ajax({
-        async: false,
-        type: 'POST',
-        url: 'MyWebService.asmx/procesosTransATT',
-        data: JSON.stringify({
-            idArea: idArea
-        }),
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        success: function (response) {
-            var proctransact = "";
-
-            $.each(response, function (registro, row1) {
 
 
-                proctransact += '<option value="0" > Seleccione un proceso </option>';
-                $.each(row1.CamposProcesosTran, function (i1, r1) {
 
-                    proctransact += '<option value="' + r1.idProceso + '">' + r1.descripcion + '</option>';
-
-                });
-
-
-            });
-
-            $("select#proceso").html(proctransact);
-
-
-        },
-        error: function (e) {
-            console.log("Error en Procesos");
-
-        }
-    });
-}
-
-function AreaProceso() {
-    $("#area").change(function () {
-        $('select#proceso').prop('disabled', false);
-        SelectProcesosTT($('#area').val());
-    });
-}
 
 function GuardarTransaccion() {
     var val = [];
@@ -4027,1107 +3781,867 @@ function AgregarReglaAccion() {
     });
 }
 
-function bootsVal() {
-
-    //$('#form_transaccion').bootstrapValidator('destroy');
-    $('#form_transaccion').bootstrapValidator({
-        live: 'enabled',
-        submitButtons: 'button[id="btn_agregarTransaccion"]',
-        message: 'Valor inválido',
-
-        fields: {
-            nombre: {
-                selector: '#nombre',
-                group: '.col-3',
-                validators: {
-                    notEmpty: {
-                        message: 'El nombre es obligatorio'
-                    }
-                }
-            },
-            clave: {
-                selector: '#clave',
-                group: '.col-3',
-                validators: {
-                    notEmpty: {
-                        message: 'La clave es obligatoria'
-                    }
-                }
-            },
-
-            area: {
-                excluded: false,
-                selector: '#area',
-                group: '.col-3',
-                validators: {
-                    notEmpty: {
-                        message: ' '
-                    },
-                    callback: {
-                        callback: function (value, validator,
-                            $field) {
-
-                            var valor = $('#area').val();
-                            if (valor == 0 || valor == null) {
-                                return {
-                                    valid: false,
-                                    message: 'El área es obligatoria'
-                                };
-                            } else {
-
-                                return true;
-
-                            }
-
-                        }
-                    }
-                }
-            },
-            proceso: {
-                excluded: false,
-                selector: '#proceso',
-                group: '.col-3',
-                validators: {
-                    notEmpty: {
-                        message: ' '
-                    },
-                    callback: {
-                        callback: function (value, validator,
-                            $field) {
-
-                            var valor = $('#proceso').val();
-                            if (valor == 0 || valor == null) {
-                                return {
-                                    valid: false,
-                                    message: 'El proceso es obligatorio'
-                                };
-                            } else {
-
-                                return true;
-
-                            }
-
-                        }
-                    }
-                }
-            },
-            categoria: {
-                excluded: false,
-                selector: '#categoria',
-                group: '.col-3',
-                validators: {
-                    notEmpty: {
-                        message: ' '
-                    },
-                    callback: {
-                        callback: function (value, validator,
-                            $field) {
-
-                            var valor = $('#categoria').val();
-                            if (valor == 0 || valor == null) {
-                                return {
-                                    valid: false,
-                                    message: 'La categoría es obligatoria'
-                                };
-                            } else {
-
-                                return true;
-
-                            }
-
-                        }
-                    }
-                }
-            }
-        }
-
-    });
-
-    $('#form_campos').bootstrapValidator('destroy');
-    $('#form_campos').bootstrapValidator({
-        live: 'enabled',
-        submitButtons: 'button[id="btn_agregar"]',
-        feedbackIcons: {
-            //valid: 'glyphicon glyphicon-ok',
-            //invalid: 'glyphicon glyphicon-remove',
-            //validating: 'glyphicon glyphicon-refresh'
-        },
-        //valid: 'glyphicon glyphicon-ok',
-        //invalid: 'glyphicon glyphicon-remove',
-        //validating: 'glyphicon glyphicon-refresh',
-        fields: {
-
-            nombreCampo: {
-                selector: '#nombreCampo',
-                group: '.col-3',
-                validators: {
-                    notEmpty: {
-                        message: 'El nombre del campo es obligatorio'
-                    }
-                }
-            },
-            descCampo: {
-                selector: '#descCampo',
-                group: '.col-3',
-                validators: {
-                    notEmpty: {
-                        message: 'La descripción es obligatoria'
-                    }
-
-                }
-            },
-            longitud: {
-                selector: '#longitud',
-                group: '.col-3',
-                validators: {
-                    notEmpty: {
-                        message: 'La longitud es obligatoria'
-                    }
-                }
-            },
-
-
-            tipoDato: {
-                selector: '#tipoDato',
-                group: '.col-3',
-                validators: {
-                    notEmpty: {
-                        message: ' '
-                    },
-                    callback: {
-                        callback: function (value, validator,
-                            $field) {
-
-                            var valor = $('#tipoDato').val();
-                            if (valor == 0 || valor == null) {
-                                return {
-                                    valid: false,
-                                    message: 'El tipo de dato es obligatorio'
-                                };
-                            } else {
-
-                                return true;
-
-                            }
-
-                        }
-                    }
-                }
-            },
-            nivel: {
-                excluded: false,
-                selector: '#nivel',
-                group: '.col-3',
-                validators: {
-                    notEmpty: {
-                        message: ' '
-                    },
-                    callback: {
-                        callback: function (value, validator,
-                            $field) {
-
-                            var valor = $('#nivel').val();
-                            if (valor == 0 || valor == null) {
-                                return {
-                                    valid: false,
-                                    message: 'El nivel es obligatorio'
-                                };
-                            } else {
-
-                                return true;
-
-                            }
-
-                        }
-                    }
-                }
-            },
-            tipoOperacion: {
-                excluded: false,
-                selector: '#tipoOperacion',
-                group: '.col-3',
-                validators: {
-                    notEmpty: {
-                        message: ' '
-                    },
-                    callback: {
-                        callback: function (value, validator,
-                            $field) {
-
-                            var valor = $('#tipoOperacion').val();
-                            if (valor == 0 || valor == null) {
-                                return {
-                                    valid: false,
-                                    message: 'La operación es obligatoria'
-                                };
-                            } else {
-
-                                return true;
-
-                            }
-
-                        }
-                    }
-                }
-            },
-
-        }
-
-    });
-
-    $('#dialog').bootstrapValidator({
-        live: 'enabled',
-
-        submitButtons: 'button[id="btnEditComplementD"]',
-        feedbackIcons: {
-
-        },
-        //valid: 'glyphicon glyphicon-ok',
-        //invalid: 'glyphicon glyphicon-remove',
-        //validating: 'glyphicon glyphicon-refresh',
-        excluded: ':disabled',
-        fields: {
-
-            nombreCampo: {
-                selector: '#nombreCampoD',
-                group: '.col-4',
-                validators: {
-                    notEmpty: {
-                        message: 'El nombre del campo es obligatorio'
-                    }
-                }
-            },
-            descCampo: {
-                selector: '#descCampoD',
-                group: '.col-4',
-                validators: {
-                    notEmpty: {
-                        message: 'La descripción es obligatoria'
-                    }
-
-                }
-            },
-            longitudD: {
-                selector: '#longitudD',
-                group: '.col-4',
-                validators: {
-                    notEmpty: {
-                        message: 'La longitud es obligatoria'
-                    },
-
-                }
-            },
-
-
-            tipoDatoD: {
-                excluded: false,
-                selector: '#tipoDatoD',
-                group: '.col-4',
-                validators: {
-                    notEmpty: {
-                        message: ' '
-                    },
-                    callback: {
-                        callback: function (value, validator,
-                            $field) {
-
-                            var valor = $('#tipoDatoD').val();
-                            if (valor == 0 || valor == null) {
-                                return {
-                                    valid: false,
-                                    message: 'El tipo de dato es obligatorio'
-                                };
-                            } else {
-
-                                return true;
-
-                            }
-
-                        }
-                    }
-                }
-            },
-            nivelD: {
-                excluded: false,
-                selector: '#nivelD',
-                group: '.col-4',
-                validators: {
-                    notEmpty: {
-                        message: ' '
-                    },
-                    callback: {
-                        callback: function (value, validator,
-                            $field) {
-
-                            var valor = $('#nivelD').val();
-                            if (valor == 0 || valor == null) {
-                                return {
-                                    valid: false,
-                                    message: 'El nivel es obligatorio'
-                                };
-                            } else {
-
-                                return true;
-
-                            }
-
-                        }
-                    }
-                }
-            },
-            tipoOperacionD: {
-                excluded: false,
-                selector: '#tipoOperacionD',
-                group: '.col-4',
-                validators: {
-                    notEmpty: {
-                        message: ' '
-                    },
-                    callback: {
-                        callback: function (value, validator,
-                            $field) {
-
-                            var valor = $('#tipoOperacionD').val();
-                            if (valor == 0 || valor == null) {
-                                return {
-                                    valid: false,
-                                    message: 'La operación es obligatoria'
-                                };
-                            } else {
-
-                                return true;
-
-                            }
-
-                        }
-                    }
-                }
-            },
-
-        }
-
-    });
-
-    $('#form_ciclo').bootstrapValidator('destroy');
-    $('#form_ciclo').bootstrapValidator({
-        live: 'enabled',
-        submitButtons: 'button[id="btn_agregarOrden"]',
-        feedbackIcons: {
-            //valid: 'glyphicon glyphicon-ok',
-            //invalid: 'glyphicon glyphicon-remove',
-            //validating: 'glyphicon glyphicon-refresh'
-        },
-        //valid: 'glyphicon glyphicon-ok',
-        //invalid: 'glyphicon glyphicon-remove',
-        //validating: 'glyphicon glyphicon-refresh',
-        fields: {
-            nombreEtapa: {
-                selector: '#nombreEtapa',
-                group: '.col-4',
-                validators: {
-                    notEmpty: {
-                        message: 'El nombre es obligatorio'
-                    }
-                }
-            },
-            orden: {
-                selector: '#orden',
-                group: '.col-2',
-                validators: {
-                    notEmpty: {
-                        message: 'El orden es obligatorio'
-                    }
-                }
-            },
-
-
-        }
-
-    });
-
-    $('#dialog2').bootstrapValidator({
-        live: 'enabled',
-        submitButtons: 'button[id="btnEditEtapaD"]',
-        feedbackIcons: {
-            //valid: 'glyphicon glyphicon-ok',
-            //invalid: 'glyphicon glyphicon-remove',
-            //validating: 'glyphicon glyphicon-refresh'
-        },
-
-        fields: {
-            descripcionE: {
-                selector: '#nombreEtapaD',
-                group: '.col-5',
-                validators: {
-                    notEmpty: {
-                        message: 'El nombre es obligatorio'
-                    }
-                }
-            },
-            ordenE: {
-                selector: '#ordenD',
-                group: '.col-5',
-                validators: {
-                    notEmpty: {
-                        message: 'El orden es obligatorio'
-                    }
-                }
-            },
-
-
-        }
-
-    });
-
-
-    $('#form_acciones').bootstrapValidator({
-        live: 'enabled',
-        submitButtons: 'button[id="btn_agregar"]',
-        feedbackIcons: {
-            //valid: 'glyphicon glyphicon-ok',
-            //invalid: 'glyphicon glyphicon-remove',
-            //validating: 'glyphicon glyphicon-refresh'
-        },
-        //valid: 'glyphicon glyphicon-ok',
-        //invalid: 'glyphicon glyphicon-remove',
-        //validating: 'glyphicon glyphicon-refresh',
-        fields: {
-            nombreAccion: {
-                selector: '#nombreAccion',
-                group: '.col-3',
-                validators: {
-                    notEmpty: {
-                        message: 'El nombre de la acción es obligatoria'
-                    }
-                }
-            },
-            claveAccion: {
-                selector: '#claveAccion',
-                group: '.col-3',
-                validators: {
-                    notEmpty: {
-                        message: 'La clave de la acción es obligatoria'
-                    }
-                }
-            },
-            ordenAccion: {
-                selector: '#ordenAccion',
-                group: '.col-2',
-                validators: {
-                    notEmpty: {
-                        message: 'El orden de la acción es obligatoria'
-                    }
-                }
-            },
-
-
-            selectEtapa: {
-                excluded: false,
-                selector: '#selectEtapa',
-                group: '.col-3',
-                validators: {
-                    notEmpty: {
-                        message: ' '
-                    },
-                    callback: {
-                        callback: function (value, validator,
-                            $field) {
-
-                            var valor = $('#selectEtapa').val();
-                            if (valor == 0 || valor == null) {
-                                return {
-                                    valid: false,
-                                    message: 'La etapa es obligatoria'
-                                };
-                            } else {
-
-                                return true;
-
-                            }
-
-                        }
-                    }
-                }
-            }
-
-        }
-
-    });
-
-    $('#dialog3').bootstrapValidator({
-        live: 'enabled',
-        submitButtons: 'button[id="btnEditRolD3"]',
-        feedbackIcons: {
-            //valid: 'glyphicon glyphicon-ok',
-            //invalid: 'glyphicon glyphicon-remove',
-            //validating: 'glyphicon glyphicon-refresh'
-        },
-        //valid: 'glyphicon glyphicon-ok',
-        //invalid: 'glyphicon glyphicon-remove',
-        //validating: 'glyphicon glyphicon-refresh',
-        fields: {
-            nombreAccionD: {
-                selector: '#nombreAccionD',
-                group: '.col-4',
-                validators: {
-                    notEmpty: {
-                        message: 'El nombre de la acción es obligatoria'
-                    }
-                }
-            },
-            claveAccionD: {
-                selector: '#claveAccionD',
-                group: '.col-4',
-                validators: {
-                    notEmpty: {
-                        message: 'La clave de la acción es obligatoria'
-                    }
-                }
-            },
-            ordenAccionD: {
-                selector: '#ordenAccionD',
-                group: '.col-4',
-                validators: {
-                    notEmpty: {
-                        message: 'El orden de la acción es obligatoria'
-                    }
-                }
-            }
-
-        }
-
-    });
-
-
-    $('#form_RN2').bootstrapValidator({
-        live: 'enabled',
-        submitButtons: 'button[id="btn_agregarRN2"]',
-        feedbackIcons: {
-            //valid: 'glyphicon glyphicon-ok',
-            //invalid: 'glyphicon glyphicon-remove',
-            //validating: 'glyphicon glyphicon-refresh'
-        },
-        //valid: 'glyphicon glyphicon-ok',
-        //invalid: 'glyphicon glyphicon-remove',
-        //validating: 'glyphicon glyphicon-refresh',
-        fields: {
-            rn2_etapa: {
-                excluded: false,
-                selector: '#rn2_etapa',
-                group: '.col-4',
-                validators: {
-                    notEmpty: {
-                        message: ' '
-                    },
-                    callback: {
-                        callback: function (value, validator,
-                            $field) {
-
-                            var valor = $('#rn2_etapa').val();
-                            if (valor == 0 || valor == null) {
-                                return {
-                                    valid: false,
-                                    message: 'La etapa es obligatoria'
-                                };
-                            } else {
-
-                                return true;
-
-                            }
-
-                        }
-                    }
-                }
-            },
-            rn2_accion: {
-                excluded: false,
-                selector: '#rn2_accion',
-                group: '.col-4',
-                validators: {
-                    notEmpty: {
-                        message: ' '
-                    },
-                    callback: {
-                        callback: function (value, validator,
-                            $field) {
-
-                            var valor = $('#rn2_accion').val();
-                            if (valor == 0 || valor == null) {
-                                return {
-                                    valid: false,
-                                    message: 'La acción es obligatoria'
-                                };
-                            } else {
-
-                                return true;
-
-                            }
-
-                        }
-                    }
-                }
-            },
-            visualizacion: {
-                group: '.boosSelect',
-                validators: {
-                    notEmpty: {
-                        message: 'El tipo de visualización es obligatorio'
-                    },
-
-                }
-            }
-
-
-        }
-
-    });
-
-
-
-    $('#form_reglas').bootstrapValidator({
-        live: 'enabled',
-        submitButtons: 'button[id="btn_agregarFormula"]',
-        feedbackIcons: {
-            //valid: 'glyphicon glyphicon-ok',
-            //invalid: 'glyphicon glyphicon-remove',
-            //validating: 'glyphicon glyphicon-refresh'
-        },
-        //valid: 'glyphicon glyphicon-ok',
-        //invalid: 'glyphicon glyphicon-remove',
-        //validating: 'glyphicon glyphicon-refresh',
-        fields: {
-            formula_etapa: {
-                excluded: false,
-                selector: '#formula_etapa',
-                group: '.col-4',
-                validators: {
-                    notEmpty: {
-                        message: ' '
-                    },
-                    callback: {
-                        callback: function (value, validator,
-                            $field) {
-
-                            var valor = $('#formula_etapa').val();
-                            if (valor == 0 || valor == null) {
-                                return {
-                                    valid: false,
-                                    message: 'La etapa es obligatoria'
-                                };
-                            } else {
-
-                                return true;
-
-                            }
-
-                        }
-                    }
-                }
-            },
-            fomula_accion: {
-                excluded: false,
-                selector: '#fomula_accion',
-                group: '.col-4',
-                validators: {
-                    notEmpty: {
-                        message: ' '
-                    },
-                    callback: {
-                        callback: function (value, validator,
-                            $field) {
-
-                            var valor = $('#fomula_accion').val();
-                            if (valor == 0 || valor == null) {
-                                return {
-                                    valid: false,
-                                    message: 'La acción es obligatoria'
-                                };
-                            } else {
-
-                                return true;
-
-                            }
-
-                        }
-                    }
-                }
-            },
-            fomula_Init: {
-                excluded: false,
-                selector: '#fomula_Init',
-                group: '.col-4',
-                validators: {
-                    notEmpty: {
-                        message: ' '
-                    },
-                    callback: {
-                        callback: function (value, validator,
-                            $field) {
-
-                            var valor = $('#fomula_Init').val();
-                            if (valor == 0 || valor == null) {
-                                return {
-                                    valid: false,
-                                    message: 'El campo es obligatorio'
-                                };
-                            } else {
-
-                                return true;
-
-                            }
-
-                        }
-                    }
-                }
-            }
-
-
-
-        }
-
-    });
-
-    $('#form_Combo').bootstrapValidator({
-        live: 'enabled',
-        submitButtons: 'button[id="btn_agregarCombo"]',
-        feedbackIcons: {
-            //valid: 'glyphicon glyphicon-ok',
-            //invalid: 'glyphicon glyphicon-remove',
-            //validating: 'glyphicon glyphicon-refresh'
-        },
-        //valid: 'glyphicon glyphicon-ok',
-        //invalid: 'glyphicon glyphicon-remove',
-        //validating: 'glyphicon glyphicon-refresh',
-        fields: {
-            Combo_etapa: {
-                excluded: false,
-                selector: '#Combo_etapa',
-                group: '.col-4',
-                validators: {
-                    notEmpty: {
-                        message: ' '
-                    },
-                    callback: {
-                        callback: function (value, validator,
-                            $field) {
-
-                            var valor = $('#Combo_etapa').val();
-                            if (valor == 0 || valor == null) {
-                                return {
-                                    valid: false,
-                                    message: 'La etapa es obligatoria'
-                                };
-                            } else {
-
-                                return true;
-
-                            }
-
-                        }
-                    }
-                }
-            },
-            Combo_accion: {
-                excluded: false,
-                selector: '#Combo_accion',
-                group: '.col-4',
-                validators: {
-                    notEmpty: {
-                        message: ' '
-                    },
-                    callback: {
-                        callback: function (value, validator,
-                            $field) {
-
-                            var valor = $('#Combo_accion').val();
-                            if (valor == 0 || valor == null) {
-                                return {
-                                    valid: false,
-                                    message: 'La acción es obligatoria'
-                                };
-                            } else {
-
-                                return true;
-
-                            }
-
-                        }
-                    }
-                }
-            },
-
-
-
-
-        }
-
-    });
-
-    $('#RN_Accion').bootstrapValidator({
-        live: 'enabled',
-        submitButtons: 'button[id="btn_agregarRNAccion"]',
-        feedbackIcons: {
-            //valid: 'glyphicon glyphicon-ok',
-            //invalid: 'glyphicon glyphicon-remove',
-            //validating: 'glyphicon glyphicon-refresh'
-        },
-        //valid: 'glyphicon glyphicon-ok',
-        //invalid: 'glyphicon glyphicon-remove',
-        //validating: 'glyphicon glyphicon-refresh',
-        fields: {
-            RNA_etapa: {
-                excluded: false,
-                selector: '#RNA_etapa',
-                group: '.col-3',
-                validators: {
-                    notEmpty: {
-                        message: ' '
-                    },
-                    callback: {
-                        callback: function (value, validator,
-                            $field) {
-
-                            var valor = $('#RNA_etapa').val();
-                            if (valor == 0 || valor == null) {
-                                return {
-                                    valid: false,
-                                    message: 'La etapa es obligatoria'
-                                };
-                            } else {
-
-                                return true;
-
-                            }
-
-                        }
-                    }
-                }
-            },
-            RNA_accion: {
-                excluded: false,
-                selector: '#RNA_accion',
-                group: '.col-3',
-                validators: {
-                    notEmpty: {
-                        message: ' '
-                    },
-                    callback: {
-                        callback: function (value, validator,
-                            $field) {
-
-                            var valor = $('#RNA_accion').val();
-                            if (valor == 0 || valor == null) {
-                                return {
-                                    valid: false,
-                                    message: 'La acción es obligatoria'
-                                };
-                            } else {
-
-                                return true;
-
-                            }
-
-                        }
-                    }
-                }
-            },
-            RNA_EtapaFinal: {
-                excluded: false,
-                selector: '#RNA_EtapaFinal',
-                group: '.col-3',
-                validators: {
-                    notEmpty: {
-                        message: ' '
-                    },
-                    callback: {
-                        callback: function (value, validator,
-                            $field) {
-
-                            var valor = $('#RNA_EtapaFinal').val();
-                            if (valor == 0 || valor == null) {
-                                return {
-                                    valid: false,
-                                    message: 'La etapa es obligatoria'
-                                };
-                            } else {
-
-                                return true;
-
-                            }
-
-                        }
-                    }
-                }
-            },
-            mensajeSuccess: {
-                excluded: false,
-                selector: '#mensajeSuccess',
-                group: '.col-6',
-                validators: {
-                    notEmpty: {
-                        message: ' '
-                    },
-                    callback: {
-                        callback: function (value, validator,
-                            $field) {
-
-                            var valor = $('#mensajeSuccess').val();
-                            if (valor == 0 || valor == null) {
-                                return {
-                                    valid: false,
-                                    message: 'El mensaje de confirmacion de exito es obligatorio'
-                                };
-                            } else {
-
-                                return true;
-
-                            }
-
-                        }
-                    }
-                }
-            },
-            mensajeError: {
-                excluded: false,
-                selector: '#mensajeError',
-                group: '.col-6',
-                validators: {
-                    notEmpty: {
-                        message: ' '
-                    },
-                    callback: {
-                        callback: function (value, validator,
-                            $field) {
-
-                            var valor = $('#mensajeError').val();
-                            if (valor == 0 || valor == null) {
-                                return {
-                                    valid: false,
-                                    message: 'El mensaje de confirmacion de error es obligatorio'
-                                };
-                            } else {
-
-                                return true;
-
-                            }
-
-                        }
-                    }
-                }
-            }
-
-
-
-
-        }
-
-    });
-
-    $('#form_Autocompletar').bootstrapValidator({
-        live: 'enabled',
-        submitButtons: 'button[id="btn_agregarAutocompletar"]',
-        feedbackIcons: {
-            //valid: 'glyphicon glyphicon-ok',
-            //invalid: 'glyphicon glyphicon-remove',
-            //validating: 'glyphicon glyphicon-refresh'
-        },
-        //valid: 'glyphicon glyphicon-ok',
-        //invalid: 'glyphicon glyphicon-remove',
-        //validating: 'glyphicon glyphicon-refresh',
-        fields: {
-            Autocompletar_etapa: {
-                excluded: false,
-                selector: '#Autocompletar_etapa',
-                group: '.col-4',
-                validators: {
-                    notEmpty: {
-                        message: ' '
-                    },
-                    callback: {
-                        callback: function (value, validator,
-                            $field) {
-
-                            var valor = $('#Autocompletar_etapa').val();
-                            if (valor == 0 || valor == null) {
-                                return {
-                                    valid: false,
-                                    message: 'La etapa es obligatoria'
-                                };
-                            } else {
-
-                                return true;
-
-                            }
-
-                        }
-                    }
-                }
-            },
-            Autocompletar_accion: {
-                excluded: false,
-                selector: '#Autocompletar_accion',
-                group: '.col-4',
-                validators: {
-                    notEmpty: {
-                        message: ' '
-                    },
-                    callback: {
-                        callback: function (value, validator,
-                            $field) {
-
-                            var valor = $('#Autocompletar_accion').val();
-                            if (valor == 0 || valor == null) {
-                                return {
-                                    valid: false,
-                                    message: 'La acción es obligatoria'
-                                };
-                            } else {
-
-                                return true;
-
-                            }
-
-                        }
-                    }
-                }
-            },
-            Autocompletar_Combo: {
-                excluded: false,
-                selector: '#Autocompletar_Combo',
-                group: '.col-4',
-                validators: {
-                    notEmpty: {
-                        message: ' '
-                    },
-                    callback: {
-                        callback: function (value, validator,
-                            $field) {
-
-                            var valor = $('#Autocompletar_Combo').val();
-                            if (valor == 0 || valor == null) {
-                                return {
-                                    valid: false,
-                                    message: 'El campo es obligatorio'
-                                };
-                            } else {
-
-                                return true;
-
-                            }
-
-                        }
-                    }
-                }
-            },
-
-
-
-
-        }
-
-    });
-
-}
+//function bootsVal() {
+
+//    //$('#form_transaccion').bootstrapValidator('destroy');
+   
+
+//    $('#form_campos').bootstrapValidator('destroy');
+    
+
+//    $('#dialog').bootstrapValidator({
+//        live: 'enabled',
+
+//        submitButtons: 'button[id="btnEditComplementD"]',
+//        feedbackIcons: {
+
+//        },
+//        //valid: 'glyphicon glyphicon-ok',
+//        //invalid: 'glyphicon glyphicon-remove',
+//        //validating: 'glyphicon glyphicon-refresh',
+//        excluded: ':disabled',
+//        fields: {
+
+//            nombreCampo: {
+//                selector: '#nombreCampoD',
+//                group: '.col-4',
+//                validators: {
+//                    notEmpty: {
+//                        message: 'El nombre del campo es obligatorio'
+//                    }
+//                }
+//            },
+//            descCampo: {
+//                selector: '#descCampoD',
+//                group: '.col-4',
+//                validators: {
+//                    notEmpty: {
+//                        message: 'La descripción es obligatoria'
+//                    }
+
+//                }
+//            },
+//            longitudD: {
+//                selector: '#longitudD',
+//                group: '.col-4',
+//                validators: {
+//                    notEmpty: {
+//                        message: 'La longitud es obligatoria'
+//                    },
+
+//                }
+//            },
+
+
+//            tipoDatoD: {
+//                excluded: false,
+//                selector: '#tipoDatoD',
+//                group: '.col-4',
+//                validators: {
+//                    notEmpty: {
+//                        message: ' '
+//                    },
+//                    callback: {
+//                        callback: function (value, validator,
+//                            $field) {
+
+//                            var valor = $('#tipoDatoD').val();
+//                            if (valor == 0 || valor == null) {
+//                                return {
+//                                    valid: false,
+//                                    message: 'El tipo de dato es obligatorio'
+//                                };
+//                            } else {
+
+//                                return true;
+
+//                            }
+
+//                        }
+//                    }
+//                }
+//            },
+//            nivelD: {
+//                excluded: false,
+//                selector: '#nivelD',
+//                group: '.col-4',
+//                validators: {
+//                    notEmpty: {
+//                        message: ' '
+//                    },
+//                    callback: {
+//                        callback: function (value, validator,
+//                            $field) {
+
+//                            var valor = $('#nivelD').val();
+//                            if (valor == 0 || valor == null) {
+//                                return {
+//                                    valid: false,
+//                                    message: 'El nivel es obligatorio'
+//                                };
+//                            } else {
+
+//                                return true;
+
+//                            }
+
+//                        }
+//                    }
+//                }
+//            },
+//            tipoOperacionD: {
+//                excluded: false,
+//                selector: '#tipoOperacionD',
+//                group: '.col-4',
+//                validators: {
+//                    notEmpty: {
+//                        message: ' '
+//                    },
+//                    callback: {
+//                        callback: function (value, validator,
+//                            $field) {
+
+//                            var valor = $('#tipoOperacionD').val();
+//                            if (valor == 0 || valor == null) {
+//                                return {
+//                                    valid: false,
+//                                    message: 'La operación es obligatoria'
+//                                };
+//                            } else {
+
+//                                return true;
+
+//                            }
+
+//                        }
+//                    }
+//                }
+//            },
+
+//        }
+
+//    });
+
+//    $('#form_ciclo').bootstrapValidator('destroy');
+//    $('#form_ciclo').bootstrapValidator({
+//        live: 'enabled',
+//        submitButtons: 'button[id="btn_agregarOrden"]',
+//        feedbackIcons: {
+//            //valid: 'glyphicon glyphicon-ok',
+//            //invalid: 'glyphicon glyphicon-remove',
+//            //validating: 'glyphicon glyphicon-refresh'
+//        },
+//        //valid: 'glyphicon glyphicon-ok',
+//        //invalid: 'glyphicon glyphicon-remove',
+//        //validating: 'glyphicon glyphicon-refresh',
+//        fields: {
+//            nombreEtapa: {
+//                selector: '#nombreEtapa',
+//                group: '.col-4',
+//                validators: {
+//                    notEmpty: {
+//                        message: 'El nombre es obligatorio'
+//                    }
+//                }
+//            },
+//            orden: {
+//                selector: '#orden',
+//                group: '.col-2',
+//                validators: {
+//                    notEmpty: {
+//                        message: 'El orden es obligatorio'
+//                    }
+//                }
+//            },
+
+
+//        }
+
+//    });
+
+//    $('#dialog2').bootstrapValidator({
+//        live: 'enabled',
+//        submitButtons: 'button[id="btnEditEtapaD"]',
+//        feedbackIcons: {
+//            //valid: 'glyphicon glyphicon-ok',
+//            //invalid: 'glyphicon glyphicon-remove',
+//            //validating: 'glyphicon glyphicon-refresh'
+//        },
+
+//        fields: {
+//            descripcionE: {
+//                selector: '#nombreEtapaD',
+//                group: '.col-5',
+//                validators: {
+//                    notEmpty: {
+//                        message: 'El nombre es obligatorio'
+//                    }
+//                }
+//            },
+//            ordenE: {
+//                selector: '#ordenD',
+//                group: '.col-5',
+//                validators: {
+//                    notEmpty: {
+//                        message: 'El orden es obligatorio'
+//                    }
+//                }
+//            },
+
+
+//        }
+
+//    });
+
+
+//    $('#form_acciones').bootstrapValidator({
+//        live: 'enabled',
+//        submitButtons: 'button[id="btn_agregar"]',
+//        feedbackIcons: {
+//            //valid: 'glyphicon glyphicon-ok',
+//            //invalid: 'glyphicon glyphicon-remove',
+//            //validating: 'glyphicon glyphicon-refresh'
+//        },
+//        //valid: 'glyphicon glyphicon-ok',
+//        //invalid: 'glyphicon glyphicon-remove',
+//        //validating: 'glyphicon glyphicon-refresh',
+//        fields: {
+//            nombreAccion: {
+//                selector: '#nombreAccion',
+//                group: '.col-3',
+//                validators: {
+//                    notEmpty: {
+//                        message: 'El nombre de la acción es obligatoria'
+//                    }
+//                }
+//            },
+//            claveAccion: {
+//                selector: '#claveAccion',
+//                group: '.col-3',
+//                validators: {
+//                    notEmpty: {
+//                        message: 'La clave de la acción es obligatoria'
+//                    }
+//                }
+//            },
+//            ordenAccion: {
+//                selector: '#ordenAccion',
+//                group: '.col-2',
+//                validators: {
+//                    notEmpty: {
+//                        message: 'El orden de la acción es obligatoria'
+//                    }
+//                }
+//            },
+
+
+//            selectEtapa: {
+//                excluded: false,
+//                selector: '#selectEtapa',
+//                group: '.col-3',
+//                validators: {
+//                    notEmpty: {
+//                        message: ' '
+//                    },
+//                    callback: {
+//                        callback: function (value, validator,
+//                            $field) {
+
+//                            var valor = $('#selectEtapa').val();
+//                            if (valor == 0 || valor == null) {
+//                                return {
+//                                    valid: false,
+//                                    message: 'La etapa es obligatoria'
+//                                };
+//                            } else {
+
+//                                return true;
+
+//                            }
+
+//                        }
+//                    }
+//                }
+//            }
+
+//        }
+
+//    });
+
+//    $('#dialog3').bootstrapValidator({
+//        live: 'enabled',
+//        submitButtons: 'button[id="btnEditRolD3"]',
+//        feedbackIcons: {
+//            //valid: 'glyphicon glyphicon-ok',
+//            //invalid: 'glyphicon glyphicon-remove',
+//            //validating: 'glyphicon glyphicon-refresh'
+//        },
+//        //valid: 'glyphicon glyphicon-ok',
+//        //invalid: 'glyphicon glyphicon-remove',
+//        //validating: 'glyphicon glyphicon-refresh',
+//        fields: {
+//            nombreAccionD: {
+//                selector: '#nombreAccionD',
+//                group: '.col-4',
+//                validators: {
+//                    notEmpty: {
+//                        message: 'El nombre de la acción es obligatoria'
+//                    }
+//                }
+//            },
+//            claveAccionD: {
+//                selector: '#claveAccionD',
+//                group: '.col-4',
+//                validators: {
+//                    notEmpty: {
+//                        message: 'La clave de la acción es obligatoria'
+//                    }
+//                }
+//            },
+//            ordenAccionD: {
+//                selector: '#ordenAccionD',
+//                group: '.col-4',
+//                validators: {
+//                    notEmpty: {
+//                        message: 'El orden de la acción es obligatoria'
+//                    }
+//                }
+//            }
+
+//        }
+
+//    });
+
+
+//    $('#form_RN2').bootstrapValidator({
+//        live: 'enabled',
+//        submitButtons: 'button[id="btn_agregarRN2"]',
+//        feedbackIcons: {
+//            //valid: 'glyphicon glyphicon-ok',
+//            //invalid: 'glyphicon glyphicon-remove',
+//            //validating: 'glyphicon glyphicon-refresh'
+//        },
+//        //valid: 'glyphicon glyphicon-ok',
+//        //invalid: 'glyphicon glyphicon-remove',
+//        //validating: 'glyphicon glyphicon-refresh',
+//        fields: {
+//            rn2_etapa: {
+//                excluded: false,
+//                selector: '#rn2_etapa',
+//                group: '.col-4',
+//                validators: {
+//                    notEmpty: {
+//                        message: ' '
+//                    },
+//                    callback: {
+//                        callback: function (value, validator,
+//                            $field) {
+
+//                            var valor = $('#rn2_etapa').val();
+//                            if (valor == 0 || valor == null) {
+//                                return {
+//                                    valid: false,
+//                                    message: 'La etapa es obligatoria'
+//                                };
+//                            } else {
+
+//                                return true;
+
+//                            }
+
+//                        }
+//                    }
+//                }
+//            },
+//            rn2_accion: {
+//                excluded: false,
+//                selector: '#rn2_accion',
+//                group: '.col-4',
+//                validators: {
+//                    notEmpty: {
+//                        message: ' '
+//                    },
+//                    callback: {
+//                        callback: function (value, validator,
+//                            $field) {
+
+//                            var valor = $('#rn2_accion').val();
+//                            if (valor == 0 || valor == null) {
+//                                return {
+//                                    valid: false,
+//                                    message: 'La acción es obligatoria'
+//                                };
+//                            } else {
+
+//                                return true;
+
+//                            }
+
+//                        }
+//                    }
+//                }
+//            },
+//            visualizacion: {
+//                group: '.boosSelect',
+//                validators: {
+//                    notEmpty: {
+//                        message: 'El tipo de visualización es obligatorio'
+//                    },
+
+//                }
+//            }
+
+
+//        }
+
+//    });
+
+
+
+//    $('#form_reglas').bootstrapValidator({
+//        live: 'enabled',
+//        submitButtons: 'button[id="btn_agregarFormula"]',
+//        feedbackIcons: {
+//            //valid: 'glyphicon glyphicon-ok',
+//            //invalid: 'glyphicon glyphicon-remove',
+//            //validating: 'glyphicon glyphicon-refresh'
+//        },
+//        //valid: 'glyphicon glyphicon-ok',
+//        //invalid: 'glyphicon glyphicon-remove',
+//        //validating: 'glyphicon glyphicon-refresh',
+//        fields: {
+//            formula_etapa: {
+//                excluded: false,
+//                selector: '#formula_etapa',
+//                group: '.col-4',
+//                validators: {
+//                    notEmpty: {
+//                        message: ' '
+//                    },
+//                    callback: {
+//                        callback: function (value, validator,
+//                            $field) {
+
+//                            var valor = $('#formula_etapa').val();
+//                            if (valor == 0 || valor == null) {
+//                                return {
+//                                    valid: false,
+//                                    message: 'La etapa es obligatoria'
+//                                };
+//                            } else {
+
+//                                return true;
+
+//                            }
+
+//                        }
+//                    }
+//                }
+//            },
+//            fomula_accion: {
+//                excluded: false,
+//                selector: '#fomula_accion',
+//                group: '.col-4',
+//                validators: {
+//                    notEmpty: {
+//                        message: ' '
+//                    },
+//                    callback: {
+//                        callback: function (value, validator,
+//                            $field) {
+
+//                            var valor = $('#fomula_accion').val();
+//                            if (valor == 0 || valor == null) {
+//                                return {
+//                                    valid: false,
+//                                    message: 'La acción es obligatoria'
+//                                };
+//                            } else {
+
+//                                return true;
+
+//                            }
+
+//                        }
+//                    }
+//                }
+//            },
+//            fomula_Init: {
+//                excluded: false,
+//                selector: '#fomula_Init',
+//                group: '.col-4',
+//                validators: {
+//                    notEmpty: {
+//                        message: ' '
+//                    },
+//                    callback: {
+//                        callback: function (value, validator,
+//                            $field) {
+
+//                            var valor = $('#fomula_Init').val();
+//                            if (valor == 0 || valor == null) {
+//                                return {
+//                                    valid: false,
+//                                    message: 'El campo es obligatorio'
+//                                };
+//                            } else {
+
+//                                return true;
+
+//                            }
+
+//                        }
+//                    }
+//                }
+//            }
+
+
+
+//        }
+
+//    });
+
+//    $('#form_Combo').bootstrapValidator({
+//        live: 'enabled',
+//        submitButtons: 'button[id="btn_agregarCombo"]',
+//        feedbackIcons: {
+//            //valid: 'glyphicon glyphicon-ok',
+//            //invalid: 'glyphicon glyphicon-remove',
+//            //validating: 'glyphicon glyphicon-refresh'
+//        },
+//        //valid: 'glyphicon glyphicon-ok',
+//        //invalid: 'glyphicon glyphicon-remove',
+//        //validating: 'glyphicon glyphicon-refresh',
+//        fields: {
+//            Combo_etapa: {
+//                excluded: false,
+//                selector: '#Combo_etapa',
+//                group: '.col-4',
+//                validators: {
+//                    notEmpty: {
+//                        message: ' '
+//                    },
+//                    callback: {
+//                        callback: function (value, validator,
+//                            $field) {
+
+//                            var valor = $('#Combo_etapa').val();
+//                            if (valor == 0 || valor == null) {
+//                                return {
+//                                    valid: false,
+//                                    message: 'La etapa es obligatoria'
+//                                };
+//                            } else {
+
+//                                return true;
+
+//                            }
+
+//                        }
+//                    }
+//                }
+//            },
+//            Combo_accion: {
+//                excluded: false,
+//                selector: '#Combo_accion',
+//                group: '.col-4',
+//                validators: {
+//                    notEmpty: {
+//                        message: ' '
+//                    },
+//                    callback: {
+//                        callback: function (value, validator,
+//                            $field) {
+
+//                            var valor = $('#Combo_accion').val();
+//                            if (valor == 0 || valor == null) {
+//                                return {
+//                                    valid: false,
+//                                    message: 'La acción es obligatoria'
+//                                };
+//                            } else {
+
+//                                return true;
+
+//                            }
+
+//                        }
+//                    }
+//                }
+//            },
+
+
+
+
+//        }
+
+//    });
+
+//    $('#RN_Accion').bootstrapValidator({
+//        live: 'enabled',
+//        submitButtons: 'button[id="btn_agregarRNAccion"]',
+//        feedbackIcons: {
+//            //valid: 'glyphicon glyphicon-ok',
+//            //invalid: 'glyphicon glyphicon-remove',
+//            //validating: 'glyphicon glyphicon-refresh'
+//        },
+//        //valid: 'glyphicon glyphicon-ok',
+//        //invalid: 'glyphicon glyphicon-remove',
+//        //validating: 'glyphicon glyphicon-refresh',
+//        fields: {
+//            RNA_etapa: {
+//                excluded: false,
+//                selector: '#RNA_etapa',
+//                group: '.col-3',
+//                validators: {
+//                    notEmpty: {
+//                        message: ' '
+//                    },
+//                    callback: {
+//                        callback: function (value, validator,
+//                            $field) {
+
+//                            var valor = $('#RNA_etapa').val();
+//                            if (valor == 0 || valor == null) {
+//                                return {
+//                                    valid: false,
+//                                    message: 'La etapa es obligatoria'
+//                                };
+//                            } else {
+
+//                                return true;
+
+//                            }
+
+//                        }
+//                    }
+//                }
+//            },
+//            RNA_accion: {
+//                excluded: false,
+//                selector: '#RNA_accion',
+//                group: '.col-3',
+//                validators: {
+//                    notEmpty: {
+//                        message: ' '
+//                    },
+//                    callback: {
+//                        callback: function (value, validator,
+//                            $field) {
+
+//                            var valor = $('#RNA_accion').val();
+//                            if (valor == 0 || valor == null) {
+//                                return {
+//                                    valid: false,
+//                                    message: 'La acción es obligatoria'
+//                                };
+//                            } else {
+
+//                                return true;
+
+//                            }
+
+//                        }
+//                    }
+//                }
+//            },
+//            RNA_EtapaFinal: {
+//                excluded: false,
+//                selector: '#RNA_EtapaFinal',
+//                group: '.col-3',
+//                validators: {
+//                    notEmpty: {
+//                        message: ' '
+//                    },
+//                    callback: {
+//                        callback: function (value, validator,
+//                            $field) {
+
+//                            var valor = $('#RNA_EtapaFinal').val();
+//                            if (valor == 0 || valor == null) {
+//                                return {
+//                                    valid: false,
+//                                    message: 'La etapa es obligatoria'
+//                                };
+//                            } else {
+
+//                                return true;
+
+//                            }
+
+//                        }
+//                    }
+//                }
+//            },
+//            mensajeSuccess: {
+//                excluded: false,
+//                selector: '#mensajeSuccess',
+//                group: '.col-6',
+//                validators: {
+//                    notEmpty: {
+//                        message: ' '
+//                    },
+//                    callback: {
+//                        callback: function (value, validator,
+//                            $field) {
+
+//                            var valor = $('#mensajeSuccess').val();
+//                            if (valor == 0 || valor == null) {
+//                                return {
+//                                    valid: false,
+//                                    message: 'El mensaje de confirmacion de exito es obligatorio'
+//                                };
+//                            } else {
+
+//                                return true;
+
+//                            }
+
+//                        }
+//                    }
+//                }
+//            },
+//            mensajeError: {
+//                excluded: false,
+//                selector: '#mensajeError',
+//                group: '.col-6',
+//                validators: {
+//                    notEmpty: {
+//                        message: ' '
+//                    },
+//                    callback: {
+//                        callback: function (value, validator,
+//                            $field) {
+
+//                            var valor = $('#mensajeError').val();
+//                            if (valor == 0 || valor == null) {
+//                                return {
+//                                    valid: false,
+//                                    message: 'El mensaje de confirmacion de error es obligatorio'
+//                                };
+//                            } else {
+
+//                                return true;
+
+//                            }
+
+//                        }
+//                    }
+//                }
+//            }
+
+
+
+
+//        }
+
+//    });
+
+//    $('#form_Autocompletar').bootstrapValidator({
+//        live: 'enabled',
+//        submitButtons: 'button[id="btn_agregarAutocompletar"]',
+//        feedbackIcons: {
+//            //valid: 'glyphicon glyphicon-ok',
+//            //invalid: 'glyphicon glyphicon-remove',
+//            //validating: 'glyphicon glyphicon-refresh'
+//        },
+//        //valid: 'glyphicon glyphicon-ok',
+//        //invalid: 'glyphicon glyphicon-remove',
+//        //validating: 'glyphicon glyphicon-refresh',
+//        fields: {
+//            Autocompletar_etapa: {
+//                excluded: false,
+//                selector: '#Autocompletar_etapa',
+//                group: '.col-4',
+//                validators: {
+//                    notEmpty: {
+//                        message: ' '
+//                    },
+//                    callback: {
+//                        callback: function (value, validator,
+//                            $field) {
+
+//                            var valor = $('#Autocompletar_etapa').val();
+//                            if (valor == 0 || valor == null) {
+//                                return {
+//                                    valid: false,
+//                                    message: 'La etapa es obligatoria'
+//                                };
+//                            } else {
+
+//                                return true;
+
+//                            }
+
+//                        }
+//                    }
+//                }
+//            },
+//            Autocompletar_accion: {
+//                excluded: false,
+//                selector: '#Autocompletar_accion',
+//                group: '.col-4',
+//                validators: {
+//                    notEmpty: {
+//                        message: ' '
+//                    },
+//                    callback: {
+//                        callback: function (value, validator,
+//                            $field) {
+
+//                            var valor = $('#Autocompletar_accion').val();
+//                            if (valor == 0 || valor == null) {
+//                                return {
+//                                    valid: false,
+//                                    message: 'La acción es obligatoria'
+//                                };
+//                            } else {
+
+//                                return true;
+
+//                            }
+
+//                        }
+//                    }
+//                }
+//            },
+//            Autocompletar_Combo: {
+//                excluded: false,
+//                selector: '#Autocompletar_Combo',
+//                group: '.col-4',
+//                validators: {
+//                    notEmpty: {
+//                        message: ' '
+//                    },
+//                    callback: {
+//                        callback: function (value, validator,
+//                            $field) {
+
+//                            var valor = $('#Autocompletar_Combo').val();
+//                            if (valor == 0 || valor == null) {
+//                                return {
+//                                    valid: false,
+//                                    message: 'El campo es obligatorio'
+//                                };
+//                            } else {
+
+//                                return true;
+
+//                            }
+
+//                        }
+//                    }
+//                }
+//            },
+
+
+
+
+//        }
+
+//    });
+
+//}
 
 function initEventos() {
     OcultarDialogCompl();
@@ -5207,18 +4721,7 @@ function initEventos() {
         e.preventDefault();
     });
 
-    $("#area").change(function () {
-        if ($("#proceso").val() != 0) {
-            $("#proceso").val(0);
-            $('#form_transaccion').bootstrapValidator('destroy');
-            bootsVal();
-        }
-        if ($("#proceso").val() == 0) {
-            $("#proceso").val(0);
-            $('#form_transaccion').bootstrapValidator('destroy');
-            bootsVal();
-        }
-    })
+    
 
     $("#Icono1").hide();
     $("#Icono2").hide();
@@ -5239,7 +4742,7 @@ function initEventos() {
     $("#Icon8").hide();
     selectCombobox();
 
-    $('#tabla_Comp').hide();
+    //$('#tabla_Comp').hide();
     $('#TDEtapas').hide();
     $('#Tabla_Rol').hide();
     $('#Tabla_formula').hide();
@@ -5275,58 +4778,7 @@ function initEventos() {
         }
     });
 
-    $("#tipoDato").change(function () {
-        var opcion = $("#tipoDato option:selected").html();
-
-        if (opcion == "Date") {
-            $('#longitud').prop("disabled", true);
-            $('#longi').removeClass("has-error");
-
-            $("#longi small").attr("data-bv-result", "VALID");
-            $("#longi small").attr("style", "display: none;");
-            $('#longi').addClass("has-success");
-
-            $("#longi input").attr("data-bv-excluded", 'true');
-
-            $("#longitud").val(10).trigger('change');
-
-        } else if (opcion == "DateTime") {
-            $('#longitud').prop("disabled", true);
-            $('#longi').removeClass("has-error");
-
-            $("#longi small").attr("data-bv-result", "VALID");
-            $("#longi small").attr("style", "display: none;");
-            $('#longi').addClass("has-success");
-
-            $("#longi input").attr("data-bv-excluded", 'true');
-            $("#longitud").val(16).trigger('change');
-
-        } else if (opcion == "Boleano") {
-            $('#longitud').prop("disabled", true);
-            $('#longi').removeClass("has-error");
-
-            $("#longi small").attr("data-bv-result", "VALID");
-            $("#longi small").attr("style", "display: none;");
-            $('#longi').addClass("has-success");
-
-            $("#longi input").attr("data-bv-excluded", 'true');
-            $("#longitud").val(1).trigger('change');
-
-        } else if ($("#longitud").val() == '' && opcion != "DateTime" && opcion != "Date" && opcion != "Boleano") {
-            $("#longitud").val('').trigger('change');
-            $('#longitud').prop("disabled", false);
-            $('#longi').removeClass("has-success");
-
-        } else {
-            $('#longi').removeClass("has-success");
-
-            $("#longitud").val('').trigger('change');
-
-            $('#longitud').prop("disabled", false);
-
-
-        }
-    })
+    
 
     $("#nombreCampoDP").hide();
     $("#campoUps").hide();
@@ -5344,166 +4796,129 @@ function initEventos() {
 
     $("#btnFormulas").hide();
     $("#btnReglasNAcciones").hide();
-    $('#btn_agregarTransaccion').click(function () {
 
-        bootsVal();
-        $('#form_transaccion').data('bootstrapValidator').validate();
-        var n = $('#form_transaccion').data('bootstrapValidator').isValid();
-        if (n) {
-
-            $('input#nombre').prop('disabled', true);
-            $('input#clave').prop('disabled', true);
-            $('select#categoria').prop('disabled', true);
-            $('select#area').prop('disabled', true);
-            $('select#proceso').prop('disabled', true);
-
-            $.ajax({
-                async: false,
-                type: 'POST',
-                url: 'MyWebService.asmx/InsertDatosGenerales',
-                data: JSON.stringify({
-                    proceso: $('#proceso').val(),
-                    nombre1: $('#nombre').val(),
-                    clave: $('#clave').val(),
-                    categoria: $('#categoria').val()
-                }),
-                dataType: 'json',
-                contentType: 'application/json; charset=utf-8',
-                success: function (response) {
-
-                    $.each(response, function (ind, it) {
-
-                        IdTipoTran = it;
-                        //console.log(ind + "----------" + it);
-                        idTransaccionGlobal = IdTipoTran;
-                    });
-                    $.smallBox({
-                        title: "Éxito!",
-                        content: "Categoría <b>" + $("#nombre").val() + "</b> creada",
-                        color: "#739e73",
-                        timeout: 2000,
-                        icon: "fa fa-thumbs-up swing animated"
-                    });
-                    $(".btn-next").prop("disabled", false)
-                }
-            });
-
-
-            $('#btn_agregarTransaccion').hide();
-
-
-            $('#form_transaccion').bootstrapValidator('destroy');
-
-        } else {
-            //bootsVal();
-        }
-
-    });
     $('#btnPlus').click(function () {
-        $('#tablaComplementarios tbody').removeClass('selected');
-        $('#tablaEtapas tbody').removeClass('selected');
 
-        botonRnC = botonRnC + 2;
+        //funcion valida estatus
+        //btnNext1
+        //btnAtras1
+        //$("#btnNext1").prop("disabled", true)
+        
 
-        $('#btn_EditTransaccion').prop("disabled", false);
-
-        var valores = '';
-
-        $('#divTiposTransaccion').hide();
-        $('#divCrearTransaccion').show();
-        $("#btn_EditTransaccion").hide();
-        $('#btnEditComplement').hide();
-        $('#btnDeleteComplement').hide();
-        $('#btnEditEtapa').hide();
-        $('#btnDeleteEtapa').hide();
-        $(".btn-next").prop("disabled", true);
-        ResetPlus();
-        $('#btn_agregarTransaccion').show();
-        $('#CamposComp').hide();
-
-        $('#btnEditComplement').hide();
-        $('#btnDeleteComplement').hide();
-        $('#tabla_Comp').hide();
-        $('#TDEtapas').hide();
+        $('#divTiposTransaccion').toggle("swing");
+        $('#sectDatosGral').toggle("swing");
 
 
-        $('#form_campos').bootstrapValidator('destroy');
-        $('#form_ciclo').bootstrapValidator('destroy');
-        $('#form_acciones').bootstrapValidator('destroy');
-        $('#form_RN2').bootstrapValidator('destroy');
-        $('#form_Autocompletar').bootstrapValidator('destroy');
-        $('#RN_Accion').bootstrapValidator('destroy');
-        $('#form_Combo').bootstrapValidator('destroy');
-        $('#form_reglas').bootstrapValidator('destroy');
-        $('#form_transaccion').bootstrapValidator('destroy');
 
 
-        $('#smartWizard').wizard('selectedItem', { // mover wizard a
-            // paso2
-            step: 1
-        });
-        bootsVal();
+        //$('#tablaComplementarios tbody').removeClass('selected');
+        //$('#tablaEtapas tbody').removeClass('selected');
+
+        //botonRnC = botonRnC + 2;
+
+        //$('#btn_EditTransaccion').prop("disabled", false);
+
+        //var valores = '';
+
+        //$('#divTiposTransaccion').hide();
+        //$('#divCrearTransaccion').show();
+        //$("#btn_EditTransaccion").hide();
+        //$('#btnEditComplement').hide();
+        //$('#btnDeleteComplement').hide();
+        //$('#btnEditEtapa').hide();
+        //$('#btnDeleteEtapa').hide();
+        //$(".btn-next").prop("disabled", true);
+        //ResetPlus();
+        //$('#btn_agregarTransaccion').show();
+        //$('#CamposComp').hide();
+
+        //$('#btnEditComplement').hide();
+        //$('#btnDeleteComplement').hide();
+        //$('#tabla_Comp').hide();
+        //$('#TDEtapas').hide();
+
+
+        //$('#form_campos').bootstrapValidator('destroy');
+        //$('#form_ciclo').bootstrapValidator('destroy');
+        //$('#form_acciones').bootstrapValidator('destroy');
+        //$('#form_RN2').bootstrapValidator('destroy');
+        //$('#form_Autocompletar').bootstrapValidator('destroy');
+        //$('#RN_Accion').bootstrapValidator('destroy');
+        //$('#form_Combo').bootstrapValidator('destroy');
+        //$('#form_reglas').bootstrapValidator('destroy');
+        //$('#form_transaccion').bootstrapValidator('destroy');
+
+
+        //$('#smartWizard').wizard('selectedItem', { // mover wizard a
+        //    // paso2
+        //    step: 1
+        //});
+        //bootsVal();
 
 
 
 
     });
     $('#btnAtras').click(function () {
-        $('#btn_EditTransaccion').prop("disabled", false);
 
-        $('#divTiposTransaccion').show();
-        $('#divCrearTransaccion').hide();
+        $('#divTiposTransaccion').toggle("swing");
+        $('#sectDatosGral').toggle("swing");
 
-        $('#tabla_Comp').hide();
-        $('#TDEtapas').hide();
-        $('#Tabla_Rol').hide();
-        $('#Tabla_formula').hide();
-        $('#reglaPorAccion').hide();
-        $('.trnc').hide();
-        $('#btn_agregarRN2').hide();
-        $('#examples').hide();
+        //$('#btn_EditTransaccion').prop("disabled", false);
 
-        $('#btn_agregarCombo').hide();
+        //$('#divTiposTransaccion').show();
+        //$('#divCrearTransaccion').hide();
+
+        //$('#tabla_Comp').hide();
+        //$('#TDEtapas').hide();
+        //$('#Tabla_Rol').hide();
+        //$('#Tabla_formula').hide();
+        //$('#reglaPorAccion').hide();
+        //$('.trnc').hide();
+        //$('#btn_agregarRN2').hide();
+        //$('#examples').hide();
+
+        //$('#btn_agregarCombo').hide();
 
 
-        $('#DTAutocompletar').hide();
-        $('#btn_agregarAutocompletar').hide();
+        //$('#DTAutocompletar').hide();
+        //$('#btn_agregarAutocompletar').hide();
 
 
 
-        ResetPlus();
+        //ResetPlus();
 
-        Reset();
-        var datosTabla = [];
-        $.ajax({
-            async: false,
-            type: 'POST',
-            url: 'MyWebService.asmx/LlenaTipoTransaccion',
-            dataType: 'json',
-            contentType: 'application/json; charset=utf-8',
-            beforeSend: function () {
-                $('#loadingMod').modal({
-                    backdrop: 'static',
-                    keyboard: false
-                });
-            },
-            success: function (response) {
-                $('#loadingMod').modal('hide');
-                $.each(response, function (row, index) {
-                    $.each(index.ListaTipoTran, function (r, arr) {
-                        datosTabla.push([arr.nombre, arr.clave, arr.categoria, arr.estatus, arr.fecha, arr.idTipoTransaccion, arr.area, arr.proceso, arr.idCategoria])
+        //Reset();
+        //var datosTabla = [];
+        //$.ajax({
+        //    async: false,
+        //    type: 'POST',
+        //    url: 'MyWebService.asmx/LlenaTipoTransaccion',
+        //    dataType: 'json',
+        //    contentType: 'application/json; charset=utf-8',
+        //    beforeSend: function () {
+        //        $('#loadingMod').modal({
+        //            backdrop: 'static',
+        //            keyboard: false
+        //        });
+        //    },
+        //    success: function (response) {
+        //        $('#loadingMod').modal('hide');
+        //        $.each(response, function (row, index) {
+        //            $.each(index.ListaTipoTran, function (r, arr) {
+        //                datosTabla.push([arr.nombre, arr.clave, arr.categoria, arr.estatus, arr.fecha, arr.idTipoTransaccion, arr.area, arr.proceso, arr.idCategoria])
 
-                            ;
-                    });
-                });
+        //                    ;
+        //            });
+        //        });
 
-            }
+        //    }
 
-        });
+        //});
 
-        otable.clear();
-        otable.rows.add(datosTabla);
-        otable.draw();
+        //otable.clear();
+        //otable.rows.add(datosTabla);
+        //otable.draw();
     });
     $("#btnDelete").click(function () {
         var row = $('#dtTiposTransaccion').DataTable().row('.selected').data();
@@ -5586,6 +5001,7 @@ function initEventos() {
         }
 
     });
+
     $("#btnEditComplement").click(function () {
         var row = $('#tablaComplementarios').DataTable().row('.selected').data();
 
@@ -7094,6 +6510,8 @@ function initEventos() {
     });
 
     $("#btn_agregarAccionEF").click(function () {
+
+
         //$('#RN_Accion').bootstrapValidator('destroy');
         var valxx = '';
         var JSONcadena = "";
@@ -7301,465 +6719,99 @@ function initEventos() {
 
     })
 
-    $('#btn_agregar').click(function () {
+    
+    
 
+    //$('#_Roles').prop('checked')
 
-        disable = 1;
-        $('#tablaComplementarios tbody').removeClass('selected');
-        $('#tablaComplementarios tbody').on('click', 'tr', function () {
-            if ($(this).hasClass('selected')) {
-                $(this).removeClass('selected');
-            } else {
-                otable1.$('tr.selected').removeClass('selected');
-                $(this).addClass('selected');
-            }
-        });
-
-        if ($('#longitud').val() != '') {
-            $('#longi').removeClass("has-error");
-
-            $("#longi small").attr("data-bv-result", "VALID");
-            $("#longi small").attr("style", "display: none;");
-            $('#longi').addClass("has-success");
-
-            $("#longi input").attr("data-bv-excluded", 'true');
-        } else {
-            $('#longi').removeClass("has-success");
-
-            $("#longi small").attr("data-bv-result", "INVALID");
-            $("#longi small").attr("style", "");
-            $('#longi').addClass("has-error");
-
-            $("#longi input").attr("data-bv-excluded", 'false');
-        }
-
-        var valores = [];
-        $("#tablaComplementarios tr").find('td:eq(0)').each(function () {
-            valores.push($(this).text());
-        })
-        if (valores.includes($('input#nombreCampo').val())) {
-            $.smallBox({
-                title: "Error",
-                content: "<i class='fa fa-clock-o'></i> <i>El nombre del campo ya existe</i>",
-                color: "#C46A69",
-                iconSmall: "fa fa-times fa-2x fadeInRight animated",
-                timeout: 2000
-            });
-
-            $('input#nombreCampo').css({
-                'background-color': '#C46A69'
-            });
-            $('#form_campos').bootstrapValidator('destroy');
-
-            mouse();
-        } else {
-            bootsVal();
-            $('#form_campos').data('bootstrapValidator').validate();
-            var n = $('#form_campos').data('bootstrapValidator').isValid();
-            if (n) {
-                AgregarCampos();
-                $('#btnEditComplement').show();
-                $('#btnDeleteComplement').show();
-                $('#tabla_Comp').show();
-                $(".btn-next").prop("disabled", false);
-                $.fn.dataTable.ext.errMode = 'none';
-                var responsiveHelper_datatable_fixed_column = undefined;
-                var breakpointDefinition = {
-                    tablet: 1024,
-                    phone: 480,
-                    desktop: 1260
-                };
-                var count = 0;
-                var datosCom = [];
-
-
-
-                $.ajax({
-                    async: false,
-                    type: 'POST',
-                    url: 'MyWebService.asmx/DTCamposWS',
-                    data: JSON.stringify({
-                        idTipoTransaccion: IdTipoTran
-                    }),
-                    dataType: 'json',
-                    contentType: 'application/json; charset=utf-8',
-                    success: function (response) {
-
-                        $.each(response, function (row, index) {
-                            $.each(index.ListCamposTransaccion, function (r, arr) {
-
-                                datosCom.push([arr.nombreCampo, arr.descCampo, arr.TipoDato, arr.longitud, arr.Nivel, arr.Operacion, arr.idTipoDato, arr.idNivel, arr.idOperacion, arr.idCampo]);
-                            });
-                        });
-                    }
-
-                });
-                otable1 = $('#tablaComplementarios')
-                    .DataTable({
-
-                        "scrollY": "200px",
-                        "scrollCollapse": true,
-                        "paging": false,
-
-                        "sPaginationType": "bootstrap", // full_numbers
-                        "iDisplayStart ": 10,
-                        "iDisplayLength": 10,
-                        "bPaginate": false, //hide pagination
-                        "bFilter": false, //hide Search bar
-                        "bInfo": false, // hide showing entries
-                        "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6 hidden-xs'l><'col-sm-6 col-xs-12 hidden-xs'<'toolbar'>>r>" +
-                        "t" +
-                        "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
-                        "oLanguage": {
-                            "sUrl": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-                        },
-
-                        "autoWidth": true,
-                        "preDrawCallback": function () {
-                            if (!responsiveHelper_datatable_fixed_column) {
-                                responsiveHelper_datatable_fixed_column = new ResponsiveDatatablesHelper(
-                                    $('#tablaComplementarios'), breakpointDefinition);
-                            }
-                        },
-                        "rowCallback": function (nRow) {
-                            responsiveHelper_datatable_fixed_column
-                                .createExpandIcon(nRow);
-                        },
-                        "drawCallback": function (oSettings) {
-                            responsiveHelper_datatable_fixed_column.respond();
-                        },
-                        data: datosCom,
-                        columns: [{
-                            title: "Nombre del campo"
-                        },
-                        {
-                            title: "Descripción"
-                        },
-                        {
-                            title: "Tipo de dato"
-                        },
-                        {
-                            title: "Longitud"
-                        },
-                        {
-                            title: "Nivel"
-                        },
-                        {
-                            title: "Tipo de operación"
-                        }
-                        ]
-                    });
-
-                $('#tablaComplementarios tbody').on('click', 'tr', function () {
-                    if ($(this).hasClass('selected')) {
-                        $(this).removeClass('selected');
-                    } else {
-                        otable1.$('tr.selected').removeClass('selected');
-                        $(this).addClass('selected');
-                    }
-                });
-
-                if (botonRnC == 1) {
-
-                    var datosCom = [];
-                    idCampoDatoInsert = []
-                    var nombreCampoDs = [];
-                    var valores = [];
-                    var check1 = '<input type="checkbox" id="valor_' + check + '" name="Visible" value = "0">';
-                    var check2 = '<input type="checkbox" id="valor_' + check + '" name="Editable" value = "0">';
-                    var check3 = '<input type="checkbox" id="valor_' + check + '" name="Obligatorio" value = "0">';
-                    var seelct;
-                    datosCom.push('<input type="text" value="' + $("#nombreCampo").val() + '" id="valor_' + check + '" text=" ' + $("#nombreCampo").val() + '" name="Campo" readonly style="border:none; background: transparent;">', check1, check2, check3, ' <label class="select"><select class="select form-control" id="visualizacion_' + check + '" name="visualizacion" value="0" size="1"></select></label>');
-                    var id = check;
-                    id = (id + 1);
-                    SelectVisualizacionEdit(id);
-
-                }
-
-                Reset();
-                $('#tipoDato').val(0).trigger('change');
-                $('#nivel').val(0).trigger('change');
-                $('#tipoOperacion').val(0).trigger('change');
-                $('#form_campos').bootstrapValidator('destroy');
-
-
-            } else {
-
-
-                $('#tablaComplementarios tbody').on('click', 'tr', function () {
-                    if ($(this).hasClass('selected')) {
-                        $(this).removeClass('selected');
-                    } else {
-                        otable1.$('tr.selected').removeClass('selected');
-                        $(this).addClass('selected');
-                    }
-                });
-            }
-        }
-    });
-    $('#btn_agregarOrden').click(function () {
-
-        $('#tablaEtapas tbody').removeClass('selected');
-        $('#tablaEtapas tbody').on('click', 'tr', function () {
-            if ($(this).hasClass('selected')) {
-                $(this).removeClass('selected');
-            } else {
-                otable2.$('tr.selected').removeClass('selected');
-                $(this).addClass('selected');
-            }
-        });
-
-        var nomEtapa = [];
-
-        $("#tablaEtapas tr").find('td:eq(0)').each(function () {
-            nomEtapa.push($(this).text());
-        })
-        var ordEtapa = [];
-        $("#tablaEtapas tr").find('td:eq(1)').each(function () {
-            ordEtapa.push($(this).text());
-        })
-
-
-        if (nomEtapa.includes($('input#nombreEtapa').val())) {
-            $.smallBox({
-                title: "Error",
-                content: "<i class='fa fa-clock-o'></i> <i>El nombre de la etapa ya existe</i>",
-                color: "#C46A69",
-                iconSmall: "fa fa-times fa-2x fadeInRight animated",
-                timeout: 2000
-            });
-
-
-            $('input#nombreEtapa').css({
-                'background-color': '#C46A69'
-            });
-
-            mouse();
-        } else if (ordEtapa.includes($('input#orden').val())) {
-            $.smallBox({
-                title: "Error",
-                content: "<i class='fa fa-clock-o'></i> <i>El orden de la etapa ya existe</i>",
-                color: "#C46A69",
-                iconSmall: "fa fa-times fa-2x fadeInRight animated",
-                timeout: 2000
-            });
-
-            $('input#orden').css({
-                'background-color': '#C46A69'
-            });
-
-            mouse();
-        } else {
-
-            bootsVal();
-            $('#form_ciclo').data('bootstrapValidator').validate();
-            var n = $('#form_ciclo').data('bootstrapValidator').isValid();
-
-            if (n) {
-
-
-
-                AgregarEtapa();
-                $('#btnEditEtapa').show();
-                $('#btnDeleteEtapa').show();
-
-                var arr = $("#form_ciclo").serializeArray();
-                var datosC = [];
-                $.each(arr, function (i, fd) {
-                    datosC.push(fd.value);
-
-
-                })
-
-                $.fn.dataTable.ext.errMode = 'none';
-                var responsiveHelper_datatable_fixed_column = undefined;
-                var breakpointDefinition = {
-                    tablet: 1024,
-                    phone: 480,
-                    desktop: 1260
-                };
-                var datosCom = [];
-
-                $('#TDEtapas').show();
-
-                $.ajax({
-                    async: false,
-                    type: 'POST',
-                    url: 'MyWebService.asmx/EtapasTransaccionN',
-                    data: JSON.stringify({
-                        idTipoTransaccion: IdTipoTran
-                    }),
-                    dataType: 'json',
-                    contentType: 'application/json; charset=utf-8',
-                    success: function (response) {
-
-                        $.each(response, function (row, index) {
-
-                            $.each(index.etapaslista, function (r, arr) {
-                                datosCom.push([arr.descripcion, arr.Orden]);
-                            });
-                        });
-                    }
-                });
-
-                otable2 = $('#tablaEtapas')
-                    .DataTable({
-
-                        "scrollY": "200px",
-                        "scrollCollapse": true,
-                        "paging": false,
-
-                        "sPaginationType": "bootstrap", // full_numbers
-                        "iDisplayStart ": 10,
-                        "iDisplayLength": 10,
-                        "bPaginate": false, //hide pagination
-                        "bFilter": false, //hide Search bar
-                        "bInfo": false, // hide showing entries
-                        "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6 hidden-xs'l><'col-sm-6 col-xs-12 hidden-xs'<'toolbar'>>r>" +
-                        "t" +
-                        "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
-                        "oLanguage": {
-                            "sUrl": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-                        },
-
-                        "autoWidth": true,
-                        "preDrawCallback": function () {
-                            if (!responsiveHelper_datatable_fixed_column) {
-                                responsiveHelper_datatable_fixed_column = new ResponsiveDatatablesHelper(
-                                    $('#tablaEtapas'), breakpointDefinition);
-                            }
-                        },
-                        "rowCallback": function (nRow) {
-                            responsiveHelper_datatable_fixed_column
-                                .createExpandIcon(nRow);
-                        },
-                        "drawCallback": function (oSettings) {
-                            responsiveHelper_datatable_fixed_column.respond();
-                        },
-                        data: datosCom,
-                        columns: [{
-                            title: "Nombre de la etapa"
-                        },
-                        {
-                            title: "Orden"
-                        },
-
-                        ]
-                    });
-
-
-
-
-                Reset();
-
-                $('#form_ciclo').bootstrapValidator('destroy');
-
-                $('#tablaEtapas tbody').removeClass('selected');
-
-
-
-                $('#tablaEtapas tbody').on('click', 'tr', function () {
-                    if ($(this).hasClass('selected')) {
-                        $(this).removeClass('selected');
-                    } else {
-                        otable2.$('tr.selected').removeClass('selected');
-                        $(this).addClass('selected');
-                    }
-                });
-
-                SelectEtapasC();
-
-                valorBtnEtp = 1;
-
-            } else {
-                // bootsVal();
-
-            }
-
-        }
-    })
     $('#btn_agregarAccion').click(function () {
 
+        
 
-        var nomAcc = [];
-        $("#tablaRoles tr").find('td:eq(1)').each(function () {
-            nomAcc.push($(this).text());
+        var values = $("input[name='checkbox-inline']:checked")
+              .map(function () { return $(this).val(); }).get();
+
+        console.log(values);
+        var nomacc = [];
+        $("#tablaroles tr").find('td:eq(1)').each(function () {
+            nomacc.push($(this).text());
         })
-        var cveAcc = [];
-        $("#tablaRoles tr").find('td:eq(2)').each(function () {
-            cveAcc.push($(this).text());
+        var cveacc = [];
+        $("#tablaroles tr").find('td:eq(2)').each(function () {
+            cveacc.push($(this).text());
         })
-        var ordAcc = [];
-        $("#tablaRoles tr").find('td:eq(3)').each(function () {
-            ordAcc.push($(this).text());
+        var ordacc = [];
+        $("#tablaroles tr").find('td:eq(3)').each(function () {
+            ordacc.push($(this).text());
         })
 
-        if (nomAcc.includes($('input#nombreAccion').val())) {
-            $.smallBox({
-                title: "Error",
-                content: "<i class='fa fa-clock-o'></i> <i>El nombre de la acción ya existe</i>",
-                color: "#C46A69",
-                iconSmall: "fa fa-times fa-2x fadeInRight animated",
+        if (nomacc.includes($('input#nombreaccion').val())) {
+            $.smallbox({
+                title: "error",
+                content: "<i class='fa fa-clock-o'></i> <i>el nombre de la acción ya existe</i>",
+                color: "#c46a69",
+                iconsmall: "fa fa-times fa-2x fadeinright animated",
                 timeout: 2000
             });
 
-            $('input#nombreAccion').css({
-                'background-color': '#C46A69'
+            $('input#nombreaccion').css({
+                'background-color': '#c46a69'
             });
-            document.getElementById('nombreAccion').focus();
+            document.getelementbyid('nombreaccion').focus();
 
             mouse();
-        } else if (cveAcc.includes($('input#claveAccion').val())) {
-            $.smallBox({
-                title: "Error",
-                content: "<i class='fa fa-clock-o'></i> <i>La clave de la acción ya existe</i>",
-                color: "#C46A69",
-                iconSmall: "fa fa-times fa-2x fadeInRight animated",
+        } else if (cveacc.includes($('input#claveaccion').val())) {
+            $.smallbox({
+                title: "error",
+                content: "<i class='fa fa-clock-o'></i> <i>la clave de la acción ya existe</i>",
+                color: "#c46a69",
+                iconsmall: "fa fa-times fa-2x fadeinright animated",
                 timeout: 2000
             });
 
-            $('input#claveAccion').css({
-                'background-color': '#C46A69'
+            $('input#claveaccion').css({
+                'background-color': '#c46a69'
             });
-            document.getElementById('claveAccion').focus();
+            document.getelementbyid('claveaccion').focus();
 
             mouse();
-        } else if (ordAcc.includes($('input#ordenAccion').val())) {
-            $.smallBox({
-                title: "Error",
-                content: "<i class='fa fa-clock-o'></i> <i>El orden de la acción ya existe</i>",
-                color: "#C46A69",
-                iconSmall: "fa fa-times fa-2x fadeInRight animated",
+        } else if (ordacc.includes($('input#ordenaccion').val())) {
+            $.smallbox({
+                title: "error",
+                content: "<i class='fa fa-clock-o'></i> <i>el orden de la acción ya existe</i>",
+                color: "#c46a69",
+                iconsmall: "fa fa-times fa-2x fadeinright animated",
                 timeout: 2000
             });
 
-            $('input#ordenAccion').css({
-                'background-color': '#C46A69'
+            $('input#ordenaccion').css({
+                'background-color': '#c46a69'
             });
-            document.getElementById('ordenAccion').focus();
+            document.getelementbyid('ordenaccion').focus();
 
             mouse();
         } else {
-            bootsVal();
-            $('#form_acciones').data('bootstrapValidator').validate();
-            var n = $('#form_acciones').data('bootstrapValidator').isValid();
+            bootsval();
+            $('#form_acciones').data('bootstrapvalidator').validate();
+            var n = $('#form_acciones').data('bootstrapvalidator').isvalid();
 
 
             if (n) {
-                AgregarAccion();
+                agregaraccion();
                 $("#p_roles").empty();
                 $("#t_roles").empty();
-                SelectRolesEdit();
+                selectrolesedit();
 
 
 
 
             } else {
-                // bootsVal();
+                // bootsval();
 
             }
         }
     })
+
     $('#btn_agregarRN2').click(function () {
         bootsVal();
         $('#form_RN2').data('bootstrapValidator').validate();
@@ -7804,6 +6856,14 @@ function initEventos() {
             }
         });
     })
+
+    //$("#btnNext1").click(function () {
+
+    //    $('#frmDatosGral').toggle("swing");
+    //    $('#frmCamposDin').toggle("swing");
+    //})
+
+
 }
 
 function showWarningMessage(titulo, mensaje) {
@@ -8049,7 +7109,7 @@ function InitDataTableRol() {
                                     estatus += arrL.estatus + "|";
 
                                 });
-                            });
+                            }); 
 
                         }
 
@@ -9768,12 +8828,12 @@ function editTransact() {
         $('#form_reglas').bootstrapValidator('destroy');
         $('#form_transaccion').bootstrapValidator('destroy');
 
-        if (document.getElementById("tablaComplementarios").rows.length >= 1) {
-            $(".btn-next").prop("disabled", false);
-        } else {
-            $(".btn-next").prop("disabled", true);
+        //if (document.getElementById("tablaComplementarios").rows.length >= 1) {
+        //    $(".btn-next").prop("disabled", false);
+        //} else {
+        //    $(".btn-next").prop("disabled", true);
 
-        }
+        //}
 
 
 
@@ -10014,4 +9074,124 @@ function editTransact() {
     } else {
         showWarningMessage('Información </b>', '<i>Debe seleccionar por lo menos un elemento</i>');
     }
+
+
+
+}
+
+function bootsVal() {
+
+    //$('#form_transaccion').bootstrapValidator('destroy');
+    $('#form_transaccion').bootstrapValidator({
+        live: 'enabled',
+        submitButtons: 'button[id="btn_agregarTransaccion"]',
+        message: 'Valor inválido',
+
+        fields: {
+            nombre: {
+                selector: '#nombre',
+                group: '.col-3',
+                validators: {
+                    notEmpty: {
+                        message: 'El nombre es obligatorio'
+                    }
+                }
+            },
+            clave: {
+                selector: '#clave',
+                group: '.col-3',
+                validators: {
+                    notEmpty: {
+                        message: 'La clave es obligatoria'
+                    }
+                }
+            },
+
+            area: {
+                excluded: false,
+                selector: '#area',
+                group: '.col-3',
+                validators: {
+                    notEmpty: {
+                        message: ' '
+                    },
+                    callback: {
+                        callback: function (value, validator,
+                            $field) {
+
+                            var valor = $('#area').val();
+                            if (valor == 0 || valor == null) {
+                                return {
+                                    valid: false,
+                                    message: 'El área es obligatoria'
+                                };
+                            } else {
+
+                                return true;
+
+                            }
+
+                        }
+                    }
+                }
+            },
+            proceso: {
+                excluded: false,
+                selector: '#proceso',
+                group: '.col-3',
+                validators: {
+                    notEmpty: {
+                        message: ' '
+                    },
+                    callback: {
+                        callback: function (value, validator,
+                            $field) {
+
+                            var valor = $('#proceso').val();
+                            if (valor == 0 || valor == null) {
+                                return {
+                                    valid: false,
+                                    message: 'El proceso es obligatorio'
+                                };
+                            } else {
+
+                                return true;
+
+                            }
+
+                        }
+                    }
+                }
+            },
+            categoria: {
+                excluded: false,
+                selector: '#categoria',
+                group: '.col-3',
+                validators: {
+                    notEmpty: {
+                        message: ' '
+                    },
+                    callback: {
+                        callback: function (value, validator,
+                            $field) {
+
+                            var valor = $('#categoria').val();
+                            if (valor == 0 || valor == null) {
+                                return {
+                                    valid: false,
+                                    message: 'La categoría es obligatoria'
+                                };
+                            } else {
+
+                                return true;
+
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+
+    });
 }
